@@ -77,6 +77,74 @@ function globalfxhub_trim_excerpt( $text, $length = 20 ) {
     }
     return $text;
 }
+/**
+ * Pretty URLs for individual broker review pages: /reviews/{slug}/
+ * Requires a Page with slug "reviews" using the "Broker Reviews" template
+ * (Appearance/Pages: create "Reviews" page, assign that template, then
+ * resave Settings > Permalinks once so this rule takes effect).
+ */
+function globalfxhub_review_rewrite_rules() {
+    add_rewrite_rule( '^reviews/([^/]+)/?$', 'index.php?pagename=reviews&broker=$matches[1]', 'top' );
+}
+add_action( 'init', 'globalfxhub_review_rewrite_rules' );
+
+function globalfxhub_review_query_vars( $vars ) {
+    $vars[] = 'broker';
+    return $vars;
+}
+add_filter( 'query_vars', 'globalfxhub_review_query_vars' );
+
+add_action( 'after_switch_theme', 'flush_rewrite_rules' );
+
+function globalfxhub_get_broker_by_slug( $slug ) {
+    foreach ( globalfxhub_get_brokers() as $broker ) {
+        if ( $broker['slug'] === $slug ) {
+            return $broker;
+        }
+    }
+    return null;
+}
+
+/**
+ * Pros/cons derived from the same scored data used in the rankings and
+ * compare tool, so a review page never asserts anything they don't.
+ */
+function globalfxhub_broker_pros_cons( $broker ) {
+    $pros = array();
+    $cons = array();
+    $has_mt = in_array( 'MT4', $broker['platforms'], true ) || in_array( 'MT5', $broker['platforms'], true );
+
+    if ( $broker['scores']['regulation'] >= 4.0 ) {
+        $pros[] = 'Wide regulatory footprint -- CySEC plus ' . $broker['other_reg_count'] . ' other regulator(s), including ' . implode( ', ', array_slice( $broker['other_reg'], 0, 2 ) );
+    } else {
+        $cons[] = 'Thinner regulatory footprint than most peers on this list';
+    }
+
+    if ( $broker['scores']['cost'] >= 4.0 ) {
+        $pros[] = 'Low cost to start: ' . $broker['min_deposit_display'] . ' minimum deposit, ' . $broker['spread_eurusd'] . ' pip average EUR/USD spread';
+    } elseif ( $broker['scores']['cost'] <= 2.5 ) {
+        $cons[] = 'Higher cost than most peers on this list (spread and/or minimum deposit)';
+    }
+
+    if ( count( $broker['platforms'] ) >= 3 ) {
+        $pros[] = 'Broad platform choice: ' . implode( ', ', $broker['platforms'] );
+    } elseif ( ! $has_mt ) {
+        $cons[] = 'No MetaTrader (MT4/MT5) support -- proprietary platform only';
+    }
+
+    if ( $broker['scores']['track_record'] >= 4.0 ) {
+        $pros[] = 'Long operating history, trading since ' . $broker['founded'];
+    } elseif ( $broker['scores']['track_record'] <= 2.0 ) {
+        $cons[] = 'Shorter operating history than most peers, trading since ' . $broker['founded'];
+    }
+
+    if ( empty( $cons ) ) {
+        $cons[] = 'No standout weaknesses versus peers in our researched criteria -- still confirm current terms directly with the broker.';
+    }
+
+    return array( 'pros' => $pros, 'cons' => $cons );
+}
+
 function globalfxhub_get_brokers() {
     return array(
         array( 'slug' => 'ig', 'name' => 'IG', 'entity' => 'IGM Forex Ltd', 'cysec' => '309/16', 'founded' => 1974, 'hq' => 'London, UK', 'min_deposit_usd' => 1, 'min_deposit_display' => '£1', 'spread_eurusd' => 0.6, 'platforms' => array('Proprietary', 'MT4', 'ProRealTime'), 'other_reg' => array('FCA', 'ASIC', '+9 more Tier-1'), 'other_reg_count' => 10, 'instruments' => '17,000+ across forex, indices, shares, commodities, crypto CFDs', 'blurb' => 'Long-established, publicly listed (LSE: IGG), one of the widest regulatory footprints of any broker on this list.', 'scores' => array('regulation' => 5.0, 'cost' => 4.86, 'platforms' => 3.86, 'track_record' => 5.0, 'overall' => 4.7), 'rank' => 1 ),

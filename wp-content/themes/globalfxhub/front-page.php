@@ -250,7 +250,10 @@
         <span class="rank-detail col-fees">0.6 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">Proprietary, MT4, ProRealTime</span>
         <span class="rank-score">4.7 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ig' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/ig/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ig' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">02</span>
@@ -261,7 +264,10 @@
         <span class="rank-detail col-fees">1.0 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">Proprietary, MT4, MT5…</span>
         <span class="rank-score">4.1 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=forex-com' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/forex-com/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=forex-com' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">03</span>
@@ -272,7 +278,10 @@
         <span class="rank-detail col-fees">0.93 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">Proprietary (AvaTradeGO), MT4, MT5…</span>
         <span class="rank-score">4.0 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=avatrade' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/avatrade/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=avatrade' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">04</span>
@@ -283,7 +292,10 @@
         <span class="rank-detail col-fees">1.3 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">Trading Station (proprietary), MT4, ZuluTrade…</span>
         <span class="rank-score">3.9 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=fxcm' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/fxcm/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=fxcm' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">05</span>
@@ -294,7 +306,10 @@
         <span class="rank-detail col-fees">0.7 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">xStation 5 (proprietary)</span>
         <span class="rank-score">3.8 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xtb' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/xtb/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xtb' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">06</span>
@@ -305,7 +320,10 @@
         <span class="rank-detail col-fees">0.6 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">Proprietary, MT4, TradingView</span>
         <span class="rank-score">3.4 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=capital-com' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/capital-com/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=capital-com' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">07</span>
@@ -316,7 +334,10 @@
         <span class="rank-detail col-fees">1.1 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5, cTrader…</span>
         <span class="rank-score">3.4 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=pepperstone' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/pepperstone/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=pepperstone' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">08</span>
@@ -327,7 +348,10 @@
         <span class="rank-detail col-fees">1.0 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5, TradingView</span>
         <span class="rank-score">3.3 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=eightcap' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/eightcap/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=eightcap' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">09</span>
@@ -338,7 +362,10 @@
         <span class="rank-detail col-fees">1.0 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">Proprietary (CopyTrader)</span>
         <span class="rank-score">3.2 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=etoro' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/etoro/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=etoro' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">10</span>
@@ -349,7 +376,10 @@
         <span class="rank-detail col-fees">1.44 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5, cTrader</span>
         <span class="rank-score">3.2 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=fxpro' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/fxpro/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=fxpro' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">11</span>
@@ -360,7 +390,10 @@
         <span class="rank-detail col-fees">1.1 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5</span>
         <span class="rank-score">3.1 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xm' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/xm/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xm' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">12</span>
@@ -371,7 +404,10 @@
         <span class="rank-detail col-fees">1.3 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">WebTrader (proprietary)</span>
         <span class="rank-score">3.0 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=plus500' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/plus500/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=plus500' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">13</span>
@@ -382,7 +418,10 @@
         <span class="rank-detail col-fees">0.8 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5, cTrader</span>
         <span class="rank-score">2.5 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ic-markets' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/ic-markets/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ic-markets' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">14</span>
@@ -393,7 +432,10 @@
         <span class="rank-detail col-fees">2.7 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">Proprietary</span>
         <span class="rank-score">2.3 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=trading-212' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/trading-212/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=trading-212' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">15</span>
@@ -404,7 +446,10 @@
         <span class="rank-detail col-fees">1.7 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5</span>
         <span class="rank-score">1.8 / 5</span>
-        <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=tickmill' ); ?>" class="rank-cta">Compare</a>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/tickmill/' ) ); ?>" class="rank-cta">Read review</a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=tickmill' ); ?>" class="rank-cta">Compare</a>
+        </span>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--ink-soft);margin-top:14px;">Figures shown are standard-account averages compiled from broker disclosures and third-party research as of March 2026. Spreads, minimum deposits and licence status change — verify current terms directly with the broker and on the <a href="https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/" target="_blank" rel="noopener" style="color:var(--teal);">CySEC public register</a> before making a decision.</p>
