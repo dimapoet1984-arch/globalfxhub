@@ -66,6 +66,33 @@
   </div>
 </section>
 
+<script>
+(function(){
+  var track = document.getElementById('bannerTrack');
+  var prev = document.getElementById('bannerPrev');
+  var next = document.getElementById('bannerNext');
+  var dots = document.querySelectorAll('#bannerDots .banner__dot');
+  if (!track || !dots.length) return;
+
+  var count = dots.length;
+  var index = 0;
+
+  function show(i){
+    index = (i + count) % count;
+    track.style.transform = 'translateX(-' + (index * (100 / count)) + '%)';
+    dots.forEach(function(dot, di){ dot.classList.toggle('active', di === index); });
+  }
+
+  prev && prev.addEventListener('click', function(){ show(index - 1); });
+  next && next.addEventListener('click', function(){ show(index + 1); });
+  dots.forEach(function(dot, di){ dot.addEventListener('click', function(){ show(di); }); });
+
+  var timer = setInterval(function(){ show(index + 1); }, 7000);
+  track.closest('.hero.banner').addEventListener('mouseenter', function(){ clearInterval(timer); });
+  track.closest('.hero.banner').addEventListener('mouseleave', function(){ timer = setInterval(function(){ show(index + 1); }, 7000); });
+})();
+</script>
+
 <div class="trustbar">
   <div class="wrap trustbar__grid">
     <div>
