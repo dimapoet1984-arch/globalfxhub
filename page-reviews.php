@@ -94,6 +94,31 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
 </div>
 
 <?php
+$ext = globalfxhub_broker_external_reviews( $broker['slug'] );
+if ( ! empty( $ext['reviews'] ) ) :
+?>
+<div class="wrap" style="padding-bottom:20px;">
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;">What other reviewers say</h2>
+  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">Ratings as currently published by independent broker-review sites, not our own testing. Each links to where we found it.</p>
+  <div class="external-reviews">
+    <?php foreach ( $ext['reviews'] as $r ) : ?>
+    <a href="<?php echo esc_url( $r['url'] ); ?>" target="_blank" rel="noopener nofollow" class="external-review-card">
+      <div class="external-review-card__source"><?php echo esc_html( $r['source'] ); ?></div>
+      <div class="external-review-card__score"><?php echo esc_html( $r['rating'] ); ?> <span>/ <?php echo esc_html( $r['scale'] ); ?></span></div>
+      <?php if ( ! empty( $r['note'] ) ) : ?><div class="external-review-card__note"><?php echo esc_html( $r['note'] ); ?></div><?php endif; ?>
+    </a>
+    <?php endforeach; ?>
+    <?php if ( null !== $ext['average'] ) : ?>
+    <div class="external-review-card external-review-card--average">
+      <div class="external-review-card__source">Average of the above</div>
+      <div class="external-review-card__score"><?php echo esc_html( $ext['average'] ); ?> <span>/ 5</span></div>
+    </div>
+    <?php endif; ?>
+  </div>
+</div>
+<?php endif; ?>
+
+<?php
 $others = array_filter( globalfxhub_get_brokers(), function( $b ) use ( $broker ) {
     return $b['slug'] !== $broker['slug'];
 } );

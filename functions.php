@@ -145,6 +145,41 @@ function globalfxhub_broker_pros_cons( $broker ) {
     return array( 'pros' => $pros, 'cons' => $cons );
 }
 
+/**
+ * What the five biggest independent forex broker review sites currently
+ * publish for each broker, keyed by slug. Each entry is a real, sourced
+ * rating with a link back to where it was found -- never estimated. A
+ * broker missing from a given site's list means that site doesn't review
+ * it (common for CySEC-only brokers on US-focused sites), not an error.
+ *
+ * rating/scale: rating as published, out of `scale` (5 or 10) so callers
+ * can normalize consistently for an average.
+ */
+function globalfxhub_get_external_reviews() {
+    return array();
+}
+
+/**
+ * Real ratings for one broker plus a simple average normalized to /5.
+ * Returns null for average when no external ratings are on file.
+ */
+function globalfxhub_broker_external_reviews( $slug ) {
+    $all = globalfxhub_get_external_reviews();
+    $reviews = isset( $all[ $slug ] ) ? $all[ $slug ] : array();
+
+    $sum = 0;
+    $count = 0;
+    foreach ( $reviews as $r ) {
+        $sum += ( $r['rating'] / $r['scale'] ) * 5;
+        $count++;
+    }
+
+    return array(
+        'reviews' => $reviews,
+        'average' => $count > 0 ? round( $sum / $count, 1 ) : null,
+    );
+}
+
 function globalfxhub_get_brokers() {
     return array(
         array( 'slug' => 'ig', 'name' => 'IG', 'entity' => 'IGM Forex Ltd', 'cysec' => '309/16', 'founded' => 1974, 'hq' => 'London, UK', 'min_deposit_usd' => 1, 'min_deposit_display' => '£1', 'spread_eurusd' => 0.6, 'platforms' => array('Proprietary', 'MT4', 'ProRealTime'), 'other_reg' => array('FCA', 'ASIC', '+9 more Tier-1'), 'other_reg_count' => 10, 'instruments' => '17,000+ across forex, indices, shares, commodities, crypto CFDs', 'blurb' => 'Long-established, publicly listed (LSE: IGG), one of the widest regulatory footprints of any broker on this list.', 'scores' => array('regulation' => 5.0, 'cost' => 4.86, 'platforms' => 3.86, 'track_record' => 5.0, 'overall' => 4.7), 'rank' => 1 ),
