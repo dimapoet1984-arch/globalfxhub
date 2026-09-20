@@ -78,10 +78,32 @@ function globalfxhub_trim_excerpt( $text, $length = 20 ) {
     return $text;
 }
 /**
+ * Auto-create the "Reviews" page on the "Broker Reviews" template if it
+ * doesn't exist yet, so /reviews/ and /reviews/{slug}/ work without a
+ * manual wp-admin step. Cheap no-op (one lookup query) once the page
+ * exists; flushes rewrite rules once, right after actually creating it.
+ */
+function globalfxhub_ensure_reviews_page() {
+    if ( get_page_by_path( 'reviews' ) ) {
+        return;
+    }
+    $page_id = wp_insert_post( array(
+        'post_title'  => 'Reviews',
+        'post_name'   => 'reviews',
+        'post_status' => 'publish',
+        'post_type'   => 'page',
+    ) );
+    if ( $page_id && ! is_wp_error( $page_id ) ) {
+        update_post_meta( $page_id, '_wp_page_template', 'page-reviews.php' );
+        flush_rewrite_rules();
+    }
+}
+add_action( 'after_setup_theme', 'globalfxhub_ensure_reviews_page' );
+
+/**
  * Pretty URLs for individual broker review pages: /reviews/{slug}/
- * Requires a Page with slug "reviews" using the "Broker Reviews" template
- * (Appearance/Pages: create "Reviews" page, assign that template, then
- * resave Settings > Permalinks once so this rule takes effect).
+ * The "Reviews" page itself is auto-created above; this just adds the
+ * rewrite rule for the /{slug}/ suffix and the "broker" query var it feeds.
  */
 function globalfxhub_review_rewrite_rules() {
     add_rewrite_rule( '^reviews/([^/]+)/?$', 'index.php?pagename=reviews&broker=$matches[1]', 'top' );
