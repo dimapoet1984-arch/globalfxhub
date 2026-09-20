@@ -146,22 +146,129 @@ function globalfxhub_broker_pros_cons( $broker ) {
 }
 
 /**
- * What the five biggest independent forex broker review sites currently
- * publish for each broker, keyed by slug. Each entry is a real, sourced
- * rating with a link back to where it was found -- never estimated. A
- * broker missing from a given site's list means that site doesn't review
- * it (common for CySEC-only brokers on US-focused sites), not an error.
+ * What the biggest independent forex broker review sites currently publish
+ * for each broker, keyed by slug, compiled from indexed/search-visible
+ * content (this environment cannot directly load these sites to confirm
+ * live page content, so treat figures as a snapshot to spot-check
+ * periodically, not a guaranteed-current feed).
  *
- * rating/scale: rating as published, out of `scale` (5 or 10) so callers
- * can normalize consistently for an average.
+ * Each entry: source, url, rating (null if no current published figure
+ * could be found -- shown as a plain link instead of a score), scale
+ * (5 for star ratings, 99 for ForexBrokers.com's Trust Score), and
+ * optional label/note/exclude_from_average (Trust Score measures
+ * regulatory/company trust, not overall quality, so it's kept out of
+ * the star-rating average and labelled distinctly).
+ *
+ * Investopedia is omitted: this environment could not access
+ * investopedia.com at all (blocked outright) and found no confirmable
+ * current rating or even a working review URL for any of these brokers.
  */
 function globalfxhub_get_external_reviews() {
-    return array();
+    $fpa_base = 'https://www.forexpeacearmy.com/forex-reviews/';
+    $bc_base  = 'https://brokerchooser.com/broker-reviews/';
+    $fb_base  = 'https://www.forexbrokers.com/reviews/';
+    $df_base  = 'https://www.dailyforex.com/forex-brokers/';
+
+    $data = array(
+        'ig' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'ig', 'rating' => 99, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'ig-review', 'rating' => 4.4, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '109/ig-forex-brokers', 'rating' => 1.77, 'scale' => 5, 'note' => 'Single unverified search snippet, not independently page-confirmed.' ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'ig-markets-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'forex-com' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'forex-com', 'rating' => 99, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'forex.com-review', 'rating' => 4.4, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '66/forex-com-reviews', 'rating' => null, 'scale' => 5 ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'forex-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'avatrade' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'avatrade', 'rating' => 96, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'avatrade-review', 'rating' => 4.2, 'scale' => 5, 'note' => 'Low-confidence figure -- may reflect a sub-score rather than the page\'s headline rating.' ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '539/avatrade-review', 'rating' => null, 'scale' => 5 ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'avatrade-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'fxcm' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'fxcm', 'rating' => 95, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'fxcm-review', 'rating' => 4.2, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '78/fxcm-forex-broker', 'rating' => null, 'scale' => 5 ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'fxcm-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'xtb' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'xtb', 'rating' => 96, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true, 'note' => 'Also carries a separately stated 5/5 "Overall" star rating on this page.' ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'xtb-review', 'rating' => 4.9, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '3597/xtb-review', 'rating' => null, 'scale' => 5 ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'xtb-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'capital-com' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'capital-com', 'rating' => 89, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'capitalcom-review', 'rating' => 4.8, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '14357/capital-com-review', 'rating' => null, 'scale' => 5 ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'capital-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'pepperstone' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'pepperstone', 'rating' => 94, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'pepperstone-review', 'rating' => 4.4, 'scale' => 5, 'note' => 'Low-confidence figure -- could not be cross-confirmed as the page\'s headline rating.' ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '7523/pepperstone-review', 'rating' => 3.48, 'scale' => 5, 'note' => 'Single unverified search snippet, not independently page-confirmed.' ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'pepperstone-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'eightcap' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'eightcap', 'rating' => 87, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'eightcap-review', 'rating' => 4.4, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '12091/eightcap-forex-brokers', 'rating' => null, 'scale' => 5 ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'eightcap-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'etoro' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'etoro', 'rating' => 97, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'etoro-review', 'rating' => 4.8, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '3731/etoro-review', 'rating' => null, 'scale' => 5 ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'etoro-review', 'rating' => null, 'scale' => 5, 'note' => 'A 4.5/5 figure appears in an old (2018) review and is not shown as current.' ),
+        ),
+        'fxpro' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'fxpro', 'rating' => 93, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'fxpro-review', 'rating' => 4.1, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '3947/fxpro-review', 'rating' => 2.5, 'scale' => 5, 'note' => 'Single unverified search snippet, not independently page-confirmed.' ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'fxpro-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'xm' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'xm', 'rating' => 93, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'xm-review', 'rating' => 4.3, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '7214/xm-review', 'rating' => null, 'scale' => 5 ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'xm-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'plus500' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'plus500', 'rating' => 99, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'plus500-review', 'rating' => 4.5, 'scale' => 5, 'note' => 'Rating shown is for the "Plus500 CFD" listing specifically; BrokerChooser reviews Plus500\'s CFD, Invest, and Futures products separately.' ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '5374/plus500-review', 'rating' => 1.5, 'scale' => 5, 'note' => 'Single unverified search snippet, not independently page-confirmed.' ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'plus500-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'ic-markets' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'ic-markets', 'rating' => 83, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'ic-markets-review', 'rating' => 4.4, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '8264/ic-markets-forex-brokers', 'rating' => null, 'scale' => 5 ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'ic-markets-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'trading-212' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'trading-212', 'rating' => 82, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'trading-212-review', 'rating' => 4.5, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '8416/trading212-review', 'rating' => 2.5, 'scale' => 5, 'note' => 'Single unverified search snippet, not independently page-confirmed.' ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'trading-212-review', 'rating' => null, 'scale' => 5 ),
+        ),
+        'tickmill' => array(
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'tickmill', 'rating' => 85, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'tickmill-review', 'rating' => 4.4, 'scale' => 5 ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '8718/tickmill-forex-brokers', 'rating' => null, 'scale' => 5 ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'tickmill-review', 'rating' => null, 'scale' => 5 ),
+        ),
+    );
+
+    return $data;
 }
 
 /**
- * Real ratings for one broker plus a simple average normalized to /5.
- * Returns null for average when no external ratings are on file.
+ * Real ratings for one broker plus a simple average normalized to /5,
+ * across sources with a confirmed rating on a comparable (non-Trust-Score)
+ * scale. Returns null for average when no such rating is on file.
  */
 function globalfxhub_broker_external_reviews( $slug ) {
     $all = globalfxhub_get_external_reviews();
@@ -170,6 +277,9 @@ function globalfxhub_broker_external_reviews( $slug ) {
     $sum = 0;
     $count = 0;
     foreach ( $reviews as $r ) {
+        if ( null === $r['rating'] || ! empty( $r['exclude_from_average'] ) ) {
+            continue;
+        }
         $sum += ( $r['rating'] / $r['scale'] ) * 5;
         $count++;
     }
