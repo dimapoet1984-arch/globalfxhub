@@ -78,27 +78,104 @@ function globalfxhub_trim_excerpt( $text, $length = 20 ) {
     return $text;
 }
 /**
- * Auto-create the "Reviews" page on the "Broker Reviews" template if it
- * doesn't exist yet, so /reviews/ and /reviews/{slug}/ work without a
- * manual wp-admin step. Cheap no-op (one lookup query) once the page
- * exists; flushes rewrite rules once, right after actually creating it.
+ * Create a page at the given slug if it doesn't exist, and make sure it's
+ * assigned the given template either way -- so this self-heals a page
+ * that was created manually (e.g. via wp-admin) without its template set,
+ * not just a missing page. Cheap no-op (one lookup, one meta read) once
+ * everything's already correct; flushes rewrite rules only when it
+ * actually changes something.
  */
-function globalfxhub_ensure_reviews_page() {
-    if ( get_page_by_path( 'reviews' ) ) {
-        return;
+function globalfxhub_ensure_templated_page( $slug, $title, $template ) {
+    $page = get_page_by_path( $slug );
+    if ( ! $page ) {
+        $page_id = wp_insert_post( array(
+            'post_title'  => $title,
+            'post_name'   => $slug,
+            'post_status' => 'publish',
+            'post_type'   => 'page',
+        ) );
+        if ( ! $page_id || is_wp_error( $page_id ) ) {
+            return;
+        }
+    } else {
+        $page_id = $page->ID;
     }
-    $page_id = wp_insert_post( array(
-        'post_title'  => 'Reviews',
-        'post_name'   => 'reviews',
-        'post_status' => 'publish',
-        'post_type'   => 'page',
-    ) );
-    if ( $page_id && ! is_wp_error( $page_id ) ) {
-        update_post_meta( $page_id, '_wp_page_template', 'page-reviews.php' );
+
+    if ( $template !== get_post_meta( $page_id, '_wp_page_template', true ) ) {
+        update_post_meta( $page_id, '_wp_page_template', $template );
         flush_rewrite_rules();
     }
 }
+
+/**
+ * /reviews/ and /reviews/{slug}/ need a "Reviews" page on the
+ * "Broker Reviews" template; /guides/ needs a "Guides" page on the
+ * "Guides Index" template. Both self-create/self-repair on every load
+ * via globalfxhub_ensure_templated_page() above.
+ */
+function globalfxhub_ensure_reviews_page() {
+    globalfxhub_ensure_templated_page( 'reviews', 'Reviews', 'page-reviews.php' );
+}
 add_action( 'after_setup_theme', 'globalfxhub_ensure_reviews_page' );
+
+function globalfxhub_ensure_guides_page() {
+    globalfxhub_ensure_templated_page( 'guides', 'Guides', 'page-guides.php' );
+}
+add_action( 'after_setup_theme', 'globalfxhub_ensure_guides_page' );
+
+/**
+ * Seed the "Guides" category and its starter articles as real posts (so
+ * they get the normal post editor, categories, and single.php rendering)
+ * if they don't already exist. Each check is a cheap single lookup once
+ * seeded, so this is safe to leave running on every load.
+ */
+function globalfxhub_ensure_guides_content() {
+    $term = term_exists( 'Guides', 'category' );
+    if ( ! $term ) {
+        $term = wp_insert_term( 'Guides', 'category', array( 'slug' => 'guides' ) );
+    }
+    if ( is_wp_error( $term ) || empty( $term['term_id'] ) ) {
+        return;
+    }
+    $category_id = (int) $term['term_id'];
+
+    $guides = array(
+        array(
+            'slug'    => 'how-to-read-candlestick-patterns',
+            'title'   => 'How to Read Candlestick Patterns',
+            'excerpt' => 'What a candle actually shows, and the handful of patterns worth learning first -- doji, hammer, engulfing, and the morning/evening star.',
+            'content' => "<p>A candlestick chart shows four prices for every time period you're looking at: the open, high, low, and close. That's it -- but arranged the right way, those four numbers tell you a lot more than a simple line chart ever could.</p>\n\n<h2>The anatomy of a candle</h2>\n<p>Each candle has a <strong>body</strong> and, usually, two <strong>wicks</strong> (also called shadows). The body is the range between the open and close price. The wicks show the highest and lowest prices reached during that period, even if price didn't stay there.</p>\n<p>Color tells you direction: a candle where price closed <em>higher</em> than it opened is usually shown in green or white (\"bullish\"). One that closed <em>lower</em> than it opened is usually red or black (\"bearish\"). A long body means strong, decisive movement in one direction. A tiny body with long wicks means the price moved a lot during the period but ended up close to where it started -- a tug of war.</p>\n\n<h2>Single-candle patterns worth knowing</h2>\n<ul>\n<li><strong>Doji</strong> -- open and close are almost identical, so the body is a thin line. Signals indecision: neither buyers nor sellers won that round.</li>\n<li><strong>Hammer</strong> -- a small body near the top of the candle's range with a long lower wick, appearing after a downtrend. Suggests sellers pushed price down but buyers stepped in hard before the close.</li>\n<li><strong>Shooting star</strong> -- the mirror image of a hammer: a small body near the bottom with a long upper wick, appearing after an uptrend. Suggests buyers pushed higher but lost control before the close.</li>\n<li><strong>Marubozu</strong> -- a candle with little or no wick at all, just a long body. Shows one side was in full control the entire period.</li>\n</ul>\n\n<h2>Multi-candle patterns</h2>\n<ul>\n<li><strong>Bullish engulfing</strong> -- a small bearish candle followed by a larger bullish candle whose body completely covers the first. Often read as a potential reversal after a downtrend.</li>\n<li><strong>Bearish engulfing</strong> -- the opposite: a small bullish candle followed by a larger bearish candle that swallows it, after an uptrend.</li>\n<li><strong>Morning star</strong> -- a three-candle pattern (bearish, then a small indecisive candle, then a strong bullish candle), read as a potential bottom.</li>\n<li><strong>Evening star</strong> -- the same idea in reverse, read as a potential top.</li>\n</ul>\n\n<h2>How traders actually use these</h2>\n<p>No candlestick pattern works in isolation, and none of them predict the future with any reliability on their own. What experienced traders do is treat a pattern as one piece of evidence -- more meaningful when it shows up at an existing support or resistance level, alongside rising or falling volume, or in the context of the broader trend, than it is sitting in the middle of nowhere on the chart.</p>\n<p>Treat candlestick reading as a skill you layer onto a broader trading plan and risk management approach, not a shortcut that replaces one. This article is educational only and isn't a recommendation to trade any particular instrument.</p>",
+        ),
+        array(
+            'slug'    => 'how-to-start-trading-forex',
+            'title'   => 'How to Start Trading Forex',
+            'excerpt' => 'A step-by-step starting point for beginners: the basic vocabulary, choosing a regulated broker, practicing on a demo account, and the mistakes that sink most new traders.',
+            'content' => "<p>Forex (foreign exchange) trading means buying one currency while simultaneously selling another, aiming to profit from the change in their exchange rate. It's the largest and most liquid financial market in the world -- and also one where most beginners lose money quickly, usually for avoidable reasons. Here's a sensible order to actually learn it.</p>\n\n<h2>1. Learn the basic vocabulary first</h2>\n<p>Before opening any account, get comfortable with a few terms: a <strong>pip</strong> is the smallest standard price move in a currency pair; a <strong>lot</strong> is a standardized trade size; the <strong>spread</strong> is the small gap between the buy and sell price a broker charges you; <strong>margin</strong> is the deposit required to open a leveraged position. You don't need to master these overnight, but trading before you understand them is how avoidable losses happen.</p>\n\n<h2>2. Choose a regulated broker</h2>\n<p>Where you trade matters as much as how you trade. Look for a broker regulated by a recognized authority (CySEC, FCA, ASIC, and similar), check their fee structure (spreads, commissions, minimum deposit), and confirm which platforms they support before funding anything. See our <a href=\"/reviews/\">broker reviews</a> and <a href=\"/compare/\">comparison tool</a> if you want a starting point built from a disclosed methodology.</p>\n\n<h2>3. Practice on a demo account</h2>\n<p>Every broker worth using offers a free demo account with virtual funds. Use it -- not for a day, but for long enough to make real mistakes without real consequences: to get a feel for how fast prices move, how spreads change during news events, and how it actually feels to watch an open position lose money.</p>\n\n<h2>4. Write down an actual trading plan</h2>\n<p>Before you risk real money, decide -- in writing -- what you'll trade, what would make you enter a position, what would make you exit (both in profit and at a loss), and how much of your account you're willing to risk on any single trade. A plan you wrote in a calm moment protects you from decisions you'd make in a stressful one.</p>\n\n<h2>5. Start small, and size your risk properly</h2>\n<p>When you do trade with real money, start with an amount you can genuinely afford to lose, and size each position so that no single trade risks more than a small percentage of your account. Use stop-loss orders. It's far better to survive one hundred small mistakes while you're learning than to make one large one.</p>\n\n<h2>6. Keep a trading journal</h2>\n<p>Record every trade: why you entered, why you exited, and what you'd do differently. Patterns in your own behavior -- not just in the market -- are usually the most useful thing a journal reveals.</p>\n\n<h2>Common beginner mistakes</h2>\n<ul>\n<li>Using far more leverage than the position actually warrants.</li>\n<li>Trading without a stop-loss, \"hoping\" a losing position turns around.</li>\n<li>Revenge trading -- increasing size right after a loss to \"win it back.\"</li>\n<li>Risking money that was never meant to be risked in the first place.</li>\n</ul>\n<p>Forex and CFD trading carries a high level of risk and isn't suitable for everyone. This guide is educational only, not personalized financial advice, and most retail accounts lose money trading CFDs.</p>",
+        ),
+        array(
+            'slug'    => 'understanding-leverage-in-forex-trading',
+            'title'   => 'Understanding Leverage in Forex Trading',
+            'excerpt' => 'What leverage and margin actually mean, why regulators cap it for retail clients, and how to think about the risk before you use it.',
+            'content' => "<p>Leverage lets you control a larger position than the cash you've actually deposited would normally allow. It's one of the reasons forex trading attracts so much attention -- and one of the fastest ways to lose more than you expected if you don't understand exactly what it's doing to your risk.</p>\n\n<h2>Leverage and margin, concretely</h2>\n<p>Say a broker offers 30:1 leverage. Depositing $1,000 as <strong>margin</strong> lets you open a position worth up to $30,000. The $1,000 isn't a fee -- it's collateral the broker holds against the trade. Your profit or loss, though, is calculated on the full $30,000 position, not on your $1,000 margin.</p>\n\n<h2>The part that matters: it amplifies losses exactly as much as gains</h2>\n<p>If that $30,000 position moves 1% in your favor, you've made $300 -- a 30% return on your $1,000 margin. If it moves 1% against you, you've lost $300 -- also 30% of your margin, gone on a 1% market move. Leverage doesn't change how much the market moved; it changes how much that movement is worth to your account, in both directions equally.</p>\n\n<h2>Why leverage is capped for retail clients</h2>\n<p>Because of exactly that asymmetric risk to inexperienced traders, regulators that oversee CySEC-licensed and other EU-passported brokers apply leverage limits to retail client accounts under ESMA's product intervention rules: typically 30:1 on major currency pairs, 20:1 on non-major pairs, gold, and major indices, 10:1 on other commodities, 5:1 on individual equities, and 2:1 on crypto CFDs. Some brokers offer much higher leverage to clients who qualify as \"professional\" under stricter criteria, and some offshore entities advertise far higher leverage outside these regulatory regimes -- which is also a reason to check exactly which entity of a broker you'd actually be signing up with.</p>\n\n<h2>Margin calls and stop-outs</h2>\n<p>As losses on a leveraged position grow, they eat into your margin. Brokers set a margin call level (a warning) and a stop-out level (where they start closing your positions automatically) to stop your losses from exceeding your deposited funds. Relying on this as a safety net instead of managing your own risk is a common and costly mistake -- by the time a stop-out triggers, a large share of the account is often already gone.</p>\n\n<h2>Using leverage responsibly</h2>\n<ul>\n<li>Just because a broker offers high leverage doesn't mean using the maximum is a good idea.</li>\n<li>Calculate the dollar loss of a realistic adverse move before entering a trade, not after.</li>\n<li>Use stop-loss orders as your own risk control, rather than relying on a broker's stop-out level.</li>\n<li>Position size based on how much you're willing to lose, then let that determine your leverage -- not the other way around.</li>\n</ul>\n<p>CFDs and leveraged forex products are complex instruments that carry a high risk of losing money rapidly due to leverage; most retail investor accounts lose money trading them. This guide is educational only and is not personalized financial advice.</p>",
+        ),
+    );
+
+    foreach ( $guides as $guide ) {
+        if ( get_page_by_path( $guide['slug'], OBJECT, 'post' ) ) {
+            continue;
+        }
+        $post_id = wp_insert_post( array(
+            'post_title'   => $guide['title'],
+            'post_name'    => $guide['slug'],
+            'post_excerpt' => $guide['excerpt'],
+            'post_content' => $guide['content'],
+            'post_status'  => 'publish',
+            'post_type'    => 'post',
+            'post_category'=> array( $category_id ),
+        ) );
+    }
+}
+add_action( 'after_setup_theme', 'globalfxhub_ensure_guides_content' );
 
 /**
  * Pretty URLs for individual broker review pages: /reviews/{slug}/

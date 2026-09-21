@@ -537,39 +537,32 @@
         <h2>Guides for your trading style</h2>
         <p>Start wherever you are — new to forex, switching platforms, or optimizing for cost.</p>
       </div>
-      <a href="#" class="section__link">All guides →</a>
+      <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="section__link">All guides →</a>
     </div>
     <div class="guides__grid">
-      <a href="#" class="guide">
-        <div class="guide__time">14 MIN READ</div>
-        <h3>Best forex brokers for beginners in 2026</h3>
-        <p>Low minimums, clean interfaces, and real educational support — ranked and explained.</p>
+      <?php
+      $home_guides = new WP_Query( array(
+          'post_type'      => 'post',
+          'posts_per_page' => 6,
+          'category_name'  => 'guides',
+          'orderby'        => 'date',
+          'order'          => 'ASC',
+      ) );
+      if ( $home_guides->have_posts() ) :
+          while ( $home_guides->have_posts() ) : $home_guides->the_post();
+      ?>
+      <a href="<?php the_permalink(); ?>" class="guide">
+        <div class="guide__time"><?php echo esc_html( globalfxhub_reading_time( get_the_content() ) ); ?> MIN READ</div>
+        <h3><?php the_title(); ?></h3>
+        <p><?php echo esc_html( globalfxhub_trim_excerpt( get_the_excerpt() ? get_the_excerpt() : get_the_content(), 20 ) ); ?></p>
       </a>
-      <a href="#" class="guide">
-        <div class="guide__time">11 MIN READ</div>
-        <h3>The lowest-spread brokers we tested this year</h3>
-        <p>Tight spreads matter most to active traders. Here's who actually delivers them.</p>
-      </a>
-      <a href="#" class="guide">
-        <div class="guide__time">16 MIN READ</div>
-        <h3>Best brokers for MetaTrader 4 and 5</h3>
-        <p>Not every broker's MT4/MT5 integration is equal. We compare execution across each.</p>
-      </a>
-      <a href="#" class="guide">
-        <div class="guide__time">9 MIN READ</div>
-        <h3>Copy trading platforms, ranked</h3>
-        <p>Follow experienced traders without handing over full account control — done right.</p>
-      </a>
-      <a href="#" class="guide">
-        <div class="guide__time">13 MIN READ</div>
-        <h3>Best brokers with public trading APIs</h3>
-        <p>For traders building their own tools and bots — API quality, docs, and rate limits.</p>
-      </a>
-      <a href="#" class="guide">
-        <div class="guide__time">10 MIN READ</div>
-        <h3>Forex demo accounts worth using</h3>
-        <p>Some demo environments barely resemble live trading. These don't.</p>
-      </a>
+      <?php
+          endwhile;
+          wp_reset_postdata();
+      else :
+      ?>
+      <p style="padding:24px;color:var(--ink-soft);">No guides published yet.</p>
+      <?php endif; ?>
     </div>
   </div>
 </section>
