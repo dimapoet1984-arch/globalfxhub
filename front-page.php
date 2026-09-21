@@ -6,13 +6,13 @@
     <div class="banner__slide" style="background:linear-gradient(120deg, #0e1c30, #16283f);">
       <div class="wrap banner__grid">
         <div>
-          <div class="banner__eyebrow">2026 ANNUAL RANKINGS</div>
-          <h1>Find a forex broker you can actually trust.</h1>
-          <p>We open real accounts, trade with real money, and score every broker on execution, cost, and platform quality.</p>
-          <div class="banner__search-label">QUICK BROKER SEARCH</div>
+          <div class="banner__eyebrow"><?php globalfxhub_te( 'hero1_eyebrow' ); ?></div>
+          <h1><?php globalfxhub_te( 'hero1_h1' ); ?></h1>
+          <p><?php globalfxhub_te( 'hero1_p' ); ?></p>
+          <div class="banner__search-label"><?php globalfxhub_te( 'hero_search_label' ); ?></div>
           <form class="searchbar" onsubmit="return false;">
-            <input type="text" placeholder="Search a broker by name…">
-            <button type="submit">Search</button>
+            <input type="text" placeholder="<?php echo esc_attr( globalfxhub_t( 'hero_search_placeholder' ) ); ?>">
+            <button type="submit"><?php globalfxhub_te( 'hero_search_button' ); ?></button>
           </form>
         </div>
         <div class="snapshot">
@@ -27,10 +27,10 @@
     <div class="banner__slide" style="background:linear-gradient(120deg, #16283f, #2f6f5e);">
       <div class="wrap banner__grid">
         <div>
-          <div class="banner__eyebrow">NEW THIS MONTH</div>
-          <h1>Track the market with our live heatmap.</h1>
-          <p>See which currency pairs, metals, and energy markets are moving right now, and how brokers' spreads compare across each.</p>
-          <a href="#overview" class="btn btn--gold">View market overview</a>
+          <div class="banner__eyebrow"><?php globalfxhub_te( 'hero2_eyebrow' ); ?></div>
+          <h1><?php globalfxhub_te( 'hero2_h1' ); ?></h1>
+          <p><?php globalfxhub_te( 'hero2_p' ); ?></p>
+          <a href="#overview" class="btn btn--gold"><?php globalfxhub_te( 'hero2_button' ); ?></a>
         </div>
         <div class="snapshot">
           <div class="snapshot__head"><span>Today's biggest mover</span><span>Change</span></div>
@@ -42,10 +42,10 @@
     <div class="banner__slide" style="background:linear-gradient(120deg, #7a5a2e, #b8862f);">
       <div class="wrap banner__grid">
         <div>
-          <div class="banner__eyebrow">FREE EDUCATION</div>
-          <h1>New to trading? Start with the basics.</h1>
-          <p>Plain-English guides on forex, commodities, oil, and gold — no jargon, no sales pitch.</p>
-          <a href="#latest-articles" class="btn btn--gold">Browse the guides</a>
+          <div class="banner__eyebrow"><?php globalfxhub_te( 'hero3_eyebrow' ); ?></div>
+          <h1><?php globalfxhub_te( 'hero3_h1' ); ?></h1>
+          <p><?php globalfxhub_te( 'hero3_p' ); ?></p>
+          <a href="#latest-articles" class="btn btn--gold"><?php globalfxhub_te( 'hero3_button' ); ?></a>
         </div>
         <div class="snapshot">
           <div class="snapshot__head"><span>Most read this week</span><span></span></div>
@@ -97,19 +97,19 @@
   <div class="wrap trustbar__grid">
     <div>
       <div class="trustbar__num">3.2M</div>
-      <div class="trustbar__label">Readers helped in 2026</div>
+      <div class="trustbar__label"><?php globalfxhub_te( 'trust1' ); ?></div>
     </div>
     <div>
       <div class="trustbar__num">180+</div>
-      <div class="trustbar__label">Test criteria per broker</div>
+      <div class="trustbar__label"><?php globalfxhub_te( 'trust2' ); ?></div>
     </div>
     <div>
       <div class="trustbar__num">27</div>
-      <div class="trustbar__label">Brokers tested hands-on</div>
+      <div class="trustbar__label"><?php globalfxhub_te( 'trust3' ); ?></div>
     </div>
     <div>
       <div class="trustbar__num">$0</div>
-      <div class="trustbar__label">Paid for by broker rankings</div>
+      <div class="trustbar__label"><?php globalfxhub_te( 'trust4' ); ?></div>
     </div>
   </div>
 </div>
@@ -118,15 +118,15 @@
   <div class="wrap">
     <div class="section__head">
       <div>
-        <h2>Market overview</h2>
-        <p>A snapshot of today's forex, metals, and energy markets. Updated throughout the trading day.</p>
+        <h2><?php globalfxhub_te( 'sec_overview_h2' ); ?></h2>
+        <p><?php globalfxhub_te( 'sec_overview_p' ); ?></p>
       </div>
       <span class="section__link" style="cursor:default;border-bottom:none;color:var(--ink-soft);">Illustrative data · demo</span>
     </div>
 
     <div class="overview__grid">
       <div class="overview__panel">
-        <h3>Market heatmap</h3>
+        <h3><?php globalfxhub_te( 'sec_heatmap_h3' ); ?></h3>
         <p class="sub">Green = gaining, red = losing. Deeper color means a bigger move today.</p>
         <div class="heatmap">
           <div class="heat-cell" style="background:#2f6f5e;"><span class="sym">EUR/USD</span><span class="chg">+0.12%</span></div>
@@ -145,7 +145,7 @@
       </div>
 
       <div class="overview__panel">
-        <h3>Today's movers</h3>
+        <h3><?php globalfxhub_te( 'sec_movers_h3' ); ?></h3>
         <p class="sub">Biggest gainers and losers across major instruments.</p>
         <div class="movers-tabs">
           <button class="movers-tab active">Gainers</button>
@@ -167,11 +167,11 @@
   <div class="wrap">
     <div class="section__head">
       <div>
-        <h2>From the blog</h2>
-        <p>Plain-English explainers on how the forex and commodities markets actually work.</p>
+        <h2><?php globalfxhub_te( 'sec_blog_h2' ); ?></h2>
+        <p><?php globalfxhub_te( 'sec_blog_p' ); ?></p>
       </div>
       <?php $blog_page = get_option( 'page_for_posts' ); ?>
-      <a href="<?php echo esc_url( $blog_page ? get_permalink( $blog_page ) : home_url( '/blog/' ) ); ?>" class="section__link">All articles →</a>
+      <a href="<?php echo esc_url( $blog_page ? get_permalink( $blog_page ) : home_url( '/blog/' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_all_articles' ); ?></a>
     </div>
     <div class="guides__grid">
       <?php
@@ -203,10 +203,10 @@
   <div class="wrap">
     <div class="section__head">
       <div>
-        <h2>Latest news</h2>
-        <p>Broker developments and market-moving headlines, in brief.</p>
+        <h2><?php globalfxhub_te( 'sec_news_h2' ); ?></h2>
+        <p><?php globalfxhub_te( 'sec_news_p' ); ?></p>
       </div>
-      <a href="#" class="section__link">All news →</a>
+      <a href="#" class="section__link"><?php globalfxhub_te( 'link_all_news' ); ?></a>
     </div>
     <div class="news__grid">
       <a href="#" class="news-item">
@@ -253,19 +253,19 @@
   <div class="wrap">
     <div class="section__head">
       <div>
-        <h2>Top 15 CySEC-regulated forex brokers</h2>
-        <p>Real, currently CySEC-authorised brokers, scored with a disclosed methodology based on public data — not hands-on testing. See "How we score" below.</p>
+        <h2><?php globalfxhub_te( 'sec_rankings_h2' ); ?></h2>
+        <p><?php globalfxhub_te( 'sec_rankings_p' ); ?></p>
       </div>
-      <a href="#method" class="section__link">How we score →</a>
+      <a href="#method" class="section__link"><?php globalfxhub_te( 'link_how_we_score' ); ?></a>
     </div>
 
     <div class="rankings">
       <div class="rank-row head">
         <span></span>
-        <span>Broker</span>
-        <span class="col-fees">Avg. spread</span>
-        <span class="col-plat">Platforms</span>
-        <span>Score</span>
+        <span><?php globalfxhub_te( 'table_broker' ); ?></span>
+        <span class="col-fees"><?php globalfxhub_te( 'table_spread' ); ?></span>
+        <span class="col-plat"><?php globalfxhub_te( 'table_platforms' ); ?></span>
+        <span><?php globalfxhub_te( 'table_score' ); ?></span>
         <span></span>
       </div>
       <div class="rank-row">
@@ -278,8 +278,8 @@
         <span class="rank-detail col-plat">Proprietary, MT4, ProRealTime</span>
         <span class="rank-score">4.7 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/ig/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ig' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/ig/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ig' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -292,8 +292,8 @@
         <span class="rank-detail col-plat">Proprietary, MT4, MT5…</span>
         <span class="rank-score">4.1 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/forex-com/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=forex-com' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/forex-com/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=forex-com' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -306,8 +306,8 @@
         <span class="rank-detail col-plat">Proprietary (AvaTradeGO), MT4, MT5…</span>
         <span class="rank-score">4.0 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/avatrade/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=avatrade' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/avatrade/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=avatrade' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -320,8 +320,8 @@
         <span class="rank-detail col-plat">Trading Station (proprietary), MT4, ZuluTrade…</span>
         <span class="rank-score">3.9 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/fxcm/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=fxcm' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/fxcm/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=fxcm' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -334,8 +334,8 @@
         <span class="rank-detail col-plat">xStation 5 (proprietary)</span>
         <span class="rank-score">3.8 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/xtb/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xtb' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/xtb/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xtb' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -348,8 +348,8 @@
         <span class="rank-detail col-plat">Proprietary, MT4, TradingView</span>
         <span class="rank-score">3.4 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/capital-com/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=capital-com' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/capital-com/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=capital-com' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -362,8 +362,8 @@
         <span class="rank-detail col-plat">MT4, MT5, cTrader…</span>
         <span class="rank-score">3.4 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/pepperstone/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=pepperstone' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/pepperstone/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=pepperstone' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -376,8 +376,8 @@
         <span class="rank-detail col-plat">MT4, MT5, TradingView</span>
         <span class="rank-score">3.3 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/eightcap/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=eightcap' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/eightcap/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=eightcap' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -390,8 +390,8 @@
         <span class="rank-detail col-plat">Proprietary (CopyTrader)</span>
         <span class="rank-score">3.2 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/etoro/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=etoro' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/etoro/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=etoro' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -404,8 +404,8 @@
         <span class="rank-detail col-plat">MT4, MT5, cTrader</span>
         <span class="rank-score">3.2 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/fxpro/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=fxpro' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/fxpro/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=fxpro' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -418,8 +418,8 @@
         <span class="rank-detail col-plat">MT4, MT5</span>
         <span class="rank-score">3.1 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/xm/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xm' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/xm/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xm' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -432,8 +432,8 @@
         <span class="rank-detail col-plat">WebTrader (proprietary)</span>
         <span class="rank-score">3.0 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/plus500/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=plus500' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/plus500/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=plus500' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -446,8 +446,8 @@
         <span class="rank-detail col-plat">MT4, MT5, cTrader</span>
         <span class="rank-score">2.5 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/ic-markets/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ic-markets' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/ic-markets/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ic-markets' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -460,8 +460,8 @@
         <span class="rank-detail col-plat">Proprietary</span>
         <span class="rank-score">2.3 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/trading-212/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=trading-212' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/trading-212/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=trading-212' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -474,8 +474,8 @@
         <span class="rank-detail col-plat">MT4, MT5</span>
         <span class="rank-score">1.8 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/tickmill/' ) ); ?>" class="rank-cta">Read review</a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=tickmill' ); ?>" class="rank-cta">Compare</a>
+          <a href="<?php echo esc_url( home_url( '/reviews/tickmill/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=tickmill' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
     </div>
@@ -499,30 +499,30 @@
   <div class="wrap">
     <div class="section__head">
       <div>
-        <h2>How we score CySEC brokers</h2>
-        <p>This is a disclosed, data-based methodology — not a claim of hands-on account testing. Here's exactly how each score is built.</p>
+        <h2><?php globalfxhub_te( 'sec_method_h2' ); ?></h2>
+        <p><?php globalfxhub_te( 'sec_method_p' ); ?></p>
       </div>
     </div>
     <div class="method__grid">
       <div class="method__cell">
         <div class="num">30%</div>
-        <h3>Regulatory footprint</h3>
-        <p>Ranked by how many Tier-1 regulators (CySEC plus others, e.g. FCA, ASIC) each broker holds. More independent oversight scores higher.</p>
+        <h3><?php globalfxhub_te( 'method1_h3' ); ?></h3>
+        <p><?php globalfxhub_te( 'method1_p' ); ?></p>
       </div>
       <div class="method__cell">
         <div class="num">30%</div>
-        <h3>Cost</h3>
-        <p>Average EUR/USD spread and minimum deposit, each ranked against the other 14 brokers on this list. Lower cost and lower barrier to entry score higher.</p>
+        <h3><?php globalfxhub_te( 'method2_h3' ); ?></h3>
+        <p><?php globalfxhub_te( 'method2_p' ); ?></p>
       </div>
       <div class="method__cell">
         <div class="num">20%</div>
-        <h3>Platform breadth</h3>
-        <p>Number of distinct trading platforms supported (MT4, MT5, cTrader, TradingView, proprietary). More choice scores higher.</p>
+        <h3><?php globalfxhub_te( 'method3_h3' ); ?></h3>
+        <p><?php globalfxhub_te( 'method3_p' ); ?></p>
       </div>
       <div class="method__cell">
         <div class="num">20%</div>
-        <h3>Track record</h3>
-        <p>Years in operation, ranked relatively across the list. Longer-operating brokers score higher.</p>
+        <h3><?php globalfxhub_te( 'method4_h3' ); ?></h3>
+        <p><?php globalfxhub_te( 'method4_p' ); ?></p>
       </div>
     </div>
     <p style="font-size:13px;color:#aab6c6;margin-top:24px;max-width:70ch;">Every factor is ranked relative to the other 14 brokers in this list, not against an absolute external benchmark. Source data comes from CySEC's public register, broker legal disclosures, and third-party broker research, compiled March 2026. This methodology does not involve opening or funding live accounts, and it isn't personalized financial advice — always verify current licence status, fees, and terms directly with the broker before depositing funds.</p>
@@ -534,10 +534,10 @@
   <div class="wrap">
     <div class="section__head">
       <div>
-        <h2>Guides for your trading style</h2>
-        <p>Start wherever you are — new to forex, switching platforms, or optimizing for cost.</p>
+        <h2><?php globalfxhub_te( 'sec_guides_h2' ); ?></h2>
+        <p><?php globalfxhub_te( 'sec_guides_p' ); ?></p>
       </div>
-      <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="section__link">All guides →</a>
+      <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_all_guides' ); ?></a>
     </div>
     <div class="guides__grid">
       <?php
@@ -571,10 +571,10 @@
   <div class="wrap">
     <div class="section__head">
       <div>
-        <h2>Compare brokers head-to-head</h2>
-        <p>Put two brokers side by side on cost, platforms, and regulation.</p>
+        <h2><?php globalfxhub_te( 'sec_compare_h2' ); ?></h2>
+        <p><?php globalfxhub_te( 'sec_compare_p' ); ?></p>
       </div>
-      <a href="<?php echo esc_url( home_url( '/compare/' ) ); ?>" class="section__link">Open the compare tool →</a>
+      <a href="<?php echo esc_url( home_url( '/compare/' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_open_compare' ); ?></a>
     </div>
     <div class="countries__row">
       <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ig&b=xtb' ); ?>" class="country-pill">IG vs XTB</a>
@@ -592,8 +592,8 @@
   <div class="wrap">
     <div class="section__head">
       <div>
-        <h2>Best brokers by country</h2>
-        <p>Regulation and available brokers vary a lot by where you live — start here.</p>
+        <h2><?php globalfxhub_te( 'sec_countries_h2' ); ?></h2>
+        <p><?php globalfxhub_te( 'sec_countries_p' ); ?></p>
       </div>
     </div>
     <div class="countries__row">

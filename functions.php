@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require get_template_directory() . '/inc/candlestick-patterns.php';
+require get_template_directory() . '/inc/translatable-strings.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
@@ -90,11 +91,11 @@ function globalfxhub_fallback_menu() {
         $blog_url = home_url( '/blog/' );
     }
     echo '<ul class="nav__links" id="navLinks">';
-    echo '<li><a href="' . esc_url( home_url( '/reviews/' ) ) . '">Reviews</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/guides/' ) ) . '">Guides</a></li>';
-    echo '<li><a href="' . esc_url( $blog_url ) . '">Blog</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/compare/' ) ) . '">Compare</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/countries/' ) ) . '">Countries</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/reviews/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_reviews' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/guides/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_guides' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( $blog_url ) . '">' . esc_html( globalfxhub_t( 'nav_blog' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/compare/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_compare' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/countries/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_countries' ) ) . '</a></li>';
     echo '</ul>';
 }
 

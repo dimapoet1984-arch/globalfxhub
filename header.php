@@ -45,7 +45,29 @@
         globalfxhub_fallback_menu();
     }
     ?>
-    <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" class="nav__cta">See rankings</a>
+    <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" class="nav__cta"><?php globalfxhub_te( 'nav_cta' ); ?></a>
+    <?php if ( function_exists( 'pll_the_languages' ) ) : ?>
+    <div class="langsel">
+      <?php
+      $lang_links = pll_the_languages( array(
+          'raw'               => 1,
+          'hide_if_empty'     => 0,
+          'show_flags'        => 0,
+          'show_names'        => 1,
+          'display_names_as'  => 'name',
+      ) );
+      if ( $lang_links ) :
+      ?>
+      <select onchange="if(this.value) window.location.href=this.value;">
+        <?php foreach ( $lang_links as $lang ) : ?>
+        <option value="<?php echo esc_url( $lang['url'] ); ?>" <?php selected( ! empty( $lang['current_lang'] ) ); ?>>
+          <?php echo esc_html( $lang['name'] ); ?>
+        </option>
+        <?php endforeach; ?>
+      </select>
+      <?php endif; ?>
+    </div>
+    <?php endif; ?>
   </div>
 </header>
 
