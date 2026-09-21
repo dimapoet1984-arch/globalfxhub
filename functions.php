@@ -160,6 +160,69 @@ function globalfxhub_ensure_guides_content() {
         ),
     );
 
+    $assets = get_template_directory_uri() . '/assets/guides/';
+
+    $hero_images = array(
+        'how-to-read-candlestick-patterns'        => $assets . 'candlesticks-hero.png',
+        'how-to-start-trading-forex'               => $assets . 'start-trading-hero.png',
+        'understanding-leverage-in-forex-trading'  => $assets . 'leverage-hero.png',
+    );
+
+    $body_images = array(
+        'how-to-read-candlestick-patterns' => array(
+            array(
+                'anchor' => '<h2>Multi-candle patterns</h2>',
+                'src'    => $assets . 'candlestick-anatomy.png',
+                'alt'    => 'Diagram labeling the open, high, low, and close of a single candlestick',
+                'caption'=> 'The four prices behind every candle.',
+                'before' => true,
+            ),
+            array(
+                'anchor' => '<h2>How traders actually use these</h2>',
+                'src'    => $assets . 'candlestick-patterns.png',
+                'alt'    => 'Reference grid of eight candlestick patterns: doji, hammer, shooting star, marubozu, bullish engulfing, bearish engulfing, morning star, evening star',
+                'caption'=> 'Eight patterns worth being able to recognize on sight.',
+                'before' => true,
+            ),
+        ),
+        'how-to-start-trading-forex' => array(
+            array(
+                'anchor' => '<h2>1. Learn the basic vocabulary first</h2>',
+                'src'    => $assets . 'start-trading-steps.png',
+                'alt'    => 'Six-step process: learn the vocabulary, choose a regulated broker, practice on a demo, write a trading plan, start small, keep a journal',
+                'caption'=> 'The order that keeps most avoidable mistakes off the table.',
+                'before' => true,
+            ),
+        ),
+        'understanding-leverage-in-forex-trading' => array(
+            array(
+                'anchor' => '<h2>The part that matters: it amplifies losses exactly as much as gains</h2>',
+                'src'    => $assets . 'leverage-example.png',
+                'alt'    => 'Bar chart comparing a $1,000 margin deposit to the $30,000 position it controls at 30:1 leverage',
+                'caption'=> '30:1 leverage: a small deposit, a much larger position.',
+                'before' => true,
+            ),
+            array(
+                'anchor' => '<h2>Margin calls and stop-outs</h2>',
+                'src'    => $assets . 'leverage-caps-chart.png',
+                'alt'    => 'Bar chart of maximum leverage for EU retail clients by asset class: 30:1 major FX pairs, 20:1 non-major pairs/gold/indices, 10:1 other commodities, 5:1 equities, 2:1 crypto',
+                'caption'=> 'Retail leverage caps under ESMA rules, by asset class.',
+                'before' => true,
+            ),
+        ),
+    );
+
+    foreach ( $guides as &$guide ) {
+        if ( empty( $body_images[ $guide['slug'] ] ) ) {
+            continue;
+        }
+        foreach ( $body_images[ $guide['slug'] ] as $img ) {
+            $figure = '<figure><img src="' . esc_url( $img['src'] ) . '" alt="' . esc_attr( $img['alt'] ) . '" loading="lazy"><figcaption>' . esc_html( $img['caption'] ) . '</figcaption></figure>' . "\n\n";
+            $guide['content'] = str_replace( $img['anchor'], $figure . $img['anchor'], $guide['content'] );
+        }
+    }
+    unset( $guide );
+
     foreach ( $guides as $guide ) {
         if ( get_page_by_path( $guide['slug'], OBJECT, 'post' ) ) {
             continue;
@@ -173,6 +236,9 @@ function globalfxhub_ensure_guides_content() {
             'post_type'    => 'post',
             'post_category'=> array( $category_id ),
         ) );
+        if ( $post_id && ! is_wp_error( $post_id ) && ! empty( $hero_images[ $guide['slug'] ] ) ) {
+            update_post_meta( $post_id, '_guide_hero_image', $hero_images[ $guide['slug'] ] );
+        }
     }
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_guides_content' );

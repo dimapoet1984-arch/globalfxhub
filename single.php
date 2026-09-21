@@ -28,7 +28,14 @@
   </div>
 </article>
 
-<?php if ( has_post_thumbnail() ) : ?>
+<?php
+$theme_hero_image = get_post_meta( get_the_ID(), '_guide_hero_image', true );
+if ( $theme_hero_image ) :
+?>
+<div class="article-wrap">
+  <div class="art-hero" style="background-image:url('<?php echo esc_url( $theme_hero_image ); ?>');background-size:cover;background-position:center;"></div>
+</div>
+<?php elseif ( has_post_thumbnail() ) : ?>
 <div class="article-wrap">
   <div class="art-hero" style="background-image:url('<?php the_post_thumbnail_url( 'large' ); ?>');background-size:cover;background-position:center;"></div>
 </div>
