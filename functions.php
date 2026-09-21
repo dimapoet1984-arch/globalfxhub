@@ -137,16 +137,18 @@ function globalfxhub_ensure_templated_page( $slug, $title, $template ) {
             'post_type'   => 'page',
         ) );
         if ( ! $page_id || is_wp_error( $page_id ) ) {
-            return;
+            return 0;
         }
     } else {
         $page_id = $page->ID;
     }
 
-    if ( $template !== get_post_meta( $page_id, '_wp_page_template', true ) ) {
+    if ( $template && $template !== get_post_meta( $page_id, '_wp_page_template', true ) ) {
         update_post_meta( $page_id, '_wp_page_template', $template );
         flush_rewrite_rules();
     }
+
+    return $page_id;
 }
 
 /**
@@ -164,6 +166,63 @@ function globalfxhub_ensure_guides_page() {
     globalfxhub_ensure_templated_page( 'guides', 'Guides', 'page-guides.php' );
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_guides_page' );
+
+/**
+ * /blog/ needs a WordPress "posts page" (Settings > Reading) set, or the
+ * Blog nav link doesn't resolve to anything and no posts show there --
+ * not because a post is missing, but because the "posts page" was never
+ * configured. Self-heals by creating a "Blog" page and setting it as the
+ * posts page, but only if page_for_posts is currently unset or points at
+ * a page that no longer exists -- never overrides a deliberately chosen
+ * existing setting.
+ */
+function globalfxhub_ensure_blog_page() {
+    /*
+     * page_for_posts is only honored by WordPress when the site is set to
+     * show a static page at the front (Settings > Reading), rather than
+     * the default "latest posts" mode -- which this theme needs anyway,
+     * since front-page.php (the real homepage) and home.php (the blog
+     * index) are meant to be two different pages. front-page.php ignores
+     * its own page's content and always renders the custom homepage
+     * regardless of this setting, so switching modes doesn't change what
+     * visitors see at "/" -- it only makes a *separate* posts page
+     * possible. Never touches page_on_front if it's already validly set.
+     */
+    if ( 'page' !== get_option( 'show_on_front' ) ) {
+        update_option( 'show_on_front', 'page' );
+    }
+    $front_id = (int) get_option( 'page_on_front' );
+    if ( ! $front_id || ! get_post( $front_id ) ) {
+        $front_id = globalfxhub_ensure_templated_page( 'home', 'Home', '' );
+        if ( $front_id ) {
+            update_option( 'page_on_front', $front_id );
+        }
+    }
+
+    $current = (int) get_option( 'page_for_posts' );
+    if ( $current && get_post( $current ) ) {
+        return;
+    }
+
+    $page = get_page_by_path( 'blog' );
+    if ( ! $page ) {
+        $page_id = wp_insert_post( array(
+            'post_title'  => 'Blog',
+            'post_name'   => 'blog',
+            'post_status' => 'publish',
+            'post_type'   => 'page',
+        ) );
+        if ( ! $page_id || is_wp_error( $page_id ) ) {
+            return;
+        }
+    } else {
+        $page_id = $page->ID;
+    }
+
+    update_option( 'page_for_posts', $page_id );
+    flush_rewrite_rules();
+}
+add_action( 'after_setup_theme', 'globalfxhub_ensure_blog_page' );
 
 /**
  * Seed the "Guides" category and its starter articles as real posts (so
