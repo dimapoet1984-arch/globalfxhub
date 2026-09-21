@@ -46,7 +46,7 @@
     }
     ?>
     <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" class="nav__cta"><?php globalfxhub_te( 'nav_cta' ); ?></a>
-    <?php if ( function_exists( 'pll_the_languages' ) ) : ?>
+    <?php if ( GLOBALFXHUB_LANG_SWITCHER_ENABLED && function_exists( 'pll_the_languages' ) ) : ?>
     <div class="langsel">
       <?php
       $lang_links = pll_the_languages( array(

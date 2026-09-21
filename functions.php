@@ -7,6 +7,16 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/**
+ * Kill switch for the front-end language switcher while the Polylang
+ * rollout is paused. Set to true to bring the <select> in header.php back
+ * once the non-English pages are confirmed working -- this doesn't touch
+ * Polylang itself, the languages you've added, or any string translations
+ * already entered under Languages > Translations, so nothing is lost by
+ * leaving this off.
+ */
+define( 'GLOBALFXHUB_LANG_SWITCHER_ENABLED', false );
+
 require get_template_directory() . '/inc/candlestick-patterns.php';
 require get_template_directory() . '/inc/translatable-strings.php';
 
