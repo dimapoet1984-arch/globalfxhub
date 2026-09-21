@@ -168,6 +168,99 @@ function globalfxhub_ensure_guides_page() {
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_guides_page' );
 
+function globalfxhub_ensure_compare_page() {
+    globalfxhub_ensure_templated_page( 'compare', 'Compare Brokers', 'page-compare.php' );
+}
+add_action( 'after_setup_theme', 'globalfxhub_ensure_compare_page' );
+
+/**
+ * Polylang duplicates a page per language rather than translating one
+ * page's content in place, so /reviews/, /guides/, and /compare/ each need
+ * their own page object -- with the *same* page template assigned -- in
+ * every active language, or switching language lands on an untemplated
+ * stub with no content (this is exactly what happened to /compare/: its
+ * German translation existed with no template, so the JS-driven comparison
+ * tool never rendered, even though globalfxhub_get_brokers() itself has
+ * nothing language-specific about it). Runs on init at priority 20, after
+ * Polylang's own init (which registers the language taxonomy on init at
+ * the default priority), so pll_*() calls are safe. Self-heals a
+ * translation a human added via Polylang's own "+ add translation" link
+ * too, not just one that's missing outright.
+ */
+function globalfxhub_sync_templated_pages_across_languages() {
+    if ( ! function_exists( 'pll_languages_list' ) || ! function_exists( 'pll_set_post_language' )
+        || ! function_exists( 'pll_get_post_translations' ) || ! function_exists( 'pll_default_language' ) ) {
+        return;
+    }
+
+    $default_lang = pll_default_language();
+    $languages = pll_languages_list();
+    if ( ! $default_lang || empty( $languages ) ) {
+        return;
+    }
+
+    $pages = array(
+        'reviews' => array( 'Reviews', 'page-reviews.php' ),
+        'guides'  => array( 'Guides', 'page-guides.php' ),
+        'compare' => array( 'Compare Brokers', 'page-compare.php' ),
+    );
+
+    $changed = false;
+
+    foreach ( $pages as $slug => $meta ) {
+        list( $title, $template ) = $meta;
+
+        $page = get_page_by_path( $slug );
+        if ( ! $page ) {
+            continue;
+        }
+        $page_id = $page->ID;
+
+        if ( function_exists( 'pll_get_post_language' ) && ! pll_get_post_language( $page_id ) ) {
+            pll_set_post_language( $page_id, $default_lang );
+        }
+
+        $translations = pll_get_post_translations( $page_id );
+
+        foreach ( $languages as $lang ) {
+            if ( $lang === $default_lang ) {
+                continue;
+            }
+
+            $translated_id = ! empty( $translations[ $lang ] ) ? (int) $translations[ $lang ] : 0;
+            if ( ! $translated_id || ! get_post( $translated_id ) ) {
+                $translated_id = wp_insert_post( array(
+                    'post_title'  => $title,
+                    'post_name'   => $slug,
+                    'post_status' => 'publish',
+                    'post_type'   => 'page',
+                ) );
+                if ( ! $translated_id || is_wp_error( $translated_id ) ) {
+                    continue;
+                }
+                pll_set_post_language( $translated_id, $lang );
+                $translations[ $lang ] = $translated_id;
+                $changed = true;
+            }
+
+            if ( $template && $template !== get_post_meta( $translated_id, '_wp_page_template', true ) ) {
+                update_post_meta( $translated_id, '_wp_page_template', $template );
+                $changed = true;
+            }
+        }
+
+        $translations[ $default_lang ] = $page_id;
+        if ( function_exists( 'pll_save_post_translations' ) ) {
+            pll_save_post_translations( $translations );
+        }
+    }
+
+    if ( $changed ) {
+        flush_rewrite_rules();
+    }
+}
+add_action( 'init', 'globalfxhub_sync_templated_pages_across_languages', 20 );
+
 /**
  * /blog/ needs a WordPress "posts page" (Settings > Reading) set, or the
  * Blog nav link doesn't resolve to anything and no posts show there --
