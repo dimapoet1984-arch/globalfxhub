@@ -118,6 +118,91 @@ add_filter( 'query_vars', 'globalfxhub_review_query_vars' );
 
 add_action( 'after_switch_theme', 'flush_rewrite_rules' );
 
+/**
+ * SEO for /reviews/{slug}/ pages.
+ *
+ * All 15 broker URLs share one underlying "Reviews" Page object (the
+ * broker itself is read from the "broker" query var, not a separate
+ * post), so without this WordPress's defaults would give every one of
+ * them the same <title>, the same canonical link (pointing at /reviews/
+ * instead of its own URL), no meta description, and no structured data --
+ * any of which can keep Google from indexing them as distinct, rankable
+ * pages. This gives each broker's URL its own title, canonical, meta
+ * description, and Review schema (using only our own disclosed-methodology
+ * score -- never the third-party ratings shown further down the page).
+ */
+function globalfxhub_review_seo_title( $title_parts ) {
+    $slug = get_query_var( 'broker' );
+    if ( $slug ) {
+        $broker = globalfxhub_get_broker_by_slug( $slug );
+        if ( $broker ) {
+            $title_parts['title'] = $broker['name'] . ' Review ' . date( 'Y' ) . ': Regulation, Fees & Platforms';
+        }
+    } elseif ( is_page( 'reviews' ) ) {
+        $title_parts['title'] = 'Forex Broker Reviews ' . date( 'Y' ) . ': All CySEC-Regulated Brokers Rated';
+    }
+    return $title_parts;
+}
+add_filter( 'document_title_parts', 'globalfxhub_review_seo_title' );
+
+function globalfxhub_review_canonical( $canonical_url ) {
+    $slug = get_query_var( 'broker' );
+    if ( $slug ) {
+        $broker = globalfxhub_get_broker_by_slug( $slug );
+        if ( $broker ) {
+            return home_url( '/reviews/' . $broker['slug'] . '/' );
+        }
+    }
+    return $canonical_url;
+}
+add_filter( 'get_canonical_url', 'globalfxhub_review_canonical' );
+
+function globalfxhub_review_seo_head() {
+    $slug = get_query_var( 'broker' );
+    if ( ! $slug ) {
+        if ( is_page( 'reviews' ) ) {
+            echo '<meta name="description" content="' . esc_attr( 'In-depth, individually scored reviews of every CySEC-regulated forex broker in our rankings -- regulation, cost, platforms, and track record, built from a disclosed methodology.' ) . '">' . "\n";
+        }
+        return;
+    }
+
+    $broker = globalfxhub_get_broker_by_slug( $slug );
+    if ( ! $broker ) {
+        return;
+    }
+
+    $reg_label = ( '—' === $broker['cysec'] ) ? 'EU-regulated' : ( 'CySEC No. ' . $broker['cysec'] );
+    $description = sprintf(
+        '%s review: %s, %s minimum deposit, %s pip average EUR/USD spread. Scored %s/5 overall on regulation, cost, platforms and track record -- see the full breakdown and what other reviewers say.',
+        $broker['name'],
+        $reg_label,
+        $broker['min_deposit_display'],
+        $broker['spread_eurusd'],
+        $broker['scores']['overall']
+    );
+    echo '<meta name="description" content="' . esc_attr( $description ) . '">' . "\n";
+
+    $schema = array(
+        '@context'     => 'https://schema.org',
+        '@type'        => 'Review',
+        'itemReviewed' => array(
+            '@type' => 'FinancialService',
+            'name'  => $broker['name'],
+        ),
+        'reviewRating' => array(
+            '@type'       => 'Rating',
+            'ratingValue' => (string) $broker['scores']['overall'],
+            'bestRating'  => '5',
+            'worstRating' => '1',
+        ),
+        'author'    => array( '@type' => 'Organization', 'name' => 'GlobalFXHub' ),
+        'publisher' => array( '@type' => 'Organization', 'name' => 'GlobalFXHub' ),
+        'url'       => home_url( '/reviews/' . $broker['slug'] . '/' ),
+    );
+    echo '<script type="application/ld+json">' . wp_json_encode( $schema ) . '</script>' . "\n";
+}
+add_action( 'wp_head', 'globalfxhub_review_seo_head', 5 );
+
 function globalfxhub_get_broker_by_slug( $slug ) {
     foreach ( globalfxhub_get_brokers() as $broker ) {
         if ( $broker['slug'] === $slug ) {
