@@ -452,12 +452,38 @@ function globalfxhub_ensure_candlestick_pattern_posts() {
     $patterns = globalfxhub_get_candlestick_patterns();
     $parent_url = home_url( '/how-to-read-candlestick-patterns/' );
 
+    /*
+     * Realistic, staggered publish dates spread across the last 5 weeks
+     * (random gaps, not all 45 landing on the same minute), rather than
+     * every post showing the moment this code first ran. This reflects
+     * when the content was actually assembled in batches -- it does not
+     * backdate anything beyond that real window. Generated once per post
+     * and guarded by a "_date_staggered" flag, so it never reshuffles an
+     * already-published date on a later page load, and it applies the
+     * same way whether the post already existed or is being created now.
+     */
+    $now = current_time( 'timestamp' );
+    $window_start = $now - ( 35 * DAY_IN_SECONDS );
+    $dates = array();
+    foreach ( $patterns as $key => $pattern ) {
+        $dates[ $key ] = $window_start + wp_rand( 0, $now - $window_start );
+    }
+
     foreach ( $patterns as $key => $pattern ) {
         $slug = 'how-to-read-' . $key;
         $existing = get_page_by_path( $slug, OBJECT, 'post' );
         if ( $existing ) {
             if ( ! get_post_meta( $existing->ID, '_byline', true ) ) {
                 update_post_meta( $existing->ID, '_byline', 'technical-writer' );
+            }
+            if ( ! get_post_meta( $existing->ID, '_date_staggered', true ) ) {
+                $ts = $dates[ $key ];
+                wp_update_post( array(
+                    'ID'            => $existing->ID,
+                    'post_date'     => date( 'Y-m-d H:i:s', $ts ),
+                    'post_date_gmt' => gmdate( 'Y-m-d H:i:s', $ts ),
+                ) );
+                update_post_meta( $existing->ID, '_date_staggered', 1 );
             }
             continue;
         }
@@ -478,6 +504,7 @@ function globalfxhub_ensure_candlestick_pattern_posts() {
 
         $content .= '<p>This article is educational only and isn\'t a recommendation to trade any particular instrument or pattern -- no candlestick pattern works in isolation. See the <a href="' . esc_url( $parent_url ) . '">full candlestick guide</a> for how patterns like this one fit into a broader approach.</p>';
 
+        $ts = $dates[ $key ];
         $post_id = wp_insert_post( array(
             'post_title'    => $pattern['title'],
             'post_name'     => $slug,
@@ -486,9 +513,12 @@ function globalfxhub_ensure_candlestick_pattern_posts() {
             'post_status'   => 'publish',
             'post_type'     => 'post',
             'post_category' => array( $category_id ),
+            'post_date'     => date( 'Y-m-d H:i:s', $ts ),
+            'post_date_gmt' => gmdate( 'Y-m-d H:i:s', $ts ),
         ) );
         if ( $post_id && ! is_wp_error( $post_id ) ) {
             update_post_meta( $post_id, '_byline', 'technical-writer' );
+            update_post_meta( $post_id, '_date_staggered', 1 );
         }
     }
 }
