@@ -9,6 +9,46 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require get_template_directory() . '/inc/candlestick-patterns.php';
 
+/**
+ * Editorial bylines shown on articles, keyed by slug. These are
+ * presentational only -- not WordPress user accounts -- and deliberately
+ * carry no invented credentials (no claimed years of experience,
+ * certifications, or track record), just a name, role, and a general
+ * description of what they write about.
+ */
+function globalfxhub_get_authors() {
+    return array(
+        'markets-editor' => array(
+            'name' => 'Elena Marsh',
+            'role' => 'Markets Editor',
+            'bio'  => 'Writes about broker regulation, market structure, and how to evaluate trading platforms for GlobalFXHub.',
+        ),
+        'technical-writer' => array(
+            'name' => 'Tom Whitfield',
+            'role' => 'Technical Analysis Writer',
+            'bio'  => 'Covers chart reading and technical analysis for GlobalFXHub, including our candlestick pattern library.',
+        ),
+    );
+}
+
+/**
+ * The byline to show for a post: the assigned persona if the post has a
+ * "_byline" meta value naming one, otherwise the site-wide fallback that
+ * was already used everywhere before bylines existed.
+ */
+function globalfxhub_get_post_byline( $post_id ) {
+    $authors = globalfxhub_get_authors();
+    $key = get_post_meta( $post_id, '_byline', true );
+    if ( $key && isset( $authors[ $key ] ) ) {
+        return $authors[ $key ];
+    }
+    return array(
+        'name' => get_the_author_meta( 'display_name', get_post_field( 'post_author', $post_id ) ),
+        'role' => 'Independent market education',
+        'bio'  => '',
+    );
+}
+
 function globalfxhub_setup() {
     add_theme_support( 'title-tag' );
     add_theme_support( 'post-thumbnails' );
@@ -225,21 +265,34 @@ function globalfxhub_ensure_guides_content() {
     }
     unset( $guide );
 
+    $bylines = array(
+        'how-to-start-trading-forex'               => 'markets-editor',
+        'understanding-leverage-in-forex-trading'   => 'markets-editor',
+        'how-to-read-candlestick-patterns'          => 'technical-writer',
+    );
+
     foreach ( $guides as $guide ) {
-        if ( get_page_by_path( $guide['slug'], OBJECT, 'post' ) ) {
-            continue;
+        $existing = get_page_by_path( $guide['slug'], OBJECT, 'post' );
+        if ( $existing ) {
+            $post_id = $existing->ID;
+        } else {
+            $post_id = wp_insert_post( array(
+                'post_title'   => $guide['title'],
+                'post_name'    => $guide['slug'],
+                'post_excerpt' => $guide['excerpt'],
+                'post_content' => $guide['content'],
+                'post_status'  => 'publish',
+                'post_type'    => 'post',
+                'post_category'=> array( $category_id ),
+            ) );
+            if ( $post_id && ! is_wp_error( $post_id ) && ! empty( $hero_images[ $guide['slug'] ] ) ) {
+                update_post_meta( $post_id, '_guide_hero_image', $hero_images[ $guide['slug'] ] );
+            }
         }
-        $post_id = wp_insert_post( array(
-            'post_title'   => $guide['title'],
-            'post_name'    => $guide['slug'],
-            'post_excerpt' => $guide['excerpt'],
-            'post_content' => $guide['content'],
-            'post_status'  => 'publish',
-            'post_type'    => 'post',
-            'post_category'=> array( $category_id ),
-        ) );
-        if ( $post_id && ! is_wp_error( $post_id ) && ! empty( $hero_images[ $guide['slug'] ] ) ) {
-            update_post_meta( $post_id, '_guide_hero_image', $hero_images[ $guide['slug'] ] );
+
+        if ( $post_id && ! is_wp_error( $post_id ) && ! empty( $bylines[ $guide['slug'] ] )
+            && ! get_post_meta( $post_id, '_byline', true ) ) {
+            update_post_meta( $post_id, '_byline', $bylines[ $guide['slug'] ] );
         }
     }
 }

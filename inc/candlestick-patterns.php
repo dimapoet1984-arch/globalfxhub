@@ -454,7 +454,11 @@ function globalfxhub_ensure_candlestick_pattern_posts() {
 
     foreach ( $patterns as $key => $pattern ) {
         $slug = 'how-to-read-' . $key;
-        if ( get_page_by_path( $slug, OBJECT, 'post' ) ) {
+        $existing = get_page_by_path( $slug, OBJECT, 'post' );
+        if ( $existing ) {
+            if ( ! get_post_meta( $existing->ID, '_byline', true ) ) {
+                update_post_meta( $existing->ID, '_byline', 'technical-writer' );
+            }
             continue;
         }
 
@@ -474,7 +478,7 @@ function globalfxhub_ensure_candlestick_pattern_posts() {
 
         $content .= '<p>This article is educational only and isn\'t a recommendation to trade any particular instrument or pattern -- no candlestick pattern works in isolation. See the <a href="' . esc_url( $parent_url ) . '">full candlestick guide</a> for how patterns like this one fit into a broader approach.</p>';
 
-        wp_insert_post( array(
+        $post_id = wp_insert_post( array(
             'post_title'    => $pattern['title'],
             'post_name'     => $slug,
             'post_excerpt'  => $pattern['excerpt'],
@@ -483,6 +487,9 @@ function globalfxhub_ensure_candlestick_pattern_posts() {
             'post_type'     => 'post',
             'post_category' => array( $category_id ),
         ) );
+        if ( $post_id && ! is_wp_error( $post_id ) ) {
+            update_post_meta( $post_id, '_byline', 'technical-writer' );
+        }
     }
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_candlestick_pattern_posts', 21 );

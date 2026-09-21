@@ -5,6 +5,7 @@
     $blog_url  = $blog_page ? get_permalink( $blog_page ) : home_url( '/blog/' );
     $cats      = get_the_category();
     $cat_name  = ! empty( $cats ) ? strtoupper( $cats[0]->name ) : 'ARTICLE';
+    $byline    = globalfxhub_get_post_byline( get_the_ID() );
 ?>
 
 <div class="article-wrap crumb">
@@ -20,7 +21,7 @@
     <p class="art-sub"><?php echo esc_html( get_the_excerpt() ); ?></p>
   <?php endif; ?>
   <div class="art-meta">
-    <span><?php the_author(); ?></span>
+    <span><?php echo esc_html( $byline['name'] ); ?></span>
     <span>·</span>
     <span><?php echo esc_html( get_the_date() ); ?></span>
     <span>·</span>
@@ -55,8 +56,11 @@ if ( $theme_hero_image ) :
   <div class="author">
     <div class="author__avatar"></div>
     <div>
-      <div class="author__name">Written by <?php the_author(); ?></div>
-      <div class="author__role">Independent market education · Published <?php echo esc_html( get_the_date() ); ?></div>
+      <div class="author__name">Written by <?php echo esc_html( $byline['name'] ); ?></div>
+      <div class="author__role"><?php echo esc_html( $byline['role'] ); ?> · Published <?php echo esc_html( get_the_date() ); ?></div>
+      <?php if ( ! empty( $byline['bio'] ) ) : ?>
+      <div class="author__bio"><?php echo esc_html( $byline['bio'] ); ?></div>
+      <?php endif; ?>
     </div>
   </div>
 </div>
