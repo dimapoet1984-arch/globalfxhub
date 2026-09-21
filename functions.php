@@ -7,6 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+require get_template_directory() . '/inc/candlestick-patterns.php';
+
 function globalfxhub_setup() {
     add_theme_support( 'title-tag' );
     add_theme_support( 'post-thumbnails' );
