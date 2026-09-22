@@ -154,15 +154,30 @@ $others = array_slice( $others, 0, 3 );
 <?php else :
     $brokers = globalfxhub_get_brokers();
     usort( $brokers, function( $a, $b ) { return $a['rank'] <=> $b['rank']; } );
+
+    $search_query = isset( $_GET['search'] ) ? sanitize_text_field( wp_unslash( $_GET['search'] ) ) : '';
+    if ( $search_query ) {
+        $needle = strtolower( $search_query );
+        $brokers = array_values( array_filter( $brokers, function( $b ) use ( $needle ) {
+            return false !== strpos( strtolower( $b['name'] ), $needle );
+        } ) );
+    }
 ?>
 
 <div class="wrap page-head">
   <div class="eyebrow">BROKER REVIEWS</div>
   <h1><?php the_title(); ?></h1>
+  <?php if ( $search_query ) : ?>
+  <p>Showing results for "<?php echo esc_html( $search_query ); ?>" &middot; <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);">clear search</a></p>
+  <?php else : ?>
   <p>In-depth reviews of every CySEC-regulated broker in our rankings, built from the same disclosed methodology behind the scores.</p>
+  <?php endif; ?>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
+  <?php if ( $search_query && empty( $brokers ) ) : ?>
+  <p style="padding:24px;color:var(--ink-soft);">No brokers matched "<?php echo esc_html( $search_query ); ?>". <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);">View all reviews →</a></p>
+  <?php else : ?>
   <div class="rankings">
     <div class="rank-row head">
       <span></span><span>Broker</span><span class="col-fees">Avg. spread</span><span class="col-plat">Platforms</span><span>Score</span><span></span>
@@ -184,6 +199,7 @@ $others = array_slice( $others, 0, 3 );
     </div>
     <?php endforeach; ?>
   </div>
+  <?php endif; ?>
 </div>
 
 <?php endif; ?>

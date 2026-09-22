@@ -27,10 +27,13 @@ $globalfxhub_losers  = array_reverse( array_slice( $globalfxhub_movers_sorted, -
           <h1><?php globalfxhub_te( 'hero1_h1' ); ?></h1>
           <p><?php globalfxhub_te( 'hero1_p' ); ?></p>
           <div class="banner__search-label"><?php globalfxhub_te( 'hero_search_label' ); ?></div>
-          <form class="searchbar" onsubmit="return false;">
-            <input type="text" placeholder="<?php echo esc_attr( globalfxhub_t( 'hero_search_placeholder' ) ); ?>">
-            <button type="submit"><?php globalfxhub_te( 'hero_search_button' ); ?></button>
-          </form>
+          <div class="searchbar-wrap">
+            <form class="searchbar" id="brokerSearchForm">
+              <input type="text" id="brokerSearchInput" autocomplete="off" placeholder="<?php echo esc_attr( globalfxhub_t( 'hero_search_placeholder' ) ); ?>">
+              <button type="submit"><?php globalfxhub_te( 'hero_search_button' ); ?></button>
+            </form>
+            <div class="search-results" id="brokerSearchResults" hidden></div>
+          </div>
         </div>
         <div class="snapshot">
           <div class="snapshot__head"><span>Top rated this quarter</span><span>Score</span></div>
@@ -84,6 +87,59 @@ $globalfxhub_losers  = array_reverse( array_slice( $globalfxhub_movers_sorted, -
     <button class="banner__dot" data-i="2" aria-label="Slide 3"></button>
   </div>
 </section>
+
+<script>
+var globalfxhubBrokerSearchIndex = <?php echo wp_json_encode( array_map( function( $b ) {
+    $reg = ( '—' === $b['cysec'] ) ? 'EU-regulated' : ( 'CySEC ' . $b['cysec'] );
+    return array(
+        'name' => $b['name'],
+        'slug' => $b['slug'],
+        'meta' => $reg . ( $b['founded'] ? ' · est. ' . $b['founded'] : '' ),
+    );
+}, globalfxhub_get_brokers() ) ); ?>;
+(function(){
+  var form = document.getElementById('brokerSearchForm');
+  var input = document.getElementById('brokerSearchInput');
+  var results = document.getElementById('brokerSearchResults');
+  if (!form || !input || !results) return;
+
+  function normalize(s) { return (s || '').toLowerCase().trim(); }
+
+  function findMatches(query) {
+    query = normalize(query);
+    if (!query) return [];
+    var starts = [], contains = [];
+    globalfxhubBrokerSearchIndex.forEach(function(b){
+      var name = normalize(b.name);
+      if (name.indexOf(query) === 0) starts.push(b);
+      else if (name.indexOf(query) !== -1) contains.push(b);
+    });
+    return starts.concat(contains).slice(0, 6);
+  }
+
+  function renderResults(list) {
+    if (!list.length) { results.hidden = true; results.innerHTML = ''; return; }
+    results.innerHTML = list.map(function(b){
+      return '<a href="/reviews/' + b.slug + '/" class="search-results__item"><span>' + b.name + '</span><span class="search-results__meta">' + b.meta + '</span></a>';
+    }).join('');
+    results.hidden = false;
+  }
+
+  input.addEventListener('input', function(){ renderResults(findMatches(input.value)); });
+  input.addEventListener('focus', function(){ if (input.value) renderResults(findMatches(input.value)); });
+  input.addEventListener('blur', function(){ setTimeout(function(){ results.hidden = true; }, 150); });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var list = findMatches(input.value);
+    if (list.length) {
+      window.location.href = '/reviews/' + list[0].slug + '/';
+    } else if (normalize(input.value)) {
+      window.location.href = '/reviews/?search=' + encodeURIComponent(input.value.trim());
+    }
+  });
+})();
+</script>
 
 <script>
 (function(){

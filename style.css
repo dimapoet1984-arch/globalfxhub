@@ -104,6 +104,12 @@ Text Domain: globalfxhub
   .searchbar input::placeholder{color:#7c8aa0;}
   .searchbar button{background:var(--gold);color:#1a1300;border:none;padding:12px 20px;font-weight:500;font-size:14px;border-radius:2px;cursor:pointer;white-space:nowrap;}
   .searchbar button:hover{background:var(--gold-bright);}
+  .searchbar-wrap{position:relative;max-width:420px;}
+  .search-results{position:absolute;top:calc(100% + 6px);left:0;right:56px;background:var(--navy-raised);border:1px solid var(--rule-dark);border-radius:2px;overflow:hidden;z-index:5;box-shadow:0 8px 20px rgba(0,0,0,.35);}
+  .search-results__item{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;text-decoration:none;color:#f2eee2;font-size:14px;border-bottom:1px solid var(--rule-dark);}
+  .search-results__item:last-child{border-bottom:none;}
+  .search-results__item:hover{background:var(--navy);}
+  .search-results__meta{color:#aab6c6;font-size:12px;white-space:nowrap;}
   .banner__arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:40px;height:40px;border-radius:50%;background:rgba(14,28,48,.55);border:1px solid var(--rule-dark);color:#f2eee2;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .banner__arrow:hover{background:var(--navy-raised);border-color:var(--gold-bright);}
   .banner__arrow--prev{left:16px;}
