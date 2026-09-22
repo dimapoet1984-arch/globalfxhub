@@ -36,17 +36,24 @@ define( 'GLOBALFXHUB_MARKET_DATA_OPTION', 'globalfxhub_market_data' );
  * either dropping one of these or upgrading the Twelve Data plan --
  * otherwise every scheduled fetch will 429 again, permanently, not just
  * occasionally.
+ *
+ * Also confirmed live: this plan only serves forex pairs plus XAU/USD
+ * (gold) -- XAG/USD (silver) and WTI/USD (oil) both came back HTTP 403
+ * "symbol is not available with your plan", not a bad symbol name. So
+ * this list sticks to forex majors + gold; adding any other commodity
+ * back will need a higher Twelve Data tier, confirmed via the debug
+ * endpoint before relying on it.
  */
 function globalfxhub_market_symbols() {
     return array(
-        'EUR/USD' => array( 'label' => 'EUR/USD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
-        'GBP/USD' => array( 'label' => 'GBP/USD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
-        'USD/JPY' => array( 'label' => 'USD/JPY',   'category' => 'Major',  'decimals' => 2, 'thousands' => false, 'in_ticker' => true ),
-        'AUD/USD' => array( 'label' => 'AUD/USD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
-        'USD/CAD' => array( 'label' => 'USD/CAD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
-        'XAU/USD' => array( 'label' => 'XAU/USD',   'category' => 'Gold',   'decimals' => 2, 'thousands' => true,  'in_ticker' => true ),
-        'XAG/USD' => array( 'label' => 'XAG/USD',   'category' => 'Silver', 'decimals' => 2, 'thousands' => false, 'in_ticker' => false ),
-        'WTI/USD' => array( 'label' => 'WTI Crude', 'category' => 'Energy', 'decimals' => 2, 'thousands' => false, 'in_ticker' => false ),
+        'EUR/USD' => array( 'label' => 'EUR/USD', 'category' => 'Major', 'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
+        'GBP/USD' => array( 'label' => 'GBP/USD', 'category' => 'Major', 'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
+        'USD/JPY' => array( 'label' => 'USD/JPY', 'category' => 'Major', 'decimals' => 2, 'thousands' => false, 'in_ticker' => true ),
+        'AUD/USD' => array( 'label' => 'AUD/USD', 'category' => 'Major', 'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
+        'USD/CAD' => array( 'label' => 'USD/CAD', 'category' => 'Major', 'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
+        'USD/CHF' => array( 'label' => 'USD/CHF', 'category' => 'Major', 'decimals' => 4, 'thousands' => false, 'in_ticker' => false ),
+        'NZD/USD' => array( 'label' => 'NZD/USD', 'category' => 'Major', 'decimals' => 4, 'thousands' => false, 'in_ticker' => false ),
+        'XAU/USD' => array( 'label' => 'XAU/USD', 'category' => 'Gold',  'decimals' => 2, 'thousands' => true,  'in_ticker' => true ),
     );
 }
 
@@ -62,9 +69,9 @@ function globalfxhub_market_fallback_data() {
         'USD/JPY' => array( 'close' => 149.32,    'percent_change' => 0.21 ),
         'AUD/USD' => array( 'close' => 0.6598,    'percent_change' => -0.04 ),
         'USD/CAD' => array( 'close' => 1.3572,    'percent_change' => 0.06 ),
+        'USD/CHF' => array( 'close' => 0.8821,    'percent_change' => 0.18 ),
+        'NZD/USD' => array( 'close' => 0.6104,    'percent_change' => -0.22 ),
         'XAU/USD' => array( 'close' => 2412.80,   'percent_change' => 1.42 ),
-        'XAG/USD' => array( 'close' => 28.35,     'percent_change' => 0.64 ),
-        'WTI/USD' => array( 'close' => 76.40,     'percent_change' => -0.95 ),
     );
 }
 
