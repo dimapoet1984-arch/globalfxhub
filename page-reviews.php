@@ -21,8 +21,9 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
         'track_record' => 'Track record',
     );
     $reg_label = ( '—' === $broker['cysec'] )
-        ? ( $broker['cysec_note'] ?? 'EU-regulated via passporting' )
+        ? 'EU-regulated via passporting'
         : 'No. ' . $broker['cysec'];
+    $not_confirmed = 'Not independently confirmed';
 ?>
 
 <div class="wrap crumb">
@@ -32,13 +33,16 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
 </div>
 
 <div class="wrap page-head review-head">
-  <div class="eyebrow">BROKER REVIEW &middot; RANK #<?php echo esc_html( str_pad( (string) $broker['rank'], 2, '0', STR_PAD_LEFT ) ); ?> OF 15</div>
+  <div class="eyebrow">BROKER REVIEW &middot; RANK #<?php echo esc_html( str_pad( (string) $broker['rank'], 2, '0', STR_PAD_LEFT ) ); ?> OF <?php echo esc_html( count( globalfxhub_get_brokers() ) ); ?></div>
   <h1><?php echo esc_html( $broker['name'] ); ?> review</h1>
   <p><?php echo esc_html( $broker['blurb'] ); ?></p>
   <div class="review-head__meta">
     <span class="review-head__score"><span class="score-num"><?php echo esc_html( $broker['scores']['overall'] ); ?></span> / 5 overall</span>
-    <span class="review-head__tag"><?php echo esc_html( $reg_label ); ?> &middot; est. <?php echo esc_html( $broker['founded'] ); ?></span>
+    <span class="review-head__tag"><?php echo esc_html( $reg_label ); ?><?php echo $broker['founded'] ? ' &middot; est. ' . esc_html( $broker['founded'] ) : ''; ?></span>
   </div>
+  <?php if ( ! empty( $broker['cysec_note'] ) ) : ?>
+  <div class="review-notice"><strong>Worth knowing:</strong> <?php echo esc_html( $broker['cysec_note'] ); ?></div>
+  <?php endif; ?>
   <div class="hero__actions" style="margin-top:22px;">
     <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold">Compare vs another broker</a>
     <a href="https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/" target="_blank" rel="noopener" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);">Verify on CySEC register</a>
@@ -52,13 +56,13 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
       <tbody>
         <tr><th>Regulated entity</th><td><?php echo esc_html( $broker['entity'] ); ?></td></tr>
         <tr><th>CySEC licence</th><td><?php echo esc_html( $reg_label ); ?></td></tr>
-        <tr><th>Other Tier-1 regulators</th><td><?php echo esc_html( implode( ', ', $broker['other_reg'] ) ); ?></td></tr>
-        <tr><th>Founded</th><td><?php echo esc_html( $broker['founded'] ); ?></td></tr>
-        <tr><th>Headquarters</th><td><?php echo esc_html( $broker['hq'] ); ?></td></tr>
-        <tr><th>Minimum deposit</th><td><?php echo esc_html( $broker['min_deposit_display'] ); ?></td></tr>
-        <tr><th>Avg. spread (EUR/USD)</th><td><?php echo esc_html( $broker['spread_eurusd'] ); ?> pips</td></tr>
-        <tr><th>Platforms</th><td><?php echo esc_html( implode( ', ', $broker['platforms'] ) ); ?></td></tr>
-        <tr><th>Instruments</th><td><?php echo esc_html( $broker['instruments'] ); ?></td></tr>
+        <tr><th>Other Tier-1 regulators</th><td><?php echo esc_html( $broker['other_reg'] ? implode( ', ', $broker['other_reg'] ) : 'None confirmed' ); ?></td></tr>
+        <tr><th>Founded</th><td><?php echo esc_html( $broker['founded'] ? $broker['founded'] : $not_confirmed ); ?></td></tr>
+        <tr><th>Headquarters</th><td><?php echo esc_html( $broker['hq'] ? $broker['hq'] : $not_confirmed ); ?></td></tr>
+        <tr><th>Minimum deposit</th><td><?php echo esc_html( $broker['min_deposit_display'] ? $broker['min_deposit_display'] : $not_confirmed ); ?></td></tr>
+        <tr><th>Avg. spread (EUR/USD)</th><td><?php echo null !== $broker['spread_eurusd'] ? esc_html( $broker['spread_eurusd'] ) . ' pips' : esc_html( $not_confirmed ); ?></td></tr>
+        <tr><th>Platforms</th><td><?php echo esc_html( $broker['platforms'] ? implode( ', ', $broker['platforms'] ) : $not_confirmed ); ?></td></tr>
+        <tr><th>Instruments</th><td><?php echo esc_html( $broker['instruments'] ? $broker['instruments'] : $not_confirmed ); ?></td></tr>
       </tbody>
     </table>
 
@@ -83,8 +87,12 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
     <?php foreach ( $sub_labels as $key => $label ) : ?>
     <div class="subscore-row">
       <?php echo esc_html( $label ); ?>
+      <?php if ( null === $broker['scores'][ $key ] ) : ?>
+      <span class="review-scorebox__na">Not enough confirmed data to score</span>
+      <?php else : ?>
       <div class="bar-track"><div class="bar-fill" style="width:<?php echo esc_attr( $broker['scores'][ $key ] / 5 * 100 ); ?>%;"></div></div>
       <span class="review-scorebox__num"><?php echo esc_html( $broker['scores'][ $key ] ); ?> / 5</span>
+      <?php endif; ?>
     </div>
     <?php endforeach; ?>
   </div>
@@ -164,10 +172,10 @@ $others = array_slice( $others, 0, 3 );
       <span class="rank-num"><?php echo esc_html( str_pad( (string) $b['rank'], 2, '0', STR_PAD_LEFT ) ); ?></span>
       <span class="rank-broker">
         <span class="rank-broker__name"><?php echo esc_html( $b['name'] ); ?></span>
-        <span class="rank-broker__tag"><?php echo esc_html( '—' === $b['cysec'] ? 'EU-regulated (MiFID passporting)' : 'CySEC ' . $b['cysec'] ); ?> &middot; est. <?php echo esc_html( $b['founded'] ); ?></span>
+        <span class="rank-broker__tag"><?php echo esc_html( '—' === $b['cysec'] ? 'EU-regulated (MiFID passporting)' : 'CySEC ' . $b['cysec'] ); ?><?php echo $b['founded'] ? ' &middot; est. ' . esc_html( $b['founded'] ) : ''; ?></span>
       </span>
-      <span class="rank-detail col-fees"><?php echo esc_html( $b['spread_eurusd'] ); ?> pips (EUR/USD)</span>
-      <span class="rank-detail col-plat"><?php echo esc_html( implode( ', ', $b['platforms'] ) ); ?></span>
+      <span class="rank-detail col-fees"><?php echo null !== $b['spread_eurusd'] ? esc_html( $b['spread_eurusd'] ) . ' pips (EUR/USD)' : 'Not confirmed'; ?></span>
+      <span class="rank-detail col-plat"><?php echo esc_html( $b['platforms'] ? implode( ', ', $b['platforms'] ) : 'Not confirmed' ); ?></span>
       <span class="rank-score"><?php echo esc_html( $b['scores']['overall'] ); ?> / 5</span>
       <span class="rank-ctas">
         <a href="<?php echo esc_url( home_url( '/reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta">Read review</a>

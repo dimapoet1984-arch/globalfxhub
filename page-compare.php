@@ -91,36 +91,50 @@ const PRESET_B = <?php echo wp_json_encode( $b_param ); ?>;
     empty.style.display = 'none';
     results.classList.add('show');
 
+    const NA = 'Not independently confirmed';
+    const orNA = (v, suffix) => (v === null || v === undefined || v === '') ? NA : (v + (suffix || ''));
+
     const rows = [];
     rows.push(['Overall score',
       `<span class="score-num">${a.scores.overall}</span> / 5`,
       `<span class="score-num">${b.scores.overall}</span> / 5`,
       a.scores.overall, b.scores.overall]);
-    rows.push(['CySEC licence', a.cysec === '—' ? (a.cysec_note || 'EU-regulated via passporting') : `No. ${a.cysec}`,
-                                  b.cysec === '—' ? (b.cysec_note || 'EU-regulated via passporting') : `No. ${b.cysec}`]);
+    rows.push(['CySEC licence',
+      (a.cysec === '—' ? 'EU-regulated via passporting' : `No. ${a.cysec}`) + (a.cysec_note ? `<div class="compare-note">${a.cysec_note}</div>` : ''),
+      (b.cysec === '—' ? 'EU-regulated via passporting' : `No. ${b.cysec}`) + (b.cysec_note ? `<div class="compare-note">${b.cysec_note}</div>` : '')]);
     rows.push(['Entity', a.entity, b.entity]);
-    rows.push(['Founded', a.founded, b.founded, 2026-a.founded, 2026-b.founded]);
-    rows.push(['Headquarters', a.hq, b.hq]);
-    rows.push(['Minimum deposit', a.min_deposit_display, b.min_deposit_display, -a.min_deposit_usd, -b.min_deposit_usd]);
-    rows.push(['Avg. spread (EUR/USD)', a.spread_eurusd + ' pips', b.spread_eurusd + ' pips', -a.spread_eurusd, -b.spread_eurusd]);
-    rows.push(['Platforms', a.platforms.join(', '), b.platforms.join(', '), a.platforms.length, b.platforms.length]);
-    rows.push(['Other Tier-1 regulators', a.other_reg.join(', '), b.other_reg.join(', '), a.other_reg_count, b.other_reg_count]);
-    rows.push(['Instruments', a.instruments, b.instruments]);
+    rows.push(['Founded', orNA(a.founded), orNA(b.founded), a.founded ? (2026-a.founded) : undefined, b.founded ? (2026-b.founded) : undefined]);
+    rows.push(['Headquarters', orNA(a.hq), orNA(b.hq)]);
+    rows.push(['Minimum deposit', orNA(a.min_deposit_display), orNA(b.min_deposit_display),
+      (typeof a.min_deposit_usd === 'number') ? -a.min_deposit_usd : undefined,
+      (typeof b.min_deposit_usd === 'number') ? -b.min_deposit_usd : undefined]);
+    rows.push(['Avg. spread (EUR/USD)', orNA(a.spread_eurusd, ' pips'), orNA(b.spread_eurusd, ' pips'),
+      (typeof a.spread_eurusd === 'number') ? -a.spread_eurusd : undefined,
+      (typeof b.spread_eurusd === 'number') ? -b.spread_eurusd : undefined]);
+    rows.push(['Platforms', a.platforms.length ? a.platforms.join(', ') : NA, b.platforms.length ? b.platforms.join(', ') : NA, a.platforms.length, b.platforms.length]);
+    rows.push(['Other Tier-1 regulators', a.other_reg.length ? a.other_reg.join(', ') : 'None confirmed', b.other_reg.length ? b.other_reg.join(', ') : 'None confirmed', a.other_reg_count, b.other_reg_count]);
+    rows.push(['Instruments', orNA(a.instruments), orNA(b.instruments)]);
 
     let html = `<thead><tr><th class="label-col"></th><th>${a.name}</th><th>${b.name}</th></tr></thead><tbody>`;
     rows.forEach(([label, valA, valB, numA, numB]) => {
       let clsA = '', clsB = '';
-      if(numA !== undefined && numB !== undefined && numA !== numB){
+      if(numA != null && numB != null && numA !== numB){
         if(numA > numB) clsA = ' class="better"'; else clsB = ' class="better"';
       }
       html += `<tr><th>${label}</th><td${clsA}>${valA}</td><td${clsB}>${valB}</td></tr>`;
     });
 
     const subLabels = [['regulation','Regulation'],['cost','Cost'],['platforms','Platforms'],['track_record','Track record']];
+    const bar = (scores, key, label) => {
+      if(scores[key] === null || scores[key] === undefined){
+        return `<div class="subscore-row">${label}<span class="review-scorebox__na">Not enough confirmed data to score</span></div>`;
+      }
+      return `<div class="subscore-row">${label}<div class="bar-track"><div class="bar-fill" style="width:${scores[key]/5*100}%;"></div></div></div>`;
+    };
     let barsA = '', barsB = '';
     subLabels.forEach(([key, label]) => {
-      barsA += `<div class="subscore-row">${label}<div class="bar-track"><div class="bar-fill" style="width:${a.scores[key]/5*100}%;"></div></div></div>`;
-      barsB += `<div class="subscore-row">${label}<div class="bar-track"><div class="bar-fill" style="width:${b.scores[key]/5*100}%;"></div></div></div>`;
+      barsA += bar(a.scores, key, label);
+      barsB += bar(b.scores, key, label);
     });
     html += `<tr><th>Score breakdown</th><td>${barsA}</td><td>${barsB}</td></tr>`;
     html += `<tr><th>Visit</th>

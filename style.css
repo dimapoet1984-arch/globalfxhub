@@ -249,6 +249,8 @@ Text Domain: globalfxhub
   .compare-table td.better { box-shadow: inset 3px 0 0 var(--teal); }
   .compare-table .score-num {font-family:var(--font-data);font-size:20px;color:var(--teal);}
   .compare-table .subscore-row {font-size:12.5px;color:var(--ink-soft);}
+  .compare-table .compare-note {font-size:12px;color:var(--ink-soft);margin-top:4px;font-weight:400;}
+  .compare-table .review-scorebox__na {font-size:12.5px;color:var(--ink-soft);font-style:italic;display:block;}
   .compare-table .bar-track {height:6px;background:var(--rule);border-radius:3px;overflow:hidden;margin-top:4px;}
   .compare-table .bar-fill {height:100%;background:var(--teal);}
   #results {display:none;}
@@ -264,6 +266,11 @@ Text Domain: globalfxhub
   .methodology-note strong {color:var(--ink);}
 
   /* ---------- Broker review page (page-reviews.php) ---------- */
+  .review-notice {
+    font-size:13.5px;color:var(--ink);max-width:80ch;margin-top:16px;
+    padding:14px 18px;border-left:3px solid var(--brick, #a44432);background:var(--paper-raised);
+  }
+  .review-notice strong {color:var(--brick, #a44432);}
   .review-head__meta {display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:6px;}
   .review-head__score {font-size:15px;color:var(--ink);}
   .review-head__score .score-num {font-family:var(--font-data);font-size:22px;color:var(--teal);}
@@ -286,6 +293,7 @@ Text Domain: globalfxhub
   .review-scorebox .bar-track {height:6px;background:var(--rule);border-radius:3px;overflow:hidden;margin:6px 0;}
   .review-scorebox .bar-fill {height:100%;background:var(--teal);}
   .review-scorebox__num {font-family:var(--font-data);font-size:12.5px;color:var(--ink-soft);}
+  .review-scorebox__na {display:block;font-size:12.5px;color:var(--ink-soft);font-style:italic;margin-top:4px;}
   .rank-ctas {display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
 
   .external-reviews {display:grid;grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));gap:14px;margin-bottom:40px;}
