@@ -47,31 +47,103 @@ $globalfxhub_ticker_render = array_merge( $globalfxhub_ticker_items, $globalfxhu
         globalfxhub_fallback_menu();
     }
     ?>
-    <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" class="nav__cta"><?php globalfxhub_te( 'nav_cta' ); ?></a>
-    <?php if ( GLOBALFXHUB_LANG_SWITCHER_ENABLED && function_exists( 'pll_the_languages' ) ) : ?>
-    <div class="langsel">
-      <?php
-      $lang_links = pll_the_languages( array(
-          'raw'               => 1,
-          'hide_if_empty'     => 0,
-          'show_flags'        => 0,
-          'show_names'        => 1,
-          'display_names_as'  => 'name',
-      ) );
-      if ( $lang_links ) :
-      ?>
-      <select onchange="if(this.value) window.location.href=this.value;">
-        <?php foreach ( $lang_links as $lang ) : ?>
-        <option value="<?php echo esc_url( $lang['url'] ); ?>" <?php selected( ! empty( $lang['current_lang'] ) ); ?>>
-          <?php echo esc_html( $lang['name'] ); ?>
-        </option>
-        <?php endforeach; ?>
-      </select>
+    <div class="nav__right">
+      <div class="nav-search">
+        <form id="navSearchForm" class="nav-search__form" autocomplete="off">
+          <input type="search" id="navSearchInput" placeholder="Search a broker…" aria-label="Search a broker">
+        </form>
+        <div class="search-results" id="navSearchResults" hidden></div>
+      </div>
+      <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" class="nav__cta"><?php globalfxhub_te( 'nav_cta' ); ?></a>
+      <?php if ( GLOBALFXHUB_LANG_SWITCHER_ENABLED && function_exists( 'pll_the_languages' ) ) : ?>
+      <div class="langsel">
+        <?php
+        $lang_links = pll_the_languages( array(
+            'raw'               => 1,
+            'hide_if_empty'     => 0,
+            'show_flags'        => 0,
+            'show_names'        => 1,
+            'display_names_as'  => 'name',
+        ) );
+        if ( $lang_links ) :
+        ?>
+        <select onchange="if(this.value) window.location.href=this.value;">
+          <?php foreach ( $lang_links as $lang ) : ?>
+          <option value="<?php echo esc_url( $lang['url'] ); ?>" <?php selected( ! empty( $lang['current_lang'] ) ); ?>>
+            <?php echo esc_html( $lang['name'] ); ?>
+          </option>
+          <?php endforeach; ?>
+        </select>
+        <?php endif; ?>
+      </div>
       <?php endif; ?>
     </div>
-    <?php endif; ?>
   </div>
 </header>
+
+<script>
+var globalfxhubBrokerSearchIndex = <?php echo wp_json_encode( array_map( function( $b ) {
+    $reg = ( '—' === $b['cysec'] ) ? 'EU-regulated' : ( 'CySEC ' . $b['cysec'] );
+    return array(
+        'name' => $b['name'],
+        'slug' => $b['slug'],
+        'meta' => $reg . ( $b['founded'] ? ' · est. ' . $b['founded'] : '' ),
+    );
+}, globalfxhub_get_brokers() ) ); ?>;
+
+/**
+ * Shared broker typeahead, used by both this nav search bar and the
+ * homepage hero's search bar -- one broker index, one matching/rendering
+ * implementation, wired up per instance via init().
+ */
+var GlobalFXHubBrokerSearch = {
+  normalize: function(s) { return (s || '').toLowerCase().trim(); },
+  findMatches: function(query) {
+    var self = this;
+    query = this.normalize(query);
+    if (!query) return [];
+    var starts = [], contains = [];
+    globalfxhubBrokerSearchIndex.forEach(function(b){
+      var name = self.normalize(b.name);
+      if (name.indexOf(query) === 0) starts.push(b);
+      else if (name.indexOf(query) !== -1) contains.push(b);
+    });
+    return starts.concat(contains).slice(0, 6);
+  },
+  init: function(formEl, inputEl, resultsEl) {
+    var self = this;
+    if (!formEl || !inputEl || !resultsEl) return;
+
+    function render(list) {
+      if (!list.length) { resultsEl.hidden = true; resultsEl.innerHTML = ''; return; }
+      resultsEl.innerHTML = list.map(function(b){
+        return '<a href="/reviews/' + b.slug + '/" class="search-results__item"><span>' + b.name + '</span><span class="search-results__meta">' + b.meta + '</span></a>';
+      }).join('');
+      resultsEl.hidden = false;
+    }
+
+    inputEl.addEventListener('input', function(){ render(self.findMatches(inputEl.value)); });
+    inputEl.addEventListener('focus', function(){ if (inputEl.value) render(self.findMatches(inputEl.value)); });
+    inputEl.addEventListener('blur', function(){ setTimeout(function(){ resultsEl.hidden = true; }, 150); });
+
+    formEl.addEventListener('submit', function(e){
+      e.preventDefault();
+      var list = self.findMatches(inputEl.value);
+      if (list.length) {
+        window.location.href = '/reviews/' + list[0].slug + '/';
+      } else if (self.normalize(inputEl.value)) {
+        window.location.href = '/reviews/?search=' + encodeURIComponent(inputEl.value.trim());
+      }
+    });
+  }
+};
+
+GlobalFXHubBrokerSearch.init(
+  document.getElementById('navSearchForm'),
+  document.getElementById('navSearchInput'),
+  document.getElementById('navSearchResults')
+);
+</script>
 
 <script>
   (function(){

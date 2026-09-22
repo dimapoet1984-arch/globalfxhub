@@ -89,56 +89,13 @@ $globalfxhub_losers  = array_reverse( array_slice( $globalfxhub_movers_sorted, -
 </section>
 
 <script>
-var globalfxhubBrokerSearchIndex = <?php echo wp_json_encode( array_map( function( $b ) {
-    $reg = ( '—' === $b['cysec'] ) ? 'EU-regulated' : ( 'CySEC ' . $b['cysec'] );
-    return array(
-        'name' => $b['name'],
-        'slug' => $b['slug'],
-        'meta' => $reg . ( $b['founded'] ? ' · est. ' . $b['founded'] : '' ),
-    );
-}, globalfxhub_get_brokers() ) ); ?>;
-(function(){
-  var form = document.getElementById('brokerSearchForm');
-  var input = document.getElementById('brokerSearchInput');
-  var results = document.getElementById('brokerSearchResults');
-  if (!form || !input || !results) return;
-
-  function normalize(s) { return (s || '').toLowerCase().trim(); }
-
-  function findMatches(query) {
-    query = normalize(query);
-    if (!query) return [];
-    var starts = [], contains = [];
-    globalfxhubBrokerSearchIndex.forEach(function(b){
-      var name = normalize(b.name);
-      if (name.indexOf(query) === 0) starts.push(b);
-      else if (name.indexOf(query) !== -1) contains.push(b);
-    });
-    return starts.concat(contains).slice(0, 6);
-  }
-
-  function renderResults(list) {
-    if (!list.length) { results.hidden = true; results.innerHTML = ''; return; }
-    results.innerHTML = list.map(function(b){
-      return '<a href="/reviews/' + b.slug + '/" class="search-results__item"><span>' + b.name + '</span><span class="search-results__meta">' + b.meta + '</span></a>';
-    }).join('');
-    results.hidden = false;
-  }
-
-  input.addEventListener('input', function(){ renderResults(findMatches(input.value)); });
-  input.addEventListener('focus', function(){ if (input.value) renderResults(findMatches(input.value)); });
-  input.addEventListener('blur', function(){ setTimeout(function(){ results.hidden = true; }, 150); });
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    var list = findMatches(input.value);
-    if (list.length) {
-      window.location.href = '/reviews/' + list[0].slug + '/';
-    } else if (normalize(input.value)) {
-      window.location.href = '/reviews/?search=' + encodeURIComponent(input.value.trim());
-    }
-  });
-})();
+// Broker index + matching logic live in header.php (GlobalFXHubBrokerSearch)
+// so the nav search bar and this hero search bar share one implementation.
+GlobalFXHubBrokerSearch.init(
+  document.getElementById('brokerSearchForm'),
+  document.getElementById('brokerSearchInput'),
+  document.getElementById('brokerSearchResults')
+);
 </script>
 
 <script>

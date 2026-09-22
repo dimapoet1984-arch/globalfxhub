@@ -55,6 +55,15 @@ Text Domain: globalfxhub
   .nav__cta:hover{background:var(--gold-bright);}
   .nav__toggle{display:none;background:none;border:0;color:#fff;font-size:24px;cursor:pointer;}
 
+  .nav-search{position:relative;}
+  .nav-search__form input{
+    width:150px;padding:8px 12px;border:1px solid var(--rule-dark);border-radius:2px;
+    background:var(--navy-raised);color:#f2eee2;font-family:var(--font-body);font-size:13.5px;
+  }
+  .nav-search__form input::placeholder{color:#7c8aa0;}
+  .nav-search__form input:focus{outline:none;border-color:var(--gold-bright);width:190px;transition:width .15s ease;}
+  .nav-search .search-results{left:0;right:auto;width:260px;top:calc(100% + 6px);}
+
   .langsel{position:relative;}
   .langsel select{
     appearance:none;-webkit-appearance:none;
@@ -79,6 +88,7 @@ Text Domain: globalfxhub
     .nav__links a{display:block;padding:11px 0;border-bottom:1px solid var(--rule-dark);}
     .nav__toggle{display:block;order:3;}
     .nav__cta{display:none;}
+    .nav-search{display:none;}
     .nav{position:relative;flex-wrap:wrap;}
   }
 
