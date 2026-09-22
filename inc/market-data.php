@@ -25,28 +25,28 @@ define( 'GLOBALFXHUB_MARKET_DATA_OPTION', 'globalfxhub_market_data' );
 
 /**
  * The instruments shown across the ticker, heatmap, and movers list.
- * 'decimals'/'thousands' control display formatting only. The three
- * energy symbols (WTI/BRENT/NATGAS) are this integration's best-guess at
- * Twelve Data's naming -- verify them against a live /quote response
- * after adding the API key, since this environment couldn't reach
- * twelvedata.com directly to confirm. A wrong symbol here just makes that
- * one quote silently fail to update (see globalfxhub_fetch_market_data),
- * not break anything else.
+ * 'decimals'/'thousands' control display formatting only.
+ *
+ * Deliberately capped at 8 symbols: Twelve Data's free tier enforces an
+ * 8-API-credit-per-minute limit (confirmed live -- a 12-symbol batch
+ * came back HTTP 429, "12 API credits were used, with the current limit
+ * being 8"), and since the /quote endpoint costs 1 credit per symbol
+ * even when batched into one request, 8 symbols in one call is the most
+ * this plan can ever fetch in a single minute. Don't add a 9th without
+ * either dropping one of these or upgrading the Twelve Data plan --
+ * otherwise every scheduled fetch will 429 again, permanently, not just
+ * occasionally.
  */
 function globalfxhub_market_symbols() {
     return array(
-        'EUR/USD'    => array( 'label' => 'EUR/USD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
-        'GBP/USD'    => array( 'label' => 'GBP/USD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
-        'USD/JPY'    => array( 'label' => 'USD/JPY',   'category' => 'Major',  'decimals' => 2, 'thousands' => false, 'in_ticker' => true ),
-        'AUD/USD'    => array( 'label' => 'AUD/USD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
-        'USD/CAD'    => array( 'label' => 'USD/CAD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
-        'USD/CHF'    => array( 'label' => 'USD/CHF',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => false ),
-        'NZD/USD'    => array( 'label' => 'NZD/USD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => false ),
-        'XAU/USD'    => array( 'label' => 'XAU/USD',   'category' => 'Gold',   'decimals' => 2, 'thousands' => true,  'in_ticker' => true ),
-        'XAG/USD'    => array( 'label' => 'XAG/USD',   'category' => 'Silver', 'decimals' => 2, 'thousands' => false, 'in_ticker' => false ),
-        'WTI/USD'    => array( 'label' => 'WTI Crude', 'category' => 'Energy', 'decimals' => 2, 'thousands' => false, 'in_ticker' => false ),
-        'BRENT/USD'  => array( 'label' => 'Brent',     'category' => 'Energy', 'decimals' => 2, 'thousands' => false, 'in_ticker' => false ),
-        'NATGAS/USD' => array( 'label' => 'Nat Gas',   'category' => 'Energy', 'decimals' => 3, 'thousands' => false, 'in_ticker' => false ),
+        'EUR/USD' => array( 'label' => 'EUR/USD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
+        'GBP/USD' => array( 'label' => 'GBP/USD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
+        'USD/JPY' => array( 'label' => 'USD/JPY',   'category' => 'Major',  'decimals' => 2, 'thousands' => false, 'in_ticker' => true ),
+        'AUD/USD' => array( 'label' => 'AUD/USD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
+        'USD/CAD' => array( 'label' => 'USD/CAD',   'category' => 'Major',  'decimals' => 4, 'thousands' => false, 'in_ticker' => true ),
+        'XAU/USD' => array( 'label' => 'XAU/USD',   'category' => 'Gold',   'decimals' => 2, 'thousands' => true,  'in_ticker' => true ),
+        'XAG/USD' => array( 'label' => 'XAG/USD',   'category' => 'Silver', 'decimals' => 2, 'thousands' => false, 'in_ticker' => false ),
+        'WTI/USD' => array( 'label' => 'WTI Crude', 'category' => 'Energy', 'decimals' => 2, 'thousands' => false, 'in_ticker' => false ),
     );
 }
 
@@ -57,18 +57,14 @@ function globalfxhub_market_symbols() {
  */
 function globalfxhub_market_fallback_data() {
     return array(
-        'EUR/USD'    => array( 'close' => 1.0834,    'percent_change' => 0.12 ),
-        'GBP/USD'    => array( 'close' => 1.2651,    'percent_change' => -0.08 ),
-        'USD/JPY'    => array( 'close' => 149.32,    'percent_change' => 0.21 ),
-        'AUD/USD'    => array( 'close' => 0.6598,    'percent_change' => -0.04 ),
-        'USD/CAD'    => array( 'close' => 1.3572,    'percent_change' => 0.06 ),
-        'USD/CHF'    => array( 'close' => 0.8821,    'percent_change' => 0.18 ),
-        'NZD/USD'    => array( 'close' => 0.6104,    'percent_change' => -0.22 ),
-        'XAU/USD'    => array( 'close' => 2412.80,   'percent_change' => 1.42 ),
-        'XAG/USD'    => array( 'close' => 28.35,     'percent_change' => 0.64 ),
-        'WTI/USD'    => array( 'close' => 76.40,     'percent_change' => -0.95 ),
-        'BRENT/USD'  => array( 'close' => 80.10,     'percent_change' => -0.71 ),
-        'NATGAS/USD' => array( 'close' => 2.680,     'percent_change' => -1.18 ),
+        'EUR/USD' => array( 'close' => 1.0834,    'percent_change' => 0.12 ),
+        'GBP/USD' => array( 'close' => 1.2651,    'percent_change' => -0.08 ),
+        'USD/JPY' => array( 'close' => 149.32,    'percent_change' => 0.21 ),
+        'AUD/USD' => array( 'close' => 0.6598,    'percent_change' => -0.04 ),
+        'USD/CAD' => array( 'close' => 1.3572,    'percent_change' => 0.06 ),
+        'XAU/USD' => array( 'close' => 2412.80,   'percent_change' => 1.42 ),
+        'XAG/USD' => array( 'close' => 28.35,     'percent_change' => 0.64 ),
+        'WTI/USD' => array( 'close' => 76.40,     'percent_change' => -0.95 ),
     );
 }
 
@@ -162,11 +158,12 @@ function globalfxhub_fetch_market_data( $force = false ) {
 }
 
 /**
- * Refreshes at most once an hour: 12 symbols x 24 refreshes/day = 288
+ * Refreshes at most once an hour: 8 symbols x 24 refreshes/day = 192
  * credits/day on Twelve Data's quote endpoint (1 credit per symbol,
  * whether requested individually or batched in one call) -- comfortably
- * inside even the free plan's daily allowance, with room for the site to
- * grow into more instruments later. Tighten or loosen this by changing
+ * inside the free plan's daily allowance. The 8-symbol cap itself is set
+ * by the per-minute limit (see globalfxhub_market_symbols() above), not
+ * this daily one. Tighten or loosen the refresh cadence by changing
  * HOUR_IN_SECONDS below; the 20-minute guard in the fetch function itself
  * stops any interval you pick here from firing faster than that.
  */
