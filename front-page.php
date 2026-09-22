@@ -34,9 +34,9 @@ $globalfxhub_losers  = array_reverse( array_slice( $globalfxhub_movers_sorted, -
         </div>
         <div class="snapshot">
           <div class="snapshot__head"><span>Top rated this quarter</span><span>Score</span></div>
-          <div class="snapshot__row"><span class="snapshot__rank">01</span><span><span class="snapshot__name">IG</span><br><span class="snapshot__meta">CySEC 309/16 · est. 1974</span></span><span class="snapshot__score">4.7</span></div>
-          <div class="snapshot__row"><span class="snapshot__rank">02</span><span><span class="snapshot__name">FOREX.com</span><br><span class="snapshot__meta">CySEC 400/21 · est. 1999</span></span><span class="snapshot__score">4.1</span></div>
-          <div class="snapshot__row"><span class="snapshot__rank">03</span><span><span class="snapshot__name">AvaTrade</span><br><span class="snapshot__meta">est. 2006</span></span><span class="snapshot__score">4.0</span></div>
+          <div class="snapshot__row"><span class="snapshot__rank">01</span><span><span class="snapshot__name">IG</span><br><span class="snapshot__meta">CySEC 309/16 · est. 1974</span></span><span class="snapshot__score">4.13</span></div>
+          <div class="snapshot__row"><span class="snapshot__rank">02</span><span><span class="snapshot__name">AvaTrade</span><br><span class="snapshot__meta">est. 2006</span></span><span class="snapshot__score">4.12</span></div>
+          <div class="snapshot__row"><span class="snapshot__rank">03</span><span><span class="snapshot__name">FOREX.com</span><br><span class="snapshot__meta">CySEC 400/21 · est. 1999</span></span><span class="snapshot__score">3.83</span></div>
         </div>
       </div>
     </div>
