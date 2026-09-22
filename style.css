@@ -10,6 +10,7 @@ Text Domain: globalfxhub
 */
 
 :root{
+    color-scheme: light;
     --ink:#132033; --ink-soft:#3c4b60; --paper:#f6f3ec; --paper-raised:#fffdf8;
     --navy:#0e1c30; --navy-raised:#16283f; --gold:#b8862f; --gold-bright:#d6a53f;
     --teal:#2f6f5e; --rule:#d9d2c1; --rule-dark:#2a3a52;
@@ -18,12 +19,13 @@ Text Domain: globalfxhub
     --font-body:'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-data:'IBM Plex Mono', 'Courier New', monospace;
   }
-  :root:not([data-theme="light"]) {
-    @media (prefers-color-scheme: dark) {
-      --paper:#191510; --paper-raised:#221d16; --ink:#efe9db; --ink-soft:#b9b0a0; --rule:#3a3327;
-    }
-  }
-  :root[data-theme="dark"]{ --paper:#191510; --paper-raised:#221d16; --ink:#efe9db; --ink-soft:#b9b0a0; --rule:#3a3327; }
+  /*
+   * The site intentionally always renders the light palette above,
+   * regardless of the visitor's OS/browser dark-mode setting -- a
+   * deliberate choice for brand/trust consistency on a financial site,
+   * not an oversight. color-scheme: light also stops native form
+   * controls (the language-switcher <select>, etc.) from rendering dark.
+   */
 
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -128,7 +130,6 @@ Text Domain: globalfxhub
   .trustbar__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
   @media (max-width:760px){ .trustbar__grid{grid-template-columns:repeat(2,1fr);} }
   .trustbar__num{font-family:var(--font-data);font-size:28px;color:var(--navy);}
-  @media (prefers-color-scheme: dark){ .trustbar__num{color:var(--gold-bright);} }
   .trustbar__label{font-size:13px;color:var(--ink-soft);margin-top:4px;}
 
   section{padding:68px 0;}
