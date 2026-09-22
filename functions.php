@@ -83,11 +83,22 @@ function globalfxhub_scripts() {
         array(),
         null
     );
+    /*
+     * Cache-bust on the file's actual last-modified time rather than the
+     * theme's static Version header -- that header sat at 1.0 through
+     * many style.css edits this project, meaning every change shipped
+     * under the exact same style.css?ver=1.0 URL and could be served
+     * stale indefinitely by a browser or any caching layer in between.
+     * filemtime() changes automatically with every edit, so this never
+     * needs manual bumping again.
+     */
+    $style_path = get_stylesheet_directory() . '/style.css';
+    $style_version = file_exists( $style_path ) ? filemtime( $style_path ) : wp_get_theme()->get( 'Version' );
     wp_enqueue_style(
         'globalfxhub-style',
         get_stylesheet_uri(),
         array( 'globalfxhub-fonts' ),
-        wp_get_theme()->get( 'Version' )
+        $style_version
     );
 }
 add_action( 'wp_enqueue_scripts', 'globalfxhub_scripts' );

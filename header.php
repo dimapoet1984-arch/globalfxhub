@@ -117,7 +117,7 @@ var GlobalFXHubBrokerSearch = {
     function render(list) {
       if (!list.length) { resultsEl.hidden = true; resultsEl.innerHTML = ''; return; }
       resultsEl.innerHTML = list.map(function(b){
-        return '<a href="/reviews/' + b.slug + '/" class="search-results__item"><span>' + b.name + '</span><span class="search-results__meta">' + b.meta + '</span></a>';
+        return '<a href="/reviews/' + b.slug + '/" class="search-results__item">' + b.name + '</a>';
       }).join('');
       resultsEl.hidden = false;
     }
