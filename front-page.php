@@ -1,4 +1,21 @@
 <?php get_header(); ?>
+<?php
+$globalfxhub_market = globalfxhub_get_market_snapshot();
+$globalfxhub_market_symbols = $globalfxhub_market['symbols'];
+$globalfxhub_biggest_mover = null;
+foreach ( $globalfxhub_market_symbols as $s ) {
+    if ( null === $s['percent_change'] ) {
+        continue;
+    }
+    if ( ! $globalfxhub_biggest_mover || abs( $s['percent_change'] ) > abs( $globalfxhub_biggest_mover['percent_change'] ) ) {
+        $globalfxhub_biggest_mover = $s;
+    }
+}
+$globalfxhub_movers_sorted = $globalfxhub_market_symbols;
+usort( $globalfxhub_movers_sorted, function( $a, $b ) { return $b['percent_change'] <=> $a['percent_change']; } );
+$globalfxhub_gainers = array_slice( $globalfxhub_movers_sorted, 0, 5 );
+$globalfxhub_losers  = array_reverse( array_slice( $globalfxhub_movers_sorted, -5 ) );
+?>
 
 <section class="hero banner" style="padding-top:0;">
   <div class="banner__track" id="bannerTrack">
@@ -34,7 +51,9 @@
         </div>
         <div class="snapshot">
           <div class="snapshot__head"><span>Today's biggest mover</span><span>Change</span></div>
-          <div class="snapshot__row"><span class="snapshot__rank">🔥</span><span><span class="snapshot__name">XAU/USD</span><br><span class="snapshot__meta">Gold</span></span><span class="snapshot__score">+1.42%</span></div>
+          <?php if ( $globalfxhub_biggest_mover ) : ?>
+          <div class="snapshot__row"><span class="snapshot__rank">🔥</span><span><span class="snapshot__name"><?php echo esc_html( $globalfxhub_biggest_mover['label'] ); ?></span><br><span class="snapshot__meta"><?php echo esc_html( $globalfxhub_biggest_mover['category'] ); ?></span></span><span class="snapshot__score"><?php echo esc_html( globalfxhub_format_change( $globalfxhub_biggest_mover['percent_change'] ) ); ?></span></div>
+          <?php endif; ?>
         </div>
       </div>
     </div>
@@ -121,7 +140,11 @@
         <h2><?php globalfxhub_te( 'sec_overview_h2' ); ?></h2>
         <p><?php globalfxhub_te( 'sec_overview_p' ); ?></p>
       </div>
+      <?php if ( $globalfxhub_market['is_live'] && $globalfxhub_market['last_updated'] ) : ?>
+      <span class="section__link" style="cursor:default;border-bottom:none;color:var(--ink-soft);">Updated <?php echo esc_html( human_time_diff( $globalfxhub_market['last_updated'] ) ); ?> ago</span>
+      <?php else : ?>
       <span class="section__link" style="cursor:default;border-bottom:none;color:var(--ink-soft);">Illustrative data · demo</span>
+      <?php endif; ?>
     </div>
 
     <div class="overview__grid">
@@ -129,18 +152,9 @@
         <h3><?php globalfxhub_te( 'sec_heatmap_h3' ); ?></h3>
         <p class="sub">Green = gaining, red = losing. Deeper color means a bigger move today.</p>
         <div class="heatmap">
-          <div class="heat-cell" style="background:#2f6f5e;"><span class="sym">EUR/USD</span><span class="chg">+0.12%</span></div>
-          <div class="heat-cell" style="background:#a44432;"><span class="sym">GBP/USD</span><span class="chg">−0.08%</span></div>
-          <div class="heat-cell" style="background:#3f8a70;"><span class="sym">USD/JPY</span><span class="chg">+0.21%</span></div>
-          <div class="heat-cell" style="background:#c15a44;"><span class="sym">AUD/USD</span><span class="chg">−0.04%</span></div>
-          <div class="heat-cell" style="background:#2f6f5e;"><span class="sym">USD/CAD</span><span class="chg">+0.06%</span></div>
-          <div class="heat-cell" style="background:#1f5a48;"><span class="sym">XAU/USD</span><span class="chg">+1.42%</span></div>
-          <div class="heat-cell" style="background:#8a3f2e;"><span class="sym">WTI Crude</span><span class="chg">−0.95%</span></div>
-          <div class="heat-cell" style="background:#a44432;"><span class="sym">Brent</span><span class="chg">−0.71%</span></div>
-          <div class="heat-cell" style="background:#3f8a70;"><span class="sym">USD/CHF</span><span class="chg">+0.18%</span></div>
-          <div class="heat-cell" style="background:#c15a44;"><span class="sym">NZD/USD</span><span class="chg">−0.22%</span></div>
-          <div class="heat-cell" style="background:#2f6f5e;"><span class="sym">XAG/USD</span><span class="chg">+0.64%</span></div>
-          <div class="heat-cell" style="background:#8a3f2e;"><span class="sym">Nat Gas</span><span class="chg">−1.18%</span></div>
+          <?php foreach ( $globalfxhub_market_symbols as $s ) : ?>
+          <div class="heat-cell" style="background:<?php echo esc_attr( globalfxhub_heat_color( $s['percent_change'] ) ); ?>;"><span class="sym"><?php echo esc_html( $s['label'] ); ?></span><span class="chg"><?php echo esc_html( globalfxhub_format_change( $s['percent_change'] ) ); ?></span></div>
+          <?php endforeach; ?>
         </div>
       </div>
 
@@ -148,20 +162,46 @@
         <h3><?php globalfxhub_te( 'sec_movers_h3' ); ?></h3>
         <p class="sub">Biggest gainers and losers across major instruments.</p>
         <div class="movers-tabs">
-          <button class="movers-tab active">Gainers</button>
-          <button class="movers-tab">Losers</button>
+          <button class="movers-tab active" data-target="movers-gainers">Gainers</button>
+          <button class="movers-tab" data-target="movers-losers">Losers</button>
         </div>
-        <ul class="movers-list">
-          <li><span class="sym">XAU/USD <span class="sub">Gold</span></span><span class="chg chg--up">+1.42%</span></li>
-          <li><span class="sym">USD/JPY <span class="sub">Major</span></span><span class="chg chg--up">+0.21%</span></li>
-          <li><span class="sym">XAG/USD <span class="sub">Silver</span></span><span class="chg chg--up">+0.64%</span></li>
-          <li><span class="sym">EUR/USD <span class="sub">Major</span></span><span class="chg chg--up">+0.12%</span></li>
-          <li><span class="sym">USD/CAD <span class="sub">Major</span></span><span class="chg chg--up">+0.06%</span></li>
+        <ul class="movers-list" id="movers-gainers">
+          <?php foreach ( $globalfxhub_gainers as $s ) :
+              $up = null === $s['percent_change'] || $s['percent_change'] >= 0;
+          ?>
+          <li><span class="sym"><?php echo esc_html( $s['label'] ); ?> <span class="sub"><?php echo esc_html( $s['category'] ); ?></span></span><span class="chg <?php echo $up ? 'chg--up' : 'chg--down'; ?>"><?php echo esc_html( globalfxhub_format_change( $s['percent_change'] ) ); ?></span></li>
+          <?php endforeach; ?>
+        </ul>
+        <ul class="movers-list" id="movers-losers" style="display:none;">
+          <?php foreach ( $globalfxhub_losers as $s ) :
+              $up = null === $s['percent_change'] || $s['percent_change'] >= 0;
+          ?>
+          <li><span class="sym"><?php echo esc_html( $s['label'] ); ?> <span class="sub"><?php echo esc_html( $s['category'] ); ?></span></span><span class="chg <?php echo $up ? 'chg--up' : 'chg--down'; ?>"><?php echo esc_html( globalfxhub_format_change( $s['percent_change'] ) ); ?></span></li>
+          <?php endforeach; ?>
         </ul>
       </div>
     </div>
+    <p style="font-size:12px;color:var(--ink-soft);margin-top:10px;">Market data via Twelve Data<?php echo $globalfxhub_market['is_live'] ? '' : ' -- illustrative until live data is configured'; ?>. For information only, not investment advice.</p>
   </div>
 </section>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.movers-tab');
+  if (!tabs.length) return;
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      var gainers = document.getElementById('movers-gainers');
+      var losers = document.getElementById('movers-losers');
+      var showGainers = tab.getAttribute('data-target') === 'movers-gainers';
+      if (gainers) gainers.style.display = showGainers ? '' : 'none';
+      if (losers) losers.style.display = showGainers ? 'none' : '';
+    });
+  });
+})();
+</script>
 
 <section id="from-the-blog">
   <div class="wrap">

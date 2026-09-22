@@ -15,17 +15,19 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<?php
+$globalfxhub_ticker_snapshot = globalfxhub_get_market_snapshot();
+$globalfxhub_ticker_items = array_filter( $globalfxhub_ticker_snapshot['symbols'], function( $s ) { return ! empty( $s['in_ticker'] ); } );
+// Repeat the sequence once so the CSS scroll animation loops seamlessly.
+$globalfxhub_ticker_render = array_merge( $globalfxhub_ticker_items, $globalfxhub_ticker_items );
+?>
 <div class="ticker" aria-hidden="true">
   <div class="ticker__track">
-    <span><b>EUR/USD</b> 1.0834 <span class="ticker__up">▲ 0.12%</span></span>
-    <span><b>GBP/USD</b> 1.2651 <span class="ticker__down">▼ 0.08%</span></span>
-    <span><b>USD/JPY</b> 149.32 <span class="ticker__up">▲ 0.21%</span></span>
-    <span><b>AUD/USD</b> 0.6598 <span class="ticker__down">▼ 0.04%</span></span>
-    <span><b>USD/CAD</b> 1.3572 <span class="ticker__up">▲ 0.06%</span></span>
-    <span><b>XAU/USD</b> 2,412.80 <span class="ticker__up">▲ 0.34%</span></span>
-    <span><b>EUR/USD</b> 1.0834 <span class="ticker__up">▲ 0.12%</span></span>
-    <span><b>GBP/USD</b> 1.2651 <span class="ticker__down">▼ 0.08%</span></span>
-    <span><b>USD/JPY</b> 149.32 <span class="ticker__up">▲ 0.21%</span></span>
+    <?php foreach ( $globalfxhub_ticker_render as $s ) :
+        $up = $s['percent_change'] >= 0;
+    ?>
+    <span><b><?php echo esc_html( $s['label'] ); ?></b> <?php echo esc_html( globalfxhub_format_price( $s['close'], $s ) ); ?> <span class="ticker__<?php echo $up ? 'up' : 'down'; ?>"><?php echo $up ? '▲' : '▼'; ?> <?php echo esc_html( number_format( abs( $s['percent_change'] ), 2 ) ); ?>%</span></span>
+    <?php endforeach; ?>
   </div>
 </div>
 
