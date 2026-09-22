@@ -83,14 +83,14 @@ function globalfxhub_market_fallback_data() {
  * trigger. This is a safety net, not the primary throttle -- the primary
  * throttle is the cron interval below.
  */
-function globalfxhub_fetch_market_data() {
+function globalfxhub_fetch_market_data( $force = false ) {
     if ( ! defined( 'GLOBALFXHUB_TWELVEDATA_API_KEY' ) || ! GLOBALFXHUB_TWELVEDATA_API_KEY ) {
-        return;
+        return array( 'ok' => false, 'reason' => 'GLOBALFXHUB_TWELVEDATA_API_KEY is not defined (or is empty) in wp-config.php.' );
     }
 
     $last_attempt = (int) get_option( 'globalfxhub_market_data_last_attempt', 0 );
-    if ( ( time() - $last_attempt ) < 20 * MINUTE_IN_SECONDS ) {
-        return;
+    if ( ! $force && ( time() - $last_attempt ) < 20 * MINUTE_IN_SECONDS ) {
+        return array( 'ok' => false, 'reason' => 'Skipped: fetched ' . ( time() - $last_attempt ) . 's ago, under the 20-minute minimum gap.' );
     }
     update_option( 'globalfxhub_market_data_last_attempt', time(), false );
 
@@ -105,17 +105,21 @@ function globalfxhub_fetch_market_data() {
 
     $response = wp_remote_get( $url, array( 'timeout' => 15 ) );
     if ( is_wp_error( $response ) ) {
-        error_log( 'GlobalFXHub market data fetch failed: ' . $response->get_error_message() );
-        return;
+        $msg = 'GlobalFXHub market data fetch failed: ' . $response->get_error_message();
+        error_log( $msg );
+        return array( 'ok' => false, 'reason' => $msg );
     }
-    if ( 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
-        error_log( 'GlobalFXHub market data fetch failed: HTTP ' . wp_remote_retrieve_response_code( $response ) );
-        return;
+    $code = (int) wp_remote_retrieve_response_code( $response );
+    $raw_body = wp_remote_retrieve_body( $response );
+    if ( 200 !== $code ) {
+        $msg = 'GlobalFXHub market data fetch failed: HTTP ' . $code . ' -- ' . substr( $raw_body, 0, 300 );
+        error_log( $msg );
+        return array( 'ok' => false, 'reason' => $msg, 'http_code' => $code, 'raw_body' => $raw_body );
     }
 
-    $body = json_decode( wp_remote_retrieve_body( $response ), true );
+    $body = json_decode( $raw_body, true );
     if ( ! is_array( $body ) ) {
-        return;
+        return array( 'ok' => false, 'reason' => 'Response was not valid JSON.', 'raw_body' => $raw_body );
     }
 
     // A single-symbol request returns the quote object directly; a
@@ -126,9 +130,11 @@ function globalfxhub_fetch_market_data() {
     }
 
     $parsed = array();
+    $skipped = array();
     foreach ( $symbols as $symbol ) {
         $quote = isset( $body[ $symbol ] ) ? $body[ $symbol ] : null;
         if ( ! is_array( $quote ) || isset( $quote['code'] ) || ! isset( $quote['close'] ) || ! is_numeric( $quote['close'] ) ) {
+            $skipped[ $symbol ] = is_array( $quote ) ? $quote : 'not present in response';
             continue;
         }
         $parsed[ $symbol ] = array(
@@ -138,8 +144,9 @@ function globalfxhub_fetch_market_data() {
     }
 
     if ( empty( $parsed ) ) {
-        error_log( 'GlobalFXHub market data fetch: no symbols parsed from response -- check symbol names against a live Twelve Data /quote response.' );
-        return;
+        $msg = 'GlobalFXHub market data fetch: no symbols parsed from response -- check symbol names against a live Twelve Data /quote response.';
+        error_log( $msg );
+        return array( 'ok' => false, 'reason' => $msg, 'raw_body' => $raw_body, 'skipped' => $skipped );
     }
 
     $stored = get_option( GLOBALFXHUB_MARKET_DATA_OPTION, array() );
@@ -150,6 +157,8 @@ function globalfxhub_fetch_market_data() {
         'quotes'       => $merged_quotes,
         'last_updated' => time(),
     ), false );
+
+    return array( 'ok' => true, 'parsed' => $parsed, 'skipped' => $skipped );
 }
 
 /**
@@ -182,6 +191,71 @@ function globalfxhub_unschedule_market_data_cron() {
     wp_clear_scheduled_hook( 'globalfxhub_fetch_market_data_event' );
 }
 add_action( 'switch_theme', 'globalfxhub_unschedule_market_data_cron' );
+
+/**
+ * Temporary, admin-only diagnostic: visit /?globalfxhub_market_debug=1
+ * while logged in as an administrator to see exactly what's configured,
+ * what's scheduled, what's cached, and -- by forcing a live fetch
+ * attempt right there (bypassing the 20-minute guard, but still subject
+ * to Twelve Data's own rate limits since it's still just one request) --
+ * the raw API response. Safe to remove once the feature is confirmed
+ * working; it does nothing for anyone not logged in as an admin.
+ */
+function globalfxhub_market_data_debug() {
+    if ( ! isset( $_GET['globalfxhub_market_debug'] ) || ! current_user_can( 'manage_options' ) ) {
+        return;
+    }
+
+    header( 'Content-Type: text/plain; charset=utf-8' );
+
+    $key_defined = defined( 'GLOBALFXHUB_TWELVEDATA_API_KEY' ) && GLOBALFXHUB_TWELVEDATA_API_KEY;
+    echo "=== GlobalFXHub market data debug ===\n\n";
+    echo "API key defined: " . ( $key_defined ? 'yes' : 'NO -- check wp-config.php' ) . "\n";
+    if ( $key_defined ) {
+        $key = GLOBALFXHUB_TWELVEDATA_API_KEY;
+        echo "API key preview: " . substr( $key, 0, 4 ) . str_repeat( '*', max( 0, strlen( $key ) - 8 ) ) . substr( $key, -4 ) . ' (length ' . strlen( $key ) . ")\n";
+    }
+
+    $next = wp_next_scheduled( 'globalfxhub_fetch_market_data_event' );
+    echo "\nCron event scheduled: " . ( $next ? gmdate( 'Y-m-d H:i:s', $next ) . ' UTC (in ' . human_time_diff( time(), $next ) . ')' : 'NOT SCHEDULED' ) . "\n";
+
+    $stored = get_option( GLOBALFXHUB_MARKET_DATA_OPTION, array() );
+    echo "\nCurrently cached data:\n";
+    if ( empty( $stored ) ) {
+        echo "  (nothing cached yet)\n";
+    } else {
+        echo "  last_updated: " . ( ! empty( $stored['last_updated'] ) ? gmdate( 'Y-m-d H:i:s', $stored['last_updated'] ) . ' UTC' : 'n/a' ) . "\n";
+        echo "  quotes cached: " . ( ! empty( $stored['quotes'] ) ? count( $stored['quotes'] ) : 0 ) . "\n";
+        if ( ! empty( $stored['quotes'] ) ) {
+            foreach ( $stored['quotes'] as $sym => $q ) {
+                echo "    $sym: close={$q['close']} change={$q['percent_change']}\n";
+            }
+        }
+    }
+
+    echo "\n=== Forcing a live fetch attempt now ===\n";
+    $result = globalfxhub_fetch_market_data( true );
+    echo "ok: " . ( $result['ok'] ? 'true' : 'false' ) . "\n";
+    if ( ! $result['ok'] ) {
+        echo "reason: " . $result['reason'] . "\n";
+        if ( isset( $result['raw_body'] ) ) {
+            echo "\nraw response body (first 1000 chars):\n" . substr( $result['raw_body'], 0, 1000 ) . "\n";
+        }
+    } else {
+        echo "parsed successfully: " . count( $result['parsed'] ) . " symbols\n";
+        foreach ( $result['parsed'] as $sym => $q ) {
+            echo "  $sym: close={$q['close']} change={$q['percent_change']}\n";
+        }
+        if ( ! empty( $result['skipped'] ) ) {
+            echo "\nskipped/failed symbols:\n";
+            foreach ( $result['skipped'] as $sym => $why ) {
+                echo "  $sym: " . ( is_array( $why ) ? wp_json_encode( $why ) : $why ) . "\n";
+            }
+        }
+    }
+    exit;
+}
+add_action( 'init', 'globalfxhub_market_data_debug' );
 
 /**
  * What templates actually read. Every symbol always has a value: real, if
