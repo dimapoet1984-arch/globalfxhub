@@ -276,7 +276,7 @@
         </span>
         <span class="rank-detail col-fees">0.6 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">Proprietary, MT4, ProRealTime</span>
-        <span class="rank-score">4.7 / 5</span>
+        <span class="rank-score">4.13 / 5</span>
         <span class="rank-ctas">
           <a href="<?php echo esc_url( home_url( '/reviews/ig/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ig' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
@@ -285,29 +285,29 @@
       <div class="rank-row">
         <span class="rank-num">02</span>
         <span class="rank-broker">
-          <span class="rank-broker__name">FOREX.com</span>
-          <span class="rank-broker__tag">CySEC 400/21 · est. 1999</span>
-        </span>
-        <span class="rank-detail col-fees">1.0 pips (EUR/USD)</span>
-        <span class="rank-detail col-plat">Proprietary, MT4, MT5…</span>
-        <span class="rank-score">4.1 / 5</span>
-        <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/forex-com/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=forex-com' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
-        </span>
-      </div>
-      <div class="rank-row">
-        <span class="rank-num">03</span>
-        <span class="rank-broker">
           <span class="rank-broker__name">AvaTrade</span>
           <span class="rank-broker__tag">EU-regulated (MiFID passporting) · est. 2006</span>
         </span>
         <span class="rank-detail col-fees">0.93 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">Proprietary (AvaTradeGO), MT4, MT5…</span>
-        <span class="rank-score">4.0 / 5</span>
+        <span class="rank-score">4.12 / 5</span>
         <span class="rank-ctas">
           <a href="<?php echo esc_url( home_url( '/reviews/avatrade/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=avatrade' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
+        </span>
+      </div>
+      <div class="rank-row">
+        <span class="rank-num">03</span>
+        <span class="rank-broker">
+          <span class="rank-broker__name">FOREX.com</span>
+          <span class="rank-broker__tag">CySEC 400/21 · est. 1999</span>
+        </span>
+        <span class="rank-detail col-fees">1.0 pips (EUR/USD)</span>
+        <span class="rank-detail col-plat">Proprietary, MT4, MT5…</span>
+        <span class="rank-score">3.83 / 5</span>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/forex-com/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=forex-com' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -318,7 +318,7 @@
         </span>
         <span class="rank-detail col-fees">1.3 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">Trading Station (proprietary), MT4, ZuluTrade…</span>
-        <span class="rank-score">3.9 / 5</span>
+        <span class="rank-score">3.79 / 5</span>
         <span class="rank-ctas">
           <a href="<?php echo esc_url( home_url( '/reviews/fxcm/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=fxcm' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
@@ -327,113 +327,113 @@
       <div class="rank-row">
         <span class="rank-num">05</span>
         <span class="rank-broker">
-          <span class="rank-broker__name">XTB</span>
-          <span class="rank-broker__tag">CySEC 169/12 · est. 2002</span>
+          <span class="rank-broker__name">Plus500</span>
+          <span class="rank-broker__tag">CySEC 250/14 · est. 2008</span>
         </span>
-        <span class="rank-detail col-fees">0.7 pips (EUR/USD)</span>
-        <span class="rank-detail col-plat">xStation 5 (proprietary)</span>
-        <span class="rank-score">3.8 / 5</span>
+        <span class="rank-detail col-fees">1.3 pips (EUR/USD)</span>
+        <span class="rank-detail col-plat">WebTrader (proprietary)</span>
+        <span class="rank-score">3.65 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/xtb/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xtb' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/reviews/plus500/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=plus500' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
         <span class="rank-num">06</span>
         <span class="rank-broker">
-          <span class="rank-broker__name">Capital.com</span>
-          <span class="rank-broker__tag">CySEC 319/17 · est. 2016</span>
-        </span>
-        <span class="rank-detail col-fees">0.6 pips (EUR/USD)</span>
-        <span class="rank-detail col-plat">Proprietary, MT4, TradingView</span>
-        <span class="rank-score">3.4 / 5</span>
-        <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/capital-com/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=capital-com' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
-        </span>
-      </div>
-      <div class="rank-row">
-        <span class="rank-num">07</span>
-        <span class="rank-broker">
           <span class="rank-broker__name">Pepperstone</span>
-          <span class="rank-broker__tag">CySEC licensed 2020 · est. 2010</span>
+          <span class="rank-broker__tag">CySEC 388/20 · est. 2010</span>
         </span>
         <span class="rank-detail col-fees">1.1 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5, cTrader…</span>
-        <span class="rank-score">3.4 / 5</span>
+        <span class="rank-score">3.64 / 5</span>
         <span class="rank-ctas">
           <a href="<?php echo esc_url( home_url( '/reviews/pepperstone/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=pepperstone' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
-        <span class="rank-num">08</span>
+        <span class="rank-num">07</span>
         <span class="rank-broker">
           <span class="rank-broker__name">Eightcap</span>
           <span class="rank-broker__tag">CySEC 246/14 · est. 2009</span>
         </span>
         <span class="rank-detail col-fees">1.0 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5, TradingView</span>
-        <span class="rank-score">3.3 / 5</span>
+        <span class="rank-score">3.5 / 5</span>
         <span class="rank-ctas">
           <a href="<?php echo esc_url( home_url( '/reviews/eightcap/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=eightcap' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
-        <span class="rank-num">09</span>
-        <span class="rank-broker">
-          <span class="rank-broker__name">eToro</span>
-          <span class="rank-broker__tag">CySEC 109/10 · est. 2007</span>
-        </span>
-        <span class="rank-detail col-fees">1.0 pips (EUR/USD)</span>
-        <span class="rank-detail col-plat">Proprietary (CopyTrader)</span>
-        <span class="rank-score">3.2 / 5</span>
-        <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/etoro/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=etoro' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
-        </span>
-      </div>
-      <div class="rank-row">
-        <span class="rank-num">10</span>
+        <span class="rank-num">08</span>
         <span class="rank-broker">
           <span class="rank-broker__name">FxPro</span>
           <span class="rank-broker__tag">CySEC 078/07 · est. 2006</span>
         </span>
         <span class="rank-detail col-fees">1.44 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5, cTrader</span>
-        <span class="rank-score">3.2 / 5</span>
+        <span class="rank-score">3.5 / 5</span>
         <span class="rank-ctas">
           <a href="<?php echo esc_url( home_url( '/reviews/fxpro/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=fxpro' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
-        <span class="rank-num">11</span>
+        <span class="rank-num">09</span>
+        <span class="rank-broker">
+          <span class="rank-broker__name">Capital.com</span>
+          <span class="rank-broker__tag">CySEC 319/17 · est. 2016</span>
+        </span>
+        <span class="rank-detail col-fees">0.6 pips (EUR/USD)</span>
+        <span class="rank-detail col-plat">Proprietary, MT4, TradingView</span>
+        <span class="rank-score">3.44 / 5</span>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/capital-com/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=capital-com' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
+        </span>
+      </div>
+      <div class="rank-row">
+        <span class="rank-num">10</span>
         <span class="rank-broker">
           <span class="rank-broker__name">XM</span>
           <span class="rank-broker__tag">CySEC 120/10 · est. 2009</span>
         </span>
         <span class="rank-detail col-fees">1.1 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5</span>
-        <span class="rank-score">3.1 / 5</span>
+        <span class="rank-score">3.34 / 5</span>
         <span class="rank-ctas">
           <a href="<?php echo esc_url( home_url( '/reviews/xm/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xm' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
+        <span class="rank-num">11</span>
+        <span class="rank-broker">
+          <span class="rank-broker__name">eToro</span>
+          <span class="rank-broker__tag">CySEC 109/10 · est. 2007</span>
+        </span>
+        <span class="rank-detail col-fees">1.0 pips (EUR/USD)</span>
+        <span class="rank-detail col-plat">Proprietary (CopyTrader)</span>
+        <span class="rank-score">3.22 / 5</span>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/etoro/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=etoro' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
+        </span>
+      </div>
+      <div class="rank-row">
         <span class="rank-num">12</span>
         <span class="rank-broker">
-          <span class="rank-broker__name">Plus500</span>
-          <span class="rank-broker__tag">CySEC 250/14 · est. 2008</span>
+          <span class="rank-broker__name">XTB</span>
+          <span class="rank-broker__tag">CySEC 169/12 · est. 2002</span>
         </span>
-        <span class="rank-detail col-fees">1.3 pips (EUR/USD)</span>
-        <span class="rank-detail col-plat">WebTrader (proprietary)</span>
-        <span class="rank-score">3.0 / 5</span>
+        <span class="rank-detail col-fees">0.7 pips (EUR/USD)</span>
+        <span class="rank-detail col-plat">xStation 5 (proprietary)</span>
+        <span class="rank-score">3.1 / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/plus500/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=plus500' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/reviews/xtb/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xtb' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <div class="rank-row">
@@ -444,7 +444,7 @@
         </span>
         <span class="rank-detail col-fees">0.8 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5, cTrader</span>
-        <span class="rank-score">2.5 / 5</span>
+        <span class="rank-score">3.07 / 5</span>
         <span class="rank-ctas">
           <a href="<?php echo esc_url( home_url( '/reviews/ic-markets/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ic-markets' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
@@ -453,29 +453,29 @@
       <div class="rank-row">
         <span class="rank-num">14</span>
         <span class="rank-broker">
-          <span class="rank-broker__name">Trading 212</span>
-          <span class="rank-broker__tag">EU-regulated (MiFID passporting) · est. 2004</span>
-        </span>
-        <span class="rank-detail col-fees">2.7 pips (EUR/USD)</span>
-        <span class="rank-detail col-plat">Proprietary</span>
-        <span class="rank-score">2.3 / 5</span>
-        <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/trading-212/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=trading-212' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
-        </span>
-      </div>
-      <div class="rank-row">
-        <span class="rank-num">15</span>
-        <span class="rank-broker">
           <span class="rank-broker__name">Tickmill</span>
           <span class="rank-broker__tag">CySEC 278/15 · est. 2014</span>
         </span>
         <span class="rank-detail col-fees">1.7 pips (EUR/USD)</span>
         <span class="rank-detail col-plat">MT4, MT5</span>
-        <span class="rank-score">1.8 / 5</span>
+        <span class="rank-score">2.94 / 5</span>
         <span class="rank-ctas">
           <a href="<?php echo esc_url( home_url( '/reviews/tickmill/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=tickmill' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
+        </span>
+      </div>
+      <div class="rank-row">
+        <span class="rank-num">15</span>
+        <span class="rank-broker">
+          <span class="rank-broker__name">Trading 212</span>
+          <span class="rank-broker__tag">CySEC 398/21 · est. 2004</span>
+        </span>
+        <span class="rank-detail col-fees">2.7 pips (EUR/USD)</span>
+        <span class="rank-detail col-plat">Proprietary</span>
+        <span class="rank-score">2.59 / 5</span>
+        <span class="rank-ctas">
+          <a href="<?php echo esc_url( home_url( '/reviews/trading-212/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=trading-212' ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
     </div>

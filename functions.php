@@ -481,7 +481,7 @@ add_action( 'after_switch_theme', 'flush_rewrite_rules' );
 /**
  * SEO for /reviews/{slug}/ pages.
  *
- * All 15 broker URLs share one underlying "Reviews" Page object (the
+ * All broker URLs share one underlying "Reviews" Page object (the
  * broker itself is read from the "broker" query var, not a separate
  * post), so without this WordPress's defaults would give every one of
  * them the same <title>, the same canonical link (pointing at /reviews/
