@@ -42,6 +42,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
   <div class="hero__actions" style="margin-top:22px;">
     <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold">Compare vs another broker</a>
     <a href="https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/" target="_blank" rel="noopener" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);">Verify on CySEC register</a>
+    <a href="#" class="btn btn--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">Visit Broker</a>
   </div>
 </div>
 
@@ -168,7 +169,10 @@ $others = array_slice( $others, 0, 3 );
       <span class="rank-detail col-fees"><?php echo esc_html( $b['spread_eurusd'] ); ?> pips (EUR/USD)</span>
       <span class="rank-detail col-plat"><?php echo esc_html( implode( ', ', $b['platforms'] ) ); ?></span>
       <span class="rank-score"><?php echo esc_html( $b['scores']['overall'] ); ?> / 5</span>
-      <a href="<?php echo esc_url( home_url( '/reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta">Read review</a>
+      <span class="rank-ctas">
+        <a href="<?php echo esc_url( home_url( '/reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta">Read review</a>
+        <a href="#" class="rank-cta rank-cta--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">Visit Broker</a>
+      </span>
     </div>
     <?php endforeach; ?>
   </div>

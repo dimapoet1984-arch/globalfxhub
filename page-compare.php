@@ -123,6 +123,10 @@ const PRESET_B = <?php echo wp_json_encode( $b_param ); ?>;
       barsB += `<div class="subscore-row">${label}<div class="bar-track"><div class="bar-fill" style="width:${b.scores[key]/5*100}%;"></div></div></div>`;
     });
     html += `<tr><th>Score breakdown</th><td>${barsA}</td><td>${barsB}</td></tr>`;
+    html += `<tr><th>Visit</th>
+      <td><a href="#" class="btn btn--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">Visit ${a.name}</a></td>
+      <td><a href="#" class="btn btn--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">Visit ${b.name}</a></td>
+    </tr>`;
     html += '</tbody>';
     table.innerHTML = html;
 
