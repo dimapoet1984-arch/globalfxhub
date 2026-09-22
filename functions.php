@@ -102,7 +102,6 @@ function globalfxhub_fallback_menu() {
     }
     echo '<ul class="nav__links" id="navLinks">';
     echo '<li><a href="' . esc_url( home_url( '/reviews/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_reviews' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/guides/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_guides' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( $blog_url ) . '">' . esc_html( globalfxhub_t( 'nav_blog' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/compare/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_compare' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/countries/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_countries' ) ) . '</a></li>';
