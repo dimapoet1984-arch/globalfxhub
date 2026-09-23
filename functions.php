@@ -20,6 +20,7 @@ define( 'GLOBALFXHUB_LANG_SWITCHER_ENABLED', false );
 require get_template_directory() . '/inc/candlestick-patterns.php';
 require get_template_directory() . '/inc/translatable-strings.php';
 require get_template_directory() . '/inc/market-data.php';
+require get_template_directory() . '/inc/service-pages.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
