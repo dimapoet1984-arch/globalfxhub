@@ -15,6 +15,15 @@ $globalfxhub_movers_sorted = $globalfxhub_market_symbols;
 usort( $globalfxhub_movers_sorted, function( $a, $b ) { return $b['percent_change'] <=> $a['percent_change']; } );
 $globalfxhub_gainers = array_slice( $globalfxhub_movers_sorted, 0, 5 );
 $globalfxhub_losers  = array_reverse( array_slice( $globalfxhub_movers_sorted, -5 ) );
+
+$globalfxhub_broker_count = count( globalfxhub_get_brokers() );
+$globalfxhub_article_count = 0;
+foreach ( array( 'guides', 'candlestick-patterns' ) as $globalfxhub_cat_slug ) {
+    $globalfxhub_cat_term = get_term_by( 'slug', $globalfxhub_cat_slug, 'category' );
+    if ( $globalfxhub_cat_term ) {
+        $globalfxhub_article_count += (int) $globalfxhub_cat_term->count;
+    }
+}
 ?>
 
 <section class="hero banner" style="padding-top:0;">
@@ -128,15 +137,15 @@ GlobalFXHubBrokerSearch.init(
 <div class="trustbar">
   <div class="wrap trustbar__grid">
     <div>
-      <div class="trustbar__num">3.2M</div>
+      <div class="trustbar__num"><?php echo esc_html( $globalfxhub_broker_count ); ?></div>
       <div class="trustbar__label"><?php globalfxhub_te( 'trust1' ); ?></div>
     </div>
     <div>
-      <div class="trustbar__num">180+</div>
+      <div class="trustbar__num">4</div>
       <div class="trustbar__label"><?php globalfxhub_te( 'trust2' ); ?></div>
     </div>
     <div>
-      <div class="trustbar__num">27</div>
+      <div class="trustbar__num"><?php echo esc_html( $globalfxhub_article_count ); ?></div>
       <div class="trustbar__label"><?php globalfxhub_te( 'trust3' ); ?></div>
     </div>
     <div>

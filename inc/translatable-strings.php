@@ -86,9 +86,9 @@ function globalfxhub_string_text( $key ) {
         'hero3_p' => 'Plain-English guides on forex, commodities, oil, and gold -- no jargon, no sales pitch.',
         'hero3_button' => 'Browse the guides',
 
-        'trust1' => 'Readers helped in 2026',
-        'trust2' => 'Test criteria per broker',
-        'trust3' => 'Brokers tested hands-on',
+        'trust1' => 'CySEC brokers researched',
+        'trust2' => 'Scoring factors, fully disclosed',
+        'trust3' => 'Free educational guides & articles',
         'trust4' => 'Paid for by broker rankings',
 
         'sec_overview_h2' => 'Market overview',
