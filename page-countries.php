@@ -26,7 +26,7 @@ $country = $country_slug ? globalfxhub_get_country_by_slug( $country_slug ) : nu
 
 <div class="wrap page-head">
   <div class="eyebrow">BEST BROKER IN <?php echo esc_html( strtoupper( $country['name'] ) ); ?></div>
-  <h1>Best Forex &amp; CFD Brokers in <?php echo esc_html( $country['name'] ); ?></h1>
+  <h1><span class="country-flag" aria-hidden="true"><?php echo esc_html( globalfxhub_country_flag_emoji( $country['iso'] ) ); ?></span> Best Forex &amp; CFD Brokers in <?php echo esc_html( $country['name'] ); ?></h1>
   <p>Top CySEC-regulated brokers available to retail traders in <?php echo esc_html( $country['name'] ); ?>, ranked by our disclosed methodology<?php echo $has_local ? ' -- with brokers actually headquartered here called out below' : ''; ?>.</p>
 </div>
 
@@ -94,9 +94,9 @@ $country = $country_slug ? globalfxhub_get_country_by_slug( $country_slug ) : nu
 <div class="wrap" style="padding-bottom:60px;">
   <div class="guides__grid">
     <?php foreach ( $countries as $slug => $c ) : ?>
-    <a href="<?php echo esc_url( home_url( '/countries/' . $slug . '/' ) ); ?>" class="guide">
+    <a href="<?php echo esc_url( home_url( '/countries/' . $slug . '/' ) ); ?>" class="guide country-card">
       <div class="guide__time"><?php echo esc_html( $c['currency'] ); ?> &middot; EU since <?php echo esc_html( $c['eu_since'] ); ?></div>
-      <h3>Best Broker in <?php echo esc_html( $c['name'] ); ?></h3>
+      <h3><span class="country-flag" aria-hidden="true"><?php echo esc_html( globalfxhub_country_flag_emoji( $c['iso'] ) ); ?></span> Best Broker in <?php echo esc_html( $c['name'] ); ?></h3>
       <p><?php echo esc_html( $c['regulator'] ); ?></p>
     </a>
     <?php endforeach; ?>

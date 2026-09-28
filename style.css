@@ -222,6 +222,9 @@ Text Domain: globalfxhub
   .guide h3{font-family:var(--font-display);font-weight:500;font-size:18px;margin:10px 0 8px;line-height:1.28;}
   .guide p{font-size:14px;color:var(--ink-soft);margin:0;}
 
+  .country-flag{font-size:1.25em;line-height:1;vertical-align:-2px;margin-right:2px;}
+  .page-head h1 .country-flag{font-size:0.85em;vertical-align:-3px;}
+
   .news__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule);border-left:1px solid var(--rule);}
   @media (max-width:900px){ .news__grid{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:600px){ .news__grid{grid-template-columns:1fr;} }

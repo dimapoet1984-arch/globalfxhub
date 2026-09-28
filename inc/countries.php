@@ -25,11 +25,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * All 27 EU member states. 'hq_match' is the plain-English country name
- * as it actually appears in broker 'hq' strings (see globalfxhub_get_brokers()),
- * used to detect a local headquarters -- confirmed present in the data for
- * Cyprus, Poland, Ireland, Germany, and Estonia; every other country
- * currently has no HQ match and falls back to the global ranking.
+ * All 27 EU member states. 'iso' is the ISO 3166-1 alpha-2 code, used to
+ * render a flag emoji (see globalfxhub_country_flag_emoji() below).
+ * 'hq_match' is the plain-English country name as it actually appears in
+ * broker 'hq' strings (see globalfxhub_get_brokers()), used to detect a
+ * local headquarters -- confirmed present in the data for Cyprus, Poland,
+ * Ireland, Germany, and Estonia; every other country currently has no HQ
+ * match and falls back to the global ranking.
  *
  * 'paragraphs' are hand-written, fact-checked content: currency,
  * regulator, EU/eurozone status, and -- where a genuinely verifiable,
@@ -40,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function globalfxhub_get_countries() {
     return array(
         'austria' => array(
-            'name' => 'Austria', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1995,
+            'name' => 'Austria', 'iso' => 'AT', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1995,
             'regulator' => 'FMA (Finanzmarktaufsicht)', 'hq_match' => 'Austria',
             'paragraphs' => array(
                 'Austria joined the EU in 1995 and has used the euro since the currency\'s launch. Retail CFD and forex trading is supervised domestically by the FMA (Finanzmarktaufsicht), which enforces the same EU-wide leverage caps and risk-warning rules that apply to every CySEC-licensed broker passporting into the country.',
@@ -48,7 +50,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'belgium' => array(
-            'name' => 'Belgium', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
+            'name' => 'Belgium', 'iso' => 'BE', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
             'regulator' => 'FSMA (Financial Services and Markets Authority)', 'hq_match' => 'Belgium',
             'paragraphs' => array(
                 'A founding EU and eurozone member, Belgium is supervised domestically by the FSMA. Belgium was notably ahead of the curve on retail derivatives protection: the FSMA restricted the distribution of binary options and certain highly leveraged OTC derivatives to retail clients back in 2016, two years before ESMA\'s EU-wide leverage caps and marketing rules took effect in 2018.',
@@ -56,7 +58,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'bulgaria' => array(
-            'name' => 'Bulgaria', 'currency' => 'BGN', 'eurozone' => false, 'eu_since' => 2007,
+            'name' => 'Bulgaria', 'iso' => 'BG', 'currency' => 'BGN', 'eurozone' => false, 'eu_since' => 2007,
             'regulator' => 'FSC (Financial Supervision Commission)', 'hq_match' => 'Bulgaria',
             'paragraphs' => array(
                 'Bulgaria joined the EU in 2007 and still uses its own currency, the lev (BGN), which is pegged to the euro; the country has targeted future eurozone entry. Domestic oversight of financial markets sits with the FSC, though in practice most retail forex and CFD trading in Bulgaria happens through brokers passporting in from elsewhere in the EU, CySEC-licensed firms among the most common.',
@@ -64,7 +66,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'croatia' => array(
-            'name' => 'Croatia', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2013,
+            'name' => 'Croatia', 'iso' => 'HR', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2013,
             'regulator' => 'HANFA (Croatian Financial Services Supervisory Agency)', 'hq_match' => 'Croatia',
             'paragraphs' => array(
                 'Croatia is the EU\'s newest member state, joining in 2013, and the most recent to adopt the euro, switching from the kuna in January 2023. HANFA supervises domestic financial markets, working alongside the EU-wide ESMA framework that governs every CySEC-passported broker operating there.',
@@ -72,7 +74,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'cyprus' => array(
-            'name' => 'Cyprus', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
+            'name' => 'Cyprus', 'iso' => 'CY', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
             'regulator' => 'CySEC (Cyprus Securities and Exchange Commission)', 'hq_match' => 'Cyprus',
             'paragraphs' => array(
                 'Cyprus is the regulatory home base for this entire site: CySEC is the licensing authority behind every broker in our rankings, and the large majority of them run their EU-regulated entity directly out of Limassol or Nicosia. For Cypriot residents, that means many of the brokers reviewed here aren\'t just passporting in from elsewhere -- they\'re headquartered locally.',
@@ -80,7 +82,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'czechia' => array(
-            'name' => 'Czechia', 'currency' => 'CZK', 'eurozone' => false, 'eu_since' => 2004,
+            'name' => 'Czechia', 'iso' => 'CZ', 'currency' => 'CZK', 'eurozone' => false, 'eu_since' => 2004,
             'regulator' => 'ČNB (Czech National Bank)', 'hq_match' => 'Czech',
             'paragraphs' => array(
                 'Czechia joined the EU in 2004 and has not adopted the euro, retaining the koruna (CZK). The Czech National Bank (ČNB) acts as both central bank and financial supervisor, and enforces the same EU-wide leverage limits and risk disclosures on any broker serving Czech retail clients.',
@@ -88,7 +90,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'denmark' => array(
-            'name' => 'Denmark', 'currency' => 'DKK', 'eurozone' => false, 'eu_since' => 1973,
+            'name' => 'Denmark', 'iso' => 'DK', 'currency' => 'DKK', 'eurozone' => false, 'eu_since' => 1973,
             'regulator' => 'Finanstilsynet (Danish FSA)', 'hq_match' => 'Denmark',
             'paragraphs' => array(
                 'Denmark joined the EU in 1973 and negotiated a formal opt-out from the euro, keeping the krone (DKK), which is tightly pegged to the euro via the ERM II exchange rate mechanism. Finanstilsynet is the domestic financial supervisor, working within the same EU-wide ESMA rules on leverage and marketing that apply across the bloc.',
@@ -96,7 +98,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'estonia' => array(
-            'name' => 'Estonia', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
+            'name' => 'Estonia', 'iso' => 'EE', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
             'regulator' => 'Estonian Financial Supervision Authority (Finantsinspektsioon)', 'hq_match' => 'Estonia',
             'paragraphs' => array(
                 'Estonia joined the EU in 2004 and adopted the euro in 2011. It\'s also one of the few countries on this list that\'s genuinely home to one of our reviewed brokers: Admirals (formerly Admiral Markets) was founded in Tallinn and still lists Estonia as its group headquarters, even though its EU retail clients are served through its CySEC-regulated Cyprus subsidiary.',
@@ -104,7 +106,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'finland' => array(
-            'name' => 'Finland', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1995,
+            'name' => 'Finland', 'iso' => 'FI', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1995,
             'regulator' => 'FIN-FSA (Finanssivalvonta)', 'hq_match' => 'Finland',
             'paragraphs' => array(
                 'Finland joined the EU in 1995 and was one of the original eurozone members. FIN-FSA supervises domestic financial markets and enforces the same EU-wide ESMA leverage caps and marketing restrictions that apply to every broker passporting into the country.',
@@ -112,7 +114,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'france' => array(
-            'name' => 'France', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
+            'name' => 'France', 'iso' => 'FR', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
             'regulator' => 'AMF (Autorité des marchés financiers)', 'hq_match' => 'France',
             'paragraphs' => array(
                 'A founding EU and eurozone member, France is supervised by the AMF, one of the more assertive regulators in Europe on retail derivatives. France restricted the advertising of high-risk CFDs and binary options to retail investors via electronic communications back in 2016-2017, ahead of the EU-wide ESMA restrictions that followed in 2018.',
@@ -120,7 +122,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'germany' => array(
-            'name' => 'Germany', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
+            'name' => 'Germany', 'iso' => 'DE', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
             'regulator' => 'BaFin (Bundesanstalt für Finanzdienstleistungsaufsicht)', 'hq_match' => 'Germany',
             'paragraphs' => array(
                 'Germany, a founding EU and eurozone member, has one of the largest retail trading populations in the EU and is supervised by BaFin. It\'s also genuinely home to one of our reviewed brokers: NAGA is headquartered in Hamburg, and its parent, The NAGA Group AG, is listed on the Frankfurt Stock Exchange, even though its EU retail CFD business runs through a CySEC-regulated Cyprus entity.',
@@ -128,7 +130,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'greece' => array(
-            'name' => 'Greece', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1981,
+            'name' => 'Greece', 'iso' => 'GR', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1981,
             'regulator' => 'HCMC (Hellenic Capital Market Commission)', 'hq_match' => 'Greece',
             'paragraphs' => array(
                 'Greece joined the EU in 1981 and the eurozone in 2001. The HCMC supervises domestic financial markets, and -- being geographically and culturally close to Cyprus -- Greek retail traders are especially likely to already be familiar with CySEC-licensed brokers, many of which run Greek-language sites and support.',
@@ -136,7 +138,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'hungary' => array(
-            'name' => 'Hungary', 'currency' => 'HUF', 'eurozone' => false, 'eu_since' => 2004,
+            'name' => 'Hungary', 'iso' => 'HU', 'currency' => 'HUF', 'eurozone' => false, 'eu_since' => 2004,
             'regulator' => 'MNB (Magyar Nemzeti Bank)', 'hq_match' => 'Hungary',
             'paragraphs' => array(
                 'Hungary joined the EU in 2004 and has not adopted the euro, retaining the forint (HUF). The Magyar Nemzeti Bank (MNB) acts as both central bank and financial regulator, enforcing the same EU-wide ESMA leverage caps and risk-disclosure rules on any broker serving Hungarian retail clients.',
@@ -144,7 +146,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'ireland' => array(
-            'name' => 'Ireland', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1973,
+            'name' => 'Ireland', 'iso' => 'IE', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1973,
             'regulator' => 'Central Bank of Ireland', 'hq_match' => 'Ireland',
             'paragraphs' => array(
                 'Ireland joined the EU in 1973 and the eurozone at its launch. It\'s genuinely home to one of the longest-established brokers in our rankings: AvaTrade is headquartered in Dublin, regulated there by the Central Bank of Ireland, with EU clients typically served through MiFID passporting rather than a separate CySEC licence.',
@@ -152,7 +154,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'italy' => array(
-            'name' => 'Italy', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
+            'name' => 'Italy', 'iso' => 'IT', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
             'regulator' => 'CONSOB (Commissione Nazionale per le Società e la Borsa)', 'hq_match' => 'Italy',
             'paragraphs' => array(
                 'A founding EU and eurozone member, Italy is supervised by CONSOB, which has taken an active enforcement role against unauthorized forex/CFD providers: since 2019 it has published and periodically updated a public blacklist of websites offering financial services in Italy without the required authorization.',
@@ -160,7 +162,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'latvia' => array(
-            'name' => 'Latvia', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
+            'name' => 'Latvia', 'iso' => 'LV', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
             'regulator' => 'Latvijas Banka', 'hq_match' => 'Latvia',
             'paragraphs' => array(
                 'Latvia joined the EU in 2004 and the eurozone in 2014. Financial supervision, previously handled by a standalone regulator (the FCMC), was folded into the central bank, Latvijas Banka, in 2023. The same EU-wide ESMA leverage and marketing rules apply to any broker serving Latvian retail clients.',
@@ -168,7 +170,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'lithuania' => array(
-            'name' => 'Lithuania', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
+            'name' => 'Lithuania', 'iso' => 'LT', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
             'regulator' => 'Bank of Lithuania', 'hq_match' => 'Lithuania',
             'paragraphs' => array(
                 'Lithuania joined the EU in 2004 and the eurozone in 2015. The Bank of Lithuania handles financial supervision alongside its central-banking role, and has also positioned the country as a notable fintech licensing hub in the Baltics -- though for CFD/forex brokers specifically, CySEC (via Cyprus) remains the far more common EU licence of choice among the firms reviewed here.',
@@ -176,7 +178,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'luxembourg' => array(
-            'name' => 'Luxembourg', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
+            'name' => 'Luxembourg', 'iso' => 'LU', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
             'regulator' => 'CSSF (Commission de Surveillance du Secteur Financier)', 'hq_match' => 'Luxembourg',
             'paragraphs' => array(
                 'A founding EU and eurozone member, Luxembourg is supervised by the CSSF. Its financial sector is heavily weighted toward fund administration, private banking, and cross-border wealth management rather than retail CFD/forex trading, which is a comparatively small niche in the domestic market.',
@@ -184,7 +186,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'malta' => array(
-            'name' => 'Malta', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
+            'name' => 'Malta', 'iso' => 'MT', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
             'regulator' => 'MFSA (Malta Financial Services Authority)', 'hq_match' => 'Malta',
             'paragraphs' => array(
                 'Malta joined the EU in 2004 and the eurozone in 2008. The MFSA has built its own reputation as a licensing hub for online financial and gaming businesses, in some ways a smaller parallel to Cyprus\'s role for CFD brokers specifically -- though CySEC remains the dominant EU licence among the brokers reviewed on this site.',
@@ -192,7 +194,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'netherlands' => array(
-            'name' => 'Netherlands', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
+            'name' => 'Netherlands', 'iso' => 'NL', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1958,
             'regulator' => 'AFM (Autoriteit Financiële Markten)', 'hq_match' => 'Netherlands',
             'paragraphs' => array(
                 'A founding EU and eurozone member, the Netherlands is supervised by the AFM, which actively enforces the EU-wide requirement that CFD marketing display a clear percentage-of-retail-accounts-lose-money risk warning, along with the standard ESMA leverage caps.',
@@ -200,7 +202,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'poland' => array(
-            'name' => 'Poland', 'currency' => 'PLN', 'eurozone' => false, 'eu_since' => 2004,
+            'name' => 'Poland', 'iso' => 'PL', 'currency' => 'PLN', 'eurozone' => false, 'eu_since' => 2004,
             'regulator' => 'KNF (Komisja Nadzoru Finansowego)', 'hq_match' => 'Poland',
             'paragraphs' => array(
                 'Poland joined the EU in 2004 and has not adopted the euro, retaining the złoty (PLN). It\'s genuinely home to one of the largest brokers in our entire rankings: XTB was founded in Warsaw and remains listed on the Warsaw Stock Exchange, making it Poland\'s own home-grown entry in the CFD/forex brokerage industry, even though EU retail clients are served through its CySEC-licensed entity.',
@@ -208,7 +210,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'portugal' => array(
-            'name' => 'Portugal', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1986,
+            'name' => 'Portugal', 'iso' => 'PT', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1986,
             'regulator' => 'CMVM (Comissão do Mercado de Valores Mobiliários)', 'hq_match' => 'Portugal',
             'paragraphs' => array(
                 'Portugal joined the EU in 1986 and the eurozone at its launch. The CMVM supervises domestic securities markets and enforces the same EU-wide ESMA leverage caps and marketing restrictions that apply to any broker serving Portuguese retail clients.',
@@ -216,7 +218,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'romania' => array(
-            'name' => 'Romania', 'currency' => 'RON', 'eurozone' => false, 'eu_since' => 2007,
+            'name' => 'Romania', 'iso' => 'RO', 'currency' => 'RON', 'eurozone' => false, 'eu_since' => 2007,
             'regulator' => 'ASF (Autoritatea de Supraveghere Financiară)', 'hq_match' => 'Romania',
             'paragraphs' => array(
                 'Romania joined the EU in 2007 and has not adopted the euro, retaining the leu (RON). The ASF supervises domestic non-banking financial markets, working alongside the EU-wide ESMA framework that governs any CySEC-passported broker serving Romanian retail clients.',
@@ -224,7 +226,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'slovakia' => array(
-            'name' => 'Slovakia', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
+            'name' => 'Slovakia', 'iso' => 'SK', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
             'regulator' => 'NBS (Národná banka Slovenska)', 'hq_match' => 'Slovakia',
             'paragraphs' => array(
                 'Slovakia joined the EU in 2004 and the eurozone in 2009. The National Bank of Slovakia (NBS) handles financial supervision alongside its central-banking role, applying the same EU-wide ESMA leverage caps and marketing rules as the rest of the bloc.',
@@ -232,7 +234,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'slovenia' => array(
-            'name' => 'Slovenia', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
+            'name' => 'Slovenia', 'iso' => 'SI', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 2004,
             'regulator' => 'ATVP (Agencija za trg vrednostnih papirjev)', 'hq_match' => 'Slovenia',
             'paragraphs' => array(
                 'Slovenia joined the EU in 2004 and the eurozone in 2007. The ATVP supervises domestic securities markets, working within the same EU-wide ESMA leverage and marketing framework that applies to every CySEC-licensed broker passporting into the country.',
@@ -240,7 +242,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'spain' => array(
-            'name' => 'Spain', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1986,
+            'name' => 'Spain', 'iso' => 'ES', 'currency' => 'EUR', 'eurozone' => true, 'eu_since' => 1986,
             'regulator' => 'CNMV (Comisión Nacional del Mercado de Valores)', 'hq_match' => 'Spain',
             'paragraphs' => array(
                 'Spain joined the EU in 1986 and the eurozone at its launch. Like Italy\'s CONSOB, the CNMV maintains and regularly updates a public warning list of unauthorized firms offering forex and CFD services to Spanish residents without the required licence.',
@@ -248,7 +250,7 @@ function globalfxhub_get_countries() {
             ),
         ),
         'sweden' => array(
-            'name' => 'Sweden', 'currency' => 'SEK', 'eurozone' => false, 'eu_since' => 1995,
+            'name' => 'Sweden', 'iso' => 'SE', 'currency' => 'SEK', 'eurozone' => false, 'eu_since' => 1995,
             'regulator' => 'Finansinspektionen', 'hq_match' => 'Sweden',
             'paragraphs' => array(
                 'Sweden joined the EU in 1995 and, like Denmark, has not adopted the euro, retaining the krona (SEK) following a 2003 referendum. Finansinspektionen supervises domestic financial markets and enforces the same EU-wide ESMA leverage caps and marketing restrictions as the rest of the bloc.',
@@ -261,6 +263,25 @@ function globalfxhub_get_countries() {
 function globalfxhub_get_country_by_slug( $slug ) {
     $countries = globalfxhub_get_countries();
     return isset( $countries[ $slug ] ) ? array_merge( array( 'slug' => $slug ), $countries[ $slug ] ) : null;
+}
+
+/**
+ * Converts an ISO 3166-1 alpha-2 code (e.g. "DE") to its Unicode flag
+ * emoji by combining two "regional indicator symbol" code points -- the
+ * standard technique, no image assets needed. Returns '' for anything
+ * that isn't exactly 2 letters, so a bad/missing code just omits the flag
+ * rather than rendering mojibake.
+ */
+function globalfxhub_country_flag_emoji( $iso ) {
+    $iso = strtoupper( trim( (string) $iso ) );
+    if ( 1 !== preg_match( '/^[A-Z]{2}$/', $iso ) ) {
+        return '';
+    }
+    $flag = '';
+    for ( $i = 0; $i < 2; $i++ ) {
+        $flag .= mb_chr( 0x1F1E6 + ( ord( $iso[ $i ] ) - 65 ), 'UTF-8' );
+    }
+    return $flag;
 }
 
 /**
