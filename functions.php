@@ -21,6 +21,7 @@ require get_template_directory() . '/inc/candlestick-patterns.php';
 require get_template_directory() . '/inc/translatable-strings.php';
 require get_template_directory() . '/inc/market-data.php';
 require get_template_directory() . '/inc/service-pages.php';
+require get_template_directory() . '/inc/news-feed.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
