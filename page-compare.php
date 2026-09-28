@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Compare Brokers
- * Description: Interactive side-by-side CySEC broker comparison tool.
+ * Description: Interactive side-by-side broker comparison tool.
  */
 get_header();
 $a_param = isset($_GET['a']) ? sanitize_title($_GET['a']) : '';
@@ -11,7 +11,7 @@ $b_param = isset($_GET['b']) ? sanitize_title($_GET['b']) : '';
 <div class="wrap page-head">
   <div class="eyebrow">BROKER COMPARISON TOOL</div>
   <h1><?php the_title(); ?></h1>
-  <p>Pick any two of our researched CySEC brokers to compare regulation, cost, platforms, and score — generated instantly from the same data behind our rankings.</p>
+  <p>Pick any two of our researched brokers to compare regulation, cost, platforms, and score — generated instantly from the same data behind our rankings.</p>
 </div>
 
 <div class="wrap">
@@ -35,7 +35,7 @@ $b_param = isset($_GET['b']) ? sanitize_title($_GET['b']) : '';
   <div id="results">
     <table class="compare-table" id="resultsTable"></table>
     <div class="methodology-note">
-      <strong>How this score is calculated:</strong> 30% regulatory footprint, 30% cost (spread + minimum deposit), 20% platform breadth, 20% track record — each ranked relative to the other brokers in our researched set, not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and the CySEC register before depositing funds. This is not personalized financial advice.
+      <strong>How this score is calculated:</strong> 30% regulatory footprint, 30% cost (spread + minimum deposit), 20% platform breadth, 20% track record — each ranked relative to the other brokers in our researched set, not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
     </div>
   </div>
 </div>
@@ -94,14 +94,24 @@ const PRESET_B = <?php echo wp_json_encode( $b_param ); ?>;
     const NA = 'Not independently confirmed';
     const orNA = (v, suffix) => (v === null || v === undefined || v === '') ? NA : (v + (suffix || ''));
 
+    const regulationLabel = (x) => {
+      const parts = [];
+      if (x.cysec && x.cysec !== '—') parts.push(`CySEC No. ${x.cysec}`);
+      else if (x.cysec === '—') parts.push('EU-regulated (MiFID passporting)');
+      if (x.seychelles) parts.push(`FSA Seychelles No. ${x.seychelles}`);
+      else if (x.seychelles_note && x.seychelles === null) parts.push('FSA Seychelles-licensed (licence number unconfirmed)');
+      return parts.length ? parts.join(' + ') : 'Regulatory status not independently confirmed';
+    };
+
     const rows = [];
     rows.push(['Overall score',
       `<span class="score-num">${a.scores.overall}</span> / 5`,
       `<span class="score-num">${b.scores.overall}</span> / 5`,
       a.scores.overall, b.scores.overall]);
-    rows.push(['CySEC licence',
-      (a.cysec === '—' ? 'EU-regulated via passporting' : `No. ${a.cysec}`) + (a.cysec_note ? `<div class="compare-note">${a.cysec_note}</div>` : ''),
-      (b.cysec === '—' ? 'EU-regulated via passporting' : `No. ${b.cysec}`) + (b.cysec_note ? `<div class="compare-note">${b.cysec_note}</div>` : '')]);
+    const regNote = (x) => [x.cysec_note, x.seychelles_note].filter(Boolean).join(' ');
+    rows.push(['Regulation',
+      regulationLabel(a) + (regNote(a) ? `<div class="compare-note">${regNote(a)}</div>` : ''),
+      regulationLabel(b) + (regNote(b) ? `<div class="compare-note">${regNote(b)}</div>` : '')]);
     rows.push(['Entity', a.entity, b.entity]);
     rows.push(['Founded', orNA(a.founded), orNA(b.founded), a.founded ? (2026-a.founded) : undefined, b.founded ? (2026-b.founded) : undefined]);
     rows.push(['Headquarters', orNA(a.hq), orNA(b.hq)]);

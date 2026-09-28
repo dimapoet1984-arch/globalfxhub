@@ -27,7 +27,7 @@ $country = $country_slug ? globalfxhub_get_country_by_slug( $country_slug ) : nu
 <div class="wrap page-head">
   <div class="eyebrow">BEST BROKER IN <?php echo esc_html( strtoupper( $country['name'] ) ); ?></div>
   <h1><span class="country-flag" aria-hidden="true"><?php echo esc_html( globalfxhub_country_flag_emoji( $country['iso'] ) ); ?></span> Best Forex &amp; CFD Brokers in <?php echo esc_html( $country['name'] ); ?></h1>
-  <p>Top CySEC-regulated brokers available to retail traders in <?php echo esc_html( $country['name'] ); ?>, ranked by our disclosed methodology<?php echo $has_local ? ' -- with brokers actually headquartered here called out below' : ''; ?>.</p>
+  <p>Top CySEC-regulated brokers legally entitled to serve retail traders in <?php echo esc_html( $country['name'] ); ?> under EU passporting, ranked by our disclosed methodology<?php echo $has_local ? ' -- with brokers actually headquartered here called out below' : ''; ?>. Brokers we cover whose only licence is offshore (e.g. Seychelles FSA) aren't EU-passportable and are left out of this page for that reason -- see our <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);">full reviews</a> for those.</p>
 </div>
 
 <div class="wrap" style="padding-bottom:10px;">
@@ -47,7 +47,7 @@ $country = $country_slug ? globalfxhub_get_country_by_slug( $country_slug ) : nu
       <span></span><span>Broker</span><span class="col-fees">Avg. spread</span><span class="col-plat">Platforms</span><span>Score</span><span></span>
     </div>
     <?php foreach ( $ranked as $i => $b ) :
-        $tag = '—' === $b['cysec'] ? 'EU-regulated (MiFID passporting)' : 'CySEC ' . $b['cysec'];
+        $tag = globalfxhub_broker_regulation_label( $b );
         if ( $b['founded'] ) {
             $tag .= ' &middot; est. ' . $b['founded'];
         }
@@ -88,7 +88,7 @@ $country = $country_slug ? globalfxhub_get_country_by_slug( $country_slug ) : nu
 <div class="wrap page-head">
   <div class="eyebrow">BY COUNTRY</div>
   <h1><?php the_title(); ?></h1>
-  <p>Every broker we review is CySEC-licensed and, under EU passporting, legally available across all 27 EU member states. Pick a country for its top-ranked brokers plus what's actually different there -- currency, regulator, and any broker genuinely headquartered locally.</p>
+  <p>Every broker shown on these country pages is CySEC-licensed and, under EU passporting, legally available across all 27 EU member states (we also review brokers licensed elsewhere, such as the Seychelles FSA, but those aren't EU-passportable so they're not ranked here). Pick a country for its top-ranked CySEC brokers plus what's actually different there -- currency, regulator, and any broker genuinely headquartered locally.</p>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">

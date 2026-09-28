@@ -20,9 +20,8 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
         'platforms'    => 'Platforms',
         'track_record' => 'Track record',
     );
-    $reg_label = ( '—' === $broker['cysec'] )
-        ? 'EU-regulated via passporting'
-        : 'No. ' . $broker['cysec'];
+    $reg_label = globalfxhub_broker_regulation_label( $broker );
+    $verify_links = globalfxhub_broker_verify_links( $broker );
     $not_confirmed = 'Not independently confirmed';
 ?>
 
@@ -40,12 +39,20 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
     <span class="review-head__score"><span class="score-num"><?php echo esc_html( $broker['scores']['overall'] ); ?></span> / 5 overall</span>
     <span class="review-head__tag"><?php echo esc_html( $reg_label ); ?><?php echo $broker['founded'] ? ' &middot; est. ' . esc_html( $broker['founded'] ) : ''; ?></span>
   </div>
-  <?php if ( ! empty( $broker['cysec_note'] ) ) : ?>
-  <div class="review-notice"><strong>Worth knowing:</strong> <?php echo esc_html( $broker['cysec_note'] ); ?></div>
+  <?php
+  $notice_parts = array_filter( array(
+      isset( $broker['cysec_note'] ) ? $broker['cysec_note'] : null,
+      isset( $broker['seychelles_note'] ) ? $broker['seychelles_note'] : null,
+  ) );
+  if ( ! empty( $notice_parts ) ) :
+  ?>
+  <div class="review-notice"><strong>Worth knowing:</strong> <?php echo esc_html( implode( ' ', $notice_parts ) ); ?></div>
   <?php endif; ?>
   <div class="hero__actions" style="margin-top:22px;">
     <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold">Compare vs another broker</a>
-    <a href="https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/" target="_blank" rel="noopener" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);">Verify on CySEC register</a>
+    <?php foreach ( $verify_links as $link ) : ?>
+    <a href="<?php echo esc_url( $link['url'] ); ?>" target="_blank" rel="noopener" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $link['label'] ); ?></a>
+    <?php endforeach; ?>
     <a href="#" class="btn btn--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">Visit Broker</a>
   </div>
 </div>
@@ -55,7 +62,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
     <table class="compare-table review-facts">
       <tbody>
         <tr><th>Regulated entity</th><td><?php echo esc_html( $broker['entity'] ); ?></td></tr>
-        <tr><th>CySEC licence</th><td><?php echo esc_html( $reg_label ); ?></td></tr>
+        <tr><th>Regulation</th><td><?php echo esc_html( $reg_label ); ?></td></tr>
         <tr><th>Other Tier-1 regulators</th><td><?php echo esc_html( $broker['other_reg'] ? implode( ', ', $broker['other_reg'] ) : 'None confirmed' ); ?></td></tr>
         <tr><th>Founded</th><td><?php echo esc_html( $broker['founded'] ? $broker['founded'] : $not_confirmed ); ?></td></tr>
         <tr><th>Headquarters</th><td><?php echo esc_html( $broker['hq'] ? $broker['hq'] : $not_confirmed ); ?></td></tr>
@@ -99,7 +106,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
 </div>
 
 <div class="wrap methodology-note">
-  <strong>How this score is calculated:</strong> 30% regulatory footprint, 30% cost (spread + minimum deposit), 20% platform breadth, 20% track record — each ranked relative to the other brokers in our researched set, not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and the CySEC register before depositing funds. This is not personalized financial advice.
+  <strong>How this score is calculated:</strong> 30% regulatory footprint, 30% cost (spread + minimum deposit), 20% platform breadth, 20% track record — each ranked relative to the other brokers in our researched set, not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
 </div>
 
 <?php
@@ -170,7 +177,7 @@ $others = array_slice( $others, 0, 3 );
   <?php if ( $search_query ) : ?>
   <p>Showing results for "<?php echo esc_html( $search_query ); ?>" &middot; <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);">clear search</a></p>
   <?php else : ?>
-  <p>In-depth reviews of every CySEC-regulated broker in our rankings, built from the same disclosed methodology behind the scores.</p>
+  <p>In-depth reviews of every broker in our rankings -- CySEC-licensed, Seychelles FSA-licensed, or both -- built from the same disclosed methodology behind the scores.</p>
   <?php endif; ?>
 </div>
 
@@ -187,7 +194,7 @@ $others = array_slice( $others, 0, 3 );
       <span class="rank-num"><?php echo esc_html( str_pad( (string) $b['rank'], 2, '0', STR_PAD_LEFT ) ); ?></span>
       <span class="rank-broker">
         <span class="rank-broker__name"><?php echo esc_html( $b['name'] ); ?></span>
-        <span class="rank-broker__tag"><?php echo esc_html( '—' === $b['cysec'] ? 'EU-regulated (MiFID passporting)' : 'CySEC ' . $b['cysec'] ); ?><?php echo $b['founded'] ? ' &middot; est. ' . esc_html( $b['founded'] ) : ''; ?></span>
+        <span class="rank-broker__tag"><?php echo esc_html( globalfxhub_broker_regulation_label( $b ) ); ?><?php echo $b['founded'] ? ' &middot; est. ' . esc_html( $b['founded'] ) : ''; ?></span>
       </span>
       <span class="rank-detail col-fees"><?php echo null !== $b['spread_eurusd'] ? esc_html( $b['spread_eurusd'] ) . ' pips (EUR/USD)' : 'Not confirmed'; ?></span>
       <span class="rank-detail col-plat"><?php echo esc_html( $b['platforms'] ? implode( ', ', $b['platforms'] ) : 'Not confirmed' ); ?></span>

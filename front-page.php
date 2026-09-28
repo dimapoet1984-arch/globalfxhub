@@ -536,9 +536,9 @@ $globalfxhub_news_query = new WP_Query( array(
 <section>
   <div class="wrap">
     <div class="award">
-      <div class="award__badge">2026<b>#1</b>TOP-SCORED CYSEC BROKER</div>
+      <div class="award__badge">2026<b>#1</b>TOP-SCORED BROKER</div>
       <div>
-        <h2>IG tops our CySEC broker list for 2026</h2>
+        <h2>IG tops our broker rankings for 2026</h2>
         <p>IG scores highest in our editorial ranking (4.7/5), based on regulatory breadth, cost, platform variety, and years in operation. Long-established, publicly listed (LSE: IGG), one of the widest regulatory footprints of any broker on this list.</p>
       </div>
     </div>
@@ -575,7 +575,7 @@ $globalfxhub_news_query = new WP_Query( array(
         <p><?php globalfxhub_te( 'method4_p' ); ?></p>
       </div>
     </div>
-    <p style="font-size:13px;color:#aab6c6;margin-top:24px;max-width:70ch;">Every factor is ranked relative to the other 14 brokers in this list, not against an absolute external benchmark. Source data comes from CySEC's public register, broker legal disclosures, and third-party broker research, compiled March 2026. This methodology does not involve opening or funding live accounts, and it isn't personalized financial advice — always verify current licence status, fees, and terms directly with the broker before depositing funds.</p>
+    <p style="font-size:13px;color:#aab6c6;margin-top:24px;max-width:70ch;">Every factor is ranked relative to every other broker in our researched set, not against an absolute external benchmark. Source data comes from each broker's regulator(s) of record (CySEC, the Seychelles FSA, and others), broker legal disclosures, and third-party broker research, compiled March 2026. This methodology does not involve opening or funding live accounts, and it isn't personalized financial advice — always verify current licence status, fees, and terms directly with the broker before depositing funds.</p>
   </div>
 </section>
 

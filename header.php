@@ -83,11 +83,10 @@ $globalfxhub_ticker_render = array_merge( $globalfxhub_ticker_items, $globalfxhu
 
 <script>
 var globalfxhubBrokerSearchIndex = <?php echo wp_json_encode( array_map( function( $b ) {
-    $reg = ( '—' === $b['cysec'] ) ? 'EU-regulated' : ( 'CySEC ' . $b['cysec'] );
     return array(
         'name' => $b['name'],
         'slug' => $b['slug'],
-        'meta' => $reg . ( $b['founded'] ? ' · est. ' . $b['founded'] : '' ),
+        'meta' => globalfxhub_broker_regulation_label( $b ) . ( $b['founded'] ? ' · est. ' . $b['founded'] : '' ),
     );
 }, globalfxhub_get_brokers() ) ); ?>;
 

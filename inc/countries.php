@@ -2,12 +2,14 @@
 /**
  * "Best broker in [country]" pages for all 27 EU member states.
  *
- * Every broker in globalfxhub_get_brokers() is CySEC-licensed, which
- * under MiFID passporting means every one of them is legally entitled to
- * serve retail clients anywhere in the EU/EEA -- so there is no real
- * per-country "availability" difference to report, and no live
- * traffic/market-share dataset exists anywhere in this codebase or
- * environment to measure country-level popularity with.
+ * globalfxhub_get_brokers() now also includes brokers whose only licence
+ * is offshore (Seychelles FSA, cysec === null) -- this file's ranking
+ * excludes those (see globalfxhub_country_broker_ranking() below), since
+ * every remaining, CySEC-licensed broker is legally entitled under MiFID
+ * passporting to serve retail clients anywhere in the EU/EEA -- so there
+ * is no real per-country "availability" difference to report among them,
+ * and no live traffic/market-share dataset exists anywhere in this
+ * codebase or environment to measure country-level popularity with.
  *
  * Rather than invent country-specific rankings we can't back up, the
  * ranking here uses one real, already-present signal -- a broker's own
@@ -304,9 +306,19 @@ function globalfxhub_country_flag_emoji( $iso ) {
  * When no broker is headquartered in the country (the common case), this
  * simply returns the global top $limit -- an honest reflection of having
  * no country-specific signal, not a placeholder to be replaced later.
+ *
+ * Excludes any broker with no CySEC/EU regulation at all (cysec === null
+ * -- a Seychelles-FSA-only broker, for example): this whole section's
+ * premise, stated plainly on every country page, is "every broker here
+ * is CySEC-licensed and legally entitled to serve you under EU
+ * passporting." Once the site's roster includes brokers with no EU
+ * presence, leaving them in this ranking would make that claim false for
+ * whichever one turned up.
  */
 function globalfxhub_country_broker_ranking( $country, $limit = 10 ) {
-    $all = globalfxhub_get_brokers();
+    $all = array_filter( globalfxhub_get_brokers(), function( $b ) {
+        return null !== $b['cysec'];
+    } );
     usort( $all, function( $a, $b ) {
         return $a['rank'] <=> $b['rank'];
     } );
