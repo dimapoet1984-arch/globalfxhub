@@ -1,6 +1,5 @@
 <footer>
   <div class="wrap">
-    <?php if ( is_front_page() ) : ?>
     <div class="footer__grid">
       <div>
         <div class="footer__brand">Global<em>FXHub</em></div>
@@ -42,7 +41,6 @@
     <div class="disclosure">
       <?php globalfxhub_te( 'footer_disclosure_full' ); ?>
     </div>
-    <?php endif; ?>
     <div class="legal">
       <span>© <?php echo date( 'Y' ); ?> GlobalFXHub</span>
       <span><?php globalfxhub_te( 'footer_legal_line' ); ?></span>
