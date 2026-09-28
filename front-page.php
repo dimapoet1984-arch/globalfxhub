@@ -261,6 +261,15 @@ GlobalFXHubBrokerSearch.init(
   </div>
 </section>
 
+<?php
+$globalfxhub_news_query = new WP_Query( array(
+    'post_type'      => 'post',
+    'posts_per_page' => 5,
+    'category_name'  => 'news',
+    'orderby'        => 'date',
+    'order'          => 'DESC',
+) );
+?>
 <section id="market-news">
   <div class="wrap">
     <div class="section__head">
@@ -268,45 +277,24 @@ GlobalFXHubBrokerSearch.init(
         <h2><?php globalfxhub_te( 'sec_news_h2' ); ?></h2>
         <p><?php globalfxhub_te( 'sec_news_p' ); ?></p>
       </div>
-      <a href="#" class="section__link"><?php globalfxhub_te( 'link_all_news' ); ?></a>
+      <a href="<?php echo esc_url( home_url( '/news/' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_all_news' ); ?></a>
     </div>
     <div class="news__grid">
-      <a href="#" class="news-item">
-        <div class="tag">BROKER NEWS</div>
-        <h4>Meridian FX expands regulated entities into two new markets</h4>
-        <p>The move adds oversight in two additional jurisdictions, extending client protections to more regions.</p>
-        <time>March 14, 2026</time>
+      <?php if ( $globalfxhub_news_query->have_posts() ) : while ( $globalfxhub_news_query->have_posts() ) : $globalfxhub_news_query->the_post();
+          $globalfxhub_news_type = get_post_meta( get_the_ID(), '_news_type', true );
+      ?>
+      <a href="<?php the_permalink(); ?>" class="news-item">
+        <?php if ( has_post_thumbnail() ) : ?>
+        <?php the_post_thumbnail( 'medium_large', array( 'class' => 'news-item__thumb' ) ); ?>
+        <?php endif; ?>
+        <div class="tag<?php echo 'market' === $globalfxhub_news_type ? ' market' : ''; ?>"><?php echo 'market' === $globalfxhub_news_type ? 'MARKET NEWS' : 'BROKER NEWS'; ?></div>
+        <h4><?php the_title(); ?></h4>
+        <p><?php echo esc_html( globalfxhub_trim_excerpt( get_the_excerpt() ? get_the_excerpt() : get_the_content(), 20 ) ); ?></p>
+        <time><?php echo esc_html( get_the_date() ); ?></time>
       </a>
-      <a href="#" class="news-item">
-        <div class="tag market">MARKET NEWS</div>
-        <h4>Gold holds near multi-month highs as rate-cut bets firm up</h4>
-        <p>XAU/USD extended gains for a third session as traders priced in a more dovish path for interest rates.</p>
-        <time>March 13, 2026</time>
-      </a>
-      <a href="#" class="news-item">
-        <div class="tag">BROKER NEWS</div>
-        <h4>Northbridge Markets cuts minimum deposit to $50</h4>
-        <p>The change lowers the barrier to entry on its standard account tier, aimed at newer traders.</p>
-        <time>March 12, 2026</time>
-      </a>
-      <a href="#" class="news-item">
-        <div class="tag market">MARKET NEWS</div>
-        <h4>Oil slips as inventory data surprises to the upside</h4>
-        <p>WTI crude fell after weekly stockpile figures came in well above analyst expectations.</p>
-        <time>March 11, 2026</time>
-      </a>
-      <a href="#" class="news-item">
-        <div class="tag">BROKER NEWS</div>
-        <h4>Almanac FX launches a redesigned education hub</h4>
-        <p>The broker's new learning center adds structured courses aimed at first-time traders.</p>
-        <time>March 10, 2026</time>
-      </a>
-      <a href="#" class="news-item">
-        <div class="tag market">MARKET NEWS</div>
-        <h4>Dollar steadies ahead of upcoming inflation data</h4>
-        <p>Major currency pairs traded in tight ranges as markets awaited the week's key data release.</p>
-        <time>March 10, 2026</time>
-      </a>
+      <?php endwhile; wp_reset_postdata(); else : ?>
+      <p style="padding:24px;color:var(--ink-soft);">No news published yet.</p>
+      <?php endif; ?>
     </div>
   </div>
 </section>

@@ -116,6 +116,7 @@ function globalfxhub_fallback_menu() {
     echo '<ul class="nav__links" id="navLinks">';
     echo '<li><a href="' . esc_url( home_url( '/reviews/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_reviews' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( $blog_url ) . '">' . esc_html( globalfxhub_t( 'nav_blog' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/news/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_news' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/compare/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_compare' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/countries/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_countries' ) ) . '</a></li>';
     echo '</ul>';
@@ -195,6 +196,11 @@ function globalfxhub_ensure_compare_page() {
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_compare_page' );
 
+function globalfxhub_ensure_news_page() {
+    globalfxhub_ensure_templated_page( 'news', 'News', 'page-news.php' );
+}
+add_action( 'after_setup_theme', 'globalfxhub_ensure_news_page' );
+
 /**
  * Polylang duplicates a page per language rather than translating one
  * page's content in place, so /reviews/, /guides/, and /compare/ each need
@@ -225,6 +231,7 @@ function globalfxhub_sync_templated_pages_across_languages() {
         'reviews' => array( 'Reviews', 'page-reviews.php' ),
         'guides'  => array( 'Guides', 'page-guides.php' ),
         'compare' => array( 'Compare Brokers', 'page-compare.php' ),
+        'news'    => array( 'News', 'page-news.php' ),
     );
 
     $changed = false;
