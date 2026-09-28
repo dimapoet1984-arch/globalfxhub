@@ -22,6 +22,7 @@ require get_template_directory() . '/inc/translatable-strings.php';
 require get_template_directory() . '/inc/market-data.php';
 require get_template_directory() . '/inc/service-pages.php';
 require get_template_directory() . '/inc/news-feed.php';
+require get_template_directory() . '/inc/countries.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
@@ -229,10 +230,11 @@ function globalfxhub_sync_templated_pages_across_languages() {
     }
 
     $pages = array(
-        'reviews' => array( 'Reviews', 'page-reviews.php' ),
-        'guides'  => array( 'Guides', 'page-guides.php' ),
-        'compare' => array( 'Compare Brokers', 'page-compare.php' ),
-        'news'    => array( 'News', 'page-news.php' ),
+        'reviews'   => array( 'Reviews', 'page-reviews.php' ),
+        'guides'    => array( 'Guides', 'page-guides.php' ),
+        'compare'   => array( 'Compare Brokers', 'page-compare.php' ),
+        'news'      => array( 'News', 'page-news.php' ),
+        'countries' => array( 'Countries', 'page-countries.php' ),
     );
 
     $changed = false;
