@@ -29,10 +29,15 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
         'education_note'         => 'Educational offering',
     );
     $sub_labels = array(
-        'regulation'   => 'Regulation',
-        'cost'         => 'Cost',
-        'platforms'    => 'Platforms',
-        'track_record' => 'Track record',
+        'regulation'            => 'Regulation & client protection',
+        'cost'                  => 'Trading costs',
+        'non_trading_fees'      => 'Non-trading fees',
+        'platforms'             => 'Platforms & tools',
+        'execution'              => 'Execution / trading conditions',
+        'product_range'         => 'Product range',
+        'deposits_withdrawals'  => 'Deposits & withdrawals',
+        'transparency'          => 'Transparency',
+        'track_record'          => 'Track record',
     );
     $reg_label = globalfxhub_broker_regulation_label( $broker );
     $verify_links = globalfxhub_broker_verify_links( $broker );
@@ -157,7 +162,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
 </div>
 
 <div class="wrap methodology-note">
-  <strong>How this score is calculated:</strong> 30% regulatory footprint, 30% cost (spread + minimum deposit), 20% platform breadth, 20% track record — each ranked relative to the other brokers in our researched set, not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
+  <strong>How this score is calculated:</strong> Nine weighted categories against a fixed, disclosed rubric -- regulation & client protection 30%, trading costs 20%, non-trading fees 10%, platforms & tools 10%, execution/trading conditions 10%, product range 5%, deposits/withdrawals 5%, transparency 5%, track record 5% -- not a ranking relative to other brokers, and not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
 </div>
 
 <?php
