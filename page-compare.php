@@ -98,6 +98,8 @@ const PRESET_B = <?php echo wp_json_encode( $b_param ); ?>;
       const parts = [];
       if (x.cysec && x.cysec !== '—') parts.push(`CySEC No. ${x.cysec}`);
       else if (x.cysec === '—') parts.push('EU-regulated (MiFID passporting)');
+      if (x.fca) parts.push(`FCA No. ${x.fca}`);
+      else if (x.fca_note && x.fca === null) parts.push('FCA-licensed (FRN unconfirmed)');
       if (x.seychelles) parts.push(`FSA Seychelles No. ${x.seychelles}`);
       else if (x.seychelles_note && x.seychelles === null) parts.push('FSA Seychelles-licensed (licence number unconfirmed)');
       return parts.length ? parts.join(' + ') : 'Regulatory status not independently confirmed';
@@ -108,7 +110,7 @@ const PRESET_B = <?php echo wp_json_encode( $b_param ); ?>;
       `<span class="score-num">${a.scores.overall}</span> / 5`,
       `<span class="score-num">${b.scores.overall}</span> / 5`,
       a.scores.overall, b.scores.overall]);
-    const regNote = (x) => [x.cysec_note, x.seychelles_note].filter(Boolean).join(' ');
+    const regNote = (x) => [x.cysec_note, x.fca_note, x.seychelles_note].filter(Boolean).join(' ');
     rows.push(['Regulation',
       regulationLabel(a) + (regNote(a) ? `<div class="compare-note">${regNote(a)}</div>` : ''),
       regulationLabel(b) + (regNote(b) ? `<div class="compare-note">${regNote(b)}</div>` : '')]);

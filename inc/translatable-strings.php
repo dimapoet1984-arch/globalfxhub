@@ -70,7 +70,7 @@ function globalfxhub_string_text( $key ) {
         'footer_contact' => 'Contact',
         'footer_tagline' => 'Independent forex and CFD broker research. We test with real accounts and real money.',
         'footer_legal_line' => 'Independent forex & CFD broker research',
-        'footer_disclosure_full' => 'Advertiser disclosure & risk warning: Broker names, regulatory licence numbers (CySEC, Seychelles FSA, and others), and trading conditions referenced on this site describe real, independently operating companies, compiled from public regulatory registers and broker disclosures as of March 2026 -- figures change, and should be verified directly with the broker and on the relevant regulator\'s register before you rely on them. Scores are calculated using a disclosed methodology, not hands-on account testing. GlobalFXHub does not currently have referral or advertising relationships with any broker listed; if that changes, this section will disclose it. CFDs are complex instruments carrying a high risk of losing money rapidly due to leverage -- most retail investor accounts lose money trading CFDs. This is not financial advice.',
+        'footer_disclosure_full' => 'Advertiser disclosure & risk warning: Broker names, regulatory licence numbers (CySEC, the UK\'s FCA, Seychelles FSA, and others), and trading conditions referenced on this site describe real, independently operating companies, compiled from public regulatory registers and broker disclosures as of March 2026 -- figures change, and should be verified directly with the broker and on the relevant regulator\'s register before you rely on them. Scores are calculated using a disclosed methodology, not hands-on account testing. GlobalFXHub does not currently have referral or advertising relationships with any broker listed; if that changes, this section will disclose it. CFDs are complex instruments carrying a high risk of losing money rapidly due to leverage -- most retail investor accounts lose money trading CFDs. This is not financial advice.',
 
         'hero1_eyebrow' => '2026 ANNUAL RANKINGS',
         'hero1_h1' => 'Find a forex broker you can actually trust.',
@@ -101,7 +101,7 @@ function globalfxhub_string_text( $key ) {
         'sec_news_h2' => 'Latest news',
         'sec_news_p' => 'Broker developments and market-moving headlines, in brief.',
         'sec_rankings_h2' => 'Top 15 regulated forex brokers',
-        'sec_rankings_p' => 'Real, currently CySEC- or Seychelles FSA-licensed brokers, scored with a disclosed methodology based on public data -- not hands-on testing. See "How we score" below.',
+        'sec_rankings_p' => 'Real, currently CySEC-, FCA-, or Seychelles FSA-licensed brokers, scored with a disclosed methodology based on public data -- not hands-on testing. See "How we score" below.',
         'sec_method_h2' => 'How we score brokers',
         'sec_method_p' => "This is a disclosed, data-based methodology -- not a claim of hands-on account testing. Here's exactly how each score is built.",
         'sec_guides_h2' => 'Guides for your trading style',

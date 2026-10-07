@@ -42,6 +42,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
   <?php
   $notice_parts = array_filter( array(
       isset( $broker['cysec_note'] ) ? $broker['cysec_note'] : null,
+      isset( $broker['fca_note'] ) ? $broker['fca_note'] : null,
       isset( $broker['seychelles_note'] ) ? $broker['seychelles_note'] : null,
   ) );
   if ( ! empty( $notice_parts ) ) :

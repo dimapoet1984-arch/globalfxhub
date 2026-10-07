@@ -575,7 +575,7 @@ $globalfxhub_news_query = new WP_Query( array(
         <p><?php globalfxhub_te( 'method4_p' ); ?></p>
       </div>
     </div>
-    <p style="font-size:13px;color:#aab6c6;margin-top:24px;max-width:70ch;">Every factor is ranked relative to every other broker in our researched set, not against an absolute external benchmark. Source data comes from each broker's regulator(s) of record (CySEC, the Seychelles FSA, and others), broker legal disclosures, and third-party broker research, compiled March 2026. This methodology does not involve opening or funding live accounts, and it isn't personalized financial advice — always verify current licence status, fees, and terms directly with the broker before depositing funds.</p>
+    <p style="font-size:13px;color:#aab6c6;margin-top:24px;max-width:70ch;">Every factor is ranked relative to every other broker in our researched set, not against an absolute external benchmark. Source data comes from each broker's regulator(s) of record (CySEC, the UK's FCA, the Seychelles FSA, and others), broker legal disclosures, and third-party broker research, compiled March 2026. This methodology does not involve opening or funding live accounts, and it isn't personalized financial advice — always verify current licence status, fees, and terms directly with the broker before depositing funds.</p>
   </div>
 </section>
 
