@@ -48,7 +48,7 @@ function globalfxhub_get_service_pages() {
         ),
         'privacy' => array(
             'title'   => 'Privacy Policy',
-            'content' => "<p>This page explains what happens with your data when you visit GlobalFXHub.</p>\n<h2>What we collect</h2>\n<p>We don't currently run advertising trackers or analytics software on this site. The information we do have access to is limited to:</p>\n<ul>\n<li>Standard server logs kept by our hosting provider (e.g. IP address, browser type, pages requested) for security and technical operation -- this is normal for any website, and we don't separately analyze it.</li>\n<li>Anything you send us directly, such as by emailing us via the <a href=\"/contact/\">contact page</a>.</li>\n</ul>\n<h2>Fonts</h2>\n<p>This site loads typefaces from Google Fonts' servers. Loading a font means your browser makes a request to Google, which can see that the request came from your IP address, the same as for any externally hosted resource. We don't use this for tracking, but we can't fully control what Google itself does with that request.</p>\n<h2>Cookies</h2>\n<p>We don't set marketing or tracking cookies. WordPress, the software this site runs on, may set basic functional cookies for features like commenting, if enabled.</p>\n<h2>Third-party links</h2>\n<p>Pages on this site link to broker websites and other external resources with their own, separate privacy practices. We're not responsible for how those sites handle your data.</p>\n<h2>Changes</h2>\n<p>If we add analytics, advertising, or other data collection in the future, we'll update this page to reflect it before turning it on.</p>\n<h2>Questions</h2>\n<p>Contact us via the <a href=\"/contact/\">contact page</a> with any privacy questions.</p>",
+            'content' => "<p>This page explains what happens with your data when you visit GlobalFXHub.</p>\n<h2>What we collect</h2>\n<p>We don't currently run advertising trackers or analytics software on this site. The information we do have access to is limited to:</p>\n<ul>\n<li>Standard server logs kept by our hosting provider (e.g. IP address, browser type, pages requested) for security and technical operation -- this is normal for any website, and we don't separately analyze it.</li>\n<li>Anything you send us directly, such as by emailing us via the <a href=\"/contact/\">contact page</a>.</li>\n</ul>\n<h2>Fonts</h2>\n<p>This site loads typefaces from Google Fonts' servers. Loading a font means your browser makes a request to Google, which can see that the request came from your IP address, the same as for any externally hosted resource. We don't use this for tracking, but we can't fully control what Google itself does with that request.</p>\n<h2>Cookies</h2>\n<p>We don't set marketing or tracking cookies. WordPress, the software this site runs on, may set basic functional cookies for features like commenting, if enabled.</p>\n<h2>Third-party links</h2>\n<p>Pages on this site link to broker websites and other external resources with their own, separate privacy practices. We're not responsible for how those sites handle your data.</p>\n<h2>Your rights</h2>\n<p>If you're in the EU, UK, or another jurisdiction with similar data protection law, you have rights over any personal data we hold about you -- primarily, for this site, whatever you've sent us directly via email. These include the right to:</p>\n<ul>\n<li><strong>Access</strong> a copy of the personal data we hold about you.</li>\n<li><strong>Correct</strong> inaccurate or incomplete data.</li>\n<li><strong>Erase</strong> your data (the \"right to be forgotten\"), where it no longer needs to be kept.</li>\n<li><strong>Object to or restrict</strong> how we process your data.</li>\n<li><strong>Lodge a complaint</strong> with your local data protection supervisory authority if you believe we've mishandled your data.</li>\n</ul>\n<p>To exercise any of these rights, contact us via the <a href=\"/contact/\">contact page</a>. Since we don't maintain user accounts or a database of visitor profiles, most requests will simply mean deleting an email thread -- we'll confirm once that's done.</p>\n<h2>Changes</h2>\n<p>If we add analytics, advertising, or other data collection in the future, we'll update this page to reflect it before turning it on.</p>\n<h2>Questions</h2>\n<p>Contact us via the <a href=\"/contact/\">contact page</a> with any privacy questions.</p>",
         ),
         'contact' => array(
             'title'   => 'Contact',
@@ -77,14 +77,33 @@ function globalfxhub_get_service_pages() {
  * and get corrected once, rather than requiring a manual wp-admin edit.
  */
 function globalfxhub_ensure_service_pages() {
+    // Legacy seed hashes, keyed by slug: the content hash of each page
+    // as it shipped BEFORE this resync mechanism (or before that specific
+    // page was added to it) ever ran live. Seeded in via array_merge()
+    // below rather than as get_option()'s $default -- the default only
+    // ever applies the very first time an option is read before it's
+    // been saved, and this option has already been saved live since the
+    // mechanism's first deploy. Without this merge, adding a NEW slug
+    // here later would silently do nothing: get_option() would return
+    // the already-stored array, which has no entry for that slug, and
+    // the resync condition below would never fire for it.
     $globalfxhub_service_pages_legacy_hashes = array(
         'about'                 => '433f10356390f475170faa77479ac628',
         'how-we-test'           => '493a63801eb2c79910d00e108c0863e8',
         'why-trust-us'          => '0f0c0447585309594fd1cfcbdcf084c5',
         'advertiser-disclosure' => '32c6a0799f8c7a37168457fbf87aad47',
+        'privacy'               => '9b7e88793a30c6db624c582d3c9dd5a7',
     );
 
-    $known_hashes = get_option( 'globalfxhub_service_pages_hashes', $globalfxhub_service_pages_legacy_hashes );
+    $known_hashes = get_option( 'globalfxhub_service_pages_hashes', array() );
+    if ( ! is_array( $known_hashes ) ) {
+        $known_hashes = array();
+    }
+    foreach ( $globalfxhub_service_pages_legacy_hashes as $slug => $legacy_hash ) {
+        if ( ! isset( $known_hashes[ $slug ] ) ) {
+            $known_hashes[ $slug ] = $legacy_hash;
+        }
+    }
     $updated_hashes = $known_hashes;
 
     foreach ( globalfxhub_get_service_pages() as $slug => $data ) {
