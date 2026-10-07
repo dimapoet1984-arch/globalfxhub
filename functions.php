@@ -544,7 +544,7 @@ function globalfxhub_review_seo_head() {
     $slug = get_query_var( 'broker' );
     if ( ! $slug ) {
         if ( is_page( 'reviews' ) ) {
-            echo '<meta name="description" content="' . esc_attr( 'In-depth, individually scored reviews of every broker in our rankings -- CySEC-licensed, Seychelles FSA-licensed, or both -- covering regulation, cost, platforms, and track record, built from a disclosed methodology.' ) . '">' . "\n";
+            echo '<meta name="description" content="' . esc_attr( 'In-depth, individually scored reviews of every broker in our rankings -- CySEC-, FCA-, or Seychelles FSA-licensed, or more than one -- covering regulation, cost, platforms, and track record, built from a disclosed methodology.' ) . '">' . "\n";
         }
         return;
     }
