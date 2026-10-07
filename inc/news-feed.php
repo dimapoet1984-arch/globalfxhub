@@ -2,11 +2,15 @@
 /**
  * Daily market-news digest: scans a fixed list of finance/markets RSS
  * feeds, scores each article by a keyword+recency heuristic (no LLM/API
- * calls, so this costs nothing to run), and publishes the 10
- * highest-impact articles as normal posts in the "News" category --
- * summarized in our own words length-wise (a trimmed excerpt of the
- * source's own description, never the full article), always attributed
- * and linked back to the original source.
+ * calls -- this part costs nothing to run), and publishes the 10
+ * highest-impact articles as normal posts in the "News" category. Each
+ * post pairs a trimmed excerpt of the source's own description (never
+ * the full article) with a short, original analysis paragraph generated
+ * by the Claude API -- genuinely tailored to that article rather than a
+ * canned template, and original commentary rather than reproduced
+ * source text. This is the one real per-run cost in this file: ~10
+ * short Claude Haiku calls/day. Always attributed and linked back to
+ * the original source regardless.
  *
  * Mirrors the Twelve Data integration's shape on purpose: fetch on a
  * schedule (never per-pageview), a minimum-gap guard independent of the
@@ -193,6 +197,26 @@ function globalfxhub_news_topic_image_path( $topic ) {
 }
 
 /**
+ * Accessible alt text for each topic image -- the_post_thumbnail() calls
+ * in front-page.php and page-news.php don't pass an alt override, so
+ * this is the only thing standing between a screen reader and an empty
+ * alt="" on every news card.
+ */
+function globalfxhub_news_topic_image_alt( $topic ) {
+    $map = array(
+        'rates'    => 'Illustration representing central bank and interest rate news',
+        'forex'    => 'Illustration representing forex market news',
+        'gold'     => 'Illustration representing gold and precious metals news',
+        'oil'      => 'Illustration representing oil and energy market news',
+        'stocks'   => 'Illustration representing stock market news',
+        'crypto'   => 'Illustration representing cryptocurrency market news',
+        'econdata' => 'Illustration representing economic data news',
+        'general'  => 'Illustration representing general market news',
+    );
+    return isset( $map[ $topic ] ) ? $map[ $topic ] : $map['general'];
+}
+
+/**
  * One real media attachment per topic, created once and reused across
  * every article tagged with that topic (WordPress featured images don't
  * need a unique attachment per post). Re-checks the cached ID still
@@ -206,6 +230,11 @@ function globalfxhub_news_get_topic_attachment_id( $topic ) {
         $cache = array();
     }
     if ( ! empty( $cache[ $topic ] ) && get_post( $cache[ $topic ] ) ) {
+        // Backfill alt text on an attachment created before this check
+        // existed -- cheap no-op once set.
+        if ( '' === get_post_meta( $cache[ $topic ], '_wp_attachment_image_alt', true ) ) {
+            update_post_meta( $cache[ $topic ], '_wp_attachment_image_alt', globalfxhub_news_topic_image_alt( $topic ) );
+        }
         return (int) $cache[ $topic ];
     }
 
@@ -242,11 +271,87 @@ function globalfxhub_news_get_topic_attachment_id( $topic ) {
 
     $attach_data = wp_generate_attachment_metadata( $attach_id, $upload['file'] );
     wp_update_attachment_metadata( $attach_id, $attach_data );
+    update_post_meta( $attach_id, '_wp_attachment_image_alt', globalfxhub_news_topic_image_alt( $topic ) );
 
     $cache[ $topic ] = $attach_id;
     update_option( GLOBALFXHUB_NEWS_TOPIC_ATTACHMENTS_OPTION, $cache, false );
 
     return $attach_id;
+}
+
+/**
+ * Generates a short, original analysis paragraph for one article via the
+ * Claude API -- genuinely tailored to that specific headline/excerpt
+ * (observation, a hedged potential outcome, a brief evaluation of
+ * significance), not a canned per-topic template, and original
+ * commentary rather than reproduced source text.
+ *
+ * Raw HTTP via wp_remote_post(), matching this theme's existing
+ * external-API pattern (see inc/market-data.php) rather than the
+ * Anthropic PHP SDK -- this is a plain WordPress theme with no Composer
+ * dependency management, so pulling in the SDK would be a heavier,
+ * inconsistent addition versus a single wp_remote_post() call.
+ *
+ * Requires the site's Anthropic API key to be defined in wp-config.php
+ * (never in this repo, since it's a public theme):
+ *   define( 'GLOBALFXHUB_ANTHROPIC_API_KEY', 'sk-ant-xxxxxxxxxxxx' );
+ * Until that constant exists, or if the call ever fails for any reason
+ * (network error, rate limit, malformed response), this returns null and
+ * the post is published with just the excerpt and source line -- the
+ * same graceful-degradation approach used everywhere else in this file
+ * and in the Twelve Data integration. A failure here never blocks
+ * publishing, and never fabricates analysis by falling back to a guess.
+ */
+function globalfxhub_news_generate_analysis( $title, $summary, $source ) {
+    if ( ! defined( 'GLOBALFXHUB_ANTHROPIC_API_KEY' ) || ! GLOBALFXHUB_ANTHROPIC_API_KEY ) {
+        return null;
+    }
+
+    $system_prompt = 'You are a neutral financial-news analyst writing a short, original note for a forex/CFD broker review website, based only on a headline and short excerpt from a wire source. In 2-3 sentences, cover: (1) a brief observation about what this development likely means in context, (2) one plausible potential market outcome, clearly hedged as speculative (e.g. "could", "may") rather than certain, and (3) a brief evaluation of how significant this is. Rules: never give direct trading advice (no "buy", "sell", "you should"); never restate the headline verbatim; never invent specific numbers, dates, prices, or facts beyond what the excerpt actually says; if the excerpt is too thin to say anything substantive, write an honest, general note about why this type of event matters to traders instead of inventing specifics. Plain prose, no headers, no bullet points, no markdown.';
+
+    $user_prompt = "Headline: {$title}\nSource: {$source}\nExcerpt: {$summary}\n\nWrite the analysis paragraph now.";
+
+    $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', array(
+        'timeout' => 20,
+        'headers' => array(
+            'x-api-key'         => GLOBALFXHUB_ANTHROPIC_API_KEY,
+            'anthropic-version' => '2023-06-01',
+            'content-type'      => 'application/json',
+        ),
+        'body' => wp_json_encode( array(
+            'model'      => 'claude-haiku-4-5',
+            'max_tokens' => 300,
+            'system'     => $system_prompt,
+            'messages'   => array(
+                array( 'role' => 'user', 'content' => $user_prompt ),
+            ),
+        ) ),
+    ) );
+
+    if ( is_wp_error( $response ) ) {
+        error_log( 'GlobalFXHub news analysis: request failed -- ' . $response->get_error_message() );
+        return null;
+    }
+
+    $code = (int) wp_remote_retrieve_response_code( $response );
+    if ( 200 !== $code ) {
+        error_log( 'GlobalFXHub news analysis: HTTP ' . $code . ' -- ' . substr( wp_remote_retrieve_body( $response ), 0, 300 ) );
+        return null;
+    }
+
+    $body = json_decode( wp_remote_retrieve_body( $response ), true );
+    if ( ! is_array( $body ) || empty( $body['content'] ) || ! is_array( $body['content'] ) ) {
+        return null;
+    }
+
+    foreach ( $body['content'] as $block ) {
+        if ( isset( $block['type'] ) && 'text' === $block['type'] && ! empty( $block['text'] ) ) {
+            $text = trim( $block['text'] );
+            return '' !== $text ? $text : null;
+        }
+    }
+
+    return null;
 }
 
 /**
@@ -278,8 +383,14 @@ function globalfxhub_create_news_post( array $candidate ) {
     }
     $summary_linked = globalfxhub_news_inject_internal_links( esc_html( $summary_trimmed ) );
 
-    $content = '<p>' . $summary_linked . '</p>' . "\n\n"
-        . '<p>Source: <a href="' . esc_url( $candidate['link'] ) . '" rel="nofollow noopener" target="_blank">' . esc_html( $candidate['source'] ) . '</a>.</p>';
+    $content = '<p>' . $summary_linked . '</p>' . "\n\n";
+
+    $analysis = globalfxhub_news_generate_analysis( $candidate['title'], $candidate['summary'], $candidate['source'] );
+    if ( $analysis ) {
+        $content .= '<p><strong>What this means:</strong> ' . esc_html( $analysis ) . '</p>' . "\n\n";
+    }
+
+    $content .= '<p>Source: <a href="' . esc_url( $candidate['link'] ) . '" rel="nofollow noopener" target="_blank">' . esc_html( $candidate['source'] ) . '</a>.</p>';
 
     $post_id = wp_insert_post( array(
         'post_title'    => wp_strip_all_tags( $candidate['title'] ),
