@@ -718,6 +718,100 @@ function globalfxhub_broker_pros_cons( $broker ) {
 }
 
 /**
+ * Investor compensation coverage, derived purely from which jurisdictions a
+ * broker is confirmed to hold (not researched per-broker -- these are the
+ * general, publicly documented rules of each regulatory regime), so every
+ * broker in the dataset gets an accurate answer to "what happens to my
+ * money if this firm fails" with no new research required.
+ */
+function globalfxhub_broker_investor_protection( $broker ) {
+    $parts = array();
+    $has_fca = ! empty( $broker['fca'] ) || ! empty( $broker['fca_note'] );
+    $has_cysec = null !== $broker['cysec'];
+    $has_seychelles = ! empty( $broker['seychelles'] ) || ! empty( $broker['seychelles_note'] );
+
+    if ( $has_fca ) {
+        $parts[] = "Via its FCA-regulated UK entity, eligible clients are covered by the UK's Financial Services Compensation Scheme (FSCS) up to £85,000 per person if the firm fails.";
+    }
+    if ( $has_cysec ) {
+        if ( '—' === $broker['cysec'] ) {
+            $parts[] = "Via its EU-regulated entity (MiFID passporting), eligible clients are covered by that entity's home EU member state's investor compensation scheme -- typically up to €20,000, though the exact scheme and cap depend on which country licenses the entity.";
+        } else {
+            $parts[] = "Via its CySEC-regulated Cyprus entity, eligible clients are covered by Cyprus's Investor Compensation Fund (ICF) up to €20,000 per person if the firm fails.";
+        }
+    }
+    if ( $has_seychelles ) {
+        $parts[] = 'Via its Seychelles FSA-licensed entity, there is no statutory investor compensation scheme -- if that entity fails, there is no guaranteed fund to recover client money from.';
+    }
+    if ( empty( $parts ) ) {
+        return 'No confirmed Tier-1 or Seychelles FSA licence was found for this broker in our research, so no investor compensation scheme can be stated with confidence -- verify directly with the broker which entity you would be contracting with and what protection, if any, applies.';
+    }
+    return implode( ' ', $parts );
+}
+
+/**
+ * "Who this broker suits" / "who should look elsewhere", derived from
+ * already-confirmed data fields (deposit minimum, platform breadth,
+ * regulatory tier, sub-scores) rather than new research -- every reason
+ * given traces back to a fact already disclosed elsewhere on the same
+ * review page, so this never asserts anything not already backed by data.
+ */
+function globalfxhub_broker_who_for( $broker ) {
+    $for = array();
+    $against = array();
+
+    $has_fca = ! empty( $broker['fca'] ) || ! empty( $broker['fca_note'] );
+    $has_cysec = null !== $broker['cysec'];
+    $has_seychelles = ! empty( $broker['seychelles'] ) || ! empty( $broker['seychelles_note'] );
+    $has_eu_or_uk_reg = $has_cysec || $has_fca;
+
+    if ( null !== $broker['min_deposit_usd'] ) {
+        if ( $broker['min_deposit_usd'] <= 50 ) {
+            $for[] = 'Beginners or smaller accounts -- the confirmed minimum deposit (' . $broker['min_deposit_display'] . ') is low enough to start with limited capital.';
+        } elseif ( $broker['min_deposit_usd'] >= 1000 ) {
+            $for[] = 'Well-capitalized or professional-style traders -- the confirmed minimum deposit (' . $broker['min_deposit_display'] . ') is higher than most retail-focused brokers in our researched set.';
+            $against[] = 'Beginners or small accounts, given a higher minimum deposit (' . $broker['min_deposit_display'] . ') than most peers.';
+        }
+    }
+
+    $platform_count = count( $broker['platforms'] );
+    $has_mt = in_array( 'MT4', $broker['platforms'], true ) || in_array( 'MT5', $broker['platforms'], true );
+    if ( $platform_count >= 3 ) {
+        $for[] = 'Traders who want platform choice -- ' . $platform_count . ' platforms are confirmed, including ' . implode( ', ', array_slice( $broker['platforms'], 0, 2 ) ) . '.';
+    } elseif ( $platform_count > 0 && ! $has_mt ) {
+        $against[] = 'Traders specifically wanting MetaTrader (MT4/MT5) -- not among the platforms confirmed for this broker.';
+    }
+
+    if ( ! $has_eu_or_uk_reg && $has_seychelles ) {
+        $against[] = 'Traders who need EU- or UK-level regulatory protection and investor compensation -- this broker\'s only confirmed licence is the Seychelles FSA, which carries materially lighter oversight and no compensation scheme (see Investor protection below).';
+        $for[] = 'Traders outside the EU/UK who have already done their own due diligence on the offshore entity and are comfortable with that risk profile.';
+    } elseif ( $has_eu_or_uk_reg ) {
+        $for[] = 'EU- and/or UK-based traders who want the regulatory protections and investor compensation scheme that come with a CySEC and/or FCA licence (see Investor protection below).';
+    }
+
+    if ( null !== $broker['scores']['regulation'] && $broker['scores']['regulation'] >= 4.0 ) {
+        $for[] = 'Traders who prioritize regulatory breadth -- this broker holds one of the wider confirmed Tier-1 regulatory footprints in our researched set.';
+    }
+
+    if ( null !== $broker['scores']['cost'] ) {
+        if ( $broker['scores']['cost'] >= 4.0 ) {
+            $for[] = 'Cost-sensitive traders -- this broker scores well on our cost factor (low spread and/or low minimum deposit relative to peers).';
+        } elseif ( $broker['scores']['cost'] <= 2.5 ) {
+            $against[] = 'Cost-sensitive traders -- this broker scores below most peers on our cost factor (higher spread and/or minimum deposit relative to the set).';
+        }
+    }
+
+    if ( empty( $for ) ) {
+        $for[] = 'Not enough independently confirmed data on this broker to characterize who it specifically suits -- verify current terms directly before choosing it.';
+    }
+    if ( empty( $against ) ) {
+        $against[] = 'No specific "not for" signal in our researched criteria -- still confirm current terms directly with the broker.';
+    }
+
+    return array( 'for' => $for, 'against' => $against );
+}
+
+/**
  * What the biggest independent forex broker review sites currently publish
  * for each broker, keyed by slug, compiled from indexed/search-visible
  * content (this environment cannot directly load these sites to confirm
@@ -864,7 +958,7 @@ function globalfxhub_broker_external_reviews( $slug ) {
 
 function globalfxhub_get_brokers() {
     return array(
-        array( 'slug' => 'ig', 'name' => 'IG', 'entity' => 'IGM Forex Ltd', 'cysec' => '309/16', 'fca' => '195355', 'founded' => 1974, 'hq' => 'London, UK', 'min_deposit_usd' => 1, 'min_deposit_display' => '£1', 'spread_eurusd' => 0.6, 'platforms' => array('Proprietary', 'MT4', 'ProRealTime'), 'other_reg' => array('ASIC', '+9 more Tier-1'), 'other_reg_count' => 2, 'instruments' => '17,000+ across forex, indices, shares, commodities, crypto CFDs', 'blurb' => 'Long-established, publicly listed (LSE: IGG), one of the widest regulatory footprints of any broker on this list.', 'scores' => array( 'regulation' => 3.4, 'cost' => 4.76, 'platforms' => 3.4, 'track_record' => 5, 'overall' => 4.13 ), 'rank' => 2 ),
+        array( 'slug' => 'ig', 'name' => 'IG', 'entity' => 'IGM Forex Ltd', 'cysec' => '309/16', 'fca' => '195355', 'founded' => 1974, 'hq' => 'London, UK', 'min_deposit_usd' => 1, 'min_deposit_display' => '£1', 'spread_eurusd' => 0.6, 'platforms' => array('Proprietary', 'MT4', 'ProRealTime'), 'other_reg' => array('ASIC', '+9 more Tier-1'), 'other_reg_count' => 2, 'instruments' => '17,000+ across forex, indices, shares, commodities, crypto CFDs', 'account_types' => 'Leveraged spread betting (via IG Index Ltd, UK/Ireland only, tax-free there) and CFDs (via IG Markets Ltd), for both retail and professional clients, plus non-leveraged share dealing/ISA accounts (via IG Trading and Investments Ltd). A "Limited Risk" account requires a guaranteed stop on every position (a premium is charged if it\'s triggered) and caps losses at the margin committed; professional accounts are exempt from retail leverage caps. Figures in this section reflect IG\'s UK/FCA entity -- its Cyprus/CySEC entity\'s fee schedule wasn\'t separately verified.', 'execution_model' => 'Standard CFD and spread-betting accounts are OTC/market-maker -- IG is the counterparty and sets its own spread. A separate "IG Forex Direct" service offers DMA pricing with no IG spread, charged via a variable commission from roughly $10 per $1m traded, but it\'s restricted to professional clients only.', 'withdrawal_deposit_note' => 'Card, PayPal, and bank transfer, with no withdrawal processing fee per IG\'s own help pages. Minimum withdrawal is around £100/day (or the full balance if under that), with maximums varying by method (e.g. £20,000/day by card, £5,500 per PayPal transaction). Card withdrawals typically take 2-5 working days, PayPal usually same or next working day, and bank transfer the same day if requested before noon UK time.', 'overnight_financing' => 'Charged on CFD and spread-betting positions held overnight: position value times a benchmark rate (e.g. SOFR for USD, SONIA for GBP) plus or minus an admin-fee markup IG discloses at roughly 2.5-3% depending on instrument and region. Futures-style positions avoid this charge but carry wider spreads instead.', 'currency_conversion_fee' => 'A 0.7% fee on spread-betting/CFD accounts when a trade\'s currency differs from your account currency; a reduced 0.49% applies on share-dealing/ISA accounts, which IG describes as a discretionary rate guaranteed only until September 2026.', 'inactivity_fee' => '£12/month after 24 consecutive months with no open positions and no deposits on CFD/spread-betting accounts, per IG\'s help pages -- exact current exemptions weren\'t independently confirmed. A separate quarterly custody fee on low-activity investment accounts was reportedly scrapped from January 2026.', 'customer_service_note' => 'Phone, live chat and email, with IG stating near-24-hour availability (closed roughly 10pm Friday to 4am Saturday UK time). Independent sentiment is mixed: a Trustpilot average around 3.5/5 across roughly 10,000 reviews, with some reviewers praising support for complex queries and others reporting long wait times.', 'mobile_note' => '4.6 rating on Apple\'s App Store (29,000+ reviews); a commonly cited Google Play rating near 4 could not be independently confirmed directly on Play Store. Independent comparison sites generally rate the app among the stronger all-round trading apps for charting, stability, and guaranteed-stop support.', 'education_note' => 'IG Academy offers structured courses, quizzes, articles, webinars and a dedicated app, plus a reported $10,000 demo account. ForexBrokers.com rates IG\'s research/education package highly, naming it among the best for free forex education.', 'blurb' => 'Long-established, publicly listed (LSE: IGG), one of the widest regulatory footprints of any broker on this list.', 'scores' => array( 'regulation' => 3.4, 'cost' => 4.76, 'platforms' => 3.4, 'track_record' => 5, 'overall' => 4.13 ), 'rank' => 2 ),
         array( 'slug' => 'avatrade', 'name' => 'AvaTrade', 'entity' => 'Ava Trade EU Ltd', 'cysec' => '—', 'seychelles' => 'SD033', 'seychelles_note' => 'single-source; spot-check recommended', 'founded' => 2006, 'hq' => 'Dublin, Ireland', 'min_deposit_usd' => 100, 'min_deposit_display' => '$100', 'spread_eurusd' => 0.93, 'platforms' => array('Proprietary (AvaTradeGO)', 'MT4', 'MT5', 'DupliTrade', 'ZuluTrade'), 'other_reg' => array('ASIC', 'JFSA (Japan)', 'CIRO (Canada)', 'Central Bank of Ireland'), 'other_reg_count' => 4, 'instruments' => 'CFDs across forex, stocks, indices, commodities, ETFs, bonds, crypto', 'blurb' => 'EU clients typically served under Central Bank of Ireland / MiFID passporting rather than a direct CySEC CIF licence -- worth confirming which entity applies to you.', 'cysec_note' => 'Regulated in the EU via MiFID passporting; confirm current entity with AvaTrade directly.', 'scores' => array( 'regulation' => 4.2, 'cost' => 4.61, 'platforms' => 5, 'track_record' => 2.39, 'overall' => 4.12 ), 'rank' => 3 ),
         array( 'slug' => 'thinkmarkets', 'name' => 'ThinkMarkets', 'entity' => 'TF Global Markets (Europe) Ltd', 'cysec' => '215/13', 'seychelles' => 'SD060', 'founded' => 2010, 'hq' => 'Melbourne, Australia / London, UK (group); European entity based in Cyprus', 'min_deposit_usd' => 0, 'min_deposit_display' => '$0 (Standard account); $500 for ThinkZero account', 'spread_eurusd' => 1.1, 'platforms' => array('MT4', 'MT5', 'TradingView', 'Proprietary (ThinkTrader)'), 'other_reg' => array('ASIC', 'FSCA', 'DFSA', 'FMA'), 'other_reg_count' => 4, 'instruments' => 'Up to 4,000 CFD instruments across forex (40+ pairs), indices, shares, commodities and crypto, varying by platform.', 'blurb' => 'ThinkMarkets is a dual-headquartered (Melbourne/London) group founded in 2010 by brothers Nauman and Faizan Anees, in which each of its major-jurisdiction licences (FCA, ASIC, FSCA, DFSA, FMA) sits in a different legal entity from its CySEC-licensed European arm.', 'cysec_note' => 'All of these are held by separate TF Global Markets group entities, not by TF Global Markets (Europe) Ltd (the CySEC entity): FCA by the UK entity, ASIC by the Australian entity, FSCA by the South African entity, DFSA by a Dubai entity, and FMA by a New Zealand entity. The group also holds non-Tier-1 licences in the Cayman Islands, Mauritius and Seychelles.', 'fca' => '629628', 'scores' => array( 'regulation' => 5.0, 'cost' => 4.56, 'platforms' => 4.2, 'track_record' => 2.06, 'overall' => 4.12 ), 'rank' => 4 ),
         array( 'slug' => 'forex-com', 'name' => 'FOREX.com', 'entity' => 'StoneX Europe Ltd', 'cysec' => '400/21', 'fca' => '446717', 'founded' => 1999, 'hq' => 'New Jersey, USA (EU ops via Cyprus)', 'min_deposit_usd' => 100, 'min_deposit_display' => '$100', 'spread_eurusd' => 1, 'platforms' => array('Proprietary', 'MT4', 'MT5', 'TradingView'), 'other_reg' => array('NFA/CFTC (US)', 'ASIC'), 'other_reg_count' => 2, 'instruments' => '80+ FX pairs plus indices, commodities, shares CFDs', 'blurb' => 'Backed by NASDAQ-listed StoneX Group; strong educational content and platform variety.', 'scores' => array( 'regulation' => 3.4, 'cost' => 4.58, 'platforms' => 4.2, 'track_record' => 2.96, 'overall' => 3.83 ), 'rank' => 6 ),

@@ -14,6 +14,20 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
 
 <?php if ( $broker ) :
     $pc = globalfxhub_broker_pros_cons( $broker );
+    $who = globalfxhub_broker_who_for( $broker );
+    $investor_protection = globalfxhub_broker_investor_protection( $broker );
+    $deep_dive_na = 'Not independently confirmed in our research -- check the broker\'s own site or contact support directly.';
+    $deep_dive_fields = array(
+        'account_types'          => 'Account types',
+        'execution_model'        => 'Execution model',
+        'withdrawal_deposit_note' => 'Withdrawals & deposits',
+        'overnight_financing'    => 'Overnight financing (swap)',
+        'currency_conversion_fee' => 'Currency conversion cost',
+        'inactivity_fee'         => 'Inactivity fee',
+        'customer_service_note'  => 'Customer service',
+        'mobile_note'            => 'Mobile experience',
+        'education_note'         => 'Educational offering',
+    );
     $sub_labels = array(
         'regulation'   => 'Regulation',
         'cost'         => 'Cost',
@@ -106,6 +120,42 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
   </div>
 </div>
 
+<div class="wrap" style="padding-bottom:20px;">
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 20px;">Who <?php echo esc_html( $broker['name'] ); ?> is -- and isn't -- a good fit for</h2>
+  <div class="review-proscons">
+    <div class="review-proscons__col review-proscons__pros">
+      <h3>Likely a good fit if you're...</h3>
+      <ul>
+        <?php foreach ( $who['for'] as $reason ) : ?><li><?php echo esc_html( $reason ); ?></li><?php endforeach; ?>
+      </ul>
+    </div>
+    <div class="review-proscons__col review-proscons__cons">
+      <h3>Look elsewhere if you're...</h3>
+      <ul>
+        <?php foreach ( $who['against'] as $reason ) : ?><li><?php echo esc_html( $reason ); ?></li><?php endforeach; ?>
+      </ul>
+    </div>
+  </div>
+  <p style="color:var(--ink-soft);font-size:13px;margin-top:10px;">Derived from the same confirmed data behind this broker's score (regulation, cost, platforms, deposit minimum) -- not a separate editorial judgment.</p>
+</div>
+
+<div class="wrap" style="padding-bottom:20px;">
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 10px;">Investor protection</h2>
+  <p><?php echo esc_html( $investor_protection ); ?></p>
+</div>
+
+<div class="wrap" style="padding-bottom:20px;">
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;">Accounts, costs & support in more depth</h2>
+  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">Beyond the headline spread and minimum deposit above. Where our research hasn't independently confirmed a specific detail, we say so rather than guess -- verify directly with the broker before relying on it.</p>
+  <table class="compare-table review-facts">
+    <tbody>
+      <?php foreach ( $deep_dive_fields as $field_key => $field_label ) : ?>
+      <tr><th><?php echo esc_html( $field_label ); ?></th><td><?php echo esc_html( ! empty( $broker[ $field_key ] ) ? $broker[ $field_key ] : $deep_dive_na ); ?></td></tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+</div>
+
 <div class="wrap methodology-note">
   <strong>How this score is calculated:</strong> 30% regulatory footprint, 30% cost (spread + minimum deposit), 20% platform breadth, 20% track record — each ranked relative to the other brokers in our researched set, not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
 </div>
@@ -178,7 +228,7 @@ $others = array_slice( $others, 0, 3 );
   <?php if ( $search_query ) : ?>
   <p>Showing results for "<?php echo esc_html( $search_query ); ?>" &middot; <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);">clear search</a></p>
   <?php else : ?>
-  <p>In-depth reviews of every broker in our rankings -- CySEC-licensed, Seychelles FSA-licensed, or both -- built from the same disclosed methodology behind the scores.</p>
+  <p>In-depth reviews of every broker in our rankings -- CySEC-, FCA-, or Seychelles FSA-licensed, or more than one -- built from the same disclosed methodology behind the scores.</p>
   <?php endif; ?>
 </div>
 
