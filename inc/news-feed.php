@@ -98,19 +98,33 @@ function globalfxhub_news_topic_keywords() {
     );
 }
 
-function globalfxhub_news_classify_topic( $text ) {
-    $text_lower = strtolower( $text );
+/**
+ * Title mentions count double, since the headline is by far the
+ * strongest signal of what an article is actually about -- without this,
+ * a crypto headline ("Bitcoin dips as $400M in crypto longs are
+ * liquidated") could lose to 'rates' on a tie just because 'rates' is
+ * listed first in globalfxhub_news_topic_keywords() and a routine
+ * "central bank"/"monetary policy" mention in the body (common boilerplate
+ * in almost any macro story) reached the same hit count -- confirmed live:
+ * exactly this Bitcoin headline got tagged with the Central Banks & Rates
+ * image instead of the crypto one.
+ */
+function globalfxhub_news_classify_topic( $title, $summary = '' ) {
+    $title_lower   = strtolower( $title );
+    $summary_lower = strtolower( $summary );
     $best_topic = 'general';
-    $best_hits  = 0;
+    $best_score = 0;
     foreach ( globalfxhub_news_topic_keywords() as $topic => $keywords ) {
-        $hits = 0;
+        $score = 0;
         foreach ( $keywords as $kw ) {
-            if ( false !== strpos( $text_lower, $kw ) ) {
-                $hits++;
+            if ( false !== strpos( $title_lower, $kw ) ) {
+                $score += 2;
+            } elseif ( false !== strpos( $summary_lower, $kw ) ) {
+                $score += 1;
             }
         }
-        if ( $hits > $best_hits ) {
-            $best_hits  = $hits;
+        if ( $score > $best_score ) {
+            $best_score = $score;
             $best_topic = $topic;
         }
     }
@@ -357,10 +371,13 @@ function globalfxhub_news_generate_analysis( $title, $summary, $source ) {
 /**
  * Creates one published post for a ranked candidate article: a category
  * of "News", a short excerpt of the source's own description (never the
- * full article text) plus an attributed, linked-back source line,
- * contextual internal links woven into that excerpt, a topic-classified
- * featured image, and the postmeta the templates and dedupe logic rely
- * on (_news_source_url, _news_type, _byline).
+ * full article text, set as post_excerpt -- single.php shows this as the
+ * article's subtitle, not repeated in the body), an original Claude-
+ * generated analysis paragraph as the actual body content with
+ * contextual internal links woven in, an attributed linked-back source
+ * line, a topic-classified featured image, and the postmeta the
+ * templates and dedupe logic rely on (_news_source_url, _news_type,
+ * _byline).
  */
 function globalfxhub_create_news_post( array $candidate ) {
     $term = term_exists( 'News', 'category' );
@@ -373,7 +390,7 @@ function globalfxhub_create_news_post( array $candidate ) {
     $category_id = (int) $term['term_id'];
 
     $text_blob = $candidate['title'] . ' ' . $candidate['summary'];
-    $topic     = globalfxhub_news_classify_topic( $text_blob );
+    $topic     = globalfxhub_news_classify_topic( $candidate['title'], $candidate['summary'] );
     $broker    = globalfxhub_news_detect_broker( $text_blob );
     $news_type = $broker ? 'broker' : 'market';
 
@@ -381,13 +398,22 @@ function globalfxhub_create_news_post( array $candidate ) {
     if ( ! $summary_trimmed ) {
         $summary_trimmed = 'Read the full story at the source below.';
     }
-    $summary_linked = globalfxhub_news_inject_internal_links( esc_html( $summary_trimmed ) );
 
-    $content = '<p>' . $summary_linked . '</p>' . "\n\n";
-
+    /*
+     * post_excerpt (set below) is already rendered as the article's
+     * subtitle by single.php's get_the_excerpt() call, right under the
+     * headline. The body used to repeat that same excerpt text as its
+     * own first paragraph, so every article showed the identical
+     * paragraph twice on the page. The body now carries only genuinely
+     * new text: the Claude-generated analysis, or -- when that's
+     * unavailable -- a short line that doesn't restate the subtitle.
+     */
     $analysis = globalfxhub_news_generate_analysis( $candidate['title'], $candidate['summary'], $candidate['source'] );
     if ( $analysis ) {
-        $content .= '<p><strong>What this means:</strong> ' . esc_html( $analysis ) . '</p>' . "\n\n";
+        $analysis_linked = globalfxhub_news_inject_internal_links( esc_html( $analysis ) );
+        $content = '<p>' . $analysis_linked . '</p>' . "\n\n";
+    } else {
+        $content = '<p>Read the full story at the source linked below for more detail.</p>' . "\n\n";
     }
 
     $content .= '<p>Source: <a href="' . esc_url( $candidate['link'] ) . '" rel="nofollow noopener" target="_blank">' . esc_html( $candidate['source'] ) . '</a>.</p>';
