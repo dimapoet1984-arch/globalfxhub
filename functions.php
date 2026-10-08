@@ -30,6 +30,7 @@ require get_template_directory() . '/inc/broker-finder.php';
 require get_template_directory() . '/inc/cost-calculator.php';
 require get_template_directory() . '/inc/regulation-checker.php';
 require get_template_directory() . '/inc/broker-changelog.php';
+require get_template_directory() . '/inc/learn-articles.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
