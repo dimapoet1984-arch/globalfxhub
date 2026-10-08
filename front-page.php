@@ -517,16 +517,14 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
       </div>
     </div>
     <div class="countries__row">
-      <a href="#" class="country-pill">🇺🇸 United States</a>
-      <a href="#" class="country-pill">🇬🇧 United Kingdom</a>
-      <a href="#" class="country-pill">🇨🇦 Canada</a>
-      <a href="#" class="country-pill">🇦🇺 Australia</a>
-      <a href="#" class="country-pill">🇮🇳 India</a>
-      <a href="#" class="country-pill">🇿🇦 South Africa</a>
-      <a href="#" class="country-pill">🇳🇬 Nigeria</a>
-      <a href="#" class="country-pill">🇵🇭 Philippines</a>
-      <a href="#" class="country-pill">🇦🇪 UAE</a>
-      <a href="#" class="country-pill">All countries →</a>
+      <?php
+      $fp_countries = globalfxhub_get_countries();
+      foreach ( $fp_countries as $fp_country_slug => $fp_country ) :
+          $fp_flag = globalfxhub_country_flag_emoji( $fp_country['iso'] );
+          ?>
+        <a href="<?php echo esc_url( home_url( '/countries/' . $fp_country_slug . '/' ) ); ?>" class="country-pill"><?php echo esc_html( $fp_flag ? $fp_flag . ' ' : '' ); ?><?php echo esc_html( $fp_country['name'] ); ?></a>
+      <?php endforeach; ?>
+      <a href="<?php echo esc_url( home_url( '/countries/' ) ); ?>" class="country-pill">All countries &rarr;</a>
     </div>
   </div>
 </section>
