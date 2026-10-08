@@ -22,6 +22,7 @@ require get_template_directory() . '/inc/translatable-strings.php';
 require get_template_directory() . '/inc/market-data.php';
 require get_template_directory() . '/inc/service-pages.php';
 require get_template_directory() . '/inc/news-feed.php';
+require get_template_directory() . '/inc/broker-news.php';
 require get_template_directory() . '/inc/countries.php';
 
 /**
@@ -558,7 +559,7 @@ function globalfxhub_review_seo_head() {
     $deposit_label = $broker['min_deposit_display'] ? $broker['min_deposit_display'] . ' minimum deposit' : 'minimum deposit not independently confirmed';
     $spread_label  = null !== $broker['spread_eurusd'] ? $broker['spread_eurusd'] . ' pip average EUR/USD spread' : 'EUR/USD spread not independently confirmed';
     $description = sprintf(
-        '%s review: %s, %s, %s. Scored %s/5 overall on regulation, cost, platforms and track record -- see the full breakdown and what other reviewers say.',
+        '%s review: %s, %s, %s. Scored %s/5 overall under our nine-category disclosed methodology -- see the full breakdown and what other reviewers say.',
         $broker['name'],
         $reg_label,
         $deposit_label,

@@ -270,13 +270,15 @@ GlobalFXHubBrokerSearch.init(
 </section>
 
 <?php
-$globalfxhub_news_query = new WP_Query( array(
+$globalfxhub_fx_news_query = new WP_Query( array(
     'post_type'      => 'post',
-    'posts_per_page' => 5,
-    'category_name'  => 'news',
+    'posts_per_page' => 3,
+    'category_name'  => 'fx-market-news',
     'orderby'        => 'date',
     'order'          => 'DESC',
 ) );
+$globalfxhub_broker_news_preview = array_slice( globalfxhub_get_broker_news_items(), 0, 3 );
+$globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
 ?>
 <section id="market-news">
   <div class="wrap">
@@ -288,19 +290,29 @@ $globalfxhub_news_query = new WP_Query( array(
       <a href="<?php echo esc_url( home_url( '/news/' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_all_news' ); ?></a>
     </div>
     <div class="news__grid">
-      <?php if ( $globalfxhub_news_query->have_posts() ) : while ( $globalfxhub_news_query->have_posts() ) : $globalfxhub_news_query->the_post();
-          $globalfxhub_news_type = get_post_meta( get_the_ID(), '_news_type', true );
+      <?php foreach ( $globalfxhub_broker_news_preview as $globalfxhub_bn_item ) :
+          $globalfxhub_bn_broker = globalfxhub_get_broker_by_slug( $globalfxhub_bn_item['broker_slug'] );
+          if ( ! $globalfxhub_bn_broker ) { continue; }
+          $globalfxhub_bn_cat = isset( $globalfxhub_broker_news_categories[ $globalfxhub_bn_item['category'] ] ) ? $globalfxhub_broker_news_categories[ $globalfxhub_bn_item['category'] ] : 'Update';
       ?>
+      <a href="<?php echo esc_url( home_url( '/reviews/' . $globalfxhub_bn_broker['slug'] . '/' ) ); ?>" class="news-item">
+        <div class="tag"><?php echo esc_html( strtoupper( $globalfxhub_bn_cat ) ); ?></div>
+        <h4><?php echo esc_html( $globalfxhub_bn_item['headline'] ); ?></h4>
+        <p><?php echo esc_html( globalfxhub_trim_excerpt( $globalfxhub_bn_item['body'], 20 ) ); ?></p>
+        <time><?php echo esc_html( date_i18n( 'j M Y', strtotime( $globalfxhub_bn_item['date'] ) ) ); ?></time>
+      </a>
+      <?php endforeach; ?>
+      <?php if ( $globalfxhub_fx_news_query->have_posts() ) : while ( $globalfxhub_fx_news_query->have_posts() ) : $globalfxhub_fx_news_query->the_post(); ?>
       <a href="<?php the_permalink(); ?>" class="news-item">
         <?php if ( has_post_thumbnail() ) : ?>
         <?php the_post_thumbnail( 'medium_large', array( 'class' => 'news-item__thumb' ) ); ?>
         <?php endif; ?>
-        <div class="tag<?php echo 'market' === $globalfxhub_news_type ? ' market' : ''; ?>"><?php echo 'market' === $globalfxhub_news_type ? 'MARKET NEWS' : 'BROKER NEWS'; ?></div>
+        <div class="tag market">FX MARKET NEWS</div>
         <h4><?php the_title(); ?></h4>
         <p><?php echo esc_html( globalfxhub_trim_excerpt( get_the_excerpt() ? get_the_excerpt() : get_the_content(), 20 ) ); ?></p>
         <time><?php echo esc_html( get_the_date() ); ?></time>
       </a>
-      <?php endwhile; wp_reset_postdata(); else : ?>
+      <?php endwhile; wp_reset_postdata(); elseif ( empty( $globalfxhub_broker_news_preview ) ) : ?>
       <p style="padding:24px;color:var(--ink-soft);">No news published yet.</p>
       <?php endif; ?>
     </div>

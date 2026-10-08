@@ -1,16 +1,28 @@
 <?php
 /**
- * Daily market-news digest: scans a fixed list of finance/markets RSS
- * feeds, scores each article by a keyword+recency heuristic (no LLM/API
- * calls -- this part costs nothing to run), and publishes the 10
- * highest-impact articles as normal posts in the "News" category. Each
- * post pairs a trimmed excerpt of the source's own description (never
- * the full article) with a short, original analysis paragraph generated
- * by the Claude API -- genuinely tailored to that article rather than a
- * canned template, and original commentary rather than reproduced
- * source text. This is the one real per-run cost in this file: ~10
- * short Claude Haiku calls/day. Always attributed and linked back to
- * the original source regardless.
+ * FX Market News: a low-volume, high-depth weekly digest, not a daily
+ * feed. Scans a fixed list of finance/markets RSS feeds purely to spot
+ * genuinely high-impact triggers (Fed/ECB decisions, CPI/NFP releases,
+ * major geopolitical/market shocks), then has the Claude API write an
+ * original 300-700 word analysis piece for each one -- never a
+ * reproduction or close paraphrase of the source's own article, and
+ * never published at all if the source excerpt is too thin to support
+ * genuine analysis without inventing detail.
+ *
+ * This deliberately replaces an earlier version of this file that
+ * published up to 10 short (2-3 sentence) items per day from the same
+ * feeds. That pattern -- high volume, thin per-item substance, excerpted
+ * from wire sources -- is close to what Google's own guidance on scaled
+ * content abuse describes: mass-generated or lightly-reworked content
+ * published primarily to build indexed volume rather than for its own
+ * sake. The fix isn't to do the same thing more carefully; it's to
+ * publish far less, and make every published item substantive enough
+ * to stand on its own. At most 3 items/week now, and only for stories
+ * that clear a real significance bar.
+ *
+ * Broker-specific news (fines, licence actions, acquisitions, etc.) is
+ * handled entirely separately in inc/broker-news.php, as a curated,
+ * non-syndicated feed -- it never flows through this RSS pipeline.
  *
  * Mirrors the Twelve Data integration's shape on purpose: fetch on a
  * schedule (never per-pageview), a minimum-gap guard independent of the
@@ -33,9 +45,9 @@ define( 'GLOBALFXHUB_NEWS_SEEN_OPTION', 'globalfxhub_news_seen_urls' );
 define( 'GLOBALFXHUB_NEWS_TOPIC_ATTACHMENTS_OPTION', 'globalfxhub_news_topic_attachments' );
 
 /**
- * Candidate sources. Ten general finance/markets outlets, favoring ones
- * that plausibly still run a public RSS feed. Unverified from this
- * sandbox -- see the file header.
+ * Candidate sources, used only to spot "something happened" triggers
+ * (headline, short excerpt, link, timestamp) -- never as content to
+ * reproduce. Unverified from this sandbox -- see the file header.
  */
 function globalfxhub_news_feed_sources() {
     return array(
@@ -82,9 +94,20 @@ function globalfxhub_news_score_item( $text, $age_hours ) {
 }
 
 /**
- * Keyword -> featured-image topic. Picks whichever topic has the most
- * keyword hits in the article; 'general' is the fallback when nothing
- * matches.
+ * Minimum score a candidate must clear before we even attempt to
+ * generate analysis for it. This is the "actually significant" bar --
+ * a lone low-weight keyword plus recency alone (max 1 + 3 = 4) isn't
+ * enough; it takes a real impact-keyword hit (a weight-2 or weight-3
+ * term) layered on top. Deliberately high: this is a weekly digest of
+ * genuinely market-moving stories, not a quota to fill.
+ */
+define( 'GLOBALFXHUB_NEWS_MIN_SCORE', 5.0 );
+
+/**
+ * Keyword -> featured-image topic, and keyword -> the specific
+ * instrument whose "why this matters" angle the analysis prompt should
+ * anchor on. Picks whichever topic has the most keyword hits in the
+ * article; 'general' is the fallback when nothing matches.
  */
 function globalfxhub_news_topic_keywords() {
     return array(
@@ -96,6 +119,25 @@ function globalfxhub_news_topic_keywords() {
         'econdata' => array( 'cpi', 'inflation', 'gdp', 'unemployment', 'non-farm payrolls', 'nfp', 'jobs report', 'retail sales', 'pmi', 'economic data' ),
         'forex'    => array( 'forex', 'currency', 'currencies', 'eur/usd', 'gbp/usd', 'usd/jpy', 'dollar index', 'exchange rate', 'dollar', 'euro', 'pound', 'yen' ),
     );
+}
+
+/**
+ * The instrument/angle each topic's analysis should explicitly address
+ * under the "Why this matters for ___" subheading the generation prompt
+ * requires.
+ */
+function globalfxhub_news_topic_instrument_label( $topic ) {
+    $map = array(
+        'rates'    => 'EUR/USD and the broader US-dollar majors',
+        'gold'     => 'gold (XAU/USD)',
+        'oil'      => 'oil (WTI and Brent) and commodity-linked currencies like CAD and NOK',
+        'crypto'   => 'Bitcoin and broader risk-asset sentiment',
+        'stocks'   => 'broad risk sentiment and safe-haven FX flows',
+        'econdata' => 'EUR/USD and whichever currency is most directly tied to the data released',
+        'forex'    => 'EUR/USD and other major currency pairs',
+        'general'  => 'broader FX market sentiment',
+    );
+    return isset( $map[ $topic ] ) ? $map[ $topic ] : $map['general'];
 }
 
 /**
@@ -132,32 +174,14 @@ function globalfxhub_news_classify_topic( $title, $summary = '' ) {
 }
 
 /**
- * Names shorter than 3 characters (e.g. "IG", "XM") are skipped -- too
- * likely to false-positive inside ordinary text -- so those brokers just
- * never get tagged as the subject of a news item, which is a fine
- * trade-off for avoiding wrong tags.
+ * Injects up to $max_links contextual links into already-sanitized HTML:
+ * a mentioned broker's own review page first, then whichever existing
+ * guide the text is about. Caps total links so a short summary doesn't
+ * turn into a wall of anchors. Names shorter than 3 characters (e.g.
+ * "IG", "XM") are skipped -- too likely to false-positive inside
+ * ordinary text.
  */
-function globalfxhub_news_detect_broker( $text ) {
-    $text_lower = strtolower( $text );
-    foreach ( globalfxhub_get_brokers() as $broker ) {
-        $name_lower = strtolower( $broker['name'] );
-        if ( strlen( $name_lower ) < 3 ) {
-            continue;
-        }
-        if ( false !== strpos( $text_lower, $name_lower ) ) {
-            return $broker;
-        }
-    }
-    return null;
-}
-
-/**
- * Injects up to $max_links contextual links into an already-esc_html'd
- * text: a mentioned broker's own review page first, then whichever
- * existing guide the text is about. Caps total links so a short summary
- * doesn't turn into a wall of anchors.
- */
-function globalfxhub_news_inject_internal_links( $escaped_text, $max_links = 2 ) {
+function globalfxhub_news_inject_internal_links( $html, $max_links = 2 ) {
     $links_added = 0;
 
     foreach ( globalfxhub_get_brokers() as $broker ) {
@@ -168,9 +192,9 @@ function globalfxhub_news_inject_internal_links( $escaped_text, $max_links = 2 )
             continue;
         }
         $pattern = '/\b(' . preg_quote( $broker['name'], '/' ) . ')\b/i';
-        if ( preg_match( $pattern, $escaped_text ) ) {
+        if ( preg_match( $pattern, $html ) ) {
             $url = home_url( '/reviews/' . $broker['slug'] . '/' );
-            $escaped_text = preg_replace( $pattern, '<a href="' . esc_url( $url ) . '">$1</a>', $escaped_text, 1 );
+            $html = preg_replace( $pattern, '<a href="' . esc_url( $url ) . '">$1</a>', $html, 1 );
             $links_added++;
         }
     }
@@ -186,13 +210,13 @@ function globalfxhub_news_inject_internal_links( $escaped_text, $max_links = 2 )
             break;
         }
         $pattern = '/\b(' . $pattern_words . ')\b/i';
-        if ( preg_match( $pattern, $escaped_text ) ) {
-            $escaped_text = preg_replace( $pattern, '<a href="' . esc_url( $url ) . '">$1</a>', $escaped_text, 1 );
+        if ( preg_match( $pattern, $html ) ) {
+            $html = preg_replace( $pattern, '<a href="' . esc_url( $url ) . '">$1</a>', $html, 1 );
             $links_added++;
         }
     }
 
-    return $escaped_text;
+    return $html;
 }
 
 function globalfxhub_news_topic_image_path( $topic ) {
@@ -294,11 +318,12 @@ function globalfxhub_news_get_topic_attachment_id( $topic ) {
 }
 
 /**
- * Generates a short, original analysis paragraph for one article via the
- * Claude API -- genuinely tailored to that specific headline/excerpt
- * (observation, a hedged potential outcome, a brief evaluation of
- * significance), not a canned per-topic template, and original
- * commentary rather than reproduced source text.
+ * Generates an original 300-700 word analysis article for one trigger
+ * story via the Claude API -- genuinely substantive and specific to
+ * that headline/excerpt, never a reworded reproduction of the source,
+ * and never fabricating facts the excerpt doesn't contain. Requires a
+ * "Why this matters for {instrument}" section addressing the specific
+ * pair/asset most relevant to the story's topic.
  *
  * Raw HTTP via wp_remote_post(), matching this theme's existing
  * external-API pattern (see inc/market-data.php) rather than the
@@ -310,31 +335,38 @@ function globalfxhub_news_get_topic_attachment_id( $topic ) {
  * (never in this repo, since it's a public theme):
  *   define( 'GLOBALFXHUB_ANTHROPIC_API_KEY', 'sk-ant-xxxxxxxxxxxx' );
  * Until that constant exists, or if the call ever fails for any reason
- * (network error, rate limit, malformed response), this returns null and
- * the post is published with just the excerpt and source line -- the
- * same graceful-degradation approach used everywhere else in this file
- * and in the Twelve Data integration. A failure here never blocks
- * publishing, and never fabricates analysis by falling back to a guess.
+ * (network error, rate limit, malformed response), or if the model
+ * itself says the excerpt is too thin to analyze honestly, this returns
+ * null and the candidate is skipped entirely -- no post gets published
+ * for it. A failure or thin-material verdict here never produces a
+ * stub post and never fabricates analysis by inventing specifics.
  */
-function globalfxhub_news_generate_analysis( $title, $summary, $source ) {
+function globalfxhub_news_generate_analysis( $title, $summary, $source, $instrument_label ) {
     if ( ! defined( 'GLOBALFXHUB_ANTHROPIC_API_KEY' ) || ! GLOBALFXHUB_ANTHROPIC_API_KEY ) {
         return null;
     }
 
-    $system_prompt = 'You are a neutral financial-news analyst writing a short, original note for a forex/CFD broker review website, based only on a headline and short excerpt from a wire source. In 2-3 sentences, cover: (1) a brief observation about what this development likely means in context, (2) one plausible potential market outcome, clearly hedged as speculative (e.g. "could", "may") rather than certain, and (3) a brief evaluation of how significant this is. Rules: never give direct trading advice (no "buy", "sell", "you should"); never restate the headline verbatim; never invent specific numbers, dates, prices, or facts beyond what the excerpt actually says; if the excerpt is too thin to say anything substantive, write an honest, general note about why this type of event matters to traders instead of inventing specifics. Plain prose, no headers, no bullet points, no markdown.';
+    $system_prompt = 'You are a financial-markets analyst writing an original FX-market analysis article for a forex/CFD broker review website, based only on a headline and short excerpt from a wire source -- you do not have access to the full source article.'
+        . ' Write 300-700 words of ORIGINAL prose (never the source\'s own wording, never a close paraphrase of it) as plain HTML using only <p> and <strong>/<em> tags, structured as:'
+        . ' (1) an opening paragraph giving context -- what happened and the immediate market backdrop;'
+        . ' (2) one or two paragraphs on the likely mechanism and what traders are watching for next;'
+        . ' (3) a paragraph that starts with exactly this subheading as its own tag, <h3>Why this matters for ' . $instrument_label . '</h3>, followed by a <p> explaining the specific, clearly-hedged ("could", "may", "if confirmed") implications for that instrument;'
+        . ' (4) a short closing paragraph on what would change the picture (an upcoming data release, a central bank meeting, etc).'
+        . ' Rules: never give direct trading advice (no "buy", "sell", "you should"); never restate the headline verbatim; never invent specific numbers, prices, dates, or facts beyond what the excerpt actually provides; hedge explicitly around anything not stated outright in the excerpt.'
+        . ' If the excerpt is too thin to support genuine, specific 300-700 word analysis without inventing detail, respond with exactly the single line NOT_ENOUGH_MATERIAL and nothing else -- do not pad with filler or generic restatement to hit the length.';
 
-    $user_prompt = "Headline: {$title}\nSource: {$source}\nExcerpt: {$summary}\n\nWrite the analysis paragraph now.";
+    $user_prompt = "Headline: {$title}\nSource: {$source}\nExcerpt: {$summary}\n\nWrite the analysis article now.";
 
     $response = wp_remote_post( 'https://api.anthropic.com/v1/messages', array(
-        'timeout' => 20,
+        'timeout' => 30,
         'headers' => array(
             'x-api-key'         => GLOBALFXHUB_ANTHROPIC_API_KEY,
             'anthropic-version' => '2023-06-01',
             'content-type'      => 'application/json',
         ),
         'body' => wp_json_encode( array(
-            'model'      => 'claude-haiku-4-5',
-            'max_tokens' => 300,
+            'model'      => 'claude-sonnet-4-5',
+            'max_tokens' => 1400,
             'system'     => $system_prompt,
             'messages'   => array(
                 array( 'role' => 'user', 'content' => $user_prompt ),
@@ -358,65 +390,64 @@ function globalfxhub_news_generate_analysis( $title, $summary, $source ) {
         return null;
     }
 
+    $text = null;
     foreach ( $body['content'] as $block ) {
         if ( isset( $block['type'] ) && 'text' === $block['type'] && ! empty( $block['text'] ) ) {
             $text = trim( $block['text'] );
-            return '' !== $text ? $text : null;
+            break;
         }
     }
+    if ( ! $text ) {
+        return null;
+    }
+    if ( 'NOT_ENOUGH_MATERIAL' === $text ) {
+        return null;
+    }
 
-    return null;
+    // Sanitize to the small allowed tag set regardless of what the model
+    // returned, then enforce a real minimum word count -- a model that
+    // ignored the length instruction without using the sentinel string
+    // still shouldn't result in a thin post.
+    $clean = wp_kses( $text, array(
+        'p'      => array(),
+        'h3'     => array(),
+        'strong' => array(),
+        'em'     => array(),
+    ) );
+    $word_count = count( preg_split( '/\s+/', trim( wp_strip_all_tags( $clean ) ) ) );
+    if ( $word_count < 180 ) {
+        return null;
+    }
+
+    return $clean;
 }
 
 /**
- * Creates one published post for a ranked candidate article: a category
- * of "News", a short excerpt of the source's own description (never the
- * full article text, set as post_excerpt -- single.php shows this as the
- * article's subtitle, not repeated in the body), an original Claude-
- * generated analysis paragraph as the actual body content with
- * contextual internal links woven in, an attributed linked-back source
- * line, a topic-classified featured image, and the postmeta the
- * templates and dedupe logic rely on (_news_source_url, _news_type,
- * _byline).
+ * Creates one published post for a ranked, already-analyzed candidate:
+ * a category of "FX Market News", the Claude-generated analysis article
+ * as the body (with contextual internal links woven in), an attributed
+ * linked-back source line, a topic-classified featured image, and the
+ * postmeta the templates and dedupe logic rely on (_news_source_url).
  */
-function globalfxhub_create_news_post( array $candidate ) {
-    $term = term_exists( 'News', 'category' );
+function globalfxhub_create_news_post( array $candidate, $analysis ) {
+    $term = term_exists( 'FX Market News', 'category' );
     if ( ! $term ) {
-        $term = wp_insert_term( 'News', 'category', array( 'slug' => 'news' ) );
+        $term = wp_insert_term( 'FX Market News', 'category', array( 'slug' => 'fx-market-news' ) );
     }
     if ( is_wp_error( $term ) || empty( $term['term_id'] ) ) {
         return 0;
     }
     $category_id = (int) $term['term_id'];
 
-    $text_blob = $candidate['title'] . ' ' . $candidate['summary'];
-    $topic     = globalfxhub_news_classify_topic( $candidate['title'], $candidate['summary'] );
-    $broker    = globalfxhub_news_detect_broker( $text_blob );
-    $news_type = $broker ? 'broker' : 'market';
+    $topic = globalfxhub_news_classify_topic( $candidate['title'], $candidate['summary'] );
 
-    $summary_trimmed = globalfxhub_trim_excerpt( $candidate['summary'], 55 );
+    $summary_trimmed = globalfxhub_trim_excerpt( $candidate['summary'], 40 );
     if ( ! $summary_trimmed ) {
-        $summary_trimmed = 'Read the full story at the source below.';
+        $summary_trimmed = 'Original analysis of a market-moving development -- see the source below for the underlying report.';
     }
 
-    /*
-     * post_excerpt (set below) is already rendered as the article's
-     * subtitle by single.php's get_the_excerpt() call, right under the
-     * headline. The body used to repeat that same excerpt text as its
-     * own first paragraph, so every article showed the identical
-     * paragraph twice on the page. The body now carries only genuinely
-     * new text: the Claude-generated analysis, or -- when that's
-     * unavailable -- a short line that doesn't restate the subtitle.
-     */
-    $analysis = globalfxhub_news_generate_analysis( $candidate['title'], $candidate['summary'], $candidate['source'] );
-    if ( $analysis ) {
-        $analysis_linked = globalfxhub_news_inject_internal_links( esc_html( $analysis ) );
-        $content = '<p>' . $analysis_linked . '</p>' . "\n\n";
-    } else {
-        $content = '<p>Read the full story at the source linked below for more detail.</p>' . "\n\n";
-    }
-
-    $content .= '<p>Source: <a href="' . esc_url( $candidate['link'] ) . '" rel="nofollow noopener" target="_blank">' . esc_html( $candidate['source'] ) . '</a>.</p>';
+    $content = globalfxhub_news_inject_internal_links( $analysis );
+    $content .= "\n\n" . '<p>Source: <a href="' . esc_url( $candidate['link'] ) . '" rel="nofollow noopener" target="_blank">' . esc_html( $candidate['source'] ) . '</a>.</p>';
 
     $post_id = wp_insert_post( array(
         'post_title'    => wp_strip_all_tags( $candidate['title'] ),
@@ -433,11 +464,7 @@ function globalfxhub_create_news_post( array $candidate ) {
 
     update_post_meta( $post_id, '_news_source_url', $candidate['link'] );
     update_post_meta( $post_id, '_news_source_name', $candidate['source'] );
-    update_post_meta( $post_id, '_news_type', $news_type );
     update_post_meta( $post_id, '_byline', 'markets-editor' );
-    if ( $broker ) {
-        update_post_meta( $post_id, '_news_broker_slug', $broker['slug'] );
-    }
 
     $attach_id = globalfxhub_news_get_topic_attachment_id( $topic );
     if ( $attach_id ) {
@@ -449,18 +476,22 @@ function globalfxhub_create_news_post( array $candidate ) {
 
 /**
  * The pipeline: pull every feed (one failing/blocked feed never stops
- * the rest), score every item found across all of them together, then
- * publish the top 10 that aren't already-published duplicates (deduped
- * by source URL, both against a running "seen" list and a direct
- * postmeta lookup so a manually-added article is respected too).
+ * the rest), score every item found across all of them together,
+ * discard anything under the significance bar, then attempt real
+ * analysis for the remainder in score order, publishing only the ones
+ * that clear the length/substance bar in globalfxhub_news_generate_analysis()
+ * -- up to 3 per run, skipping (not stubbing) anything too thin.
+ * Deduped by source URL, both against a running "seen" list and a
+ * direct postmeta lookup so a manually-added article is respected too.
  *
  * Guards against running too often independent of the cron schedule --
- * at most once every 12 hours, no matter what triggers it.
+ * at most once every 7 days, no matter what triggers it. This is a
+ * weekly digest by design, not a daily feed: see the file header for why.
  */
 function globalfxhub_fetch_and_publish_news( $force = false ) {
     $last_run = (int) get_option( 'globalfxhub_news_last_run_at', 0 );
-    if ( ! $force && ( time() - $last_run ) < 12 * HOUR_IN_SECONDS ) {
-        return array( 'ok' => false, 'reason' => 'Skipped: ran ' . ( time() - $last_run ) . 's ago, under the 12-hour minimum gap.' );
+    if ( ! $force && ( time() - $last_run ) < 7 * DAY_IN_SECONDS ) {
+        return array( 'ok' => false, 'reason' => 'Skipped: ran ' . ( time() - $last_run ) . 's ago, under the 7-day minimum gap.' );
     }
     update_option( 'globalfxhub_news_last_run_at', time(), false );
 
@@ -487,8 +518,8 @@ function globalfxhub_fetch_and_publish_news( $force = false ) {
                 $published = time();
             }
             $age_hours = ( time() - $published ) / HOUR_IN_SECONDS;
-            if ( $age_hours > 96 || $age_hours < 0 ) {
-                continue; // Older than 4 days, or clock-skewed into the future.
+            if ( $age_hours > 168 || $age_hours < 0 ) {
+                continue; // Older than this digest's own 7-day window, or clock-skewed into the future.
             }
 
             $title = wp_strip_all_tags( (string) $item->get_title() );
@@ -497,19 +528,24 @@ function globalfxhub_fetch_and_publish_news( $force = false ) {
             }
             $summary = wp_strip_all_tags( (string) $item->get_description() );
 
+            $score = globalfxhub_news_score_item( $title . ' ' . $summary, $age_hours );
+            if ( $score < GLOBALFXHUB_NEWS_MIN_SCORE ) {
+                continue; // Doesn't clear the "genuinely significant" bar -- not a candidate at all.
+            }
+
             $candidates[] = array(
                 'title'     => $title,
                 'summary'   => $summary,
                 'link'      => $link,
                 'source'    => $source['name'],
                 'published' => $published,
-                'score'     => globalfxhub_news_score_item( $title . ' ' . $summary, $age_hours ),
+                'score'     => $score,
             );
         }
     }
 
     if ( empty( $candidates ) ) {
-        return array( 'ok' => false, 'reason' => 'No candidate articles parsed from any feed.', 'feed_results' => $feed_results );
+        return array( 'ok' => false, 'reason' => 'No candidate articles cleared the significance bar across any feed this week.', 'feed_results' => $feed_results );
     }
 
     usort( $candidates, function( $a, $b ) {
@@ -521,11 +557,12 @@ function globalfxhub_fetch_and_publish_news( $force = false ) {
         $seen = array();
     }
 
-    $created      = array();
-    $skipped_dupe = 0;
+    $created       = array();
+    $skipped_dupe  = 0;
+    $skipped_thin  = 0;
 
     foreach ( $candidates as $candidate ) {
-        if ( count( $created ) >= 10 ) {
+        if ( count( $created ) >= 3 ) {
             break;
         }
         $hash = md5( $candidate['link'] );
@@ -546,10 +583,23 @@ function globalfxhub_fetch_and_publish_news( $force = false ) {
             continue;
         }
 
-        $post_id = globalfxhub_create_news_post( $candidate );
+        $topic = globalfxhub_news_classify_topic( $candidate['title'], $candidate['summary'] );
+        $instrument_label = globalfxhub_news_topic_instrument_label( $topic );
+        $analysis = globalfxhub_news_generate_analysis( $candidate['title'], $candidate['summary'], $candidate['source'], $instrument_label );
+
+        // Always mark seen once we've genuinely evaluated it, win or lose
+        // -- a thin-material verdict is a real answer about this specific
+        // story, not a transient failure worth retrying next week.
+        $seen[] = $hash;
+
+        if ( ! $analysis ) {
+            $skipped_thin++;
+            continue;
+        }
+
+        $post_id = globalfxhub_create_news_post( $candidate, $analysis );
         if ( $post_id ) {
             $created[] = array( 'id' => $post_id, 'title' => $candidate['title'], 'score' => round( $candidate['score'], 2 ) );
-            $seen[] = $hash;
         }
     }
 
@@ -562,16 +612,17 @@ function globalfxhub_fetch_and_publish_news( $force = false ) {
         'ok'                    => true,
         'created'               => $created,
         'skipped_dupe'          => $skipped_dupe,
+        'skipped_thin'          => $skipped_thin,
         'candidates_considered' => count( $candidates ),
         'feed_results'          => $feed_results,
     );
 }
 
 /**
- * Once a day is plenty for a "scan overnight, publish a digest" job --
- * loosen via the 'daily' -> a custom schedule if faster turnaround is
- * ever wanted; the 12-hour guard inside the fetch function itself stops
- * that from ever running too often regardless.
+ * Weekly is the actual cadence (enforced by the 7-day minimum-gap guard
+ * inside the fetch function itself, independent of this schedule) --
+ * scheduled daily only so a missed/delayed cron tick still catches up
+ * promptly rather than silently waiting for next week's exact slot.
  */
 function globalfxhub_schedule_news_cron() {
     if ( ! wp_next_scheduled( 'globalfxhub_fetch_news_event' ) ) {
@@ -590,8 +641,9 @@ add_action( 'switch_theme', 'globalfxhub_unschedule_news_cron' );
  * Admin-only diagnostic: visit ?globalfxhub_news_debug=1 while logged in
  * as an administrator to force an immediate run and see exactly which
  * feeds resolved, how many articles each returned, and what got
- * published or skipped. Remove once the feed list is confirmed working
- * live (matching how the Twelve Data debug endpoint was handled).
+ * published, skipped as a duplicate, or skipped as too thin to analyze
+ * honestly. Remove once the feed list is confirmed working live
+ * (matching how the Twelve Data debug endpoint was handled).
  */
 function globalfxhub_news_debug() {
     if ( ! isset( $_GET['globalfxhub_news_debug'] ) || ! current_user_can( 'manage_options' ) ) {
@@ -603,3 +655,20 @@ function globalfxhub_news_debug() {
     exit;
 }
 add_action( 'init', 'globalfxhub_news_debug' );
+
+/**
+ * Lets any post be marked noindex via postmeta (_news_noindex) -- the
+ * mechanism a lower-quality legacy post could be flagged with without
+ * unpublishing it outright, and that nothing this pipeline currently
+ * creates needs, since every post it makes now has to clear the
+ * substance bar above before it's ever published.
+ */
+function globalfxhub_maybe_noindex_head() {
+    if ( ! is_singular( 'post' ) ) {
+        return;
+    }
+    if ( get_post_meta( get_the_ID(), '_news_noindex', true ) ) {
+        echo '<meta name="robots" content="noindex,follow">' . "\n";
+    }
+}
+add_action( 'wp_head', 'globalfxhub_maybe_noindex_head', 1 );

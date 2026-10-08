@@ -102,7 +102,7 @@ function globalfxhub_string_text( $key ) {
         'sec_blog_h2' => 'From the blog',
         'sec_blog_p' => 'Plain-English explainers on how the forex and commodities markets actually work.',
         'sec_news_h2' => 'Latest news',
-        'sec_news_p' => 'Broker developments and market-moving headlines, in brief.',
+        'sec_news_p' => 'Broker-specific developments, and original FX market analysis -- not a bulk reproduction of wire-service headlines.',
         'sec_rankings_h2' => 'Top 15 regulated forex brokers',
         'sec_rankings_p' => 'Real, currently CySEC-, FCA-, or Seychelles FSA-licensed brokers, scored with a disclosed methodology based on public data -- not hands-on testing. See "How we score" below.',
         'sec_method_h2' => 'How we score brokers',
