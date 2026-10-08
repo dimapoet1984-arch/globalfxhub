@@ -350,7 +350,7 @@ $globalfxhub_news_query = new WP_Query( array(
       </div>
       <?php endforeach; ?>
     </div>
-    <p style="font-size:12.5px;color:var(--ink-soft);margin-top:14px;">Figures shown are standard-account averages compiled from broker disclosures and third-party research as of March 2026. Spreads, minimum deposits and licence status change — verify current terms directly with the broker and on the <a href="https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/" target="_blank" rel="noopener" style="color:var(--teal);">CySEC public register</a> before making a decision.</p>
+    <p style="font-size:12.5px;color:var(--ink-soft);margin-top:14px;">Spread and minimum-deposit figures shown were compiled March 2026 and haven't been individually re-checked since; regulatory status and broker-specific disclosures were most recently reviewed October 2026, with another review scheduled January 2027. Each broker's review page shows its own dates. Spreads, minimum deposits and licence status change — verify current terms directly with the broker and on the <a href="https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/" target="_blank" rel="noopener" style="color:var(--teal);">CySEC public register</a> before making a decision.</p>
   </div>
 </section>
 

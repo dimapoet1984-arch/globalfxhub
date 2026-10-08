@@ -42,6 +42,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
     $reg_label = globalfxhub_broker_regulation_label( $broker );
     $verify_links = globalfxhub_broker_verify_links( $broker );
     $not_confirmed = 'Not independently confirmed';
+    $review_dates = globalfxhub_broker_review_dates( $broker );
 ?>
 
 <div class="wrap crumb">
@@ -57,6 +58,12 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
   <div class="review-head__meta">
     <span class="review-head__score"><span class="score-num"><?php echo esc_html( $broker['scores']['overall'] ); ?></span> / 5 overall</span>
     <span class="review-head__tag"><?php echo esc_html( $reg_label ); ?><?php echo $broker['founded'] ? ' &middot; est. ' . esc_html( $broker['founded'] ) : ''; ?></span>
+  </div>
+  <div class="review-head__dates" style="font-size:12.5px;color:var(--ink-soft);margin-top:6px;display:flex;flex-wrap:wrap;gap:14px;">
+    <span>Data last reviewed: <?php echo esc_html( $review_dates['data_reviewed'] ); ?></span>
+    <span>Regulation last reviewed: <?php echo esc_html( $review_dates['regulation_reviewed'] ); ?></span>
+    <span>Pricing last checked: <?php echo esc_html( $review_dates['pricing_checked'] ); ?></span>
+    <span>Next scheduled review: <?php echo esc_html( $review_dates['next_review'] ); ?></span>
   </div>
   <?php
   $notice_parts = array_filter( array(

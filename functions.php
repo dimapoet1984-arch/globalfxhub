@@ -812,6 +812,33 @@ function globalfxhub_broker_who_for( $broker ) {
 }
 
 /**
+ * Per-field review dates, shown on every broker page so staleness is
+ * disclosed honestly rather than left to a single vague "compiled
+ * March 2026" blanket claim. The two dates genuinely differ: the deep-
+ * dive research rollout (entity disambiguation, regulatory status,
+ * account types, fees, execution, complaints) touched every broker in
+ * the set and happened in October 2026, but it did not re-check the
+ * original spread/minimum-deposit figures compiled back in March 2026
+ * -- so pricing honestly carries the older date until it's specifically
+ * re-checked, rather than being bumped to look fresher than it is.
+ *
+ * Takes $broker so a specific entry can override any of these later
+ * (e.g. if just one broker's pricing gets individually re-checked)
+ * without needing to restructure this function -- add a matching key
+ * to that broker's array (e.g. 'pricing_checked_override') and read it
+ * here. No broker currently needs that, so none of the array entries
+ * carry it yet.
+ */
+function globalfxhub_broker_review_dates( $broker ) {
+    return array(
+        'data_reviewed'       => $broker['data_reviewed_override'] ?? '8 October 2026',
+        'regulation_reviewed' => $broker['regulation_reviewed_override'] ?? '8 October 2026',
+        'pricing_checked'     => $broker['pricing_checked_override'] ?? 'March 2026',
+        'next_review'         => $broker['next_review_override'] ?? 'January 2027',
+    );
+}
+
+/**
  * What the biggest independent forex broker review sites currently publish
  * for each broker, keyed by slug, compiled from indexed/search-visible
  * content (this environment cannot directly load these sites to confirm
