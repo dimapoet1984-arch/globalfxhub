@@ -24,6 +24,8 @@ require get_template_directory() . '/inc/service-pages.php';
 require get_template_directory() . '/inc/news-feed.php';
 require get_template_directory() . '/inc/broker-news.php';
 require get_template_directory() . '/inc/countries.php';
+require get_template_directory() . '/inc/best.php';
+require get_template_directory() . '/inc/regulation.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
@@ -112,15 +114,13 @@ add_action( 'wp_enqueue_scripts', 'globalfxhub_scripts' );
  * Appearance > Menus, so the nav never renders empty.
  */
 function globalfxhub_fallback_menu() {
-    $blog_url = get_permalink( get_option( 'page_for_posts' ) );
-    if ( ! $blog_url ) {
-        $blog_url = home_url( '/blog/' );
-    }
     echo '<ul class="nav__links" id="navLinks">';
     echo '<li><a href="' . esc_url( home_url( '/reviews/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_reviews' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( $blog_url ) . '">' . esc_html( globalfxhub_t( 'nav_blog' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/news/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_news' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/compare/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_compare' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/best/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_best' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/learn/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_learn' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/news/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_news' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/regulation/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_regulation' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/countries/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_countries' ) ) . '</a></li>';
     echo '</ul>';
 }
@@ -179,9 +179,52 @@ function globalfxhub_ensure_templated_page( $slug, $title, $template ) {
 }
 
 /**
+ * Same self-healing behavior as globalfxhub_ensure_templated_page(),
+ * but for a page that needs to live at /{parent_slug}/{child_slug}/ --
+ * WordPress gives hierarchical pages that URL automatically from
+ * post_parent, so /news/markets/ and /news/brokers/ just need the
+ * "news" page to exist first (ensured by the caller) and these two
+ * created underneath it.
+ */
+function globalfxhub_ensure_child_page( $parent_slug, $child_slug, $title, $template ) {
+    $parent = get_page_by_path( $parent_slug );
+    if ( ! $parent ) {
+        return 0;
+    }
+
+    $page = get_page_by_path( $parent_slug . '/' . $child_slug );
+    if ( ! $page ) {
+        $page_id = wp_insert_post( array(
+            'post_title'  => $title,
+            'post_name'   => $child_slug,
+            'post_parent' => $parent->ID,
+            'post_status' => 'publish',
+            'post_type'   => 'page',
+        ) );
+        if ( ! $page_id || is_wp_error( $page_id ) ) {
+            return 0;
+        }
+        flush_rewrite_rules();
+    } else {
+        $page_id = $page->ID;
+        if ( (int) $page->post_parent !== (int) $parent->ID ) {
+            wp_update_post( array( 'ID' => $page_id, 'post_parent' => $parent->ID ) );
+            flush_rewrite_rules();
+        }
+    }
+
+    if ( $template && $template !== get_post_meta( $page_id, '_wp_page_template', true ) ) {
+        update_post_meta( $page_id, '_wp_page_template', $template );
+        flush_rewrite_rules();
+    }
+
+    return $page_id;
+}
+
+/**
  * /reviews/ and /reviews/{slug}/ need a "Reviews" page on the
- * "Broker Reviews" template; /guides/ needs a "Guides" page on the
- * "Guides Index" template. Both self-create/self-repair on every load
+ * "Broker Reviews" template; /learn/ needs a "Learn" page on the
+ * "Learn Index" template. Both self-create/self-repair on every load
  * via globalfxhub_ensure_templated_page() above.
  */
 function globalfxhub_ensure_reviews_page() {
@@ -189,10 +232,43 @@ function globalfxhub_ensure_reviews_page() {
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_reviews_page' );
 
-function globalfxhub_ensure_guides_page() {
-    globalfxhub_ensure_templated_page( 'guides', 'Guides', 'page-guides.php' );
+function globalfxhub_ensure_learn_page() {
+    globalfxhub_ensure_templated_page( 'learn', 'Learn', 'page-learn.php' );
 }
-add_action( 'after_setup_theme', 'globalfxhub_ensure_guides_page' );
+add_action( 'after_setup_theme', 'globalfxhub_ensure_learn_page' );
+
+function globalfxhub_ensure_best_page() {
+    globalfxhub_ensure_templated_page( 'best', 'Best Brokers', 'page-best.php' );
+}
+add_action( 'after_setup_theme', 'globalfxhub_ensure_best_page' );
+
+function globalfxhub_ensure_regulation_page() {
+    globalfxhub_ensure_templated_page( 'regulation', 'Regulation', 'page-regulation.php' );
+}
+add_action( 'after_setup_theme', 'globalfxhub_ensure_regulation_page' );
+
+/**
+ * IA cleanup redirects (301, permanent): the old /guides/ index moved to
+ * /learn/, and the default WordPress "Blog" archive (an unfiltered feed
+ * of every post, guides and news mixed together -- the exact muddle this
+ * restructure fixes) is no longer linked anywhere, so a visit there now
+ * sends readers to the real evergreen-education index instead. The
+ * page_for_posts option itself is left alone: WordPress still needs a
+ * page there internally for its own permalink plumbing, this just stops
+ * anyone from actually landing on that unfiltered listing.
+ */
+function globalfxhub_ia_redirects() {
+    if ( is_page( 'guides' ) ) {
+        wp_safe_redirect( home_url( '/learn/' ), 301 );
+        exit;
+    }
+    $posts_page_id = (int) get_option( 'page_for_posts' );
+    if ( $posts_page_id && is_page( $posts_page_id ) ) {
+        wp_safe_redirect( home_url( '/learn/' ), 301 );
+        exit;
+    }
+}
+add_action( 'template_redirect', 'globalfxhub_ia_redirects' );
 
 function globalfxhub_ensure_compare_page() {
     globalfxhub_ensure_templated_page( 'compare', 'Compare Brokers', 'page-compare.php' );
@@ -201,6 +277,8 @@ add_action( 'after_setup_theme', 'globalfxhub_ensure_compare_page' );
 
 function globalfxhub_ensure_news_page() {
     globalfxhub_ensure_templated_page( 'news', 'News', 'page-news.php' );
+    globalfxhub_ensure_child_page( 'news', 'markets', 'FX Market News', 'page-news-markets.php' );
+    globalfxhub_ensure_child_page( 'news', 'brokers', 'Broker News', 'page-news-brokers.php' );
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_news_page' );
 
@@ -231,11 +309,13 @@ function globalfxhub_sync_templated_pages_across_languages() {
     }
 
     $pages = array(
-        'reviews'   => array( 'Reviews', 'page-reviews.php' ),
-        'guides'    => array( 'Guides', 'page-guides.php' ),
-        'compare'   => array( 'Compare Brokers', 'page-compare.php' ),
-        'news'      => array( 'News', 'page-news.php' ),
-        'countries' => array( 'Countries', 'page-countries.php' ),
+        'reviews'    => array( 'Reviews', 'page-reviews.php' ),
+        'learn'      => array( 'Learn', 'page-learn.php' ),
+        'compare'    => array( 'Compare Brokers', 'page-compare.php' ),
+        'news'       => array( 'News', 'page-news.php' ),
+        'countries'  => array( 'Countries', 'page-countries.php' ),
+        'best'       => array( 'Best Brokers', 'page-best.php' ),
+        'regulation' => array( 'Regulation', 'page-regulation.php' ),
     );
 
     $changed = false;
@@ -358,9 +438,21 @@ add_action( 'after_setup_theme', 'globalfxhub_ensure_blog_page' );
  * seeded, so this is safe to leave running on every load.
  */
 function globalfxhub_ensure_guides_content() {
-    $term = term_exists( 'Guides', 'category' );
-    if ( ! $term ) {
-        $term = wp_insert_term( 'Guides', 'category', array( 'slug' => 'guides' ) );
+    // Migrate the category in place if it still exists under its old
+    // "Guides" name/slug -- renaming a term keeps every post's existing
+    // membership intact, so already-published guide posts move under
+    // /learn/ automatically instead of needing to be reassigned one by
+    // one. Idempotent: once renamed, this branch never matches again.
+    $old_term = term_exists( 'Guides', 'category' );
+    if ( $old_term ) {
+        $old_term_id = is_array( $old_term ) ? (int) $old_term['term_id'] : (int) $old_term;
+        wp_update_term( $old_term_id, 'category', array( 'name' => 'Learn', 'slug' => 'learn' ) );
+        $term = array( 'term_id' => $old_term_id );
+    } else {
+        $term = term_exists( 'Learn', 'category' );
+        if ( ! $term ) {
+            $term = wp_insert_term( 'Learn', 'category', array( 'slug' => 'learn' ) );
+        }
     }
     if ( is_wp_error( $term ) || empty( $term['term_id'] ) ) {
         return;
@@ -491,11 +583,15 @@ add_action( 'after_setup_theme', 'globalfxhub_ensure_guides_content' );
  */
 function globalfxhub_review_rewrite_rules() {
     add_rewrite_rule( '^reviews/([^/]+)/?$', 'index.php?pagename=reviews&broker=$matches[1]', 'top' );
+    add_rewrite_rule( '^best/([^/]+)/?$', 'index.php?pagename=best&bestlist=$matches[1]', 'top' );
+    add_rewrite_rule( '^regulation/([^/]+)/?$', 'index.php?pagename=regulation&regpage=$matches[1]', 'top' );
 }
 add_action( 'init', 'globalfxhub_review_rewrite_rules' );
 
 function globalfxhub_review_query_vars( $vars ) {
     $vars[] = 'broker';
+    $vars[] = 'bestlist';
+    $vars[] = 'regpage';
     return $vars;
 }
 add_filter( 'query_vars', 'globalfxhub_review_query_vars' );

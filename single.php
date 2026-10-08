@@ -1,16 +1,33 @@
 <?php get_header(); ?>
 
 <?php while ( have_posts() ) : the_post();
-    $blog_page = get_option( 'page_for_posts' );
-    $blog_url  = $blog_page ? get_permalink( $blog_page ) : home_url( '/blog/' );
     $cats      = get_the_category();
+    $cat_slug  = ! empty( $cats ) ? $cats[0]->slug : '';
     $cat_name  = ! empty( $cats ) ? strtoupper( $cats[0]->name ) : 'ARTICLE';
     $byline    = globalfxhub_get_post_byline( get_the_ID() );
+
+    /*
+     * The breadcrumb's parent link depends on which section this post
+     * actually belongs to -- a Learn-category post belongs under
+     * /learn/, an FX Market News post under /news/markets/ -- rather
+     * than a single hardcoded "Blog" link back to the old unfiltered
+     * archive every post used to share.
+     */
+    $section_map = array(
+        'learn'          => array( 'Learn', home_url( '/learn/' ) ),
+        'fx-market-news' => array( 'FX Market News', home_url( '/news/markets/' ) ),
+    );
+    if ( isset( $section_map[ $cat_slug ] ) ) {
+        list( $section_label, $section_url ) = $section_map[ $cat_slug ];
+    } else {
+        $section_label = 'Learn';
+        $section_url   = home_url( '/learn/' );
+    }
 ?>
 
 <div class="article-wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( $blog_url ); ?>">Blog</a> /
+  <a href="<?php echo esc_url( $section_url ); ?>"><?php echo esc_html( $section_label ); ?></a> /
   <?php the_title(); ?>
 </div>
 

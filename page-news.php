@@ -1,24 +1,21 @@
 <?php
 /**
  * Template Name: News Index
- * Description: Two distinct feeds -- a curated, non-syndicated Broker
- * News bulletin list (inc/broker-news.php) and the FX Market News
- * category of original analysis posts (inc/news-feed.php). Deliberately
- * not one merged "news" list: they're different kinds of content with
- * different depth and different cadence, and treating them the same
- * is exactly the pattern this redesign moved away from.
+ * Description: Landing page for the two separate news feeds -- links
+ * to /news/markets/ and /news/brokers/ rather than merging them into
+ * one undifferentiated list. See page-news-markets.php and
+ * page-news-brokers.php for the actual feeds.
  */
 get_header();
 
-$fx_market_news_query = new WP_Query( array(
+$fx_market_news_preview = new WP_Query( array(
     'post_type'      => 'post',
-    'posts_per_page' => 20,
+    'posts_per_page' => 3,
     'category_name'  => 'fx-market-news',
     'orderby'        => 'date',
     'order'          => 'DESC',
 ) );
-
-$broker_news_items = array_slice( globalfxhub_get_broker_news_items(), 0, 20 );
+$broker_news_preview = array_slice( globalfxhub_get_broker_news_items(), 0, 3 );
 $broker_news_categories = globalfxhub_broker_news_categories();
 $all_brokers_by_slug = array();
 foreach ( globalfxhub_get_brokers() as $b ) {
@@ -33,18 +30,18 @@ foreach ( globalfxhub_get_brokers() as $b ) {
 <div class="wrap page-head">
   <div class="eyebrow">MARKET &amp; BROKER NEWS</div>
   <h1><?php the_title(); ?></h1>
-  <p>Two separate feeds: short, factual broker-specific bulletins (licences, fines, acquisitions), and original FX market analysis -- never a bulk reproduction of wire-service headlines.</p>
+  <p>Two separate feeds, deliberately not merged: short, factual broker-specific bulletins, and original FX market analysis. Pick one below, or see a preview of both here.</p>
 </div>
 
-<div class="wrap" style="padding-bottom:40px;">
+<div class="wrap" style="padding-bottom:20px;">
   <div class="section__head">
     <div>
-      <h2>Broker News</h2>
-      <p style="color:var(--ink-soft);font-size:14px;">Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, and product launches -- curated from our own broker research, each item linked to the full, sourced detail on that broker's review page. Not pulled from any news wire.</p>
+      <h2><a href="<?php echo esc_url( home_url( '/news/brokers/' ) ); ?>" style="color:inherit;">Broker News &rarr;</a></h2>
+      <p style="color:var(--ink-soft);font-size:14px;">Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, and product launches -- curated from our own broker research, not pulled from any news wire.</p>
     </div>
   </div>
   <div class="news__grid">
-    <?php if ( $broker_news_items ) : foreach ( $broker_news_items as $item ) :
+    <?php foreach ( $broker_news_preview as $item ) :
         $broker = isset( $all_brokers_by_slug[ $item['broker_slug'] ] ) ? $all_brokers_by_slug[ $item['broker_slug'] ] : null;
         if ( ! $broker ) { continue; }
         $cat_label = isset( $broker_news_categories[ $item['category'] ] ) ? $broker_news_categories[ $item['category'] ] : 'Update';
@@ -55,21 +52,19 @@ foreach ( globalfxhub_get_brokers() as $b ) {
       <p><?php echo esc_html( globalfxhub_trim_excerpt( $item['body'], 24 ) ); ?></p>
       <time><?php echo esc_html( date_i18n( 'j M Y', strtotime( $item['date'] ) ) ); ?> &middot; <?php echo esc_html( $broker['name'] ); ?> review &rarr;</time>
     </a>
-    <?php endforeach; else : ?>
-    <p style="padding:24px;color:var(--ink-soft);">No broker news items yet.</p>
-    <?php endif; ?>
+    <?php endforeach; ?>
   </div>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
   <div class="section__head">
     <div>
-      <h2>FX Market News</h2>
-      <p style="color:var(--ink-soft);font-size:14px;">Original 300-700 word analysis of genuinely market-moving developments, each with its own "why this matters" angle and a link back to the source story. Published only when a story clears a real significance bar -- a handful of pieces a week, not a daily digest.</p>
+      <h2><a href="<?php echo esc_url( home_url( '/news/markets/' ) ); ?>" style="color:inherit;">FX Market News &rarr;</a></h2>
+      <p style="color:var(--ink-soft);font-size:14px;">Original 300-700 word analysis of genuinely market-moving developments, each with a "why this matters" angle. Published only when a story clears a real significance bar -- a handful of pieces a week, not a daily digest.</p>
     </div>
   </div>
   <div class="news__grid">
-    <?php if ( $fx_market_news_query->have_posts() ) : while ( $fx_market_news_query->have_posts() ) : $fx_market_news_query->the_post(); ?>
+    <?php if ( $fx_market_news_preview->have_posts() ) : while ( $fx_market_news_preview->have_posts() ) : $fx_market_news_preview->the_post(); ?>
     <a href="<?php the_permalink(); ?>" class="news-item">
       <?php if ( has_post_thumbnail() ) : ?>
       <?php the_post_thumbnail( 'medium_large', array( 'class' => 'news-item__thumb' ) ); ?>

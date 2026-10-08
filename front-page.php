@@ -21,7 +21,7 @@ usort( $globalfxhub_brokers_by_rank, function( $a, $b ) { return $a['rank'] <=> 
 $globalfxhub_broker_count = count( $globalfxhub_brokers_by_rank );
 $globalfxhub_top3 = array_slice( $globalfxhub_brokers_by_rank, 0, 3 );
 $globalfxhub_article_count = 0;
-foreach ( array( 'guides', 'candlestick-patterns' ) as $globalfxhub_cat_slug ) {
+foreach ( array( 'learn', 'candlestick-patterns' ) as $globalfxhub_cat_slug ) {
     $globalfxhub_cat_term = get_term_by( 'slug', $globalfxhub_cat_slug, 'category' );
     if ( $globalfxhub_cat_term ) {
         $globalfxhub_article_count += (int) $globalfxhub_cat_term->count;
@@ -438,6 +438,14 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
       </div>
     </div>
     <p style="font-size:13px;color:#aab6c6;margin-top:24px;max-width:70ch;">Every factor is scored against a fixed, disclosed threshold -- an absolute rubric, not a ranking relative to other brokers in our set. Adding, removing, or re-researching a broker never changes anyone else's score. Source data comes from each broker's regulator(s) of record (CySEC, the UK's FCA, the Seychelles FSA, and others), broker legal disclosures, and third-party broker research, compiled on a rolling basis. Where we can't independently confirm a fact, that category either scores a neutral midpoint or is left out of that broker's average, rather than guessed at. This methodology does not involve opening or funding live accounts, and it isn't personalized financial advice — always verify current licence status, fees, and terms directly with the broker before depositing funds.</p>
+    <p style="font-size:13px;margin-top:16px;">Jump to a specific list: <?php
+    $fp_best_lists = globalfxhub_get_best_lists();
+    $fp_best_links = array();
+    foreach ( $fp_best_lists as $fp_best_slug => $fp_best_list ) {
+        $fp_best_links[] = '<a href="' . esc_url( home_url( '/best/' . $fp_best_slug . '/' ) ) . '" style="color:var(--teal);">' . esc_html( $fp_best_list['title'] ) . '</a>';
+    }
+    echo implode( ' &middot; ', $fp_best_links );
+    ?> &middot; <a href="<?php echo esc_url( home_url( '/regulation/' ) ); ?>" style="color:var(--teal);">Regulation knowledge base</a></p>
   </div>
 </section>
 
@@ -449,14 +457,14 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
         <h2><?php globalfxhub_te( 'sec_guides_h2' ); ?></h2>
         <p><?php globalfxhub_te( 'sec_guides_p' ); ?></p>
       </div>
-      <a href="<?php echo esc_url( home_url( '/guides/' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_all_guides' ); ?></a>
+      <a href="<?php echo esc_url( home_url( '/learn/' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_all_guides' ); ?></a>
     </div>
     <div class="guides__grid">
       <?php
       $home_guides = new WP_Query( array(
           'post_type'      => 'post',
           'posts_per_page' => 6,
-          'category_name'  => 'guides',
+          'category_name'  => 'learn',
           'orderby'        => 'date',
           'order'          => 'ASC',
       ) );
