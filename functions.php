@@ -117,19 +117,44 @@ add_action( 'wp_enqueue_scripts', 'globalfxhub_scripts' );
  * Fallback menu output if no menu is assigned yet in
  * Appearance > Menus, so the nav never renders empty.
  */
+/**
+ * Flat top-level links plus two grouped dropdowns (Tools, Research) --
+ * eleven flat items made the bar unreadable once the interactive tools
+ * (Broker Finder, Cost Calculator, Regulation Checker, Change Log) and
+ * the content sections (Learn, News, Regulation, Countries) had all
+ * landed alongside the original core links. Reviews and Best stay
+ * top-level since they're this site's primary commercial pages; every
+ * link still exists at its same URL, just grouped rather than removed.
+ * The dropdown panels are pure CSS (:hover/:focus-within), so they work
+ * with no JS and degrade to a plain indented sub-list on mobile, where
+ * the existing hamburger menu already shows everything at once.
+ */
 function globalfxhub_fallback_menu() {
     echo '<ul class="nav__links" id="navLinks">';
     echo '<li><a href="' . esc_url( home_url( '/reviews/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_reviews' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/best/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_best' ) ) . '</a></li>';
+
+    echo '<li class="nav__dropdown">';
+    echo '<button type="button" class="nav__dropdown-toggle">' . esc_html( globalfxhub_t( 'nav_tools' ) ) . '</button>';
+    echo '<ul class="nav__dropdown-menu">';
     echo '<li><a href="' . esc_url( home_url( '/broker-finder/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_finder' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/compare/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_compare' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/cost-calculator/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_cost_calculator' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/regulation-checker/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_regulation_checker' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/broker-changelog/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_changelog' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/compare/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_compare' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/best/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_best' ) ) . '</a></li>';
+    echo '</ul>';
+    echo '</li>';
+
+    echo '<li class="nav__dropdown">';
+    echo '<button type="button" class="nav__dropdown-toggle">' . esc_html( globalfxhub_t( 'nav_research' ) ) . '</button>';
+    echo '<ul class="nav__dropdown-menu">';
     echo '<li><a href="' . esc_url( home_url( '/learn/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_learn' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/news/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_news' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/regulation/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_regulation' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/countries/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_countries' ) ) . '</a></li>';
+    echo '</ul>';
+    echo '</li>';
+
     echo '</ul>';
 }
 

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function globalfxhub_translatable_strings() {
     return array(
-        'nav_reviews', 'nav_learn', 'nav_news', 'nav_compare', 'nav_best', 'nav_regulation', 'nav_countries', 'nav_finder', 'nav_cost_calculator', 'nav_regulation_checker', 'nav_changelog', 'nav_cta',
+        'nav_reviews', 'nav_learn', 'nav_news', 'nav_compare', 'nav_best', 'nav_regulation', 'nav_countries', 'nav_finder', 'nav_cost_calculator', 'nav_regulation_checker', 'nav_changelog', 'nav_tools', 'nav_research', 'nav_cta',
 
         'footer_company_heading', 'footer_about', 'footer_how_we_test', 'footer_why_trust_us',
         'footer_research_heading', 'footer_all_reviews', 'footer_compare_brokers',
@@ -62,6 +62,8 @@ function globalfxhub_string_text( $key ) {
         'nav_cost_calculator' => 'Cost Calculator',
         'nav_regulation_checker' => 'Regulation Checker',
         'nav_changelog' => 'Change Log',
+        'nav_tools' => 'Tools',
+        'nav_research' => 'Research',
         'nav_cta' => 'See rankings',
 
         'footer_company_heading' => 'Company',
