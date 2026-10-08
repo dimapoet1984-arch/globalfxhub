@@ -201,6 +201,21 @@ if ( ! empty( $ext['reviews'] ) ) :
 </div>
 <?php endif; ?>
 
+<?php $changelog_entries = array_slice( globalfxhub_get_broker_changelog( $broker['slug'] ), 0, 5 ); ?>
+<div class="wrap" style="padding-bottom:40px;">
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;">Recent changes</h2>
+  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">A dated log of when our own published data about this broker actually changed -- not a reconstructed history of what the broker itself did. See the full <a href="<?php echo esc_url( home_url( '/broker-changelog/' ) ); ?>" style="color:var(--teal);">change log tool</a> for every broker.</p>
+  <div class="rankings">
+    <?php foreach ( $changelog_entries as $i => $entry ) : ?>
+    <div class="rank-row" style="grid-template-columns:44px 160px 1fr;">
+      <span class="rank-num"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+      <span class="rank-detail"><?php echo esc_html( $entry['date'] ); ?></span>
+      <span class="rank-detail"><?php echo esc_html( $entry['summary'] ); ?></span>
+    </div>
+    <?php endforeach; ?>
+  </div>
+</div>
+
 <?php
 $others = array_filter( globalfxhub_get_brokers(), function( $b ) use ( $broker ) {
     return $b['slug'] !== $broker['slug'];

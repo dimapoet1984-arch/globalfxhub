@@ -29,6 +29,7 @@ require get_template_directory() . '/inc/regulation.php';
 require get_template_directory() . '/inc/broker-finder.php';
 require get_template_directory() . '/inc/cost-calculator.php';
 require get_template_directory() . '/inc/regulation-checker.php';
+require get_template_directory() . '/inc/broker-changelog.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
@@ -122,6 +123,7 @@ function globalfxhub_fallback_menu() {
     echo '<li><a href="' . esc_url( home_url( '/broker-finder/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_finder' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/cost-calculator/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_cost_calculator' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/regulation-checker/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_regulation_checker' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/broker-changelog/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_changelog' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/compare/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_compare' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/best/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_best' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/learn/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_learn' ) ) . '</a></li>';
@@ -325,6 +327,7 @@ function globalfxhub_sync_templated_pages_across_languages() {
         'broker-finder' => array( 'Broker Finder', 'page-broker-finder.php' ),
         'cost-calculator' => array( 'True Cost Calculator', 'page-cost-calculator.php' ),
         'regulation-checker' => array( 'Broker Regulation Checker', 'page-regulation-checker.php' ),
+        'broker-changelog' => array( 'Broker Change Log', 'page-broker-changelog.php' ),
     );
 
     $changed = false;
