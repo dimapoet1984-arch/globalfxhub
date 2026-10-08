@@ -26,6 +26,7 @@ require get_template_directory() . '/inc/broker-news.php';
 require get_template_directory() . '/inc/countries.php';
 require get_template_directory() . '/inc/best.php';
 require get_template_directory() . '/inc/regulation.php';
+require get_template_directory() . '/inc/broker-finder.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
@@ -116,6 +117,7 @@ add_action( 'wp_enqueue_scripts', 'globalfxhub_scripts' );
 function globalfxhub_fallback_menu() {
     echo '<ul class="nav__links" id="navLinks">';
     echo '<li><a href="' . esc_url( home_url( '/reviews/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_reviews' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( home_url( '/broker-finder/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_finder' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/compare/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_compare' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/best/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_best' ) ) . '</a></li>';
     echo '<li><a href="' . esc_url( home_url( '/learn/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_learn' ) ) . '</a></li>';
@@ -316,6 +318,7 @@ function globalfxhub_sync_templated_pages_across_languages() {
         'countries'  => array( 'Countries', 'page-countries.php' ),
         'best'       => array( 'Best Brokers', 'page-best.php' ),
         'regulation' => array( 'Regulation', 'page-regulation.php' ),
+        'broker-finder' => array( 'Broker Finder', 'page-broker-finder.php' ),
     );
 
     $changed = false;

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function globalfxhub_translatable_strings() {
     return array(
-        'nav_reviews', 'nav_learn', 'nav_news', 'nav_compare', 'nav_best', 'nav_regulation', 'nav_countries', 'nav_cta',
+        'nav_reviews', 'nav_learn', 'nav_news', 'nav_compare', 'nav_best', 'nav_regulation', 'nav_countries', 'nav_finder', 'nav_cta',
 
         'footer_company_heading', 'footer_about', 'footer_how_we_test', 'footer_why_trust_us',
         'footer_research_heading', 'footer_all_reviews', 'footer_compare_brokers',
@@ -58,6 +58,7 @@ function globalfxhub_string_text( $key ) {
         'nav_best' => 'Best Brokers',
         'nav_regulation' => 'Regulation',
         'nav_countries' => 'Countries',
+        'nav_finder' => 'Broker Finder',
         'nav_cta' => 'See rankings',
 
         'footer_company_heading' => 'Company',
