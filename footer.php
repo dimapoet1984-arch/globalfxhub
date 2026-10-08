@@ -21,6 +21,7 @@
         <ul>
           <li><a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>"><?php globalfxhub_te( 'footer_all_reviews' ); ?></a></li>
           <li><a href="<?php echo esc_url( home_url( '/broker-finder/' ) ); ?>"><?php globalfxhub_te( 'nav_finder' ); ?></a></li>
+          <li><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) ); ?>"><?php globalfxhub_te( 'nav_cost_calculator' ); ?></a></li>
           <li><a href="<?php echo esc_url( home_url( '/learn/' ) ); ?>"><?php globalfxhub_te( 'nav_learn' ); ?></a></li>
           <li><a href="<?php echo esc_url( home_url( '/news/markets/' ) ); ?>">FX Market News</a></li>
           <li><a href="<?php echo esc_url( home_url( '/news/brokers/' ) ); ?>">Broker News</a></li>
