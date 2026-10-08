@@ -16,7 +16,10 @@ usort( $globalfxhub_movers_sorted, function( $a, $b ) { return $b['percent_chang
 $globalfxhub_gainers = array_slice( $globalfxhub_movers_sorted, 0, 5 );
 $globalfxhub_losers  = array_reverse( array_slice( $globalfxhub_movers_sorted, -5 ) );
 
-$globalfxhub_broker_count = count( globalfxhub_get_brokers() );
+$globalfxhub_brokers_by_rank = globalfxhub_get_brokers();
+usort( $globalfxhub_brokers_by_rank, function( $a, $b ) { return $a['rank'] <=> $b['rank']; } );
+$globalfxhub_broker_count = count( $globalfxhub_brokers_by_rank );
+$globalfxhub_top3 = array_slice( $globalfxhub_brokers_by_rank, 0, 3 );
 $globalfxhub_article_count = 0;
 foreach ( array( 'guides', 'candlestick-patterns' ) as $globalfxhub_cat_slug ) {
     $globalfxhub_cat_term = get_term_by( 'slug', $globalfxhub_cat_slug, 'category' );
@@ -46,9 +49,14 @@ foreach ( array( 'guides', 'candlestick-patterns' ) as $globalfxhub_cat_slug ) {
         </div>
         <div class="snapshot">
           <div class="snapshot__head"><span>Top rated this quarter</span><span>Score</span></div>
-          <div class="snapshot__row"><span class="snapshot__rank">01</span><span><span class="snapshot__name">IG</span><br><span class="snapshot__meta">CySEC 309/16 · est. 1974</span></span><span class="snapshot__score">4.13</span></div>
-          <div class="snapshot__row"><span class="snapshot__rank">02</span><span><span class="snapshot__name">AvaTrade</span><br><span class="snapshot__meta">est. 2006</span></span><span class="snapshot__score">4.12</span></div>
-          <div class="snapshot__row"><span class="snapshot__rank">03</span><span><span class="snapshot__name">FOREX.com</span><br><span class="snapshot__meta">CySEC 400/21 · est. 1999</span></span><span class="snapshot__score">3.83</span></div>
+          <?php foreach ( $globalfxhub_top3 as $globalfxhub_t3 ) :
+              $globalfxhub_t3_tag = globalfxhub_broker_regulation_label( $globalfxhub_t3 );
+              if ( $globalfxhub_t3['founded'] ) {
+                  $globalfxhub_t3_tag .= ' &middot; est. ' . $globalfxhub_t3['founded'];
+              }
+          ?>
+          <div class="snapshot__row"><span class="snapshot__rank"><?php echo esc_html( str_pad( (string) $globalfxhub_t3['rank'], 2, '0', STR_PAD_LEFT ) ); ?></span><span><span class="snapshot__name"><?php echo esc_html( $globalfxhub_t3['name'] ); ?></span><br><span class="snapshot__meta"><?php echo esc_html( $globalfxhub_t3_tag ); ?></span></span><span class="snapshot__score"><?php echo esc_html( $globalfxhub_t3['scores']['overall'] ); ?></span></div>
+          <?php endforeach; ?>
         </div>
       </div>
     </div>
@@ -319,9 +327,7 @@ $globalfxhub_news_query = new WP_Query( array(
         <span></span>
       </div>
       <?php
-      $fp_brokers = globalfxhub_get_brokers();
-      usort( $fp_brokers, function( $a, $b ) { return $a['rank'] <=> $b['rank']; } );
-      $fp_top15 = array_slice( $fp_brokers, 0, 15 );
+      $fp_top15 = array_slice( $globalfxhub_brokers_by_rank, 0, 15 );
       foreach ( $fp_top15 as $fp_b ) :
           $fp_tag = globalfxhub_broker_regulation_label( $fp_b );
           if ( $fp_b['founded'] ) {
