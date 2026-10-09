@@ -639,6 +639,45 @@ add_filter( 'query_vars', 'globalfxhub_review_query_vars' );
 add_action( 'after_switch_theme', 'flush_rewrite_rules' );
 
 /**
+ * `after_switch_theme` only fires when this theme is activated/switched
+ * -- never when its files are simply updated in place on an already-
+ * running site, which is how this theme is actually deployed (a git
+ * push to the server, not a re-activation). WordPress caches the
+ * compiled rewrite_rules option in the database, so a brand-new
+ * add_rewrite_rule() pattern (e.g. /reviews/{slug}/alternatives/,
+ * /compare/{a}-vs-{b}/, /countries/{slug}/) silently has NO effect on
+ * live routing until something calls flush_rewrite_rules() -- the URL
+ * instead falls through to whatever WordPress's stale cached rules
+ * resolve it as (commonly the blog permalink structure, so it renders
+ * as if it were a blog post/archive page instead of 404ing or matching
+ * the intended template).
+ *
+ * This is a real, already-confirmed-live bug class, not a hypothetical:
+ * /reviews/avatrade/alternatives/ rendered as a blog page in production
+ * because the rewrite rule it needs was added in code but the live
+ * site's cached rewrite_rules were never regenerated.
+ *
+ * Fix: bump GLOBALFXHUB_REWRITE_RULES_VERSION every time a
+ * add_rewrite_rule() pattern is added/changed anywhere in this theme.
+ * On every request, this compares that constant against what's stored
+ * in the database and flushes exactly once when they differ -- not on
+ * every request, and not dependent on any page/template also changing
+ * (globalfxhub_ensure_templated_page() only flushes for ITS OWN reason,
+ * a page's template meta changing, which is a different trigger that
+ * doesn't cover a route added in a file like inc/broker-vs.php that
+ * touches no page at all).
+ */
+define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-10-09-1' );
+
+function globalfxhub_maybe_flush_rewrite_rules() {
+    if ( get_option( 'globalfxhub_rewrite_rules_version' ) !== GLOBALFXHUB_REWRITE_RULES_VERSION ) {
+        flush_rewrite_rules();
+        update_option( 'globalfxhub_rewrite_rules_version', GLOBALFXHUB_REWRITE_RULES_VERSION );
+    }
+}
+add_action( 'init', 'globalfxhub_maybe_flush_rewrite_rules', 30 );
+
+/**
  * SEO for /reviews/{slug}/ pages.
  *
  * All broker URLs share one underlying "Reviews" Page object (the
