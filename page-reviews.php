@@ -112,6 +112,7 @@ elseif ( $broker ) :
     $not_confirmed = 'Not independently confirmed';
     $review_dates = globalfxhub_broker_review_dates( $broker );
     $section_learn_links = array_map( 'globalfxhub_resolve_learn_link', globalfxhub_review_section_learn_links() );
+    $broker_faqs = globalfxhub_broker_faqs( $broker );
 ?>
 
 <div class="wrap crumb">
@@ -244,6 +245,18 @@ elseif ( $broker ) :
     </tbody>
   </table>
   <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) ); ?>" style="color:var(--teal);">See how <?php echo esc_html( $broker['name'] ); ?>'s spread cost compares across every researched broker &rarr;</a><?php if ( $section_learn_links['fees'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['fees']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['fees']['label'] ); ?></a><?php endif; ?></p>
+</div>
+
+<div class="wrap" style="padding-bottom:40px;">
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 12px;">Frequently asked questions</h2>
+  <div style="max-width:74ch;">
+    <?php foreach ( $broker_faqs as $faq ) : ?>
+    <div style="margin-bottom:18px;">
+      <p style="font-weight:600;margin:0 0 4px;color:var(--navy);"><?php echo esc_html( $faq['q'] ); ?></p>
+      <p style="margin:0;color:var(--ink-soft);line-height:1.6;"><?php echo esc_html( $faq['a'] ); ?></p>
+    </div>
+    <?php endforeach; ?>
+  </div>
 </div>
 
 <div class="wrap methodology-note">
