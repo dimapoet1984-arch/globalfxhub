@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: True Cost Calculator
+ * Template Name: Forex Spread Cost Calculator
  * Description: Estimates annual EUR/USD trading cost at every researched
  * broker with a confirmed spread, from the trader's own account size,
  * trade frequency, trade size, and holding period. See
@@ -18,7 +18,7 @@ $cc_pip_value = globalfxhub_cost_calculator_pip_value_per_lot();
 </div>
 
 <div class="wrap page-head">
-  <div class="eyebrow">TRUE COST CALCULATOR</div>
+  <div class="eyebrow">FOREX SPREAD COST CALCULATOR</div>
   <h1><?php the_title(); ?></h1>
   <p>Estimate your annual EUR/USD spread cost at every one of our researched brokers with a confirmed spread, based on your own trading pattern -- not a generic "our average spread" figure.</p>
 </div>

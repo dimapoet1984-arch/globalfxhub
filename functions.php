@@ -351,7 +351,7 @@ function globalfxhub_sync_templated_pages_across_languages() {
         'best'       => array( 'Best Brokers', 'page-best.php' ),
         'regulation' => array( 'Regulation', 'page-regulation.php' ),
         'broker-finder' => array( 'Broker Finder', 'page-broker-finder.php' ),
-        'cost-calculator' => array( 'True Cost Calculator', 'page-cost-calculator.php' ),
+        'cost-calculator' => array( 'Forex Spread Cost Calculator', 'page-cost-calculator.php' ),
         'regulation-checker' => array( 'Broker Regulation Checker', 'page-regulation-checker.php' ),
         'broker-changelog' => array( 'Broker Change Log', 'page-broker-changelog.php' ),
     );

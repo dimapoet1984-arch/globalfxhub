@@ -1,6 +1,6 @@
 <?php
 /**
- * True Cost Calculator (/cost-calculator/): estimates annual EUR/USD
+ * Forex Spread Cost Calculator (/cost-calculator/): estimates annual EUR/USD
  * trading cost at every researched broker from the trader's own inputs
  * (account size, trades/month, average trade size, holding period),
  * rather than quoting a single generic "our average spread" figure.
@@ -117,6 +117,18 @@ function globalfxhub_cost_calculator_payload() {
 }
 
 function globalfxhub_ensure_cost_calculator_page() {
-    globalfxhub_ensure_templated_page( 'cost-calculator', 'True Cost Calculator', 'page-cost-calculator.php' );
+    $page_id = globalfxhub_ensure_templated_page( 'cost-calculator', 'Forex Spread Cost Calculator', 'page-cost-calculator.php' );
+
+    // Rename the page if it still carries the original "True Cost Calculator"
+    // title: that name overclaimed scope (the tool only ever covered spread,
+    // never commission or overnight financing), so it's being renamed to
+    // "Forex Spread Cost Calculator". Only renames the exact known stale
+    // title, so a manually-edited title is never overwritten.
+    if ( $page_id ) {
+        $page = get_post( $page_id );
+        if ( $page && 'True Cost Calculator' === $page->post_title ) {
+            wp_update_post( array( 'ID' => $page_id, 'post_title' => 'Forex Spread Cost Calculator' ) );
+        }
+    }
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_cost_calculator_page' );
