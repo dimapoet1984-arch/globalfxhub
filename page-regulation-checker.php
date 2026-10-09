@@ -64,7 +64,7 @@ $rc_payload = globalfxhub_regulation_checker_payload();
   </div>
 
   <p style="color:var(--ink-soft);font-size:13.5px;margin-top:28px;max-width:78ch;">
-    Every figure here traces back to the same researched data behind this broker's review page and our rankings -- nothing shown here is scored or computed differently for this tool. A regulator code shown with no geography listed (e.g. FMA, CMA, SCB) is one where more than one real-world regulator shares that abbreviation; rather than guess which one, we show the code as researched and leave the geography unstated. Always verify current licence status directly on the regulator's own public register before depositing funds -- links above go to each regulator's official register or its landing page, not a broker-specific pre-filled search.
+    Every figure here traces back to the same researched data behind this broker's review page and our rankings -- nothing shown here is scored or computed differently for this tool. Every regulator code currently in our data has been resolved to a specific geography, verified against each broker's own regulatory disclosures (see inc/regulation-checker.php for exactly what evidence resolved each one) -- but if we add a broker whose regulator code hasn't been checked that way yet, we show the code as researched and leave the geography unstated rather than guess. Always verify current licence status directly on the regulator's own public register before depositing funds -- links above go to each regulator's official register or its landing page, not a broker-specific pre-filled search.
   </p>
 </div>
 

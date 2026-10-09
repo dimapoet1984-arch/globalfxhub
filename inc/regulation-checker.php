@@ -11,13 +11,41 @@
  * page, /best/cysec-regulated, /best/fca-regulated, and the Broker Finder
  * all already read from) plus globalfxhub_broker_review_dates(), which
  * already exists. The one genuinely new piece is the regulator-code to
- * geography map below -- and it's deliberately conservative: a handful
- * of regulator abbreviations that appear in the research (FMA, CMA, SCB,
- * FSAS) have more than one real-world regulator they could plausibly
- * refer to, and rather than guess a country for them, this checker shows
- * the code as-is with no geography claim attached. The regulators mapped
- * here are the ones with a single, unambiguous real-world meaning in
- * retail FX/CFD regulation.
+ * geography map below.
+ *
+ * FMA, CMA, SCB, and FSAS were originally left unmapped here, since each
+ * abbreviation has more than one real-world regulator it could plausibly
+ * refer to in the abstract (e.g. "FMA" is also Austria's and
+ * Liechtenstein's Finanzmarktaufsicht, not just New Zealand's). They've
+ * since been resolved by checking, broker by broker, which specific
+ * regulator each of this dataset's current holders of that code actually
+ * holds -- not by assuming the abbreviation's meaning in general:
+ *  - FMA: all four current holders (ThinkMarkets, Plus500, CMC Markets,
+ *    Axi) are confirmed, independently, as licensed derivatives issuers
+ *    on New Zealand's Financial Service Providers Register (FSP623289,
+ *    FSP486026, FSP41187, FSP518226 respectively) -- New Zealand's
+ *    Financial Markets Authority.
+ *  - CMA: all three current holders (Exness, INGOT Brokers, Equiti) are
+ *    confirmed as licensed by Kenya's Capital Markets Authority (INGOT's
+ *    own announcement cites licence No. 173; Equiti's Kenyan subsidiary,
+ *    EGM Securities Ltd, was the CMA's first-ever online forex broker
+ *    licensee in 2018).
+ *  - SCB: all three current holders (Eightcap, FxPro, IQBroker) are
+ *    confirmed as licensed by the Securities Commission of The Bahamas,
+ *    each under the Commission's "SIA-F" numbering (SIA-F220, SIA-F184,
+ *    SIA-F219 respectively) -- FxPro's own licences page confirms
+ *    SIA-F184 directly.
+ *  - FSAS: eToro is the only current holder, and eToro's own regulation
+ *    disclosure names it directly: "eToro (Seychelles) Ltd... licenced
+ *    by the Financial Services Authority Seychelles ('FSAS')... License
+ *    number: SD076" -- the exact same licence already carried in this
+ *    site's data under eToro's dedicated 'seychelles' field, confirming
+ *    FSAS is that broker's Seychelles FSA licence restated, not a
+ *    separate jurisdiction.
+ * If a broker is ever added that carries one of these four codes, its
+ * specific holder should be re-verified the same way before trusting
+ * this map for it -- the resolution above is per confirmed holder, not a
+ * claim that the abbreviation always means the same thing everywhere.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,6 +58,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * its landing page when no single canonical search URL exists -- same
  * confidence precedent as the CySEC/FCA/Seychelles links already
  * hardcoded in globalfxhub_broker_verify_links().
+ *
+ * FMA, CMA, SCB, and FSAS were resolved per the research cited in the
+ * file header comment above -- verified against this dataset's actual
+ * current holders of each code, not assumed from the abbreviation alone.
  */
 function globalfxhub_regulation_checker_geography_map() {
     return array(
@@ -42,6 +74,10 @@ function globalfxhub_regulation_checker_geography_map() {
         'KNF (Poland)'    => array( 'geography' => 'Poland', 'register_url' => 'https://www.knf.gov.pl/en/' ),
         'JFSA (Japan)'    => array( 'geography' => 'Japan', 'register_url' => 'https://www.fsa.go.jp/en/' ),
         'CIRO'            => array( 'geography' => 'Canada', 'register_url' => 'https://www.ciro.ca/' ),
+        'FMA'             => array( 'geography' => 'New Zealand', 'register_url' => 'https://fsp-register.companiesoffice.govt.nz/' ),
+        'CMA'             => array( 'geography' => 'Kenya', 'register_url' => 'https://www.cma.or.ke/' ),
+        'SCB'             => array( 'geography' => 'The Bahamas', 'register_url' => 'https://www.scb.gov.bs/registrant-licensee-search/' ),
+        'FSAS'            => array( 'geography' => 'Seychelles', 'register_url' => 'https://fsaseychelles.sc/' ),
     );
 }
 
