@@ -146,6 +146,19 @@ const RC_BROKERS = <?php echo wp_json_encode( $rc_payload ); ?>;
 
   searchEl.addEventListener('input', handleSearch);
   searchEl.addEventListener('change', handleSearch);
+
+  // Deep link from a broker's review page (?broker=slug) -- matched on
+  // the exact slug, not the fuzzy name search handleSearch() uses, so a
+  // link always lands on the right broker even if its name is a
+  // substring of another broker's.
+  const deepLinkSlug = new URLSearchParams(window.location.search).get('broker');
+  if (deepLinkSlug) {
+    const linked = RC_BROKERS.find(function(b) { return b.slug === deepLinkSlug; });
+    if (linked) {
+      searchEl.value = linked.name;
+      render(linked);
+    }
+  }
 })();
 </script>
 

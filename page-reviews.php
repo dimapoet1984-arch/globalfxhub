@@ -77,6 +77,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
   <?php endif; ?>
   <div class="hero__actions" style="margin-top:22px;">
     <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold">Compare vs another broker</a>
+    <a href="<?php echo esc_url( home_url( '/broker-finder/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);">Find similar brokers</a>
     <?php foreach ( $verify_links as $link ) : ?>
     <a href="<?php echo esc_url( $link['url'] ); ?>" target="_blank" rel="noopener" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $link['label'] ); ?></a>
     <?php endforeach; ?>
@@ -99,6 +100,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
         <tr><th>Instruments</th><td><?php echo esc_html( $broker['instruments'] ? $broker['instruments'] : $not_confirmed ); ?></td></tr>
       </tbody>
     </table>
+    <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/regulation-checker/' ) . '?broker=' . rawurlencode( $broker['slug'] ) ); ?>" style="color:var(--teal);">See <?php echo esc_html( $broker['name'] ); ?>'s full regulation dossier &rarr;</a></p>
 
     <div class="review-proscons">
       <div class="review-proscons__col review-proscons__pros">
@@ -166,6 +168,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
       <?php endforeach; ?>
     </tbody>
   </table>
+  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) ); ?>" style="color:var(--teal);">See how <?php echo esc_html( $broker['name'] ); ?>'s spread cost compares across every researched broker &rarr;</a></p>
 </div>
 
 <div class="wrap methodology-note">
