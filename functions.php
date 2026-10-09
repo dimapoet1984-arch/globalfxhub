@@ -27,6 +27,8 @@ require get_template_directory() . '/inc/countries.php';
 require get_template_directory() . '/inc/best.php';
 require get_template_directory() . '/inc/regulation.php';
 require get_template_directory() . '/inc/broker-finder.php';
+require get_template_directory() . '/inc/broker-vs.php';
+require get_template_directory() . '/inc/broker-alternatives.php';
 require get_template_directory() . '/inc/cost-calculator.php';
 require get_template_directory() . '/inc/regulation-checker.php';
 require get_template_directory() . '/inc/broker-changelog.php';
@@ -892,6 +894,34 @@ function globalfxhub_breadcrumb_schema() {
     }
 
     if ( null === $trail ) {
+        $alts_slug = get_query_var( 'broker_alts' );
+        if ( $alts_slug ) {
+            $alts_data = globalfxhub_broker_alternatives( $alts_slug );
+            if ( $alts_data ) {
+                $trail = array(
+                    array( 'name' => 'Reviews', 'item' => home_url( '/reviews/' ) ),
+                    array( 'name' => $alts_data['broker']['name'], 'item' => home_url( '/reviews/' . $alts_data['broker']['slug'] . '/' ) ),
+                    array( 'name' => 'Alternatives', 'item' => home_url( '/reviews/' . $alts_data['broker']['slug'] . '/alternatives/' ) ),
+                );
+            }
+        }
+    }
+
+    if ( null === $trail ) {
+        $vs_a_slug = get_query_var( 'vs_a' );
+        $vs_b_slug = get_query_var( 'vs_b' );
+        if ( $vs_a_slug && $vs_b_slug ) {
+            $vs_pair = globalfxhub_vs_pair( $vs_a_slug, $vs_b_slug );
+            if ( $vs_pair ) {
+                $trail = array(
+                    array( 'name' => 'Compare Brokers', 'item' => home_url( '/compare/' ) ),
+                    array( 'name' => $vs_pair['a']['name'] . ' vs ' . $vs_pair['b']['name'], 'item' => home_url( '/compare/' . $vs_a_slug . '-vs-' . $vs_b_slug . '/' ) ),
+                );
+            }
+        }
+    }
+
+    if ( null === $trail ) {
         $bestlist_slug = get_query_var( 'bestlist' );
         if ( $bestlist_slug ) {
             $lists = globalfxhub_get_best_lists();
@@ -1022,6 +1052,20 @@ function globalfxhub_get_broker_by_slug( $slug ) {
         }
     }
     return null;
+}
+
+/**
+ * The top N brokers by rank -- used to bound which brokers get a
+ * static vs./alternatives page (inc/broker-vs.php, inc/broker-
+ * alternatives.php). Deliberately never all 139: most pairings or
+ * alternatives among lower-ranked brokers are unlikely to be searched
+ * for, and generating a page for all of them would mean thousands of
+ * low-value, rarely-crawled pages instead of a bounded, disclosed set.
+ */
+function globalfxhub_top_ranked_broker_slugs( $limit = 40 ) {
+    $brokers = globalfxhub_get_brokers();
+    usort( $brokers, function( $a, $b ) { return $a['rank'] <=> $b['rank']; } );
+    return array_column( array_slice( $brokers, 0, $limit ), 'slug' );
 }
 
 /**

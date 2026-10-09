@@ -1,7 +1,10 @@
 <?php
 /**
  * Template Name: Broker Reviews
- * Description: Single review page per broker at /reviews/{slug}/, and a review index at /reviews/.
+ * Description: Single review page per broker at /reviews/{slug}/, a
+ * review index at /reviews/, and "alternatives to" pages at
+ * /reviews/{slug}/alternatives/ for a bounded set of reference brokers
+ * (top 40 by rank) -- see inc/broker-alternatives.php.
  */
 get_header();
 
@@ -10,9 +13,74 @@ if ( ! $slug && isset( $_GET['broker'] ) ) {
     $slug = sanitize_title( wp_unslash( $_GET['broker'] ) );
 }
 $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
+
+$alts_slug = get_query_var( 'broker_alts' );
+$alts_data = $alts_slug ? globalfxhub_broker_alternatives( $alts_slug ) : null;
+if ( $alts_slug && ! $alts_data ) {
+    status_header( 404 );
+}
 ?>
 
-<?php if ( $broker ) :
+<?php if ( $alts_slug ) :
+    if ( ! $alts_data ) :
+?>
+
+<div class="wrap page-head">
+  <div class="eyebrow">BROKER ALTERNATIVES</div>
+  <h1>Alternatives not available</h1>
+  <p>We don't have an alternatives page for that broker -- it may be outside our top-ranked set. <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);">See all researched broker reviews</a>.</p>
+</div>
+
+    <?php else :
+        $ref = $alts_data['broker'];
+        $alt_brokers = $alts_data['alternatives'];
+    ?>
+
+<div class="wrap crumb">
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
+  <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>">Reviews</a> /
+  <a href="<?php echo esc_url( home_url( '/reviews/' . $ref['slug'] . '/' ) ); ?>"><?php echo esc_html( $ref['name'] ); ?></a> /
+  Alternatives
+</div>
+
+<div class="wrap page-head">
+  <div class="eyebrow">BROKER ALTERNATIVES</div>
+  <h1><?php echo esc_html( $ref['name'] ); ?> Alternatives</h1>
+  <p>Brokers below share at least two of <?php echo esc_html( $ref['name'] ); ?>'s confirmed instruments or platforms, ranked by our disclosed nine-category score -- not a popularity guess or a paid placement.</p>
+</div>
+
+<div class="wrap" style="padding-bottom:60px;">
+  <?php if ( empty( $alt_brokers ) ) : ?>
+  <p style="padding:24px;color:var(--ink-soft);">No sufficiently similar broker found in our researched set.</p>
+  <?php else : ?>
+  <div class="rankings">
+    <div class="rank-row head">
+      <span></span><span>Broker</span><span class="col-fees">Min. deposit</span><span class="col-plat">Platforms</span><span>Score</span><span></span>
+    </div>
+    <?php foreach ( $alt_brokers as $i => $alt ) :
+        $vs_pair_check = globalfxhub_vs_pair( $ref['slug'], $alt['slug'] );
+    ?>
+    <div class="rank-row">
+      <span class="rank-num"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+      <span class="rank-broker"><span class="rank-broker__name"><?php echo esc_html( $alt['name'] ); ?></span><span class="rank-broker__tag"><?php echo esc_html( globalfxhub_broker_regulation_label( $alt ) ); ?></span></span>
+      <span class="rank-detail col-fees"><?php echo esc_html( $alt['min_deposit_display'] ? $alt['min_deposit_display'] : 'Not confirmed' ); ?></span>
+      <span class="rank-detail col-plat"><?php echo esc_html( $alt['platforms'] ? implode( ', ', $alt['platforms'] ) : 'Not confirmed' ); ?></span>
+      <span class="rank-score"><?php echo esc_html( $alt['scores']['overall'] ?? 'N/A' ); ?> / 5</span>
+      <span class="rank-ctas">
+        <a href="<?php echo esc_url( home_url( '/reviews/' . $alt['slug'] . '/' ) ); ?>" class="rank-cta">Read review</a>
+        <?php if ( $vs_pair_check ) : ?>
+        <a href="<?php echo esc_url( home_url( '/compare/' . $ref['slug'] . '-vs-' . $alt['slug'] . '/' ) ); ?>" class="rank-cta">Compare vs <?php echo esc_html( $ref['name'] ); ?></a>
+        <?php endif; ?>
+      </span>
+    </div>
+    <?php endforeach; ?>
+  </div>
+  <?php endif; ?>
+  <p style="margin-top:20px;"><a href="<?php echo esc_url( home_url( '/reviews/' . $ref['slug'] . '/' ) ); ?>" style="color:var(--teal);">&larr; Back to the full <?php echo esc_html( $ref['name'] ); ?> review</a></p>
+</div>
+
+    <?php endif;
+elseif ( $broker ) :
     $pc = globalfxhub_broker_pros_cons( $broker );
     $who = globalfxhub_broker_who_for( $broker );
     $investor_protection = globalfxhub_broker_investor_protection( $broker );
@@ -79,6 +147,9 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
   <div class="hero__actions" style="margin-top:22px;">
     <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold">Compare vs another broker</a>
     <a href="<?php echo esc_url( home_url( '/broker-finder/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);">Find similar brokers</a>
+    <?php if ( globalfxhub_broker_alternatives( $broker['slug'] ) ) : ?>
+    <a href="<?php echo esc_url( home_url( '/reviews/' . $broker['slug'] . '/alternatives/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);">See alternatives</a>
+    <?php endif; ?>
     <?php foreach ( $verify_links as $link ) : ?>
     <a href="<?php echo esc_url( $link['url'] ); ?>" target="_blank" rel="noopener" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $link['label'] ); ?></a>
     <?php endforeach; ?>

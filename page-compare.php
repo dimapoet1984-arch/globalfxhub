@@ -1,17 +1,48 @@
 <?php
 /**
  * Template Name: Compare Brokers
- * Description: Interactive side-by-side broker comparison tool.
+ * Description: Interactive side-by-side broker comparison tool at
+ * /compare/, plus static, indexable pages at /compare/{a}-vs-{b}/ for
+ * a bounded set of pairs (both brokers in the top 40 by rank) -- see
+ * inc/broker-vs.php for the eligibility rule and server-rendered row
+ * data this template reuses below.
  */
 get_header();
 $a_param = isset($_GET['a']) ? sanitize_title($_GET['a']) : '';
 $b_param = isset($_GET['b']) ? sanitize_title($_GET['b']) : '';
+
+$vs_a_slug = get_query_var( 'vs_a' );
+$vs_b_slug = get_query_var( 'vs_b' );
+$vs_requested = (bool) ( $vs_a_slug && $vs_b_slug );
+$vs_pair = $vs_requested ? globalfxhub_vs_pair( $vs_a_slug, $vs_b_slug ) : null;
+if ( $vs_requested && ! $vs_pair ) {
+    status_header( 404 );
+}
+if ( $vs_pair ) {
+    $a_param = $vs_a_slug;
+    $b_param = $vs_b_slug;
+}
 ?>
+
+<?php if ( $vs_requested && ! $vs_pair ) : ?>
 
 <div class="wrap page-head">
   <div class="eyebrow">BROKER COMPARISON TOOL</div>
+  <h1>Comparison not available</h1>
+  <p>We don't have a page for that specific pairing -- it may involve a broker outside our top-ranked set, or the same broker listed twice. <a href="<?php echo esc_url( home_url( '/compare/' ) ); ?>" style="color:var(--teal);">Use the full comparison tool</a> to compare any two researched brokers directly.</p>
+</div>
+
+<?php else : ?>
+
+<div class="wrap page-head">
+  <div class="eyebrow">BROKER COMPARISON TOOL</div>
+  <?php if ( $vs_pair ) : ?>
+  <h1><?php echo esc_html( $vs_pair['a']['name'] . ' vs ' . $vs_pair['b']['name'] ); ?></h1>
+  <p>Side-by-side regulation, cost, platforms, and score -- generated from the same disclosed data and methodology behind our rankings.</p>
+  <?php else : ?>
   <h1><?php the_title(); ?></h1>
   <p>Pick any two of our researched brokers to compare regulation, cost, platforms, and score — generated instantly from the same data behind our rankings.</p>
+  <?php endif; ?>
   <?php $tool_learn_link = globalfxhub_resolve_learn_link( globalfxhub_tool_learn_links()['compare'] ); if ( $tool_learn_link ) : ?>
   <p style="font-size:13.5px;margin-top:8px;"><a href="<?php echo esc_url( $tool_learn_link['url'] ); ?>" style="color:var(--teal);">New to this? <?php echo esc_html( $tool_learn_link['label'] ); ?> &rarr;</a></p>
   <?php endif; ?>
@@ -33,15 +64,46 @@ $b_param = isset($_GET['b']) ? sanitize_title($_GET['b']) : '';
 
   <div class="presets" id="presets"></div>
 
-  <div id="empty-state">Choose two brokers above (or pick a popular comparison) to see the full side-by-side breakdown.</div>
+  <div id="empty-state"<?php echo $vs_pair ? ' style="display:none;"' : ''; ?>>Choose two brokers above (or pick a popular comparison) to see the full side-by-side breakdown.</div>
 
-  <div id="results">
-    <table class="compare-table" id="resultsTable"></table>
+  <div id="results"<?php echo $vs_pair ? ' class="show"' : ''; ?>>
+    <table class="compare-table" id="resultsTable">
+      <?php if ( $vs_pair ) :
+        $vs_a = $vs_pair['a'];
+        $vs_b = $vs_pair['b'];
+      ?>
+      <thead><tr><th class="label-col"></th><th><?php echo esc_html( $vs_a['name'] ); ?></th><th><?php echo esc_html( $vs_b['name'] ); ?></th></tr></thead>
+      <tbody>
+        <?php foreach ( globalfxhub_vs_comparison_rows( $vs_a, $vs_b ) as $row ) : ?>
+        <tr>
+          <th><?php echo esc_html( $row['label'] ); ?></th>
+          <td><?php echo esc_html( $row['a'] ); ?><?php if ( ! empty( $row['note_a'] ) ) : ?><div class="compare-note"><?php echo esc_html( $row['note_a'] ); ?></div><?php endif; ?></td>
+          <td><?php echo esc_html( $row['b'] ); ?><?php if ( ! empty( $row['note_b'] ) ) : ?><div class="compare-note"><?php echo esc_html( $row['note_b'] ); ?></div><?php endif; ?></td>
+        </tr>
+        <?php endforeach; ?>
+        <tr>
+          <th>Visit</th>
+          <td><a href="#" class="btn btn--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">Visit <?php echo esc_html( $vs_a['name'] ); ?></a></td>
+          <td><a href="#" class="btn btn--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">Visit <?php echo esc_html( $vs_b['name'] ); ?></a></td>
+        </tr>
+      </tbody>
+      <?php endif; ?>
+    </table>
+    <?php if ( $vs_pair ) : ?>
+    <p style="font-size:13.5px;margin:16px 0;">
+      <a href="<?php echo esc_url( home_url( '/reviews/' . $vs_a['slug'] . '/' ) ); ?>" style="color:var(--teal);">Full <?php echo esc_html( $vs_a['name'] ); ?> review &rarr;</a>
+      &middot;
+      <a href="<?php echo esc_url( home_url( '/reviews/' . $vs_b['slug'] . '/' ) ); ?>" style="color:var(--teal);">Full <?php echo esc_html( $vs_b['name'] ); ?> review &rarr;</a>
+      &middot;
+      <a href="<?php echo esc_url( home_url( '/compare/' ) ); ?>" style="color:var(--teal);">Compare different brokers &rarr;</a>
+    </p>
+    <?php endif; ?>
     <div class="methodology-note">
       <strong>How this score is calculated:</strong> Nine weighted categories against a fixed, disclosed rubric -- regulation & client protection 30%, trading costs 20%, non-trading fees 10%, platforms & tools 10%, execution/trading conditions 10%, product range 5%, deposits/withdrawals 5%, transparency 5%, track record 5% -- not a ranking relative to other brokers, and not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <script>
 const BROKERS = <?php echo wp_json_encode( globalfxhub_get_brokers() ); ?>;
@@ -56,6 +118,9 @@ const PRESET_B = <?php echo wp_json_encode( $b_param ); ?>;
   const empty = document.getElementById('empty-state');
   const table = document.getElementById('resultsTable');
   const presetsEl = document.getElementById('presets');
+  // The "comparison not available" branch (an out-of-bound or
+  // nonexistent /compare/{a}-vs-{b}/ pair) renders no picker UI at all.
+  if (!selA || !selB || !btn || !results || !empty || !table || !presetsEl) return;
 
   const bySlug = {};
   BROKERS.forEach(b => bySlug[b.slug] = b);
