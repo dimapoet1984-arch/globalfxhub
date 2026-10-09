@@ -3,7 +3,8 @@
  * Broker News: a short, factual bulletin feed of broker-specific
  * developments -- fines, enforcement actions, licence withdrawals, new
  * licences, acquisitions, executive moves, new platforms, product
- * launches.
+ * launches, and operational issues (e.g. a broker's own domain or
+ * client portal going down).
  *
  * Deliberately NOT auto-ingested from RSS/syndicated feeds. Every item
  * here is mined from this site's own deep-dive broker research (the
@@ -38,6 +39,7 @@ function globalfxhub_broker_news_categories() {
         'platform'            => 'New platform',
         'executive'           => 'Executive move',
         'product'             => 'Product launch',
+        'outage'              => 'Outage',
     );
 }
 
@@ -51,6 +53,13 @@ function globalfxhub_broker_news_categories() {
  */
 function globalfxhub_get_broker_news_items() {
     $items = array(
+        array(
+            'date'        => '2026-09-24',
+            'broker_slug' => 'ironfx',
+            'category'    => 'outage',
+            'headline'    => "IronFX's main website and client portal go offline; broker points traders to a temporary .co domain",
+            'body'        => 'IronFX\'s primary ironfx.com domain and client portal became unreachable starting around 24 September 2026. The broker said on its Japanese X account that this was a domain-related technical issue, that restoration work was already under way, and pointed visitors to a temporary ironfx.co address in the meantime; Google and other search engines continued indexing the .com domain despite it being unreachable. Sister brand FXLift, run by the same parent group, Notesco, continued operating normally throughout. No independent report confirming the .com domain and client portal are fully restored was found as of this writing -- for a broker already carrying a weak Trustpilot score and a history of client withdrawal disputes (see this review\'s customer service note), an extended client-portal outage specifically means affected traders cannot log in to check balances, trade, or request withdrawals through the main channel until it\'s resolved.',
+        ),
         array(
             'date'        => '2026-09-17',
             'broker_slug' => 'eurotrade',

@@ -37,7 +37,7 @@ foreach ( globalfxhub_get_brokers() as $b ) {
   <div class="section__head">
     <div>
       <h2><a href="<?php echo esc_url( home_url( '/news/brokers/' ) ); ?>" style="color:inherit;">Broker News &rarr;</a></h2>
-      <p style="color:var(--ink-soft);font-size:14px;">Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, and product launches -- curated from our own broker research, not pulled from any news wire.</p>
+      <p style="color:var(--ink-soft);font-size:14px;">Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, product launches, and operational issues -- curated from our own broker research, not pulled from any news wire.</p>
     </div>
   </div>
   <div class="news__grid">

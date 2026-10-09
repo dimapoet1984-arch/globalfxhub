@@ -26,7 +26,7 @@ foreach ( globalfxhub_get_brokers() as $b ) {
 <div class="wrap page-head">
   <div class="eyebrow">BROKER NEWS</div>
   <h1><?php the_title(); ?></h1>
-  <p>Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, and product launches -- curated from our own broker research, each item linked to the full, sourced detail on that broker's review page. Not pulled from any news wire. Looking for market-wide analysis instead? See <a href="<?php echo esc_url( home_url( '/news/markets/' ) ); ?>">FX Market News</a>.</p>
+  <p>Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, product launches, and operational issues -- curated from our own broker research, each item linked to the full, sourced detail on that broker's review page. Not pulled from any news wire. Looking for market-wide analysis instead? See <a href="<?php echo esc_url( home_url( '/news/markets/' ) ); ?>">FX Market News</a>.</p>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
