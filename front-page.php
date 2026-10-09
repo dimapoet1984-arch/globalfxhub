@@ -149,7 +149,7 @@ GlobalFXHubBrokerSearch.init(
       <div class="trustbar__label"><?php globalfxhub_te( 'trust1' ); ?></div>
     </div>
     <div>
-      <div class="trustbar__num">4</div>
+      <div class="trustbar__num">9</div>
       <div class="trustbar__label"><?php globalfxhub_te( 'trust2' ); ?></div>
     </div>
     <div>
