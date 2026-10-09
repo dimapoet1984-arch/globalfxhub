@@ -284,6 +284,20 @@ function globalfxhub_finder_country_options() {
  * page (see test-offshore-leak.php). Picking "outside the EU" applies no
  * country filter at all, since availability there isn't modeled on this
  * site.
+ *
+ * Known limitation, disclosed on the page itself (both in the static
+ * footnote and in a dedicated per-selection warning shown whenever a
+ * country is picked): this is a regulatory proxy, not entity-level
+ * verification. Holding an EU-passportable licence doesn't confirm a
+ * broker has actually completed the specific host-country notification,
+ * which legal entity within the group would serve that country, or that
+ * every account type is offered there. Closing that gap for real would
+ * mean researching, per broker and per country, which entity serves it
+ * and on what terms -- the same kind of entity-level work already done
+ * for a handful of brokers via the Broker Regulation Checker's dossier
+ * (inc/regulation-checker.php), but not yet done broker-by-broker across
+ * this full 139-broker set. Until that research exists, this predicate
+ * stays a disclosed proxy rather than a fabricated per-country fact.
  */
 function globalfxhub_broker_meets_country( $broker, $country_slug ) {
     if ( '' === $country_slug ) {

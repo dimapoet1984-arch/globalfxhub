@@ -88,6 +88,8 @@ $finder_styles      = globalfxhub_finder_trading_styles();
     </div>
   </div>
 
+  <div id="finderCountryWarning" class="methodology-note" style="display:none;margin:0 0 24px;"></div>
+
   <div class="finder__summary">
     <div class="finder__count">These <span id="finderResultCount">0</span> brokers meet your criteria</div>
     <p class="finder__countrylink" id="finderCountryLink"></p>
@@ -123,6 +125,7 @@ const FINDER_COUNTRIES_URL = <?php echo wp_json_encode( home_url( '/countries/' 
   const regHint = document.getElementById('finderRegulationHint');
   const styleHint = document.getElementById('finderStyleHint');
   const countryLink = document.getElementById('finderCountryLink');
+  const countryWarning = document.getElementById('finderCountryWarning');
 
   function render(results, styleKey) {
     countEl.textContent = results.length;
@@ -166,6 +169,13 @@ const FINDER_COUNTRIES_URL = <?php echo wp_json_encode( home_url( '/countries/' 
     countryLink.innerHTML = country
       ? 'See full local detail for ' + FINDER_COUNTRY_LABELS[country] + ': <a href="' + FINDER_COUNTRIES_URL + country + '/" style="color:var(--teal);">country regulation, tax & deposit guide &rarr;</a>'
       : '';
+
+    if (country) {
+      countryWarning.style.display = 'block';
+      countryWarning.innerHTML = '<strong>This is a regulatory proxy, not confirmed availability.</strong> A broker is shown here because it holds a CySEC licence or EU/MiFID-passported regulation -- not because we\'ve confirmed it accepts clients from ' + FINDER_COUNTRY_LABELS[country] + ', which legal entity would actually serve you, or that every account type is offered there. Always confirm directly on the broker\'s own site, by country, before opening an account.';
+    } else {
+      countryWarning.style.display = 'none';
+    }
 
     const results = FINDER_BROKERS.filter(function(b) {
       if (country && !b.eu_eligible) return false;
