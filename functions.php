@@ -859,6 +859,162 @@ function globalfxhub_extended_seo_head() {
 }
 add_action( 'wp_head', 'globalfxhub_extended_seo_head', 5 );
 
+/**
+ * BreadcrumbList schema for every page type that already shows a
+ * visible breadcrumb -- built from the exact same page-type conditions
+ * and the exact same underlying data (the real broker/list/country/
+ * regulation-page record, or the real post title/permalink) that each
+ * template's own visible crumb markup already uses, so the two can
+ * never show a different trail. Plus one sitewide Organization +
+ * WebSite block, output unconditionally on every page.
+ *
+ * No logo or social-profile ("sameAs") field is included: neither
+ * exists anywhere in this site's data, and guessing one would be
+ * exactly the kind of fabrication this codebase avoids everywhere
+ * else. No SearchAction either -- the nav search is a client-side
+ * autocomplete widget with no real server-side search results URL to
+ * point one at.
+ */
+function globalfxhub_breadcrumb_schema() {
+    $trail = null;
+
+    $broker_slug = get_query_var( 'broker' );
+    if ( $broker_slug ) {
+        $broker = globalfxhub_get_broker_by_slug( $broker_slug );
+        if ( $broker ) {
+            $trail = array(
+                array( 'name' => 'Reviews', 'item' => home_url( '/reviews/' ) ),
+                array( 'name' => $broker['name'], 'item' => home_url( '/reviews/' . $broker['slug'] . '/' ) ),
+            );
+        }
+    } elseif ( is_page( 'reviews' ) ) {
+        $trail = array( array( 'name' => 'Reviews', 'item' => home_url( '/reviews/' ) ) );
+    }
+
+    if ( null === $trail ) {
+        $bestlist_slug = get_query_var( 'bestlist' );
+        if ( $bestlist_slug ) {
+            $lists = globalfxhub_get_best_lists();
+            if ( isset( $lists[ $bestlist_slug ] ) ) {
+                $trail = array(
+                    array( 'name' => 'Best Brokers', 'item' => home_url( '/best/' ) ),
+                    array( 'name' => $lists[ $bestlist_slug ]['title'], 'item' => home_url( '/best/' . $bestlist_slug . '/' ) ),
+                );
+            }
+        } elseif ( is_page( 'best' ) ) {
+            $trail = array( array( 'name' => 'Best Brokers', 'item' => home_url( '/best/' ) ) );
+        }
+    }
+
+    if ( null === $trail ) {
+        $country_slug = get_query_var( 'country' );
+        if ( $country_slug ) {
+            $countries = globalfxhub_get_countries();
+            if ( isset( $countries[ $country_slug ] ) ) {
+                $trail = array(
+                    array( 'name' => 'Countries', 'item' => home_url( '/countries/' ) ),
+                    array( 'name' => $countries[ $country_slug ]['name'], 'item' => home_url( '/countries/' . $country_slug . '/' ) ),
+                );
+            }
+        } elseif ( is_page( 'countries' ) ) {
+            $trail = array( array( 'name' => 'Countries', 'item' => home_url( '/countries/' ) ) );
+        }
+    }
+
+    if ( null === $trail ) {
+        $regpage_slug = get_query_var( 'regpage' );
+        if ( $regpage_slug ) {
+            $reg_pages = globalfxhub_get_regulation_pages();
+            if ( isset( $reg_pages[ $regpage_slug ] ) ) {
+                $trail = array(
+                    array( 'name' => 'Regulation', 'item' => home_url( '/regulation/' ) ),
+                    array( 'name' => $reg_pages[ $regpage_slug ]['title'], 'item' => home_url( '/regulation/' . $regpage_slug . '/' ) ),
+                );
+            }
+        } elseif ( is_page( 'regulation' ) ) {
+            $trail = array( array( 'name' => 'Regulation', 'item' => home_url( '/regulation/' ) ) );
+        }
+    }
+
+    if ( null === $trail ) {
+        if ( is_page( 'markets' ) ) {
+            $trail = array(
+                array( 'name' => 'News', 'item' => home_url( '/news/' ) ),
+                array( 'name' => 'FX Market News', 'item' => home_url( '/news/markets/' ) ),
+            );
+        } elseif ( is_page( 'brokers' ) ) {
+            $trail = array(
+                array( 'name' => 'News', 'item' => home_url( '/news/' ) ),
+                array( 'name' => 'Broker News', 'item' => home_url( '/news/brokers/' ) ),
+            );
+        } elseif ( is_page( 'news' ) ) {
+            $trail = array( array( 'name' => 'News', 'item' => home_url( '/news/' ) ) );
+        }
+    }
+
+    if ( null === $trail ) {
+        $flat_pages = array(
+            'broker-finder'      => 'Broker Finder',
+            'compare'            => 'Compare Brokers',
+            'cost-calculator'    => 'Forex Spread Cost Calculator',
+            'regulation-checker' => 'Broker Regulation Checker',
+            'broker-changelog'   => 'Broker Change Log',
+            'learn'              => 'Learn',
+        );
+        foreach ( $flat_pages as $page_slug => $label ) {
+            if ( is_page( $page_slug ) ) {
+                $trail = array( array( 'name' => $label, 'item' => home_url( '/' . $page_slug . '/' ) ) );
+                break;
+            }
+        }
+    }
+
+    // Learn / News articles -- same section-map logic single.php's own
+    // visible breadcrumb already uses, so the two can't disagree.
+    if ( null === $trail && is_singular( 'post' ) ) {
+        $cats = get_the_category();
+        $cat_slug = ! empty( $cats ) ? $cats[0]->slug : '';
+        $section_map = array(
+            'learn'          => array( 'Learn', home_url( '/learn/' ) ),
+            'fx-market-news' => array( 'FX Market News', home_url( '/news/markets/' ) ),
+        );
+        list( $section_label, $section_url ) = $section_map[ $cat_slug ] ?? array( 'Learn', home_url( '/learn/' ) );
+        $trail = array(
+            array( 'name' => $section_label, 'item' => $section_url ),
+            array( 'name' => get_the_title(), 'item' => get_permalink() ),
+        );
+    }
+
+    if ( $trail ) {
+        $items = array( array( '@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => home_url( '/' ) ) );
+        $position = 2;
+        foreach ( $trail as $crumb ) {
+            $items[] = array( '@type' => 'ListItem', 'position' => $position++, 'name' => $crumb['name'], 'item' => $crumb['item'] );
+        }
+        $breadcrumb_schema = array(
+            '@context'        => 'https://schema.org',
+            '@type'           => 'BreadcrumbList',
+            'itemListElement' => $items,
+        );
+        echo '<script type="application/ld+json">' . wp_json_encode( $breadcrumb_schema ) . '</script>' . "\n";
+    }
+
+    echo '<script type="application/ld+json">' . wp_json_encode( array(
+        '@context' => 'https://schema.org',
+        '@type'    => 'Organization',
+        'name'     => 'GlobalFXHub',
+        'url'      => home_url( '/' ),
+    ) ) . '</script>' . "\n";
+
+    echo '<script type="application/ld+json">' . wp_json_encode( array(
+        '@context' => 'https://schema.org',
+        '@type'    => 'WebSite',
+        'name'     => 'GlobalFXHub',
+        'url'      => home_url( '/' ),
+    ) ) . '</script>' . "\n";
+}
+add_action( 'wp_head', 'globalfxhub_breadcrumb_schema', 5 );
+
 function globalfxhub_get_broker_by_slug( $slug ) {
     foreach ( globalfxhub_get_brokers() as $broker ) {
         if ( $broker['slug'] === $slug ) {
