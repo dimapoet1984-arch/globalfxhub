@@ -518,7 +518,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
     </div>
     <div class="countries__row">
       <?php
-      $fp_countries = globalfxhub_get_countries();
+      $fp_countries = globalfxhub_get_all_countries();
       foreach ( $fp_countries as $fp_country_slug => $fp_country ) :
           $fp_flag = globalfxhub_country_flag_emoji( $fp_country['iso'] );
           ?>

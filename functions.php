@@ -939,7 +939,7 @@ function globalfxhub_breadcrumb_schema() {
     if ( null === $trail ) {
         $country_slug = get_query_var( 'country' );
         if ( $country_slug ) {
-            $countries = globalfxhub_get_countries();
+            $countries = globalfxhub_get_all_countries();
             if ( isset( $countries[ $country_slug ] ) ) {
                 $trail = array(
                     array( 'name' => 'Countries', 'item' => home_url( '/countries/' ) ),

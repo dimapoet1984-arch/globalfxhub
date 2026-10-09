@@ -410,8 +410,128 @@ function globalfxhub_get_countries() {
     );
 }
 
+/**
+ * Country pages beyond the 27 EU member states above. These do NOT use
+ * the EU/MiFID-II/ESMA framework the functions above assume -- each one
+ * has its own regulator, licensing regime, and (where it exists at all)
+ * leverage cap, so they're kept in a separate array rather than forced
+ * into the EU shape. Every entry below carries 'region_type' => 'other'
+ * so templates can branch instead of silently reusing EU-only copy.
+ *
+ * Chosen using a real, already-present signal -- which Tier-1 regulators
+ * actually show up in globalfxhub_get_brokers()'s 'other_reg' field --
+ * rather than guessing at search demand: ASIC (Australia, confirmed for
+ * 31 of our reviewed brokers), FSCA (South Africa, 30), DFSA (UAE, 9),
+ * and MAS (Singapore, 3) are the only four with enough confirmed
+ * same-regulator coverage to support a real ranking. 'regulator_match'
+ * is the exact string used in that field, used by
+ * globalfxhub_country_broker_ranking_other_reg() below -- a stronger
+ * claim than the EU pages' passporting inference, since it only ranks
+ * brokers with a *confirmed* licence from that specific regulator, not
+ * every CySEC broker that merely has the right to passport in.
+ *
+ * Several fields below are deliberately left as an honest "not
+ * independently confirmed" rather than guessed -- consistent with every
+ * other per-country field in this file -- where the research done for
+ * this page didn't turn up a authoritative, current primary source.
+ */
+function globalfxhub_get_non_eu_countries() {
+    return array(
+        'australia' => array(
+            'name' => 'Australia', 'iso' => 'AU', 'currency' => 'AUD', 'region_type' => 'other',
+            'regulator' => 'ASIC (Australian Securities & Investments Commission)', 'regulator_short' => 'ASIC',
+            'regulator_match' => 'ASIC', 'hq_match' => 'Australia',
+            'framework_overview' => 'Any firm offering CFDs to Australian retail clients needs an Australian Financial Services (AFS) licence from ASIC authorising it to deal in and/or advise on CFDs. Since 29 March 2021, ASIC\'s CFD product intervention order has applied on top of the licence: leverage caps by asset class (below), standardised margin close-out rules designed to automatically close a losing position before a client\'s account is wiped out, and a ban on trading inducements such as account-opening or deposit rebates. The order followed near-identical UK and EU measures, prompted partly by heavy retail CFD losses during 2020\'s COVID-19 volatility. Whether the order (originally time-limited) has since been made permanent or renewed wasn\'t independently confirmed from the sources checked for this page -- see ASIC\'s own CFD product intervention page for its current status.',
+            'leverage_overview' => 'ASIC\'s order caps retail CFD leverage by underlying asset: 30:1 on major currency pairs, 20:1 on minor currency pairs, gold, and major stock indices, 10:1 on other commodities and minor stock indices, 5:1 on shares, and 2:1 on crypto-asset CFDs -- a steep cut from the leverage of up to 500:1 some retail accounts reportedly reached beforehand. A client who qualifies as a "wholesale" investor (Australia\'s rough equivalent of "professional") can apply for higher leverage, but gives up the retail protections that come with the cap.',
+            'compensation_overview' => 'Australia has no CFD/forex-specific investor compensation scheme comparable to Cyprus\'s ICF or the UK\'s FSCS. The Australian Financial Complaints Authority (AFCA) can hear complaints against AFS licensees and order compensation, but only case-by-case on a complaint it upholds -- it isn\'t a standing fund that automatically pays out if a broker becomes insolvent. Not independently confirmed here: whether any indemnity-insurance requirement attached to an AFS licence would itself cover client losses from a broker failure.',
+            'taxation_overview' => 'Not independently confirmed in the depth this page would need -- in general, the ATO tends to treat gains from speculative CFD/forex trading as assessable income (and losses as deductible) under ordinary income-tax rules rather than the capital-gains discount that applies to long-term investment assets, but your own treatment depends on whether the ATO views your activity as a "business" of trading. Consult a registered Australian tax agent for your specific position.',
+            'local_payment_methods' => 'Not independently confirmed broker-by-broker for this page -- Australian clients are typically offered bank transfer (including BPAY/PayID where a broker supports it), debit/credit card, and e-wallets such as Skrill/Neteller, but confirmed support varies by broker.',
+            'country_specific_restrictions' => 'Beyond the leverage caps above, ASIC\'s order restricts specific sales practices, including a ban on inducements to trade. Contravention carries penalties of up to 5 years\' imprisonment for individuals and substantial civil penalties for corporations, and a client harmed by a breach may be able to recover losses through AFCA or the courts.',
+            'faqs' => array(
+                array( 'q' => 'Is CFD trading legal in Australia?', 'a' => 'Yes, if offered by an ASIC-licensed AFS holder complying with ASIC\'s CFD product intervention order -- leverage caps and standardised margin close-out rules in force since March 2021.' ),
+                array( 'q' => 'What leverage can I get as a retail CFD trader in Australia?', 'a' => 'ASIC caps it by asset class: 30:1 on major FX pairs down to 2:1 on crypto-asset CFDs. Classifying as a "wholesale" investor can unlock higher leverage but removes the retail protections that come with the cap.' ),
+            ),
+            'regulatory_source_url' => 'https://asic.gov.au/',
+            'paragraphs' => array(
+                'Australia regulates CFDs and margin forex directly through ASIC rather than via any EU framework -- a firm needs its own Australian Financial Services licence, not a passported EU one, to serve Australian retail clients.',
+                'ASIC\'s 2021 CFD product intervention order brought Australian retail leverage caps roughly in line with the EU\'s own ESMA limits, after years of Australian retail accounts being able to reach far higher leverage than their EU counterparts.',
+            ),
+        ),
+        'south-africa' => array(
+            'name' => 'South Africa', 'iso' => 'ZA', 'currency' => 'ZAR', 'region_type' => 'other',
+            'regulator' => 'FSCA (Financial Sector Conduct Authority)', 'regulator_short' => 'FSCA',
+            'regulator_match' => 'FSCA', 'hq_match' => 'South Africa',
+            'framework_overview' => 'A firm providing advice or intermediary services on CFDs or forex to South African clients -- including marketing and sales -- needs an FSCA licence under the Financial Advisory and Intermediary Services (FAIS) Act; forex-specific intermediation generally requires a Category I Financial Services Provider (FSP) licence. A FAIS/FSP licence alone doesn\'t let a firm issue CFDs as principal (take the other side of client trades) -- that additionally requires an OTC Derivative Provider (ODP) licence under the Financial Markets Act. Applicants must appoint a South-Africa-resident Key Individual, a local representative, and a compliance officer, each individually registered with the FSCA. A long-pending Conduct of Financial Institutions (COFI) Act would eventually replace FAIS and consolidate several financial-sector statutes, but its current parliamentary stage and effective date weren\'t independently confirmed here -- check the FSCA directly.',
+            'leverage_overview' => 'No FSCA-mandated retail leverage cap for forex/CFDs comparable to ESMA\'s or ASIC\'s tiered limits was independently confirmed from the sources checked for this page. Leverage offered to South African retail clients varies by broker and by which entity actually governs the account -- an FSCA-licensed one versus an offshore entity merely accepting South African clients -- so confirm the specific cap on your account directly with the broker and the FSCA\'s public register rather than assuming an EU-style limit applies.',
+            'compensation_overview' => 'South Africa has no FSCA-administered investor compensation fund for CFD/forex broker failure comparable to Cyprus\'s ICF. The FSCA\'s role is licensing and conduct supervision -- including public warnings about unlicensed offshore platforms -- not a standing payout scheme for client losses if a licensed broker becomes insolvent. Not independently confirmed here: any client-asset segregation or indemnity-insurance requirement attached to the relevant FSP/ODP licence category.',
+            'taxation_overview' => 'Not independently confirmed in the depth this page would need -- SARS generally taxes trading profits as ordinary income rather than capital gains when the activity is frequent/speculative enough to be viewed as a "scheme of profit-making," but the line is fact-specific. Consult a South African tax practitioner for your own position.',
+            'local_payment_methods' => 'Not independently confirmed broker-by-broker for this page -- South African clients are typically offered EFT/bank transfer, debit/credit card, and e-wallets, but confirmed support (and any Rand-specific settlement arrangement) varies by broker.',
+            'country_specific_restrictions' => 'The FSCA has repeatedly warned the public about unlicensed offshore platforms marketing forex/CFDs to South Africans without any FSCA authorisation at all -- verifying a broker\'s FAIS/FSP (and, if it trades as principal, ODP) licence on the FSCA\'s own register before funding an account is the single most load-bearing check for a South African trader, more so than for an EU resident covered by MiFID passporting.',
+            'faqs' => array(
+                array( 'q' => 'Is CFD/forex trading legal in South Africa?', 'a' => 'Yes, through a firm properly licensed by the FSCA (FAIS/FSP, plus an ODP licence if it trades as principal). The FSCA has repeatedly warned against unlicensed offshore platforms, so checking its public register before funding an account matters more here than in many other jurisdictions.' ),
+                array( 'q' => 'Is there a compensation fund if my South African CFD broker fails?', 'a' => 'No FSCA-administered compensation fund for CFD/forex broker insolvency was confirmed for this page -- the FSCA licenses and supervises conduct but doesn\'t run a standing payout scheme comparable to the EU\'s ICF.' ),
+            ),
+            'regulatory_source_url' => 'https://www.fsca.co.za/',
+            'paragraphs' => array(
+                'South Africa regulates CFD/forex intermediation directly through the FSCA under the FAIS Act, with a separate OTC Derivative Provider licence required for any firm trading as principal against its clients -- there is no EU-style passporting involved at all.',
+                'Because the FSCA has flagged unlicensed offshore platforms targeting South African traders on multiple occasions, confirming a broker\'s actual FSCA licence status is a more consequential check here than the EU-passporting nuance that dominates this site\'s EU country pages.',
+            ),
+        ),
+        'united-arab-emirates' => array(
+            'name' => 'United Arab Emirates', 'iso' => 'AE', 'currency' => 'AED', 'region_type' => 'other',
+            'regulator' => 'DFSA (Dubai Financial Services Authority)', 'regulator_short' => 'DFSA',
+            'regulator_match' => 'DFSA', 'hq_match' => 'UAE',
+            'framework_overview' => 'The DFSA is the independent regulator of the Dubai International Financial Centre (DIFC), a financial free zone with its own common-law-based framework distinct from UAE federal law -- a DFSA licence covers firms operating within the DIFC specifically, not the UAE mainland. Mainland UAE CFD/forex activity instead falls under the federal Securities and Commodities Authority (SCA), a separate regulator with its own rulebook not covered by this page. DFSA-licensed firms must meet minimum capital, client-money segregation, and AML/CTF requirements, and at least one confirmed DIFC-based brand\'s DFSA entity does not offer CFDs or rolling spot FX to retail clients at all, serving Professional clients only -- confirm a specific broker\'s DIFC entity actually serves retail accounts before assuming a DFSA licence means retail access.',
+            'leverage_overview' => 'The DFSA raised minimum margin requirements for retail clients effective 6 December 2021: 3.33% margin (30:1 leverage) on major forex pairs, 5% (20:1) on gold, and 10% (10:1) on oil. A 2025 industry report instead described a 50:1 retail cap on majors, which conflicts with the 2021 margin rule -- treat that higher figure as unconfirmed or possibly outdated, and check the current DFSA Rulebook directly. These limits don\'t apply to clients who qualify for and elect Professional classification.',
+            'compensation_overview' => 'No DFSA-administered investor compensation scheme for retail CFD/forex client losses was confirmed in the sources checked for this page -- the DFSA\'s framework centres on licensing, capital, and client-money segregation requirements rather than a standing compensation fund. Not independently confirmed either way; check directly with the DFSA before assuming compensation-fund protection comparable to the EU\'s ICF or the UK\'s FSCS.',
+            'taxation_overview' => 'The UAE levies no personal income tax, so individual trading gains aren\'t subject to UAE personal income tax -- a well-established, general feature of UAE tax law, not specific to forex/CFD trading. This says nothing about your home-country obligations: most jurisdictions tax residents on worldwide trading income regardless of where the broker or account is based, so confirm your own reporting duties with a tax adviser in your actual country of tax residence.',
+            'local_payment_methods' => 'Not independently confirmed broker-by-broker for this page -- UAE clients are typically offered local bank transfer, card, and e-wallet options, but confirmed broker-level support wasn\'t verified here.',
+            'country_specific_restrictions' => 'The DIFC/mainland split above is the single most important nuance for this jurisdiction: a DFSA licence only covers DIFC-based activity, and some DFSA entities choose not to serve retail clients with CFDs/rolling spot FX at all. Always confirm which specific entity (DIFC-DFSA, mainland-SCA, or an offshore entity with neither) actually holds your account.',
+            'faqs' => array(
+                array( 'q' => 'Is CFD/forex trading legal in the UAE?', 'a' => 'Yes, through a firm licensed either by the DFSA (within the Dubai International Financial Centre free zone) or the federal SCA (UAE mainland) -- these are two separate regulators with separate rulebooks, so confirm which one actually licenses your broker\'s entity.' ),
+                array( 'q' => 'What leverage is available to retail clients in the UAE?', 'a' => 'DFSA-regulated retail accounts are capped at 30:1 on major FX pairs under margin rules effective December 2021 (20:1 on gold, 10:1 on oil); a conflicting 50:1 figure appears in at least one 2025 industry report and should be treated as unconfirmed. Professional-classified clients can access higher leverage.' ),
+            ),
+            'regulatory_source_url' => 'https://www.dfsa.ae/',
+            'paragraphs' => array(
+                'The UAE has two entirely separate regulatory regimes relevant to CFD/forex trading: the DFSA, covering only the Dubai International Financial Centre free zone, and the federal SCA, covering the UAE mainland -- a broker\'s "UAE licence" means one or the other, never both automatically.',
+                'The DFSA tightened its retail margin requirements in December 2021, bringing DIFC-regulated leverage much closer to the EU\'s own ESMA caps than some older marketing claims about UAE leverage would suggest.',
+            ),
+        ),
+        'singapore' => array(
+            'name' => 'Singapore', 'iso' => 'SG', 'currency' => 'SGD', 'region_type' => 'other',
+            'regulator' => 'MAS (Monetary Authority of Singapore)', 'regulator_short' => 'MAS',
+            'regulator_match' => 'MAS', 'hq_match' => 'Singapore',
+            'framework_overview' => 'A firm offering leveraged forex or CFDs to Singapore retail clients needs a Capital Markets Services (CMS) licence from MAS under the Securities and Futures Act, and retail clients must generally pass a Customer Knowledge Assessment (CKA) before trading leveraged products. Some brokers instead serve Singapore-resident clients through an offshore entity holding no MAS licence at all -- those accounts fall entirely outside MAS\'s retail protections, including its leverage cap below, so confirm which entity (MAS-licensed or offshore) actually holds your account.',
+            'leverage_overview' => 'MAS cut the retail forex leverage cap from 50:1 to 20:1 in 2019 (roughly a 5% margin requirement); broker-comparison guides from 2025-2026 still describe 20:1 as the current retail ceiling, though this wasn\'t independently confirmed against the MAS rulebook itself for this page. A Singapore "accredited investor" (meeting the jurisdiction\'s wealth/experience criteria) can access higher leverage, reportedly up to 50:1, with correspondingly reduced regulatory protection. Offshore brokers serving Singapore residents outside MAS\'s licensing regime aren\'t bound by this cap at all and may offer far higher leverage -- a materially different risk profile from a MAS-licensed account.',
+            'compensation_overview' => 'No MAS-administered investor compensation scheme specific to CFD/forex broker insolvency was confirmed in the sources checked for this page. MAS\'s framework for CMS licensees centres on licensing conditions, segregated client accounts, and the Customer Knowledge Assessment rather than a standing compensation fund; not independently confirmed either way -- check directly with MAS before assuming fund-backed protection.',
+            'taxation_overview' => 'Not independently confirmed in the depth this page would need -- Singapore generally doesn\'t tax capital gains, but trading income classified by IRAS as a "trade or business" (rather than a one-off capital transaction) can instead be taxed as ordinary income; the classification is fact-specific. Consult a Singapore tax adviser for your own position.',
+            'local_payment_methods' => 'Not independently confirmed broker-by-broker for this page -- Singapore clients are typically offered bank transfer (including PayNow where a broker supports it), card, and e-wallet options, but confirmed broker-level support wasn\'t verified here.',
+            'country_specific_restrictions' => 'The mandatory Customer Knowledge Assessment for MAS-licensed CMS holders, and the existence of unlicensed-offshore alternatives entirely outside MAS\'s leverage cap and protections, are the two points most worth confirming directly with any specific broker before funding a Singapore account.',
+            'faqs' => array(
+                array( 'q' => 'Is leveraged forex/CFD trading legal in Singapore?', 'a' => 'Yes, through a firm holding a Capital Markets Services licence from MAS, with retail clients generally required to pass a Customer Knowledge Assessment first. Some brokers instead serve Singapore residents through an unlicensed offshore entity, which falls outside MAS\'s protections entirely.' ),
+                array( 'q' => 'What leverage can retail traders get in Singapore?', 'a' => 'MAS-licensed accounts are generally capped at 20:1 for forex (cut from 50:1 in 2019), though this wasn\'t independently re-confirmed against the current MAS rulebook for this page. Accredited investors can reportedly access up to 50:1; offshore, non-MAS-licensed brokers aren\'t bound by the cap at all.' ),
+            ),
+            'regulatory_source_url' => 'https://www.mas.gov.sg/',
+            'paragraphs' => array(
+                'Singapore regulates leveraged forex/CFD trading directly through MAS under the Securities and Futures Act, with a mandatory knowledge test for retail clients rather than the EU\'s passporting mechanic.',
+                'A meaningful share of brokers serving Singapore residents reportedly do so through offshore entities outside MAS\'s licence regime entirely -- worth confirming before assuming MAS\'s 20:1 retail leverage cap and protections apply to your specific account.',
+            ),
+        ),
+    );
+}
+
+/**
+ * All country pages this site has, EU and non-EU combined. Templates
+ * that need the full index (e.g. the /countries/ directory page) use
+ * this; globalfxhub_get_countries() alone remains available for any
+ * EU-specific logic that must not see the non-EU entries.
+ */
+function globalfxhub_get_all_countries() {
+    return array_merge( globalfxhub_get_countries(), globalfxhub_get_non_eu_countries() );
+}
+
 function globalfxhub_get_country_by_slug( $slug ) {
-    $countries = globalfxhub_get_countries();
+    $countries = globalfxhub_get_all_countries();
     return isset( $countries[ $slug ] ) ? array_merge( array( 'slug' => $slug ), $countries[ $slug ] ) : null;
 }
 
@@ -520,6 +640,55 @@ function globalfxhub_country_broker_ranking( $country, $limit = 10 ) {
 }
 
 /**
+ * The non-EU equivalent of globalfxhub_country_broker_ranking() above --
+ * used for the four non-EU country pages (globalfxhub_get_non_eu_
+ * countries()). Rather than the EU pages' "every CySEC broker can
+ * passport in" inference, this only includes a broker if its own
+ * 'other_reg' field confirms a licence from that exact country's
+ * regulator (e.g. 'ASIC' for Australia) -- a stronger, directly
+ * evidenced claim than passporting, at the cost of a shorter list for
+ * jurisdictions where fewer of our reviewed brokers hold that specific
+ * licence (Singapore's MAS, for example, currently has only 3). A short
+ * but accurate list is preferred here to padding it out with brokers
+ * that aren't actually licensed in that jurisdiction.
+ */
+function globalfxhub_country_broker_ranking_other_reg( $country, $limit = 10 ) {
+    $all = array_filter( globalfxhub_get_brokers(), function( $b ) use ( $country ) {
+        return ! empty( $b['other_reg'] ) && in_array( $country['regulator_match'], $b['other_reg'], true );
+    } );
+    usort( $all, function( $a, $b ) {
+        return $a['rank'] <=> $b['rank'];
+    } );
+
+    $local = array();
+    $rest  = array();
+    foreach ( $all as $broker ) {
+        $primary_hq = ! empty( $broker['hq'] ) ? preg_split( '/[(;]/', $broker['hq'], 2 )[0] : '';
+        $broker['is_local_hq'] = '' !== $primary_hq && false !== stripos( $primary_hq, $country['hq_match'] );
+        if ( $broker['is_local_hq'] ) {
+            $local[] = $broker;
+        } else {
+            $rest[] = $broker;
+        }
+    }
+
+    return array_slice( array_merge( $local, $rest ), 0, $limit );
+}
+
+/**
+ * Short meta line for a country's card on the /countries/ index grid:
+ * "EU since 1995" for an EU member state, or "ASIC-regulated" etc. for
+ * one of the non-EU pages -- avoids the index template needing to know
+ * which fields exist on which kind of country entry.
+ */
+function globalfxhub_country_index_badge( $country ) {
+    if ( ! empty( $country['eu_since'] ) ) {
+        return 'EU since ' . $country['eu_since'];
+    }
+    return ! empty( $country['regulator_short'] ) ? $country['regulator_short'] . '-regulated' : 'Non-EU';
+}
+
+/**
  * /countries/{slug}/ needs a "Countries" page on the "Countries Index"
  * template; self-creates/self-repairs on every load like the other
  * templated pages.
@@ -558,7 +727,7 @@ function globalfxhub_country_seo_title( $title_parts ) {
             $title_parts['title'] = 'Best Forex & CFD Brokers in ' . $country['name'] . ' ' . date( 'Y' );
         }
     } elseif ( is_page( 'countries' ) ) {
-        $title_parts['title'] = 'Best Forex Brokers by EU Country ' . date( 'Y' );
+        $title_parts['title'] = 'Best Forex & CFD Brokers by Country ' . date( 'Y' );
     }
     return $title_parts;
 }
@@ -580,7 +749,7 @@ function globalfxhub_country_seo_head() {
     $slug = get_query_var( 'country' );
     if ( ! $slug ) {
         if ( is_page( 'countries' ) ) {
-            echo '<meta name="description" content="' . esc_attr( 'Top-ranked CySEC-regulated forex and CFD brokers for every EU member state, with what\'s actually different -- regulator, currency, and local broker presence -- about trading in each one.' ) . '">' . "\n";
+            echo '<meta name="description" content="' . esc_attr( 'Top-ranked, confirmed-licensed forex and CFD brokers for every EU member state plus Australia, South Africa, the UAE, and Singapore, with what\'s actually different -- regulator, currency, and local broker presence -- about trading in each one.' ) . '">' . "\n";
         }
         return;
     }
@@ -588,11 +757,19 @@ function globalfxhub_country_seo_head() {
     if ( ! $country ) {
         return;
     }
-    $description = sprintf(
-        'The top CySEC-regulated forex and CFD brokers available to retail traders in %s, ranked by our disclosed methodology -- plus what\'s specific to %s: currency, regulator, and EU rules.',
-        $country['name'],
-        $country['name']
-    );
+    $is_eu_country = empty( $country['region_type'] ) || 'other' !== $country['region_type'];
+    $description   = $is_eu_country
+        ? sprintf(
+            'The top CySEC-regulated forex and CFD brokers available to retail traders in %s, ranked by our disclosed methodology -- plus what\'s specific to %s: currency, regulator, and EU rules.',
+            $country['name'],
+            $country['name']
+        )
+        : sprintf(
+            'The top %s-regulated forex and CFD brokers available to retail traders in %s, ranked by our disclosed methodology -- plus what\'s specific to %s: regulator, leverage rules, and investor protection.',
+            $country['regulator_short'],
+            $country['name'],
+            $country['name']
+        );
     echo '<meta name="description" content="' . esc_attr( $description ) . '">' . "\n";
 }
 add_action( 'wp_head', 'globalfxhub_country_seo_head', 5 );
