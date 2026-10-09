@@ -12,6 +12,9 @@ $b_param = isset($_GET['b']) ? sanitize_title($_GET['b']) : '';
   <div class="eyebrow">BROKER COMPARISON TOOL</div>
   <h1><?php the_title(); ?></h1>
   <p>Pick any two of our researched brokers to compare regulation, cost, platforms, and score — generated instantly from the same data behind our rankings.</p>
+  <?php $tool_learn_link = globalfxhub_resolve_learn_link( globalfxhub_tool_learn_links()['compare'] ); if ( $tool_learn_link ) : ?>
+  <p style="font-size:13.5px;margin-top:8px;"><a href="<?php echo esc_url( $tool_learn_link['url'] ); ?>" style="color:var(--teal);">New to this? <?php echo esc_html( $tool_learn_link['label'] ); ?> &rarr;</a></p>
+  <?php endif; ?>
 </div>
 
 <div class="wrap">

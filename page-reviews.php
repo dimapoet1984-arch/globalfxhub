@@ -43,6 +43,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
     $verify_links = globalfxhub_broker_verify_links( $broker );
     $not_confirmed = 'Not independently confirmed';
     $review_dates = globalfxhub_broker_review_dates( $broker );
+    $section_learn_links = array_map( 'globalfxhub_resolve_learn_link', globalfxhub_review_section_learn_links() );
 ?>
 
 <div class="wrap crumb">
@@ -100,7 +101,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
         <tr><th>Instruments</th><td><?php echo esc_html( $broker['instruments'] ? $broker['instruments'] : $not_confirmed ); ?></td></tr>
       </tbody>
     </table>
-    <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/regulation-checker/' ) . '?broker=' . rawurlencode( $broker['slug'] ) ); ?>" style="color:var(--teal);">See <?php echo esc_html( $broker['name'] ); ?>'s full regulation dossier &rarr;</a></p>
+    <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/regulation-checker/' ) . '?broker=' . rawurlencode( $broker['slug'] ) ); ?>" style="color:var(--teal);">See <?php echo esc_html( $broker['name'] ); ?>'s full regulation dossier &rarr;</a><?php if ( $section_learn_links['regulation'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['regulation']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['regulation']['label'] ); ?></a><?php endif; ?></p>
 
     <div class="review-proscons">
       <div class="review-proscons__col review-proscons__pros">
@@ -156,6 +157,9 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
 <div class="wrap" style="padding-bottom:20px;">
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 10px;">Investor protection</h2>
   <p><?php echo esc_html( $investor_protection ); ?></p>
+  <?php if ( $section_learn_links['investor_protection'] ) : ?>
+  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( $section_learn_links['investor_protection']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['investor_protection']['label'] ); ?> &rarr;</a></p>
+  <?php endif; ?>
 </div>
 
 <div class="wrap" style="padding-bottom:20px;">
@@ -168,7 +172,7 @@ $broker = $slug ? globalfxhub_get_broker_by_slug( $slug ) : null;
       <?php endforeach; ?>
     </tbody>
   </table>
-  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) ); ?>" style="color:var(--teal);">See how <?php echo esc_html( $broker['name'] ); ?>'s spread cost compares across every researched broker &rarr;</a></p>
+  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) ); ?>" style="color:var(--teal);">See how <?php echo esc_html( $broker['name'] ); ?>'s spread cost compares across every researched broker &rarr;</a><?php if ( $section_learn_links['fees'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['fees']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['fees']['label'] ); ?></a><?php endif; ?></p>
 </div>
 
 <div class="wrap methodology-note">

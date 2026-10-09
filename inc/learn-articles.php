@@ -401,3 +401,50 @@ function globalfxhub_learn_cluster_footer_filter( $content ) {
     return $content . $footer;
 }
 add_filter( 'the_content', 'globalfxhub_learn_cluster_footer_filter' );
+
+/**
+ * Makes the Learn <-> reviews/tools relationship two-way. Every Learn
+ * article links out to tools and reviews already; nothing linked back
+ * in, so these 100 freshly-published articles got no internal links
+ * from the site's highest-traffic pages. A small, disclosed lookup
+ * table -- never hardcoded per broker, and every target slug checked
+ * against the real roster below -- rather than picked ad hoc per call
+ * site.
+ */
+function globalfxhub_review_section_learn_links() {
+    return array(
+        'regulation'          => array( 'slug' => 'how-to-check-whether-a-forex-broker-is-regulated', 'label' => 'How to check whether a forex broker is regulated' ),
+        'fees'                => array( 'slug' => 'forex-broker-fees-explained', 'label' => 'Forex broker fees explained' ),
+        'investor_protection' => array( 'slug' => 'investor-compensation-schemes-explained-for-beginners', 'label' => 'Investor compensation schemes explained' ),
+    );
+}
+
+function globalfxhub_tool_learn_links() {
+    return array(
+        'broker-finder'       => array( 'slug' => 'how-to-choose-a-forex-broker', 'label' => 'How to choose a forex broker' ),
+        'compare'             => array( 'slug' => 'how-to-choose-a-forex-broker', 'label' => 'How to choose a forex broker' ),
+        'cost-calculator'     => array( 'slug' => 'how-to-compare-the-true-cost-of-two-forex-brokers', 'label' => 'How to compare the true cost of two forex brokers' ),
+        'regulation-checker'  => array( 'slug' => 'how-to-verify-a-forex-brokers-license', 'label' => "How to verify a forex broker's license" ),
+        'broker-changelog'    => array( 'slug' => 'forex-broker-due-diligence-checklist', 'label' => 'Forex broker due-diligence checklist' ),
+    );
+}
+
+/**
+ * Resolves a lookup-table entry (from either function above) to a
+ * renderable link, or null if that slug isn't a real, currently
+ * published article -- so a typo or a not-yet-published slug silently
+ * omits the link rather than rendering a dead one.
+ */
+function globalfxhub_resolve_learn_link( $entry ) {
+    if ( empty( $entry['slug'] ) ) {
+        return null;
+    }
+    $post = get_page_by_path( $entry['slug'], OBJECT, 'post' );
+    if ( ! $post || 'publish' !== $post->post_status ) {
+        return null;
+    }
+    return array(
+        'url'   => home_url( '/learn/' . $entry['slug'] . '/' ),
+        'label' => $entry['label'],
+    );
+}

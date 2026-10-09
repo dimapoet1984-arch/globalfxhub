@@ -18,6 +18,9 @@ $cl_payload = globalfxhub_broker_changelog_payload();
   <div class="eyebrow">BROKER CHANGE LOG</div>
   <h1><?php the_title(); ?></h1>
   <p>Search any of our researched brokers for a dated log of when our published data about it actually changed -- a spread update, a new licence number, a platform added or dropped.</p>
+  <?php $tool_learn_link = globalfxhub_resolve_learn_link( globalfxhub_tool_learn_links()['broker-changelog'] ); if ( $tool_learn_link ) : ?>
+  <p style="font-size:13.5px;margin-top:8px;"><a href="<?php echo esc_url( $tool_learn_link['url'] ); ?>" style="color:var(--teal);">New to this? <?php echo esc_html( $tool_learn_link['label'] ); ?> &rarr;</a></p>
+  <?php endif; ?>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
