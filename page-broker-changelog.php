@@ -8,6 +8,21 @@
 get_header();
 
 $cl_payload = globalfxhub_broker_changelog_payload();
+
+$cl_subscribe_result = null;
+if ( isset( $_GET['unsubscribe'] ) ) {
+    globalfxhub_changelog_unsubscribe( sanitize_text_field( wp_unslash( $_GET['unsubscribe'] ) ) );
+    $cl_subscribe_result = 'unsubscribed';
+} elseif ( isset( $_POST['globalfxhub_changelog_subscribe_nonce'] )
+    && wp_verify_nonce( wp_unslash( $_POST['globalfxhub_changelog_subscribe_nonce'] ), 'globalfxhub_changelog_subscribe' ) ) {
+    $cl_subscribe_result = globalfxhub_changelog_subscribe( isset( $_POST['changelog_email'] ) ? wp_unslash( $_POST['changelog_email'] ) : '' );
+}
+$cl_subscribe_messages = array(
+    'subscribed'         => array( 'ok', "You're subscribed -- we'll only email you when a tracked broker fact actually changes." ),
+    'already_subscribed' => array( 'ok', "That email is already subscribed to broker data change alerts." ),
+    'invalid'            => array( 'error', 'That doesn\'t look like a valid email address -- please try again.' ),
+    'unsubscribed'       => array( 'ok', "You've been unsubscribed from broker data change alerts." ),
+);
 ?>
 
 <div class="wrap crumb">
@@ -26,6 +41,21 @@ $cl_payload = globalfxhub_broker_changelog_payload();
 <div class="wrap" style="padding-bottom:60px;">
   <div class="methodology-note" style="margin:0 0 28px;">
     <strong>What this is, and isn't.</strong> Each entry here comes from this site's own data being diffed against what was previously published, dated to when that diff was detected -- never a reconstructed history of what a broker itself did before we started tracking. A broker showing only a single "Baseline recorded" entry simply hasn't had a tracked field change since this log began; it isn't a sign nothing has ever changed about that broker.
+  </div>
+
+  <div class="methodology-note" style="margin:0 0 28px;background:var(--navy,#0d2436);color:#fff;">
+    <strong>Get notified when something actually changes.</strong> Subscribe below and we'll email you only when this log records a genuine change to a tracked fact (a spread update, a new licence number, a platform added or dropped) across any broker we cover -- never a generic newsletter, and never more than one email per change we detect. Unsubscribe any time with the link in that email.
+    <?php if ( $cl_subscribe_result && isset( $cl_subscribe_messages[ $cl_subscribe_result ] ) ) :
+        list( $cl_msg_type, $cl_msg_text ) = $cl_subscribe_messages[ $cl_subscribe_result ];
+    ?>
+    <p style="margin:12px 0 0;font-weight:600;color:<?php echo 'error' === $cl_msg_type ? '#ffb4b4' : '#8fe3c7'; ?>;"><?php echo esc_html( $cl_msg_text ); ?></p>
+    <?php else : ?>
+    <form method="post" style="margin:14px 0 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+      <?php wp_nonce_field( 'globalfxhub_changelog_subscribe', 'globalfxhub_changelog_subscribe_nonce' ); ?>
+      <input type="email" name="changelog_email" placeholder="you@example.com" required style="flex:1;min-width:220px;padding:10px 12px;border-radius:6px;border:1px solid var(--rule);">
+      <button type="submit" class="btn btn--gold" style="white-space:nowrap;">Notify me of changes</button>
+    </form>
+    <?php endif; ?>
   </div>
 
   <div class="picker" style="grid-template-columns:1fr;">

@@ -109,6 +109,14 @@ function globalfxhub_broker_changelog_sync() {
     $today = function_exists( 'date_i18n' ) ? date_i18n( 'j F Y' ) : date( 'j F Y' );
     $labels = globalfxhub_changelog_tracked_fields();
     $changed_anything = false;
+    // Genuine field-diff entries detected THIS run only -- deliberately
+    // excludes the "Baseline recorded" case below, since a broker simply
+    // entering tracking for the first time isn't a change a subscriber
+    // asked to hear about. Handed to the
+    // 'globalfxhub_broker_changelog_new_entries' action at the end of
+    // this function (see inc/changelog-subscribers.php), which is what
+    // actually emails anyone subscribed to change alerts.
+    $run_entries_for_notification = array();
 
     foreach ( globalfxhub_get_brokers() as $broker ) {
         $slug = $broker['slug'];
@@ -149,6 +157,11 @@ function globalfxhub_broker_changelog_sync() {
             }
             foreach ( $new_entries as $entry ) {
                 $changelog[ $slug ][] = $entry;
+                $run_entries_for_notification[] = array(
+                    'broker_name' => $broker['name'],
+                    'review_url'  => home_url( '/reviews/' . $slug . '/' ),
+                    'summary'     => $entry['summary'],
+                );
             }
             $snapshots[ $slug ] = $new_snapshot;
             $changed_anything = true;
@@ -158,6 +171,10 @@ function globalfxhub_broker_changelog_sync() {
     if ( $changed_anything ) {
         update_option( GLOBALFXHUB_BROKER_SNAPSHOT_OPTION, $snapshots, false );
         update_option( GLOBALFXHUB_BROKER_CHANGELOG_OPTION, $changelog, false );
+    }
+
+    if ( ! empty( $run_entries_for_notification ) ) {
+        do_action( 'globalfxhub_broker_changelog_new_entries', $run_entries_for_notification );
     }
 }
 add_action( 'after_setup_theme', 'globalfxhub_broker_changelog_sync' );
