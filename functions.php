@@ -723,6 +723,142 @@ function globalfxhub_review_seo_head() {
 }
 add_action( 'wp_head', 'globalfxhub_review_seo_head', 5 );
 
+/**
+ * Extends the same custom-title/canonical/meta-description discipline
+ * already used for /reviews/ and /countries/ pages to every other page
+ * type that was missing it:
+ *  - The 8 /best/ lists share one "Best" page object the same way every
+ *    broker review shares one "Reviews" page object, so they need their
+ *    own title + canonical, not just a description.
+ *  - The 5 tool pages (Broker Finder, Cost Calculator, Regulation
+ *    Checker, Broker Change Log, Compare) and the 3 News hub pages are
+ *    real, distinct WP pages -- their title and canonical are already
+ *    correct by WordPress's own default, so only the description was
+ *    ever missing.
+ *  - Every Learn and News article is a real, distinct post -- same
+ *    reasoning, and the description reuses the excerpt already written
+ *    for every one of them rather than writing anything new.
+ */
+function globalfxhub_best_seo_title( $title_parts ) {
+    $slug = get_query_var( 'bestlist' );
+    if ( $slug ) {
+        $lists = globalfxhub_get_best_lists();
+        if ( isset( $lists[ $slug ] ) ) {
+            $title_parts['title'] = $lists[ $slug ]['title'] . ' ' . date( 'Y' );
+        }
+    } elseif ( is_page( 'best' ) ) {
+        $title_parts['title'] = 'Best Forex & CFD Brokers ' . date( 'Y' ) . ': Ranked by Category';
+    }
+    return $title_parts;
+}
+add_filter( 'document_title_parts', 'globalfxhub_best_seo_title' );
+
+function globalfxhub_best_canonical( $canonical_url ) {
+    $slug = get_query_var( 'bestlist' );
+    if ( $slug ) {
+        $lists = globalfxhub_get_best_lists();
+        if ( isset( $lists[ $slug ] ) ) {
+            return home_url( '/best/' . $slug . '/' );
+        }
+    }
+    return $canonical_url;
+}
+add_filter( 'get_canonical_url', 'globalfxhub_best_canonical' );
+
+function globalfxhub_extended_seo_head() {
+    // /best/{slug}/ -- shares one page object across every list, same
+    // problem as /reviews/{slug}/, plus an ItemList of that list's own
+    // ranked brokers (same data page-best.php already renders, never a
+    // separate computation).
+    $bestlist_slug = get_query_var( 'bestlist' );
+    if ( $bestlist_slug ) {
+        $lists = globalfxhub_get_best_lists();
+        if ( isset( $lists[ $bestlist_slug ] ) ) {
+            echo '<meta name="description" content="' . esc_attr( wp_strip_all_tags( $lists[ $bestlist_slug ]['intro'] ) ) . '">' . "\n";
+
+            $items = array();
+            $position = 1;
+            foreach ( globalfxhub_get_best_list_brokers( $bestlist_slug, 15 ) as $b ) {
+                $items[] = array(
+                    '@type'    => 'ListItem',
+                    'position' => $position++,
+                    'url'      => home_url( '/reviews/' . $b['slug'] . '/' ),
+                    'name'     => $b['name'],
+                );
+            }
+            if ( $items ) {
+                $schema = array(
+                    '@context'        => 'https://schema.org',
+                    '@type'           => 'ItemList',
+                    'name'            => $lists[ $bestlist_slug ]['title'],
+                    'itemListElement' => $items,
+                );
+                echo '<script type="application/ld+json">' . wp_json_encode( $schema ) . '</script>' . "\n";
+            }
+        }
+        return;
+    }
+    if ( is_page( 'best' ) ) {
+        echo '<meta name="description" content="' . esc_attr( 'Eight curated rankings of our full researched broker set -- overall, beginners, low-cost, ECN/STP, CySEC-regulated, FCA-regulated, multi-asset, and MT4/MT5 -- each built from the same disclosed nine-category methodology.' ) . '">' . "\n";
+        return;
+    }
+
+    // Tool pages -- real distinct pages, so only the description was missing.
+    $tool_descriptions = array(
+        'broker-finder'      => "Answer six questions and filter our full researched broker set down to the ones that actually match -- built from the same disclosed data and scores as every ranking on this site.",
+        'cost-calculator'    => 'Estimate your annual EUR/USD spread cost at every researched broker with a confirmed spread, based on your own account size, trade frequency, and trade size.',
+        'regulation-checker' => 'Search any researched broker for its full regulation dossier: legal entity, FCA/CySEC numbers, named Tier-1 regulators, offshore entities, which regulator covers which geography, and direct register links.',
+        'broker-changelog'   => "Search any researched broker for a dated log of when our published data about it actually changed -- a spread update, a new licence number, a platform added or dropped.",
+        'compare'            => 'Pick any two researched brokers to compare regulation, cost, platforms, and score, generated instantly from the same data behind our rankings.',
+    );
+    foreach ( $tool_descriptions as $page_slug => $description ) {
+        if ( is_page( $page_slug ) ) {
+            echo '<meta name="description" content="' . esc_attr( $description ) . '">' . "\n";
+            return;
+        }
+    }
+
+    // News hub pages -- real distinct pages, so only the description was missing.
+    $news_descriptions = array(
+        'news'    => 'Two separate feeds: short, factual broker-specific bulletins, and original FX market analysis -- never merged into one generic blog.',
+        'markets' => 'Original analysis of genuinely market-moving FX developments, each with a "why this matters" angle for the relevant pair or asset. Published only when a story clears a real significance bar.',
+        'brokers' => "Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, and product launches, curated from our own broker research -- not pulled from a news wire.",
+    );
+    foreach ( $news_descriptions as $page_slug => $description ) {
+        if ( is_page( $page_slug ) ) {
+            echo '<meta name="description" content="' . esc_attr( $description ) . '">' . "\n";
+            return;
+        }
+    }
+
+    // Learn and News articles -- real distinct posts, each with its own
+    // correct title/canonical by WordPress's own default. Reuses the
+    // excerpt already written for every one of them (Learn: inc/learn-
+    // content/*.php; News: inc/news-feed.php) rather than writing
+    // anything new, plus Article schema from the same already-disclosed
+    // byline/date fields single.php already renders.
+    if ( is_singular( 'post' ) ) {
+        $excerpt = get_the_excerpt();
+        if ( $excerpt ) {
+            echo '<meta name="description" content="' . esc_attr( wp_strip_all_tags( $excerpt ) ) . '">' . "\n";
+        }
+        $byline = globalfxhub_get_post_byline( get_the_ID() );
+        $schema = array_filter( array(
+            '@context'      => 'https://schema.org',
+            '@type'         => 'Article',
+            'headline'      => get_the_title(),
+            'description'   => $excerpt ? wp_strip_all_tags( $excerpt ) : null,
+            'datePublished' => get_the_date( 'c' ),
+            'dateModified'  => get_the_modified_date( 'c' ),
+            'author'        => array( '@type' => 'Person', 'name' => $byline['name'] ),
+            'publisher'     => array( '@type' => 'Organization', 'name' => 'GlobalFXHub' ),
+            'url'           => get_permalink(),
+        ), function( $v ) { return null !== $v; } );
+        echo '<script type="application/ld+json">' . wp_json_encode( $schema ) . '</script>' . "\n";
+    }
+}
+add_action( 'wp_head', 'globalfxhub_extended_seo_head', 5 );
+
 function globalfxhub_get_broker_by_slug( $slug ) {
     foreach ( globalfxhub_get_brokers() as $broker ) {
         if ( $broker['slug'] === $slug ) {
