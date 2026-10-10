@@ -158,7 +158,8 @@ elseif ( $broker ) :
   </div>
 </div>
 
-<div class="wrap review-grid">
+<div class="wrap">
+<div class="review-grid">
   <div>
     <table class="compare-table review-facts">
       <tbody>
@@ -205,6 +206,7 @@ elseif ( $broker ) :
     </div>
     <?php endforeach; ?>
   </div>
+</div>
 </div>
 
 <div class="wrap" style="padding-bottom:20px;">
