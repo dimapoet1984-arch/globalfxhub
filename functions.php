@@ -668,7 +668,7 @@ add_action( 'after_switch_theme', 'flush_rewrite_rules' );
  * doesn't cover a route added in a file like inc/broker-vs.php that
  * touches no page at all).
  */
-define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-10-09-1' );
+define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-10-10-1' );
 
 function globalfxhub_maybe_flush_rewrite_rules() {
     if ( get_option( 'globalfxhub_rewrite_rules_version' ) !== GLOBALFXHUB_REWRITE_RULES_VERSION ) {
