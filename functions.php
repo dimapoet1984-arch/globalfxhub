@@ -293,6 +293,17 @@ add_action( 'after_setup_theme', 'globalfxhub_ensure_regulation_page' );
  * page_for_posts option itself is left alone: WordPress still needs a
  * page there internally for its own permalink plumbing, this just stops
  * anyone from actually landing on that unfiltered listing.
+ *
+ * Native category/tag/date/author archives are the same muddle under a
+ * different URL: WordPress generates them automatically (there's no
+ * category.php/archive.php/author.php in this theme, so they all fall
+ * through to the generic index.php) with no custom title or meta
+ * description, and they'd otherwise sit as thin, largely-duplicate
+ * content alongside the real curated index for the same material
+ * (/learn/, /news/markets/) -- nothing on this site ever links to one,
+ * but an untrusted inbound link or a crawler guessing the URL could
+ * still reach one, so each kind redirects to its real curated home
+ * rather than being left to render unhandled.
  */
 function globalfxhub_ia_redirects() {
     if ( is_page( 'guides' ) ) {
@@ -301,6 +312,21 @@ function globalfxhub_ia_redirects() {
     }
     $posts_page_id = (int) get_option( 'page_for_posts' );
     if ( $posts_page_id && is_page( $posts_page_id ) ) {
+        wp_safe_redirect( home_url( '/learn/' ), 301 );
+        exit;
+    }
+    if ( is_category() ) {
+        $cat = get_queried_object();
+        $slug = ! empty( $cat->slug ) ? $cat->slug : '';
+        $category_destinations = array(
+            'learn'                 => home_url( '/learn/' ),
+            'fx-market-news'        => home_url( '/news/markets/' ),
+            'candlestick-patterns'  => home_url( '/learn/how-to-read-candlestick-patterns/' ),
+        );
+        wp_safe_redirect( $category_destinations[ $slug ] ?? home_url( '/learn/' ), 301 );
+        exit;
+    }
+    if ( is_tag() || is_date() || is_author() ) {
         wp_safe_redirect( home_url( '/learn/' ), 301 );
         exit;
     }

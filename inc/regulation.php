@@ -42,3 +42,54 @@ function globalfxhub_get_regulation_pages() {
         ),
     );
 }
+
+/**
+ * SEO for /regulation/ and /regulation/{slug}/: the 5 individual
+ * regulation pages (CySEC, FCA, Seychelles FSA, investor compensation,
+ * how-to-verify) previously all shared the "Regulation" page's single
+ * default title with no meta description at all -- the exact "one
+ * page object serves many distinct URLs" problem already solved for
+ * /reviews/{slug}/, /best/{slug}/, and /countries/{slug}/, just never
+ * extended to this page type. Title and description both reuse the
+ * 'title'/'summary' fields already written above, never new copy.
+ */
+function globalfxhub_regulation_seo_title( $title_parts ) {
+    $slug = get_query_var( 'regpage' );
+    if ( $slug ) {
+        $reg_pages = globalfxhub_get_regulation_pages();
+        if ( isset( $reg_pages[ $slug ] ) ) {
+            $title_parts['title'] = $reg_pages[ $slug ]['title'];
+        }
+    } elseif ( is_page( 'regulation' ) ) {
+        $title_parts['title'] = 'Forex Broker Regulation Explained: CySEC, FCA & More';
+    }
+    return $title_parts;
+}
+add_filter( 'document_title_parts', 'globalfxhub_regulation_seo_title' );
+
+function globalfxhub_regulation_canonical( $canonical_url ) {
+    $slug = get_query_var( 'regpage' );
+    if ( $slug ) {
+        $reg_pages = globalfxhub_get_regulation_pages();
+        if ( isset( $reg_pages[ $slug ] ) ) {
+            return home_url( '/regulation/' . $slug . '/' );
+        }
+    }
+    return $canonical_url;
+}
+add_filter( 'get_canonical_url', 'globalfxhub_regulation_canonical' );
+
+function globalfxhub_regulation_seo_head() {
+    $slug = get_query_var( 'regpage' );
+    if ( $slug ) {
+        $reg_pages = globalfxhub_get_regulation_pages();
+        if ( isset( $reg_pages[ $slug ] ) ) {
+            echo '<meta name="description" content="' . esc_attr( $reg_pages[ $slug ]['summary'] ) . '">' . "\n";
+        }
+        return;
+    }
+    if ( is_page( 'regulation' ) ) {
+        echo '<meta name="description" content="' . esc_attr( 'What each regulator a broker on this site holds actually requires, what its investor-compensation scheme covers (if it has one), and how to verify a licence yourself against the regulator\'s own public register.' ) . '">' . "\n";
+    }
+}
+add_action( 'wp_head', 'globalfxhub_regulation_seo_head', 5 );
