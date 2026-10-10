@@ -251,7 +251,7 @@ elseif ( $broker ) :
 
 <div class="wrap" style="padding-bottom:40px;">
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 12px;">Frequently asked questions</h2>
-  <div style="max-width:74ch;">
+  <div>
     <?php foreach ( $broker_faqs as $faq ) : ?>
     <div style="margin-bottom:18px;">
       <p style="font-weight:600;margin:0 0 4px;color:var(--navy);"><?php echo esc_html( $faq['q'] ); ?></p>

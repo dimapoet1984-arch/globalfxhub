@@ -167,7 +167,7 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
 <div class="wrap" style="padding-bottom:40px;">
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:0 0 12px;"><?php echo esc_html( $country['name'] ); ?>-specific FAQs</h2>
   <?php if ( ! empty( $country['faqs'] ) ) : ?>
-  <div style="max-width:74ch;">
+  <div>
     <?php foreach ( $country['faqs'] as $faq ) : ?>
     <div style="margin-bottom:18px;">
       <p style="font-weight:600;margin:0 0 4px;color:var(--navy);"><?php echo esc_html( $faq['q'] ); ?></p>
@@ -176,7 +176,7 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
     <?php endforeach; ?>
   </div>
   <?php else : ?>
-  <p style="max-width:74ch;color:var(--ink-soft);"><?php echo wp_kses( $cc_not_researched, array( 'a' => array( 'href' => array() ) ) ); ?></p>
+  <p style="color:var(--ink-soft);"><?php echo wp_kses( $cc_not_researched, array( 'a' => array( 'href' => array() ) ) ); ?></p>
   <?php endif; ?>
 </div>
 
