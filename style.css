@@ -271,7 +271,7 @@ Text Domain: globalfxhub
   .footer__grid a:hover{color:#fff;}
   .footer__brand{font-family:var(--font-display);font-size:20px;color:#fff;margin-bottom:10px;}
   .footer__brand em{color:var(--gold-bright);font-style:italic;}
-  .disclosure{max-width:74ch;margin-top:30px;line-height:1.6;color:#8695a8;}
+  .disclosure{margin-top:30px;line-height:1.6;color:#8695a8;}
   .disclosure strong{color:#c6cedb;}
   .legal{margin-top:24px;padding-top:20px;border-top:1px solid var(--rule-dark);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 
