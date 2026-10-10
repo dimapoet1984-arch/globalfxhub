@@ -295,7 +295,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
           if ( ! $globalfxhub_bn_broker ) { continue; }
           $globalfxhub_bn_cat = isset( $globalfxhub_broker_news_categories[ $globalfxhub_bn_item['category'] ] ) ? $globalfxhub_broker_news_categories[ $globalfxhub_bn_item['category'] ] : 'Update';
       ?>
-      <a href="<?php echo esc_url( home_url( '/reviews/' . $globalfxhub_bn_broker['slug'] . '/' ) ); ?>" class="news-item">
+      <a href="<?php echo esc_url( home_url( '/news/brokers/' . globalfxhub_broker_news_item_slug( $globalfxhub_bn_item ) . '/' ) ); ?>" class="news-item">
         <div class="tag"><?php echo esc_html( strtoupper( $globalfxhub_bn_cat ) ); ?></div>
         <h4><?php echo esc_html( $globalfxhub_bn_item['headline'] ); ?></h4>
         <p><?php echo esc_html( globalfxhub_trim_excerpt( $globalfxhub_bn_item['body'], 20 ) ); ?></p>
