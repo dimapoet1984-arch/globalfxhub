@@ -334,7 +334,7 @@ Text Domain: globalfxhub
     padding:40px;text-align:center;color:var(--ink-soft);font-size:14.5px;margin-bottom:40px;
   }
   .methodology-note {
-    font-size:13px;color:var(--ink-soft);max-width:80ch;margin:20px 0 60px;
+    font-size:13px;color:var(--ink-soft);margin:20px 0 60px;
     padding:18px 22px;border-left:3px solid var(--gold);background:var(--paper-raised);
   }
   .methodology-note strong {color:var(--ink);}
