@@ -2,8 +2,11 @@
 /**
  * The 45 candlestick patterns, each as its own "How to Read..." post
  * (cluster pages), linking up to the pillar guide at
- * /how-to-read-candlestick-patterns/ and cross-linking to related
- * patterns. Kept in their own file since functions.php was already
+ * /learn/how-to-read-candlestick-patterns/ (it's a Learn-category post,
+ * same as this site's other guides -- see globalfxhub_ensure_guides_
+ * content() in functions.php) and cross-linking to related patterns
+ * under their own Candlestick Patterns category, /candlestick-patterns/
+ * {slug}/. Kept in their own file since functions.php was already
  * large before this.
  */
 
@@ -406,7 +409,7 @@ function globalfxhub_candlestick_pattern_index_html() {
         $label = isset( $labels[ $count ] ) ? $labels[ $count ] : ( $count . '-candle patterns' );
         $html .= '<h3>' . esc_html( $label ) . "</h3>\n<ul>\n";
         foreach ( $group as $key => $p ) {
-            $html .= '<li><a href="' . esc_url( home_url( '/how-to-read-' . $key . '/' ) ) . '">' . esc_html( $p['title'] ) . '</a></li>' . "\n";
+            $html .= '<li><a href="' . esc_url( home_url( '/candlestick-patterns/how-to-read-' . $key . '/' ) ) . '">' . esc_html( $p['title'] ) . '</a></li>' . "\n";
         }
         $html .= "</ul>\n";
     }
@@ -450,7 +453,7 @@ function globalfxhub_ensure_candlestick_pattern_posts() {
     }
     $category_id = (int) $term['term_id'];
     $patterns = globalfxhub_get_candlestick_patterns();
-    $parent_url = home_url( '/how-to-read-candlestick-patterns/' );
+    $parent_url = home_url( '/learn/how-to-read-candlestick-patterns/' );
 
     /*
      * Realistic, staggered publish dates spread across the last 5 weeks
@@ -496,7 +499,7 @@ function globalfxhub_ensure_candlestick_pattern_posts() {
             $content .= "<h2>Related patterns</h2>\n<ul>\n";
             foreach ( $pattern['related'] as $rel_key ) {
                 if ( isset( $patterns[ $rel_key ] ) ) {
-                    $content .= '<li><a href="' . esc_url( home_url( '/how-to-read-' . $rel_key . '/' ) ) . '">' . esc_html( $patterns[ $rel_key ]['title'] ) . '</a></li>' . "\n";
+                    $content .= '<li><a href="' . esc_url( home_url( '/candlestick-patterns/how-to-read-' . $rel_key . '/' ) ) . '">' . esc_html( $patterns[ $rel_key ]['title'] ) . '</a></li>' . "\n";
                 }
             }
             $content .= "</ul>\n\n";
@@ -523,3 +526,59 @@ function globalfxhub_ensure_candlestick_pattern_posts() {
     }
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_candlestick_pattern_posts', 21 );
+
+/**
+ * One-time repair for content that was already published before this
+ * fix: the pillar guide's appended pattern index, and each of the 45
+ * pattern posts' own "back to the guide" / "full candlestick guide"
+ * links and "Related patterns" list, were originally generated with
+ * URLs missing their real category prefix -- the pillar is a Learn-
+ * category post (globalfxhub_ensure_guides_content() in functions.php)
+ * so its real URL is /learn/how-to-read-candlestick-patterns/, and the
+ * 45 pattern posts are their own Candlestick Patterns category, so
+ * theirs are /candlestick-patterns/{slug}/. Both insert-time functions
+ * above only write a post's content ONCE and skip it entirely once it
+ * exists, so correcting the generator code alone doesn't fix what's
+ * already live -- this performs a plain string replacement on the
+ * stored post_content for any post still carrying the old URLs. Runs
+ * on every load like the rest of this theme's self-healing
+ * provisioning, but is a cheap no-op (one strpos() per post) once every
+ * post has already been patched.
+ */
+function globalfxhub_fix_candlestick_pattern_links() {
+    $old_pillar_url = esc_url( home_url( '/how-to-read-candlestick-patterns/' ) );
+    $new_pillar_url = esc_url( home_url( '/learn/how-to-read-candlestick-patterns/' ) );
+
+    $pillar = get_page_by_path( 'how-to-read-candlestick-patterns', OBJECT, 'post' );
+    if ( $pillar && false !== strpos( $pillar->post_content, 'href="' . home_url( '/how-to-read-' ) ) ) {
+        $fixed = preg_replace(
+            '#href="' . preg_quote( home_url( '/how-to-read-' ), '#' ) . '([a-z0-9-]+)/"#',
+            'href="' . home_url( '/candlestick-patterns/how-to-read-' ) . '$1/"',
+            $pillar->post_content
+        );
+        if ( $fixed !== $pillar->post_content ) {
+            wp_update_post( array( 'ID' => $pillar->ID, 'post_content' => $fixed ) );
+        }
+    }
+
+    foreach ( globalfxhub_get_candlestick_patterns() as $key => $pattern ) {
+        $post = get_page_by_path( 'how-to-read-' . $key, OBJECT, 'post' );
+        if ( ! $post ) {
+            continue;
+        }
+        $content = $post->post_content;
+        if ( false === strpos( $content, $old_pillar_url ) && false === strpos( $content, 'href="' . home_url( '/how-to-read-' ) ) ) {
+            continue;
+        }
+        $content = str_replace( 'href="' . $old_pillar_url . '"', 'href="' . $new_pillar_url . '"', $content );
+        $content = preg_replace(
+            '#href="' . preg_quote( home_url( '/how-to-read-' ), '#' ) . '([a-z0-9-]+)/"#',
+            'href="' . home_url( '/candlestick-patterns/how-to-read-' ) . '$1/"',
+            $content
+        );
+        if ( $content !== $post->post_content ) {
+            wp_update_post( array( 'ID' => $post->ID, 'post_content' => $content ) );
+        }
+    }
+}
+add_action( 'after_setup_theme', 'globalfxhub_fix_candlestick_pattern_links', 22 );
