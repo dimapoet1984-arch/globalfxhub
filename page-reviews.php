@@ -259,8 +259,10 @@ elseif ( $broker ) :
   </div>
 </div>
 
-<div class="wrap methodology-note">
-  <strong>How this score is calculated:</strong> Nine weighted categories against a fixed, disclosed rubric -- regulation & client protection 30%, trading costs 20%, non-trading fees 10%, platforms & tools 10%, execution/trading conditions 10%, product range 5%, deposits/withdrawals 5%, transparency 5%, track record 5% -- not a ranking relative to other brokers, and not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
+<div class="wrap">
+  <div class="methodology-note">
+    <strong>How this score is calculated:</strong> Nine weighted categories against a fixed, disclosed rubric -- regulation & client protection 30%, trading costs 20%, non-trading fees 10%, platforms & tools 10%, execution/trading conditions 10%, product range 5%, deposits/withdrawals 5%, transparency 5%, track record 5% -- not a ranking relative to other brokers, and not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
+  </div>
 </div>
 
 <?php
