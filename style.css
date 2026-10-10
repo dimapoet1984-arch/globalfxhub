@@ -280,7 +280,7 @@ Text Domain: globalfxhub
   .page-head {padding:44px 0 8px;}
   .page-head .eyebrow {font-family:var(--font-data);font-size:13px;color:var(--gold);margin-bottom:12px;}
   .page-head h1 {font-family:var(--font-display);font-weight:500;font-size:clamp(28px,4vw,42px);margin:0 0 14px;}
-  .page-head p {color:var(--ink-soft);max-width:64ch;font-size:16px;margin:0;}
+  .page-head p {color:var(--ink-soft);font-size:16px;margin:0;}
   .picker {
     background:var(--paper-raised);border:1px solid var(--rule);border-radius:2px;
     padding:26px;margin:32px 0 20px;
