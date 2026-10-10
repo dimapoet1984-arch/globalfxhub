@@ -54,7 +54,7 @@ if ( $news_item_slug && ! $news_item ) {
 </div>
 
 <div class="wrap" style="padding-bottom:40px;">
-  <div style="max-width:74ch;color:var(--ink-soft);line-height:1.75;font-size:15.5px;">
+  <div style="color:var(--ink-soft);line-height:1.75;font-size:15.5px;">
     <?php if ( ! empty( $news_item['article']['paragraphs'] ) ) : ?>
       <?php foreach ( $news_item['article']['paragraphs'] as $p ) : ?>
       <p><?php echo esc_html( $p ); ?></p>
@@ -65,13 +65,13 @@ if ( $news_item_slug && ! $news_item ) {
   </div>
 
   <?php if ( $broker ) : ?>
-  <div class="methodology-note" style="margin:24px 0 0;max-width:74ch;">
+  <div class="methodology-note" style="margin:24px 0 0;">
     This story is about <strong><?php echo esc_html( $broker['name'] ); ?></strong>, ranked #<?php echo esc_html( $broker['rank'] ); ?> in our rankings (<?php echo esc_html( $broker['scores']['overall'] ); ?> / 5 overall). <a href="<?php echo esc_url( home_url( '/reviews/' . $broker['slug'] . '/' ) ); ?>" style="color:var(--teal);">Read the full <?php echo esc_html( $broker['name'] ); ?> review &rarr;</a>
   </div>
   <?php endif; ?>
 
   <?php if ( ! empty( $news_item['article']['sources'] ) ) : ?>
-  <div style="margin-top:28px;max-width:74ch;">
+  <div style="margin-top:28px;">
     <h2 style="font-family:var(--font-display);font-weight:500;font-size:18px;margin:0 0 10px;">Sources</h2>
     <ul style="margin:0;padding-left:20px;color:var(--ink-soft);font-size:14px;line-height:1.8;">
       <?php foreach ( $news_item['article']['sources'] as $source ) : ?>
