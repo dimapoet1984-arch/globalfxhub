@@ -45,12 +45,13 @@ foreach ( globalfxhub_get_brokers() as $b ) {
         $broker = isset( $all_brokers_by_slug[ $item['broker_slug'] ] ) ? $all_brokers_by_slug[ $item['broker_slug'] ] : null;
         if ( ! $broker ) { continue; }
         $cat_label = isset( $broker_news_categories[ $item['category'] ] ) ? $broker_news_categories[ $item['category'] ] : 'Update';
+        $item_slug = globalfxhub_broker_news_item_slug( $item );
     ?>
-    <a href="<?php echo esc_url( home_url( '/reviews/' . $broker['slug'] . '/' ) ); ?>" class="news-item">
+    <a href="<?php echo esc_url( home_url( '/news/brokers/' . $item_slug . '/' ) ); ?>" class="news-item">
       <div class="tag"><?php echo esc_html( strtoupper( $cat_label ) ); ?></div>
       <h4><?php echo esc_html( $item['headline'] ); ?></h4>
       <p><?php echo esc_html( globalfxhub_trim_excerpt( $item['body'], 24 ) ); ?></p>
-      <time><?php echo esc_html( date_i18n( 'j M Y', strtotime( $item['date'] ) ) ); ?> &middot; <?php echo esc_html( $broker['name'] ); ?> review &rarr;</time>
+      <time><?php echo esc_html( date_i18n( 'j M Y', strtotime( $item['date'] ) ) ); ?> &middot; <?php echo esc_html( $broker['name'] ); ?> &rarr;</time>
     </a>
     <?php endforeach; ?>
   </div>

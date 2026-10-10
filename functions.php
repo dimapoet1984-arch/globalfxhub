@@ -1026,7 +1026,17 @@ function globalfxhub_breadcrumb_schema() {
     }
 
     if ( null === $trail ) {
-        if ( is_page( 'markets' ) ) {
+        $news_item_slug = get_query_var( 'broker_news_item' );
+        if ( $news_item_slug ) {
+            $news_item = globalfxhub_get_broker_news_item_by_slug( $news_item_slug );
+            if ( $news_item ) {
+                $trail = array(
+                    array( 'name' => 'News', 'item' => home_url( '/news/' ) ),
+                    array( 'name' => 'Broker News', 'item' => home_url( '/news/brokers/' ) ),
+                    array( 'name' => $news_item['headline'], 'item' => home_url( '/news/brokers/' . $news_item_slug . '/' ) ),
+                );
+            }
+        } elseif ( is_page( 'markets' ) ) {
             $trail = array(
                 array( 'name' => 'News', 'item' => home_url( '/news/' ) ),
                 array( 'name' => 'FX Market News', 'item' => home_url( '/news/markets/' ) ),

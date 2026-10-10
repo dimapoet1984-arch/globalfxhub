@@ -57,8 +57,31 @@ function globalfxhub_get_broker_news_items() {
             'date'        => '2026-09-24',
             'broker_slug' => 'ironfx',
             'category'    => 'outage',
+            'item_slug'   => 'ironfx-domain-outage-september-2026',
             'headline'    => "IronFX's main website and client portal go offline; broker points traders to a temporary .co domain",
             'body'        => 'IronFX\'s primary ironfx.com domain and client portal became unreachable starting around 24 September 2026. The broker said on its Japanese X account that this was a domain-related technical issue, that restoration work was already under way, and pointed visitors to a temporary ironfx.co address in the meantime; Google and other search engines continued indexing the .com domain despite it being unreachable. Sister brand FXLift, run by the same parent group, Notesco, continued operating normally throughout. No independent report confirming the .com domain and client portal are fully restored was found as of this writing -- for a broker already carrying a weak Trustpilot score and a history of client withdrawal disputes (see this review\'s customer service note), an extended client-portal outage specifically means affected traders cannot log in to check balances, trade, or request withdrawals through the main channel until it\'s resolved.',
+            // Items with an 'item_slug' get their own dedicated page at
+            // /news/brokers/{item_slug}/ (see the rewrite rule and
+            // globalfxhub_get_broker_news_item_by_slug() below) instead
+            // of linking straight to the broker's review page -- reserved
+            // for a development substantial enough to warrant real
+            // standalone analysis, not the default for every item.
+            'article' => array(
+                'paragraphs' => array(
+                    'IronFX\'s primary domain, ironfx.com, and its client portal went unreachable starting around 24 September 2026. The broker confirmed the outage itself -- on its Japanese X/Twitter account, not a global press release -- saying it was a domain-related technical issue and that restoration work was under way, and it pointed traders to a temporary stand-in domain, ironfx.co, in the meantime. Google and other search engines kept indexing the dead .com domain even though it wasn\'t resolving.',
+                    'As of this writing, no independent report confirming the .com domain or client portal has been restored was found. That\'s over two weeks with no public "we\'re back" confirmation located in the sources checked for this article. If you\'re an affected client, check the .co address or IronFX\'s own X account directly for current status rather than relying on this page alone.',
+                    'A broker\'s main website isn\'t just marketing -- for existing clients, the client portal is the account. An extended outage there means people can\'t log in to check balances, place trades, or request withdrawals through the primary channel. That lands harder on IronFX specifically than it would on a broker with a clean track record: Trustpilot already shows a weak score (around 2/5 on 717 reviews for the main entity, 2.5/5 on 78 for the EU entity) dominated by withdrawal and refund complaints, and Finance Magnates has separately reported on a pattern of clients citing withdrawal hurdles tied to a CySEC investigation -- mostly 2015-2022 complaints, so a pattern rather than necessarily a current one, but it\'s the backdrop this outage lands on. A Cyprus Audit Office report once put money owed to IronFX clients at EUR176 million; IronFX called that figure "grossly inflated" and disputed it, and this research could not confirm which figure was accurate.',
+                    'Separately from the outage, IronFX\'s UK entity (Notesco UK Limited) has had a genuinely mixed recent financial picture: revenue more than doubled to $1.44 million in 2024 (from $702K in 2023), though net profit dipped slightly to $124K from $125K. 2022 was weaker, with UK revenue falling 25% to $643,795. Finance Magnates has also reported a departure by the group\'s CFO, George Kyriakoudes, though a specific date for that wasn\'t confirmed in sources checked.',
+                    'IronFX\'s regulatory footprint is unchanged from what this site already lists: CySEC licence 125/10, FCA licence 585561, and an FSCA (South Africa) licence -- no report tying this outage to a regulatory action was found. One notable detail: sister brand FXLift, run by the same parent group (Notesco, BVI), was separately reported as continuing to operate normally throughout, which is a point in favour of this being brand/domain-specific infrastructure trouble rather than a company-wide shutdown -- though that inference isn\'t a confirmation either way.',
+                    'Bottom line: a real, multi-week domain and portal outage with no independently confirmed fix as of this writing. IronFX\'s own explanation (a domain/DNS issue) is plausible, and the unaffected sister brand supports that reading -- but there\'s no independent confirmation either way, and it\'s landing on a broker with pre-existing, documented trust problems around withdrawals. An affected trader should verify current status directly rather than assume either the best or worst case.',
+                ),
+                'sources' => array(
+                    array( 'label' => 'Finance Magnates (via Coinspectator): "IronFX.com Domain Goes Dark, Temporary .Co Fills the Gap"', 'url' => 'https://coinspectator.com/mainstream/2026/09/24/ironfx-com-domain-goes-dark-temporary-co-fills-the-gap/' ),
+                    array( 'label' => 'FXEmpire: "IronFX Posts Huge Drop in Revenues"', 'url' => 'https://www.fxempire.com/news/article/ironfx-posts-huge-drop-revenues-407645' ),
+                    array( 'label' => 'Finance Magnates: "How Did IronFX Clients\' Withdrawal Issues Trigger a CySEC Investigation?"', 'url' => 'https://www.financemagnates.com/forex/analysis/how-did-ironfx-clients-withdrawal-issues-trigger-a-cysec-investigation/' ),
+                    array( 'label' => 'Finance Magnates: "IronFX UK Doubles Revenue to $1.4 Million in 2024, Net Profit Slips Slightly"', 'url' => 'https://www.financemagnates.com/forex/ironfx-uk-doubles-revenue-to-14-million-in-2024-net-profit-slips-slightly/' ),
+                ),
+            ),
         ),
         array(
             'date'        => '2026-09-17',
@@ -229,3 +252,79 @@ function globalfxhub_get_broker_news_items() {
 
     return $items;
 }
+
+/**
+ * Every Broker News item is its own entity with its own page at
+ * /news/brokers/{slug}/ -- not merely a card that forwards to the
+ * linked broker's review page. An item can set its own 'item_slug'
+ * (used for IronFX's domain-outage item, where a more readable,
+ * descriptive slug reads better than a bare date), but defaults to
+ * broker_slug + date, which this dataset's 24 items confirm is always
+ * unique (no broker has two items dated the same day).
+ */
+function globalfxhub_broker_news_item_slug( $item ) {
+    return ! empty( $item['item_slug'] ) ? $item['item_slug'] : sanitize_title( $item['broker_slug'] . '-' . $item['date'] );
+}
+
+function globalfxhub_get_broker_news_item_by_slug( $slug ) {
+    foreach ( globalfxhub_get_broker_news_items() as $item ) {
+        if ( globalfxhub_broker_news_item_slug( $item ) === $slug ) {
+            return $item;
+        }
+    }
+    return null;
+}
+
+/**
+ * Pretty URL for a single Broker News item: /news/brokers/{slug}/ --
+ * same rewrite-rule + query-var pattern as every other data-driven
+ * route on this site (reviews/{slug}/, countries/{slug}/, etc.), never
+ * a pre-generated wp_insert_post() page. 'brokers' is a hierarchical
+ * child page under 'news' (see globalfxhub_ensure_child_page() in
+ * functions.php), so its own pagename query var is 'news/brokers' --
+ * WordPress's own convention for a 2-level page path.
+ */
+function globalfxhub_broker_news_rewrite_rules() {
+    add_rewrite_rule( '^news/brokers/([^/]+)/?$', 'index.php?pagename=news/brokers&broker_news_item=$matches[1]', 'top' );
+}
+add_action( 'init', 'globalfxhub_broker_news_rewrite_rules' );
+
+function globalfxhub_broker_news_query_vars( $vars ) {
+    $vars[] = 'broker_news_item';
+    return $vars;
+}
+add_filter( 'query_vars', 'globalfxhub_broker_news_query_vars' );
+
+function globalfxhub_broker_news_seo_title( $title_parts ) {
+    $slug = get_query_var( 'broker_news_item' );
+    if ( $slug ) {
+        $item = globalfxhub_get_broker_news_item_by_slug( $slug );
+        if ( $item ) {
+            $title_parts['title'] = $item['headline'] . ' | Broker News';
+        }
+    }
+    return $title_parts;
+}
+add_filter( 'document_title_parts', 'globalfxhub_broker_news_seo_title' );
+
+function globalfxhub_broker_news_canonical( $canonical_url ) {
+    $slug = get_query_var( 'broker_news_item' );
+    if ( $slug && globalfxhub_get_broker_news_item_by_slug( $slug ) ) {
+        return home_url( '/news/brokers/' . $slug . '/' );
+    }
+    return $canonical_url;
+}
+add_filter( 'get_canonical_url', 'globalfxhub_broker_news_canonical' );
+
+function globalfxhub_broker_news_seo_head() {
+    $slug = get_query_var( 'broker_news_item' );
+    if ( ! $slug ) {
+        return;
+    }
+    $item = globalfxhub_get_broker_news_item_by_slug( $slug );
+    if ( ! $item ) {
+        return;
+    }
+    echo '<meta name="description" content="' . esc_attr( globalfxhub_trim_excerpt( $item['body'], 34 ) ) . '">' . "\n";
+}
+add_action( 'wp_head', 'globalfxhub_broker_news_seo_head', 5 );
