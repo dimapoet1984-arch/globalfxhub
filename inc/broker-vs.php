@@ -90,7 +90,7 @@ function globalfxhub_vs_comparison_rows( $a, $b ) {
 function globalfxhub_vs_seo_title( $title_parts ) {
     $pair = globalfxhub_vs_pair( get_query_var( 'vs_a' ), get_query_var( 'vs_b' ) );
     if ( $pair ) {
-        $title_parts['title'] = $pair['a']['name'] . ' vs ' . $pair['b']['name'] . ' ' . date( 'Y' ) . ': Which Is Better?';
+        $title_parts['title'] = $pair['a']['name'] . ' vs ' . $pair['b']['name'] . ' ' . date( 'Y' ) . ' Compared';
     }
     return $title_parts;
 }

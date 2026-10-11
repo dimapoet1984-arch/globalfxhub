@@ -71,7 +71,7 @@ function globalfxhub_alternatives_seo_title( $title_parts ) {
     if ( $slug ) {
         $data = globalfxhub_broker_alternatives( $slug );
         if ( $data ) {
-            $title_parts['title'] = 'Best ' . $data['broker']['name'] . ' Alternatives ' . date( 'Y' ) . ': Similar Brokers Ranked';
+            $title_parts['title'] = 'Best ' . $data['broker']['name'] . ' Alternatives ' . date( 'Y' );
         }
     }
     return $title_parts;

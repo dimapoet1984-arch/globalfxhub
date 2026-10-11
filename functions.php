@@ -722,7 +722,7 @@ function globalfxhub_review_seo_title( $title_parts ) {
     if ( $slug ) {
         $broker = globalfxhub_get_broker_by_slug( $slug );
         if ( $broker ) {
-            $title_parts['title'] = $broker['name'] . ' Review ' . date( 'Y' ) . ': Regulation, Fees & Platforms';
+            $title_parts['title'] = $broker['name'] . ' Review ' . date( 'Y' ) . ': Regulation & Fees';
         }
     } elseif ( is_page( 'reviews' ) ) {
         $title_parts['title'] = 'Forex Broker Reviews ' . date( 'Y' ) . ': All CySEC-Regulated Brokers Rated';
