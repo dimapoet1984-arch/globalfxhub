@@ -44,9 +44,9 @@ $country = $country_slug ? globalfxhub_get_country_by_slug( $country_slug ) : nu
 
 <div class="wrap" style="padding-bottom:10px;">
   <?php foreach ( $country['paragraphs'] as $p ) : ?>
-  <p style="max-width:74ch;color:var(--ink-soft);line-height:1.7;margin:0 0 16px;"><?php echo esc_html( $p ); ?></p>
+  <p style="color:var(--ink-soft);line-height:1.7;margin:0 0 16px;"><?php echo esc_html( $p ); ?></p>
   <?php endforeach; ?>
-  <p style="max-width:74ch;color:var(--ink-soft);line-height:1.7;margin:0 0 16px;font-size:14px;">
+  <p style="color:var(--ink-soft);line-height:1.7;margin:0 0 16px;font-size:14px;">
     <strong>Base currency:</strong> <?php echo esc_html( $country['currency'] ); ?><?php echo ! empty( $country['eurozone'] ) ? ' (eurozone)' : ''; ?> &middot;
     <strong>Local regulator:</strong> <?php echo esc_html( $country['regulator'] ); ?>
     <?php if ( $is_eu_country ) : ?>
@@ -61,7 +61,7 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
 
 <div class="wrap" style="padding-bottom:10px;">
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:28px 0 8px;"><?php echo $is_eu_country ? 'Applicable EU regulatory framework' : 'Applicable regulatory framework'; ?></h2>
-  <div style="max-width:74ch;color:var(--ink-soft);line-height:1.7;">
+  <div style="color:var(--ink-soft);line-height:1.7;">
   <?php if ( $is_eu_country ) : ?>
     <?php echo wp_kses( globalfxhub_country_eu_framework_html( $country ), array( 'p' => array(), 'em' => array(), 'strong' => array() ) ); ?>
   <?php else : ?>
@@ -70,7 +70,7 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
   </div>
 
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:28px 0 8px;">Investor compensation arrangements</h2>
-  <div style="max-width:74ch;color:var(--ink-soft);line-height:1.7;">
+  <div style="color:var(--ink-soft);line-height:1.7;">
   <?php if ( $is_eu_country ) : ?>
     <?php echo wp_kses( globalfxhub_country_investor_compensation_html( $country ), array( 'p' => array(), 'em' => array(), 'strong' => array(), 'a' => array( 'href' => array() ) ) ); ?>
   <?php else : ?>
@@ -79,7 +79,7 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
   </div>
 
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:28px 0 8px;">Leverage rules</h2>
-  <div style="max-width:74ch;color:var(--ink-soft);line-height:1.7;">
+  <div style="color:var(--ink-soft);line-height:1.7;">
   <?php if ( $is_eu_country ) : ?>
     <?php echo wp_kses( globalfxhub_country_leverage_rules_html( $country ), array( 'p' => array(), 'em' => array(), 'strong' => array() ) ); ?>
   <?php else : ?>
@@ -88,18 +88,18 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
   </div>
 
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:28px 0 8px;">Taxation overview</h2>
-  <div style="max-width:74ch;color:var(--ink-soft);line-height:1.7;">
+  <div style="color:var(--ink-soft);line-height:1.7;">
     <p><?php echo ! empty( $country['taxation_overview'] ) ? esc_html( $country['taxation_overview'] ) : wp_kses( $cc_not_researched, array( 'a' => array( 'href' => array() ) ) ); ?></p>
     <p style="font-size:13px;"><em>General overview only, not tax advice -- rules change and depend on your personal circumstances (including whether you're classified as trading as a business). Confirm your specific position with a local tax advisor.</em></p>
   </div>
 
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:28px 0 8px;">Local deposit methods</h2>
-  <div style="max-width:74ch;color:var(--ink-soft);line-height:1.7;">
+  <div style="color:var(--ink-soft);line-height:1.7;">
     <p><?php echo ! empty( $country['local_payment_methods'] ) ? esc_html( $country['local_payment_methods'] ) : wp_kses( $cc_not_researched, array( 'a' => array( 'href' => array() ) ) ); ?></p>
   </div>
 
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:28px 0 8px;"><?php echo $is_eu_country ? 'Local restrictions beyond the EU baseline' : 'Local nuances worth confirming'; ?></h2>
-  <div style="max-width:74ch;color:var(--ink-soft);line-height:1.7;">
+  <div style="color:var(--ink-soft);line-height:1.7;">
     <p><?php
     if ( ! empty( $country['country_specific_restrictions'] ) ) {
         echo esc_html( $country['country_specific_restrictions'] );
@@ -114,7 +114,7 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
 
 <div class="wrap" style="padding-bottom:16px;">
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:0 0 8px;">Brokers with an actual local entity or office</h2>
-  <p style="max-width:74ch;color:var(--ink-soft);line-height:1.7;">
+  <p style="color:var(--ink-soft);line-height:1.7;">
   <?php if ( $has_local ) : ?>
     Confirmed below (marked "Headquartered in <?php echo esc_html( $country['name'] ); ?>") based on each broker's own disclosed headquarters -- not a branch, not a marketing claim, and not the same as where its regulated entity happens to be licensed. Every other broker in this ranking is included on the strength of its <?php echo $is_eu_country ? 'EU licence, passported in from elsewhere' : esc_html( $country['regulator_short'] ) . ' licence'; ?>, with no confirmed local office.
   <?php elseif ( $is_eu_country ) : ?>
@@ -155,7 +155,7 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
     </div>
     <?php endforeach; ?>
   </div>
-  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;max-width:74ch;">
+  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;">
   <?php if ( $is_eu_country ) : ?>
     Ranked using our <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">disclosed overall broker score</a> (nine weighted categories, led by regulation & client protection and trading costs) -- every broker here holds a CySEC licence capable of being passported into <?php echo esc_html( $country['name'] ); ?>, not a confirmed, currently-active local notification for each one (see the nuance above). We don't have independent country-level trading-volume or market-share data, so this reflects broker quality and, where applicable, a confirmed local headquarters -- not measured local popularity. See our <a href="<?php echo esc_url( home_url( '/compare/' ) ); ?>" style="color:var(--teal);">comparison tool</a> to compare any two directly, or the <a href="<?php echo esc_url( home_url( '/learn/understanding-leverage-in-forex-trading/' ) ); ?>" style="color:var(--teal);">leverage guide</a> for what the EU-wide ESMA rules mean for your account.
   <?php else : ?>
@@ -182,7 +182,7 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
 
 <div class="wrap" style="padding-bottom:60px;">
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:0 0 8px;">Regulatory sources</h2>
-  <p style="max-width:74ch;color:var(--ink-soft);line-height:1.7;font-size:14px;">
+  <p style="color:var(--ink-soft);line-height:1.7;font-size:14px;">
     <?php echo esc_html( $country['name'] ); ?>: <a href="<?php echo esc_url( ! empty( $country['regulatory_source_url'] ) ? $country['regulatory_source_url'] : 'https://ec.europa.eu/' ); ?>" target="_blank" rel="noopener" style="color:var(--teal);"><?php echo esc_html( $country['regulator'] ); ?> (official site)</a>
     <?php if ( $is_eu_country ) : ?>
     &middot; EU-wide: <a href="https://www.esma.europa.eu/" target="_blank" rel="noopener" style="color:var(--teal);">ESMA</a>
