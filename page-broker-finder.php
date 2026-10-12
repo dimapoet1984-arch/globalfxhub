@@ -102,7 +102,7 @@ $finder_styles      = globalfxhub_finder_trading_styles();
 
   <div class="rankings" id="finderResults"></div>
 
-  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;max-width:74ch;">
+  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;">
     Country availability reflects only whether a broker holds a CySEC licence or EU/MiFID-passported regulation -- the same test already applied on every <a href="<?php echo esc_url( home_url( '/countries/' ) ); ?>" style="color:var(--teal);">country page</a>. It is not a guarantee that a given broker has completed the specific host-country notification, or that every product/account type is available there -- see the relevant country page for that nuance. "Trading style" re-weights our existing disclosed score categories (see hint above); it adds no new, unverified claim about any broker. Built from our <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">disclosed nine-category methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
   </p>
 </div>
