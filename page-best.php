@@ -56,7 +56,7 @@ $best_lists = globalfxhub_get_best_lists();
     <?php endforeach; ?>
   </div>
   <?php endif; ?>
-  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;max-width:74ch;">
+  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;">
     Built from our <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">disclosed nine-category methodology</a> -- the same absolute rubric and the same scores shown on every individual review, filtered and sorted for this specific list rather than scored differently for it. See <a href="<?php echo esc_url( home_url( '/best/' ) ); ?>" style="color:var(--teal);">all best-broker lists</a>.
   </p>
 </div>

@@ -53,7 +53,7 @@ if ( $learn_query->have_posts() ) {
   ?>
   <div style="margin-bottom:48px;">
     <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:0 0 6px;"><?php echo esc_html( $cluster['title'] ); ?></h2>
-    <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 18px;max-width:74ch;"><?php echo esc_html( $cluster['description'] ); ?></p>
+    <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 18px;"><?php echo esc_html( $cluster['description'] ); ?></p>
     <div class="guides__grid">
       <?php foreach ( $grouped[ $cluster_slug ] as $cluster_post ) : ?>
       <a href="<?php echo esc_url( home_url( '/learn/' . $cluster_post->post_name . '/' ) ); ?>" class="guide">
