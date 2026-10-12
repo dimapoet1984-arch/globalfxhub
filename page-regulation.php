@@ -30,7 +30,7 @@ $reg_pages = globalfxhub_get_regulation_pages();
   <p><?php echo esc_html( $page_data['summary'] ); ?></p>
 </div>
 
-<div class="wrap article-wrap art-body" style="padding-bottom:60px;">
+<div class="wrap art-body" style="padding-bottom:60px;">
   <?php echo wp_kses( $page_data['content'], array(
       'p' => array(), 'h2' => array(), 'h3' => array(), 'strong' => array(), 'em' => array(),
       'a' => array( 'href' => array(), 'target' => array(), 'rel' => array() ),
