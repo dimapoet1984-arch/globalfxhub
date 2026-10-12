@@ -63,7 +63,7 @@ $cc_pip_value = globalfxhub_cost_calculator_pip_value_per_lot();
 
   <div class="rankings" id="ccResults"></div>
 
-  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;max-width:78ch;">
+  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;">
     <?php echo esc_html( $cc_payload['excluded_count'] ); ?> of our <?php echo esc_html( $cc_payload['total_count'] ); ?> researched brokers have no independently confirmed EUR/USD spread and are excluded from this comparison entirely, rather than assumed to be free or average. This estimate covers <strong>spread cost only</strong> -- round-turn commission, common on ECN/Razor-style accounts, is a real additional cost documented in free-text research notes per broker, not as a structured number we could average with confidence, so it is not counted here. A broker with the lowest spread shown is not necessarily the lowest true cost once its commission is included -- check the "Execution model" section on that broker's review page. Formula: spread (pips) &times; $<?php echo esc_html( $cc_pip_value ); ?> per pip per standard lot (universal EUR/USD pip-value arithmetic, since USD is the quote currency) &times; trade size (lots) &times; trades/month &times; 12. Built from the same <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">disclosed methodology</a> used sitewide. Verify current spreads directly with the broker before trading -- spreads are variable in practice and the figure here is the one on file from our research.
   </p>
 </div>
