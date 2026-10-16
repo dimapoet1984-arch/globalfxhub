@@ -48,7 +48,7 @@ if ( $news_item_slug && ! $news_item ) {
   <?php echo esc_html( $broker ? $broker['name'] : $news_item['broker_slug'] ); ?>
 </div>
 
-<?php globalfxhub_promo_banner( 'rankings' ); ?>
+<?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
   <div class="eyebrow"><?php echo esc_html( strtoupper( $cat_label ) ); ?> &middot; <?php echo esc_html( date_i18n( 'j F Y', strtotime( $news_item['date'] ) ) ); ?></div>
@@ -98,7 +98,7 @@ if ( $news_item_slug && ! $news_item ) {
   <?php the_title(); ?>
 </div>
 
-<?php globalfxhub_promo_banner( 'rankings' ); ?>
+<?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
   <div class="eyebrow">BROKER NEWS</div>

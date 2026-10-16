@@ -142,7 +142,7 @@ GlobalFXHubBrokerSearch.init(
 })();
 </script>
 
-<?php globalfxhub_promo_banner( 'changelog' ); ?>
+<?php globalfxhub_promo_banner(); ?>
 
 <div class="trustbar">
   <div class="wrap trustbar__grid">
@@ -384,7 +384,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
   </div>
 </section>
 
-<?php globalfxhub_promo_banner( 'broker-finder' ); ?>
+<?php globalfxhub_promo_banner(); ?>
 
 <section class="method" id="method">
   <div class="wrap">

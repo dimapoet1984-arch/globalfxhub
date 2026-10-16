@@ -27,7 +27,7 @@ foreach ( globalfxhub_get_brokers() as $b ) {
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
 </div>
 
-<?php globalfxhub_promo_banner( 'rankings' ); ?>
+<?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
   <div class="eyebrow">MARKET &amp; BROKER NEWS</div>
