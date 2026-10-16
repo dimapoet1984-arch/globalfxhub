@@ -23,6 +23,8 @@ $fx_market_news_query = new WP_Query( array(
   <?php the_title(); ?>
 </div>
 
+<?php globalfxhub_promo_banner( 'rankings' ); ?>
+
 <div class="wrap page-head">
   <div class="eyebrow">FX MARKET NEWS</div>
   <h1><?php the_title(); ?></h1>

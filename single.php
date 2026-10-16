@@ -31,6 +31,8 @@
   <?php the_title(); ?>
 </div>
 
+<?php globalfxhub_promo_banner( 'rankings' ); ?>
+
 <article class="article-wrap art-head">
   <span class="art-cat"><?php echo esc_html( $cat_name ); ?></span>
   <h1><?php the_title(); ?></h1>
