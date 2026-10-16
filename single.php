@@ -48,27 +48,26 @@
   </div>
 </article>
 
+<div class="wrap content-with-sidebar">
+  <div class="content-main">
 <?php
 $theme_hero_image = get_post_meta( get_the_ID(), '_guide_hero_image', true );
 if ( $theme_hero_image ) :
 ?>
-<div class="wrap">
-  <div class="art-hero" style="background-image:url('<?php echo esc_url( $theme_hero_image ); ?>');background-size:cover;background-position:center;"></div>
-</div>
+    <div class="art-hero" style="background-image:url('<?php echo esc_url( $theme_hero_image ); ?>');background-size:cover;background-position:center;"></div>
 <?php elseif ( has_post_thumbnail() ) : ?>
-<div class="wrap">
-  <div class="art-hero" style="background-image:url('<?php the_post_thumbnail_url( 'large' ); ?>');background-size:cover;background-position:center;"></div>
-</div>
+    <div class="art-hero" style="background-image:url('<?php the_post_thumbnail_url( 'large' ); ?>');background-size:cover;background-position:center;"></div>
 <?php else : ?>
-<div class="wrap">
-  <div class="art-hero" style="background:linear-gradient(135deg, #0e1c30, #2f6f5e);">
-    <span><?php echo esc_html( $cat_name ); ?></span>
-  </div>
-</div>
+    <div class="art-hero" style="background:linear-gradient(135deg, #0e1c30, #2f6f5e);">
+      <span><?php echo esc_html( $cat_name ); ?></span>
+    </div>
 <?php endif; ?>
 
-<div class="wrap art-body">
-  <?php the_content(); ?>
+    <div class="art-body">
+      <?php the_content(); ?>
+    </div>
+  </div>
+  <?php globalfxhub_ad_sidebar(); ?>
 </div>
 
 <div class="wrap">

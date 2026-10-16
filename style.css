@@ -247,6 +247,20 @@ Text Domain: globalfxhub
     .promo-banner__body{display:none;}
   }
 
+  .content-with-sidebar{display:grid;grid-template-columns:1fr minmax(0,300px);gap:32px;align-items:start;}
+  @media (max-width:900px){ .content-with-sidebar{grid-template-columns:1fr;} }
+  .content-with-sidebar .news__grid{grid-template-columns:repeat(2,1fr);}
+  @media (max-width:900px){ .content-with-sidebar .news__grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:600px){ .content-with-sidebar .news__grid{grid-template-columns:1fr;} }
+
+  .ad-sidebar{display:flex;flex-direction:column;gap:20px;}
+  @media (max-width:900px){ .ad-sidebar{flex-direction:row;flex-wrap:wrap;justify-content:center;} }
+  .ad-sidebar__banner{width:100%;max-width:300px;aspect-ratio:1/1;margin:0 auto;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;background:var(--paper-raised);border:1px solid var(--rule);border-radius:3px;text-decoration:none;}
+  .ad-sidebar__banner:hover{border-color:var(--teal);}
+  .ad-sidebar__eyebrow{font-family:var(--font-data);font-size:10px;letter-spacing:.06em;color:var(--gold);}
+  .ad-sidebar__text{font-family:var(--font-display);font-weight:500;font-size:17px;color:var(--ink);line-height:1.3;}
+  .ad-sidebar__cta{font-size:13px;font-weight:600;color:var(--teal);}
+
   .guides__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule);border-left:1px solid var(--rule);}
   @media (max-width:900px){ .guides__grid{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:600px){ .guides__grid{grid-template-columns:1fr;} }
