@@ -25,7 +25,7 @@
     }
 ?>
 
-<div class="article-wrap crumb">
+<div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
   <a href="<?php echo esc_url( $section_url ); ?>"><?php echo esc_html( $section_label ); ?></a> /
   <?php the_title(); ?>
@@ -33,7 +33,7 @@
 
 <?php globalfxhub_promo_banner( 'rankings' ); ?>
 
-<article class="article-wrap art-head">
+<article class="wrap art-head">
   <span class="art-cat"><?php echo esc_html( $cat_name ); ?></span>
   <h1><?php the_title(); ?></h1>
   <?php if ( has_excerpt() ) : ?>
@@ -52,26 +52,26 @@
 $theme_hero_image = get_post_meta( get_the_ID(), '_guide_hero_image', true );
 if ( $theme_hero_image ) :
 ?>
-<div class="article-wrap">
+<div class="wrap">
   <div class="art-hero" style="background-image:url('<?php echo esc_url( $theme_hero_image ); ?>');background-size:cover;background-position:center;"></div>
 </div>
 <?php elseif ( has_post_thumbnail() ) : ?>
-<div class="article-wrap">
+<div class="wrap">
   <div class="art-hero" style="background-image:url('<?php the_post_thumbnail_url( 'large' ); ?>');background-size:cover;background-position:center;"></div>
 </div>
 <?php else : ?>
-<div class="article-wrap">
+<div class="wrap">
   <div class="art-hero" style="background:linear-gradient(135deg, #0e1c30, #2f6f5e);">
     <span><?php echo esc_html( $cat_name ); ?></span>
   </div>
 </div>
 <?php endif; ?>
 
-<div class="article-wrap art-body">
+<div class="wrap art-body">
   <?php the_content(); ?>
 </div>
 
-<div class="article-wrap">
+<div class="wrap">
   <div class="author">
     <div class="author__avatar"></div>
     <div>
@@ -94,7 +94,7 @@ $related = new WP_Query( array(
 ) );
 if ( $related->have_posts() ) :
 ?>
-<div class="article-wrap related">
+<div class="wrap related">
   <h2>Keep reading</h2>
   <div class="related__grid">
     <?php while ( $related->have_posts() ) : $related->the_post();
