@@ -17,6 +17,8 @@ $cc_pip_value = globalfxhub_cost_calculator_pip_value_per_lot();
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
 </div>
 
+<?php globalfxhub_promo_banner(); ?>
+
 <div class="wrap page-head">
   <div class="eyebrow">FOREX SPREAD COST CALCULATOR</div>
   <h1><?php the_title(); ?></h1>

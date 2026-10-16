@@ -24,6 +24,8 @@ $best_lists = globalfxhub_get_best_lists();
   <?php echo esc_html( $list['title'] ); ?>
 </div>
 
+<?php globalfxhub_promo_banner(); ?>
+
 <div class="wrap page-head">
   <div class="eyebrow">BEST BROKERS</div>
   <h1><?php echo esc_html( $list['title'] ); ?></h1>
@@ -66,6 +68,8 @@ $best_lists = globalfxhub_get_best_lists();
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
 </div>
+
+<?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
   <div class="eyebrow">BEST BROKERS</div>

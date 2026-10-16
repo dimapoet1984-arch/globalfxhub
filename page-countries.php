@@ -32,6 +32,8 @@ $country = $country_slug ? globalfxhub_get_country_by_slug( $country_slug ) : nu
   <?php echo esc_html( $country['name'] ); ?>
 </div>
 
+<?php globalfxhub_promo_banner(); ?>
+
 <div class="wrap page-head">
   <div class="eyebrow">BEST BROKER IN <?php echo esc_html( strtoupper( $country['name'] ) ); ?></div>
   <h1><span class="country-flag" aria-hidden="true"><?php echo esc_html( globalfxhub_country_flag_emoji( $country['iso'] ) ); ?></span> Best Forex &amp; CFD Brokers in <?php echo esc_html( $country['name'] ); ?></h1>
@@ -199,6 +201,8 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
 </div>
+
+<?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
   <div class="eyebrow">BY COUNTRY</div>

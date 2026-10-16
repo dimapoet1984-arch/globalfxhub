@@ -21,6 +21,8 @@ $finder_styles      = globalfxhub_finder_trading_styles();
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
 </div>
 
+<?php globalfxhub_promo_banner(); ?>
+
 <div class="wrap page-head">
   <div class="eyebrow">BROKER FINDER</div>
   <h1><?php the_title(); ?></h1>

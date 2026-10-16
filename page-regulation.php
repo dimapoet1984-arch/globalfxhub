@@ -24,6 +24,8 @@ $reg_pages = globalfxhub_get_regulation_pages();
   <?php echo esc_html( $page_data['title'] ); ?>
 </div>
 
+<?php globalfxhub_promo_banner(); ?>
+
 <div class="wrap page-head">
   <div class="eyebrow">REGULATION</div>
   <h1><?php echo esc_html( $page_data['title'] ); ?></h1>
@@ -44,6 +46,8 @@ $reg_pages = globalfxhub_get_regulation_pages();
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
 </div>
+
+<?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
   <div class="eyebrow">REGULATION</div>

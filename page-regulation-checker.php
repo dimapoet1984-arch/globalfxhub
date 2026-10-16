@@ -17,6 +17,8 @@ $rc_payload = globalfxhub_regulation_checker_payload();
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
 </div>
 
+<?php globalfxhub_promo_banner(); ?>
+
 <div class="wrap page-head">
   <div class="eyebrow">BROKER REGULATION CHECKER</div>
   <h1><?php the_title(); ?></h1>

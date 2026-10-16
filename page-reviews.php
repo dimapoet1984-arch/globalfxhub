@@ -43,6 +43,8 @@ if ( $alts_slug && ! $alts_data ) {
   Alternatives
 </div>
 
+<?php globalfxhub_promo_banner(); ?>
+
 <div class="wrap page-head">
   <div class="eyebrow">BROKER ALTERNATIVES</div>
   <h1><?php echo esc_html( $ref['name'] ); ?> Alternatives</h1>
@@ -120,6 +122,8 @@ elseif ( $broker ) :
   <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>">Reviews</a> /
   <?php echo esc_html( $broker['name'] ); ?>
 </div>
+
+<?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head review-head">
   <div class="eyebrow">BROKER REVIEW &middot; RANK #<?php echo esc_html( str_pad( (string) $broker['rank'], 2, '0', STR_PAD_LEFT ) ); ?> OF <?php echo esc_html( count( globalfxhub_get_brokers() ) ); ?></div>
@@ -343,6 +347,8 @@ $others = array_slice( $others, 0, 3 );
         } ) );
     }
 ?>
+
+<?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
   <div class="eyebrow">BROKER REVIEWS</div>

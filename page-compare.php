@@ -34,6 +34,8 @@ if ( $vs_pair ) {
 
 <?php else : ?>
 
+<?php globalfxhub_promo_banner(); ?>
+
 <div class="wrap page-head">
   <div class="eyebrow">BROKER COMPARISON TOOL</div>
   <?php if ( $vs_pair ) : ?>
