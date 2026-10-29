@@ -39,6 +39,7 @@ require get_template_directory() . '/inc/sitemap.php';
 require get_template_directory() . '/inc/i18n-live-languages.php';
 require get_template_directory() . '/inc/i18n-rest-connector.php';
 require get_template_directory() . '/inc/i18n-track-b-translations.php';
+require get_template_directory() . '/inc/i18n-track-b-routing.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
@@ -863,7 +864,7 @@ add_action( 'after_switch_theme', 'flush_rewrite_rules' );
  * doesn't cover a route added in a file like inc/broker-vs.php that
  * touches no page at all).
  */
-define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-10-29-1' );
+define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-10-29-2' );
 
 function globalfxhub_maybe_flush_rewrite_rules() {
     if ( get_option( 'globalfxhub_rewrite_rules_version' ) !== GLOBALFXHUB_REWRITE_RULES_VERSION ) {
