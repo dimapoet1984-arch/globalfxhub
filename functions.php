@@ -361,6 +361,15 @@ add_action( 'after_setup_theme', 'globalfxhub_ensure_news_page' );
  * the default priority), so pll_*() calls are safe. Self-heals a
  * translation a human added via Polylang's own "+ add translation" link
  * too, not just one that's missing outright.
+ *
+ * Runs behind a process-wide lock (see globalfxhub_acquire_i18n_sync_lock()
+ * below) -- without one, two overlapping requests both read "no
+ * translation yet" before either saves, so both create one, for every
+ * language, for every page in the list below. This exact bug created
+ * 151 duplicate pages in a single few-second window on 2026-10-29 (see
+ * docs/TRANSLATION_PLAYBOOK.md section 3.4 and the cleanup in
+ * i18n/cleanup_duplicate_pages.py) the moment 7 languages went live in
+ * Polylang. Do not remove the lock to "simplify" this function.
  */
 function globalfxhub_sync_templated_pages_across_languages() {
     if ( ! function_exists( 'pll_languages_list' ) || ! function_exists( 'pll_set_post_language' )
@@ -368,6 +377,45 @@ function globalfxhub_sync_templated_pages_across_languages() {
         return;
     }
 
+    if ( ! globalfxhub_acquire_i18n_sync_lock() ) {
+        return; // another request is already syncing -- don't race it
+    }
+    try {
+        globalfxhub_do_sync_templated_pages_across_languages();
+    } finally {
+        globalfxhub_release_i18n_sync_lock();
+    }
+}
+
+/**
+ * A true cross-process lock, unlike get_transient()/set_transient()
+ * (which only check-then-act in PHP and can't stop two concurrent
+ * requests from both passing the check): add_option() performs an
+ * INSERT against wp_options, whose option_name column has a UNIQUE
+ * key, so if two requests race to acquire the same lock name, the
+ * database itself guarantees only one INSERT succeeds -- the other
+ * gets a duplicate-key failure and add_option() returns false. Clears
+ * a lock older than 60 seconds, in case a request died mid-sync
+ * without releasing it.
+ */
+function globalfxhub_acquire_i18n_sync_lock() {
+    $lock_name = 'globalfxhub_i18n_page_sync_lock';
+    if ( add_option( $lock_name, time(), '', 'no' ) ) {
+        return true;
+    }
+    $held_since = (int) get_option( $lock_name );
+    if ( $held_since && ( time() - $held_since ) > 60 ) {
+        delete_option( $lock_name );
+        return add_option( $lock_name, time(), '', 'no' );
+    }
+    return false;
+}
+
+function globalfxhub_release_i18n_sync_lock() {
+    delete_option( 'globalfxhub_i18n_page_sync_lock' );
+}
+
+function globalfxhub_do_sync_templated_pages_across_languages() {
     $default_lang = pll_default_language();
     $languages = pll_languages_list();
     if ( ! $default_lang || empty( $languages ) ) {
@@ -443,24 +491,14 @@ function globalfxhub_sync_templated_pages_across_languages() {
     }
 }
 /*
- * EMERGENCY DISABLE -- 2026-10-29. This function has no lock/guard
- * against concurrent requests: two overlapping page loads both read
- * pll_get_post_translations() before either one's
- * pll_save_post_translations() lands, so both decide no translation
- * exists and both create one, for every language, every time this
- * races. Confirmed live via the REST API today: reviews-2 through
- * reviews-15 (14 fresh duplicate pages, all empty, all status=publish)
- * were created in the same second, 2026-10-29T08:59:57 -- the same
- * pattern hit every page in its managed list (reviews, learn, compare,
- * news, countries, best, regulation, broker-finder, cost-calculator,
- * regulation-checker, broker-changelog), each now sitting at 12-15
- * duplicate pages. Disabled here, hook left in place below, until this
- * is rewritten with a real lock (see docs/TRANSLATION_PLAYBOOK.md
- * section 3.4) and the existing duplicates are cleaned up. Do not
- * re-enable by deleting this comment without fixing the race first --
- * every page load while 7+ languages are active will make it worse.
+ * Re-enabled 2026-10-29 behind globalfxhub_acquire_i18n_sync_lock()
+ * (see above) after the race condition that created 151 duplicate
+ * pages the same day -- see docs/TRANSLATION_PLAYBOOK.md section 3.4
+ * and the cleanup in i18n/cleanup_duplicate_pages.py. If this ever
+ * needs to be disabled again in a hurry, comment out the add_action()
+ * line below; don't re-remove the lock to "fix" something else.
  */
-// add_action( 'init', 'globalfxhub_sync_templated_pages_across_languages', 20 );
+add_action( 'init', 'globalfxhub_sync_templated_pages_across_languages', 20 );
 
 /**
  * /blog/ needs a WordPress "posts page" (Settings > Reading) set, or the
