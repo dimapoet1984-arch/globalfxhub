@@ -1,0 +1,56 @@
+name: i18n translate Track B
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run (counts only, no API calls) or translate"
+        required: true
+        default: "dry-run"
+        type: choice
+        options:
+          - dry-run
+          - translate
+      content_types:
+        description: "Comma-separated (broker,country,best_list,regulation,broker_news), or 'all'"
+        required: true
+        default: "all"
+      languages:
+        description: "Comma-separated language codes (es,de,ar,fr,pl,it,pt), or 'all'"
+        required: true
+        default: "all"
+      items:
+        description: "Comma-separated content_ids (within each selected content_type), or 'all'"
+        required: true
+        default: "all"
+      reviewer:
+        description: "Reviewer model for HTML pieces that fail the markup check twice"
+        required: true
+        default: "haiku"
+        type: choice
+        options:
+          - haiku
+          - sonnet
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install requests anthropic
+      - name: Run Track B translation pipeline
+        env:
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          TRANSLATION_API_KEY: ${{ secrets.TRANSLATION_API_KEY }}
+        run: |
+          python3 i18n/translate_track_b.py \
+            --mode ${{ inputs.mode }} \
+            --content-types ${{ inputs.content_types }} \
+            --languages ${{ inputs.languages }} \
+            --items ${{ inputs.items }} \
+            --reviewer ${{ inputs.reviewer }}
