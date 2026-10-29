@@ -299,6 +299,24 @@ add_action( 'after_setup_theme', 'globalfxhub_ensure_regulation_page' );
  * page there internally for its own permalink plumbing, this just stops
  * anyone from actually landing on that unfiltered listing.
  *
+ * Also covers two Hostinger-starter-kit leftover pages (contact-us,
+ * terms-of-use) discovered 2026-10-29 when Yoast's sitemap surfaced
+ * them: both predate this theme's own service-pages.php provisioning
+ * (which later created the real "contact" and "terms" pages with
+ * actual content under different slugs, since contact-us/terms-of-use
+ * already existed), both have always been empty, and nothing in this
+ * theme ever linked to them -- but since they've been live and
+ * crawlable since September, an external bookmark or backlink could
+ * still point at the old URL, so -- same as guides -> learn -- they
+ * redirect to their real equivalent rather than being trashed: the
+ * page objects themselves stay published (empty, untouched) purely so
+ * is_page( $slug ) still has something to match and redirect; trashing
+ * them would turn a clean 301 into a 404 for anyone still holding the
+ * old link, which is worse. globalfxhub_exclude_legacy_redirect_pages_from_sitemap()
+ * below keeps all three out of Yoast's sitemap despite staying
+ * published -- a sitemap listing a URL that just 301s is itself an
+ * SEO smell (and was already true of guides, before today).
+ *
  * Native category/tag/date/author archives are the same muddle under a
  * different URL: WordPress generates them automatically (there's no
  * category.php/archive.php/author.php in this theme, so they all fall
@@ -310,11 +328,28 @@ add_action( 'after_setup_theme', 'globalfxhub_ensure_regulation_page' );
  * still reach one, so each kind redirects to its real curated home
  * rather than being left to render unhandled.
  */
+/**
+ * Slug => destination path for every page that exists only to 301
+ * elsewhere -- shared by globalfxhub_ia_redirects() (which performs
+ * the redirect) and globalfxhub_exclude_legacy_redirect_pages_from_sitemap()
+ * (which keeps these out of Yoast's sitemap) so the two can't drift.
+ */
+function globalfxhub_legacy_slug_redirects() {
+    return array(
+        'guides'       => '/learn/',
+        'contact-us'   => '/contact/',
+        'terms-of-use' => '/terms/',
+    );
+}
+
 function globalfxhub_ia_redirects() {
-    if ( is_page( 'guides' ) ) {
-        wp_safe_redirect( home_url( '/learn/' ), 301 );
-        exit;
+    foreach ( globalfxhub_legacy_slug_redirects() as $slug => $destination ) {
+        if ( is_page( $slug ) ) {
+            wp_safe_redirect( home_url( $destination ), 301 );
+            exit;
+        }
     }
+
     $posts_page_id = (int) get_option( 'page_for_posts' );
     if ( $posts_page_id && is_page( $posts_page_id ) ) {
         wp_safe_redirect( home_url( '/learn/' ), 301 );
@@ -337,6 +372,32 @@ function globalfxhub_ia_redirects() {
     }
 }
 add_action( 'template_redirect', 'globalfxhub_ia_redirects' );
+
+/**
+ * Keeps every pure-redirect page (guides, contact-us, terms-of-use --
+ * see globalfxhub_legacy_slug_redirects() above) out of Yoast's XML
+ * sitemap. These pages stay published on purpose (so the 301 above
+ * has something to match), but a sitemap listing a URL that just
+ * redirects is a standing SEO smell -- Search Console flags "submitted
+ * URL has a redirect" as an error -- so they're excluded the same way
+ * globalfxhub_exclude_unlaunched_languages_from_yoast_sitemap() (in
+ * inc/i18n-live-languages.php) excludes hidden-language pages: by post
+ * ID, via Yoast's own wpseo_exclude_from_sitemap_by_post_ids filter.
+ * Resolved by slug at request time (get_page_by_path()) rather than
+ * hardcoding today's IDs, so this keeps working if any of these pages
+ * is ever recreated with a new ID.
+ */
+function globalfxhub_exclude_legacy_redirect_pages_from_sitemap( $excluded_ids ) {
+    $excluded_ids = (array) $excluded_ids;
+    foreach ( array_keys( globalfxhub_legacy_slug_redirects() ) as $slug ) {
+        $page = get_page_by_path( $slug );
+        if ( $page ) {
+            $excluded_ids[] = $page->ID;
+        }
+    }
+    return $excluded_ids;
+}
+add_filter( 'wpseo_exclude_from_sitemap_by_post_ids', 'globalfxhub_exclude_legacy_redirect_pages_from_sitemap' );
 
 function globalfxhub_ensure_compare_page() {
     globalfxhub_ensure_templated_page( 'compare', 'Compare Brokers', 'page-compare.php' );
