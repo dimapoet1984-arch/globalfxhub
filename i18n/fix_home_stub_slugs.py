@@ -28,6 +28,7 @@ import argparse
 import os
 import sys
 import time
+from urllib.parse import unquote
 
 import requests
 
@@ -113,12 +114,16 @@ def main():
             print(f"  FAILED id={page_id}: HTTP {resp.status_code}")
             continue
         new_slug = resp.json().get("slug")
-        if new_slug != slug:
+        # WordPress sometimes returns a non-ASCII slug percent-encoded
+        # (e.g. the Arabic one) rather than as raw UTF-8 -- the same
+        # slug, just a different representation, so compare decoded
+        # forms rather than raw strings.
+        if unquote(new_slug) != unquote(slug):
             print(f"  id={page_id}: requested '{slug}', WordPress returned '{new_slug}' instead -- unexpected, needs a look")
             failures.append((page_id, slug, f"WP returned '{new_slug}'"))
         else:
             restored += 1
-            print(f"  restored id={page_id}: -> {slug}")
+            print(f"  restored id={page_id}: -> {new_slug}")
 
     print(f"\nDone. {restored} restored, {len(failures)} failed/unexpected.")
     if failures:
