@@ -204,28 +204,38 @@ function globalfxhub_fix_track_b_language_attributes( $output, $doctype = 'html'
 add_filter( 'language_attributes', 'globalfxhub_fix_track_b_language_attributes', 20, 2 );
 
 /**
- * Suppresses the 301 redirect WordPress/Polylang would otherwise issue
- * on a Track B request that fell back to the English page -- confirmed
- * live on /ar/news/brokers/<item>/ and /de/news/brokers/<item>/ (no
- * Arabic/German translation of the "news/brokers" container exists
- * yet, unlike the 11 pages globalfxhub_do_sync_templated_pages_across_languages()
- * keeps a stub in every language for): Polylang notices the resolved
- * page_id's actual language ("en") doesn't match the requested URL
- * prefix and 301-redirects the WHOLE request back to the bare English
- * URL (response header x-redirect-by: Polylang) *before* the page, or
+ * Suppresses the 301 redirect Polylang's own PLL_Canonical::check_canonical_url()
+ * would otherwise issue on a Track B request that fell back to the
+ * English page -- confirmed live on /ar/news/brokers/<item>/ and
+ * /de/news/brokers/<item>/ (no Arabic/German translation of the
+ * "news/brokers" container exists yet, unlike the 11 pages
+ * globalfxhub_do_sync_templated_pages_across_languages() keeps a stub
+ * in every language for): Polylang notices the resolved page_id's
+ * actual language ("en") doesn't match the requested URL prefix and
+ * redirects the WHOLE request back to the bare English URL (response
+ * header x-redirect-by: Polylang) *before* the page, or
  * globalfxhub_fix_track_b_language_attributes() above, ever renders --
  * defeating the fallback-instead-of-404 design entirely for any
  * Track B container that isn't one of those 11 self-healed pages.
+ *
+ * Hooks Polylang's own 'pll_check_canonical_url' filter -- NOT
+ * WordPress core's 'redirect_canonical' -- since that's the actual
+ * decision point: check_canonical_url() computes its redirect target
+ * via remove_language_from_link()/switch_language_in_link() *after*
+ * calling core's redirect_canonical() internally, so filtering core's
+ * hook alone gets overwritten by Polylang's own link-rewriting before
+ * wp_safe_redirect() ever fires (confirmed live -- an earlier version
+ * of this fix targeting 'redirect_canonical' directly had no effect).
  *
  * $GLOBALS['globalfxhub_track_b_request_lang'] is only set once
  * globalfxhub_resolve_track_b_container_language() has actually
  * resolved a Track B route for this request, so this never touches an
  * ordinary page's own (legitimate) canonical redirects.
  */
-function globalfxhub_suppress_track_b_canonical_redirect( $redirect_url ) {
+function globalfxhub_suppress_track_b_canonical_redirect( $redirect_url, $language = null ) {
     if ( ! empty( $GLOBALS['globalfxhub_track_b_request_lang'] ) ) {
         return false;
     }
     return $redirect_url;
 }
-add_filter( 'redirect_canonical', 'globalfxhub_suppress_track_b_canonical_redirect', 20 );
+add_filter( 'pll_check_canonical_url', 'globalfxhub_suppress_track_b_canonical_redirect', 20, 2 );
