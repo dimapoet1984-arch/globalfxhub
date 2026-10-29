@@ -1,0 +1,29 @@
+name: i18n emergency cleanup
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run (list only) or execute (trash the duplicates)"
+        required: true
+        default: "dry-run"
+        type: choice
+        options:
+          - dry-run
+          - execute
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install requests
+      - name: Run cleanup
+        env:
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: python3 i18n/cleanup_duplicate_pages.py --mode ${{ inputs.mode }}
