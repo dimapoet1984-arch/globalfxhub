@@ -521,11 +521,42 @@ function globalfxhub_do_sync_templated_pages_across_languages() {
                 continue;
             }
 
-            $translated_id = ! empty( $translations[ $lang ] ) ? (int) $translations[ $lang ] : 0;
-            if ( ! $translated_id || ! get_post( $translated_id ) ) {
+            /*
+             * Confirmed live 2026-10-29: giving every language's copy
+             * the SAME bare $slug (e.g. "reviews") hits WordPress's
+             * global page-slug uniqueness -- pll_set_post_language()
+             * only runs AFTER wp_insert_post(), so Polylang doesn't
+             * know the language yet when the uniqueness check runs,
+             * and WordPress silently auto-suffixes every one of them
+             * (reviews-9, reviews-10, ...) instead of rejecting the
+             * request. The exact same ordering bug already fixed once
+             * this session for the home-<language> stubs. Those
+             * mangled-slug pages then matched the emergency cleanup
+             * script's <managed-slug>-N pattern alongside the real
+             * race-condition junk it was meant to remove, and got
+             * trashed right along with it -- all 77 (11 pages x 7
+             * languages), confirmed via i18n/diagnose_container_pages.py.
+             *
+             * Fix: give every language an explicit, permanent,
+             * distinct slug ($slug-$lang, e.g. "reviews-es") from the
+             * start, and self-heal it below on every run -- same
+             * lesson as the home-stub fix (i18n/fix_home_stub_slugs.py):
+             * don't rely on WordPress/Polylang sharing a slug across
+             * languages, since this install has twice now proven that
+             * doesn't work. This is also why the "+ pagename=" custom
+             * rewrite rules (functions.php, inc/countries.php, etc.)
+             * build the per-language pagename as "$slug-$lang" rather
+             * than reusing the English slug.
+             */
+            $canonical_slug = $slug . '-' . $lang;
+
+            $translated_id   = ! empty( $translations[ $lang ] ) ? (int) $translations[ $lang ] : 0;
+            $translated_post = $translated_id ? get_post( $translated_id ) : null;
+
+            if ( ! $translated_post ) {
                 $translated_id = wp_insert_post( array(
                     'post_title'  => $title,
-                    'post_name'   => $slug,
+                    'post_name'   => $canonical_slug,
                     'post_status' => 'publish',
                     'post_type'   => 'page',
                 ) );
@@ -534,6 +565,22 @@ function globalfxhub_do_sync_templated_pages_across_languages() {
                 }
                 pll_set_post_language( $translated_id, $lang );
                 $translations[ $lang ] = $translated_id;
+                $translated_post = get_post( $translated_id );
+                $changed = true;
+            }
+
+            // Self-heal a trashed or wrongly-slugged translation --
+            // get_post() above finds trashed posts too (it doesn't
+            // filter by status), so without this check the loop above
+            // would see "a translation already exists" and never
+            // notice it's unpublished/mangled, exactly how these 77
+            // pages went unnoticed for as long as they did.
+            if ( 'trash' === $translated_post->post_status || $canonical_slug !== $translated_post->post_name ) {
+                wp_update_post( array(
+                    'ID'          => $translated_id,
+                    'post_status' => 'publish',
+                    'post_name'   => $canonical_slug,
+                ) );
                 $changed = true;
             }
 
