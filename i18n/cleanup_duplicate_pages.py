@@ -26,6 +26,7 @@ import argparse
 import os
 import re
 import sys
+import time
 
 import requests
 
@@ -38,12 +39,43 @@ MANAGED_SLUGS = [
 DUPLICATE_RE = re.compile(r"^(" + "|".join(MANAGED_SLUGS) + r")-\d+$")
 HOME_STUB_RE = re.compile(r"^home-.")
 
+# A live host under shared hosting can return a transient 5xx under
+# brief load -- confirmed on this exact site: one GET request failed
+# with a 500 moments before the identical request succeeded again.
+# Retry only on 5xx/network errors, never on 4xx (those are real
+# problems -- bad auth, a page that no longer exists -- and retrying
+# them just wastes time and obscures the actual error).
+RETRY_ATTEMPTS = 4
+RETRY_BACKOFF_SECONDS = 3
+
+
+def request_with_retry(method, url, **kwargs):
+    last_exc = None
+    for attempt in range(1, RETRY_ATTEMPTS + 1):
+        try:
+            resp = requests.request(method, url, **kwargs)
+        except requests.exceptions.RequestException as exc:
+            last_exc = exc
+            resp = None
+        if resp is not None:
+            if resp.status_code < 500:
+                return resp
+            last_exc = requests.exceptions.HTTPError(
+                f"{resp.status_code} Server Error for url: {url}", response=resp
+            )
+        if attempt < RETRY_ATTEMPTS:
+            wait = RETRY_BACKOFF_SECONDS * attempt
+            print(f"  (transient failure on attempt {attempt}/{RETRY_ATTEMPTS}, retrying in {wait}s: {last_exc})")
+            time.sleep(wait)
+    raise last_exc
+
 
 def fetch_all_pages(auth):
     pages = []
     page_num = 1
     while True:
-        resp = requests.get(
+        resp = request_with_retry(
+            "GET",
             f"{WP_BASE}/pages",
             params={
                 "per_page": 100,
@@ -126,12 +158,18 @@ def main():
     trashed = 0
     failures = []
     for p in candidates:
-        resp = requests.delete(
-            f"{WP_BASE}/pages/{p['id']}",
-            params={"force": "false"},
-            auth=auth,
-            timeout=30,
-        )
+        try:
+            resp = request_with_retry(
+                "DELETE",
+                f"{WP_BASE}/pages/{p['id']}",
+                params={"force": "false"},
+                auth=auth,
+                timeout=30,
+            )
+        except requests.exceptions.RequestException as exc:
+            failures.append((p["id"], p["slug"], None, str(exc)))
+            print(f"  FAILED id={p['id']} slug={p['slug']}: {exc}")
+            continue
         if resp.status_code not in (200, 410):
             failures.append((p["id"], p["slug"], resp.status_code, resp.text[:200]))
             print(f"  FAILED id={p['id']} slug={p['slug']}: HTTP {resp.status_code}")
