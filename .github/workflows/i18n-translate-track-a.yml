@@ -1,0 +1,56 @@
+name: i18n translate Track A
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run (counts only, no API calls) or translate"
+        required: true
+        default: "dry-run"
+        type: choice
+        options:
+          - dry-run
+          - translate
+      languages:
+        description: "Comma-separated language codes (es,de,ar,fr,pl,it,pt), or 'all'"
+        required: true
+        default: "all"
+      items:
+        description: "Comma-separated post/page IDs, or 'all'"
+        required: true
+        default: "all"
+      reviewer:
+        description: "Reviewer model for pieces that fail the markup check twice"
+        required: true
+        default: "haiku"
+        type: choice
+        options:
+          - haiku
+          - sonnet
+      max_minutes:
+        description: "Stop gracefully after this many minutes (blank = no limit); GitHub's own job limit is 6 hours"
+        required: false
+        default: ""
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install requests anthropic
+      - name: Run Track A translation pipeline
+        env:
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          TRANSLATION_API_KEY: ${{ secrets.TRANSLATION_API_KEY }}
+        run: |
+          python3 i18n/translate.py \
+            --mode ${{ inputs.mode }} \
+            --languages ${{ inputs.languages }} \
+            --items ${{ inputs.items }} \
+            --reviewer ${{ inputs.reviewer }} \
+            ${{ inputs.max_minutes != '' && format('--max-minutes {0}', inputs.max_minutes) || '' }}
