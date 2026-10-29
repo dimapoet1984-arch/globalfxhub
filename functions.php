@@ -35,6 +35,7 @@ require get_template_directory() . '/inc/broker-changelog.php';
 require get_template_directory() . '/inc/changelog-subscribers.php';
 require get_template_directory() . '/inc/learn-articles.php';
 require get_template_directory() . '/inc/promo-banners.php';
+require get_template_directory() . '/inc/sitemap.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
@@ -695,7 +696,7 @@ add_action( 'after_switch_theme', 'flush_rewrite_rules' );
  * doesn't cover a route added in a file like inc/broker-vs.php that
  * touches no page at all).
  */
-define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-10-10-1' );
+define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-10-29-1' );
 
 function globalfxhub_maybe_flush_rewrite_rules() {
     if ( get_option( 'globalfxhub_rewrite_rules_version' ) !== GLOBALFXHUB_REWRITE_RULES_VERSION ) {
