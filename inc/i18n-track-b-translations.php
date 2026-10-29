@@ -209,7 +209,16 @@ function globalfxhub_register_track_b_rest_routes() {
         array(
             'methods'             => 'GET',
             'callback'            => function ( WP_REST_Request $request ) {
-                return globalfxhub_tf_get_all( $request->get_param( 'content_type' ), $request->get_param( 'lang' ) );
+                // Cast to object: PHP's json_encode() renders an EMPTY
+                // array as JSON `[]`, not `{}` -- confirmed live, the
+                // very first dry-run against any content_type/lang
+                // pair with zero existing rows (true for all of them
+                // today) returned `[]`, and the pipeline's Python side
+                // expects a dict ({content_id: {...}}) and crashed on
+                // .get(). A non-empty array already has string keys
+                // and would encode as an object either way, so this
+                // cast is safe for both cases, not just the empty one.
+                return (object) globalfxhub_tf_get_all( $request->get_param( 'content_type' ), $request->get_param( 'lang' ) );
             },
             'permission_callback' => function () {
                 return current_user_can( 'edit_pages' );

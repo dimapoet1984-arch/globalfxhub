@@ -93,7 +93,16 @@ def fetch_source_items(auth, content_type):
 def fetch_existing_translations(auth, content_type, lang):
     resp = request_with_retry("GET", f"{API_BASE}/track-b-translations/{content_type}/{lang}", auth=auth, timeout=30)
     resp.raise_for_status()
-    return resp.json()
+    data = resp.json()
+    # Defense in depth: the PHP side now always casts to an object so
+    # "no rows yet" serializes as `{}` rather than `[]` (confirmed
+    # live -- that was a real crash the first time this endpoint was
+    # ever hit, since every content_type/lang pair starts with zero
+    # rows). Treating any other non-dict shape as "nothing exists
+    # yet" rather than crashing is cheap insurance against the same
+    # class of serialization quirk resurfacing, without masking the
+    # real fix on the PHP side.
+    return data if isinstance(data, dict) else {}
 
 
 def write_translation(auth, content_type, content_id, field, lang, value):
