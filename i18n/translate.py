@@ -361,8 +361,15 @@ def main():
     for post_type in POST_TYPES:
         all_items.extend(fetch_all_items(auth, post_type))
     all_items = order_parents_first(all_items)
-    if item_filter is not None:
-        all_items = [item for item in all_items if item["id"] in item_filter]
+    # Deliberately NOT filtering all_items down to item_filter here --
+    # a selected child page's real parent (e.g. "news" when --items
+    # only names "news/markets") must still be visited so its EXISTING
+    # translation gets backfilled into translated_parent_ids below.
+    # Filtering here would silently drop that parent from the loop
+    # entirely, leaving the child's translation created with no
+    # parent even though the parent's translation already exists.
+    # The filter is applied per-item instead, just before deciding
+    # whether to actually process it.
 
     client = None if args.mode == "dry-run" else tc.get_client()
     start_time = time.monotonic()
@@ -382,9 +389,17 @@ def main():
                 break
 
             if not needs_translation(item, lang):
-                lang_counts["already_done"] += 1
                 if item["_post_type"] == "page":
                     translated_parent_ids[item["id"]] = (item.get("gfh_translations") or {})[lang]
+                if item_filter is None or item["id"] in item_filter:
+                    lang_counts["already_done"] += 1
+                continue
+
+            if item_filter is not None and item["id"] not in item_filter:
+                # Not selected for this run, and not already translated
+                # either -- nothing to backfill, nothing to count, just
+                # move on (its own translation, if ever created, will
+                # supply the parent link for its children some other run).
                 continue
 
             result = process_item(client, auth, translate_system, review_system, item, lang, reviewer_model, translated_parent_ids, args.mode)
