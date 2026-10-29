@@ -37,6 +37,8 @@ require get_template_directory() . '/inc/learn-articles.php';
 require get_template_directory() . '/inc/promo-banners.php';
 require get_template_directory() . '/inc/sitemap.php';
 require get_template_directory() . '/inc/i18n-live-languages.php';
+require get_template_directory() . '/inc/i18n-rest-connector.php';
+require get_template_directory() . '/inc/i18n-track-b-translations.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
