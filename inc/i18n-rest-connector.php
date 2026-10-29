@@ -169,10 +169,21 @@ function globalfxhub_rest_set_translations( $value, $object ) {
         return new WP_Error( 'gfh_lock_unavailable', 'Translation lock is not available yet.', array( 'status' => 503 ) );
     }
 
+    /*
+     * Confirmed live 2026-10-29: a 20-attempt/5-second wait here gave
+     * up and returned 409 while the lock was still legitimately held
+     * -- globalfxhub_acquire_i18n_sync_lock()'s OWN stale-lock
+     * recovery only kicks in after 60 seconds (functions.php), so a
+     * 5-second wait can never benefit from it and will 409 on any
+     * contention that outlasts 5 seconds, even though waiting a
+     * bit longer would have let this exact same loop either get the
+     * lock normally or force-clear a genuinely stuck one. 280
+     * attempts * 250ms = 70s, comfortably past that 60s threshold.
+     */
     $attempts = 0;
     while ( ! globalfxhub_acquire_i18n_sync_lock() ) {
         $attempts++;
-        if ( $attempts > 20 ) {
+        if ( $attempts > 280 ) {
             return new WP_Error( 'gfh_lock_timeout', 'Could not acquire the i18n sync lock -- another request is holding it.', array( 'status' => 409 ) );
         }
         usleep( 250000 ); // 250ms

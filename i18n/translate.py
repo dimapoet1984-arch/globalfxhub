@@ -92,7 +92,17 @@ def request_with_retry(method, url, **kwargs):
     """Same retry shape as i18n/cleanup_duplicate_pages.py and
     i18n/fix_home_stub_slugs.py (4 attempts, linear backoff, 5xx/network
     errors only -- a live host under shared hosting has shown a
-    transient 500 before, this session, on an otherwise-fine request)."""
+    transient 500 before, this session, on an otherwise-fine request).
+
+    Also retries 409: confirmed live that
+    inc/i18n-rest-connector.php's gfh_translations field returns 409
+    specifically to mean "the i18n sync lock is busy, try again" --
+    never a genuine permanent conflict -- after its own ~70s internal
+    wait gave up. A fresh HTTP request here is a fresh PHP process
+    with its own fresh wait, so retrying at this level is real extra
+    protection, not just duplicated effort, for whatever contention
+    outlasts even that 70s window."""
+    RETRYABLE_STATUSES = {409}
     last_exc = None
     for attempt in range(1, RETRY_ATTEMPTS + 1):
         try:
@@ -101,7 +111,7 @@ def request_with_retry(method, url, **kwargs):
             last_exc = exc
             resp = None
         if resp is not None:
-            if resp.status_code < 500:
+            if resp.status_code < 500 and resp.status_code not in RETRYABLE_STATUSES:
                 return resp
             last_exc = requests.exceptions.HTTPError(f"{resp.status_code} Server Error for url: {url}", response=resp)
         if attempt < RETRY_ATTEMPTS:
