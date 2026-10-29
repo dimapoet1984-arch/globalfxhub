@@ -132,7 +132,18 @@ function globalfxhub_resolve_track_b_container_language( $query_vars ) {
         // in English, since the page content itself (the template)
         // is identical either way; only globalfxhub_tf() calls inside
         // it fall back to English text, same as everywhere else.
+        //
+        // Loading the English post as the queried object makes
+        // Polylang re-sync its current language (and therefore the
+        // site locale/is_rtl()) to that post's language ("en"),
+        // confirmed live on /ar/reviews/: the URL says Arabic but
+        // <html> came back lang="en-GB" with no dir="rtl". Record the
+        // originally-requested language here so
+        // globalfxhub_fix_track_b_fallback_language_attributes() below
+        // can put the correct <html> attributes back, independently
+        // of whatever Polylang decides once it sees the English post.
         $translated_id = $english_page->ID;
+        $GLOBALS['globalfxhub_track_b_fallback_lang'] = $query_vars['lang'];
     }
 
     $query_vars['page_id'] = $translated_id;
@@ -140,3 +151,52 @@ function globalfxhub_resolve_track_b_container_language( $query_vars ) {
     return $query_vars;
 }
 add_filter( 'request', 'globalfxhub_resolve_track_b_container_language' );
+
+/**
+ * Overrides the <html> lang/dir attributes back to the originally
+ * requested language whenever globalfxhub_resolve_track_b_container_language()
+ * above fell back to serving the English container page. Runs on
+ * WordPress core's own 'language_attributes' filter (the one
+ * get_language_attributes() already passes its output through), at a
+ * late priority so it wins over Polylang's own filtering on the same
+ * hook. Reads the target language's locale/RTL-ness straight from
+ * Polylang's own language list rather than hardcoding either, so a
+ * newly-added language is handled correctly with no change here.
+ */
+function globalfxhub_fix_track_b_fallback_language_attributes( $output, $doctype = 'html' ) {
+    if ( empty( $GLOBALS['globalfxhub_track_b_fallback_lang'] ) ) {
+        return $output;
+    }
+    if ( ! function_exists( 'pll_languages_list' ) ) {
+        return $output;
+    }
+
+    $requested_lang = $GLOBALS['globalfxhub_track_b_fallback_lang'];
+    $languages       = pll_languages_list( array( 'fields' => '' ) );
+    $lang_obj        = null;
+    foreach ( (array) $languages as $language ) {
+        if ( isset( $language->slug ) && $language->slug === $requested_lang ) {
+            $lang_obj = $language;
+            break;
+        }
+    }
+    if ( ! $lang_obj || empty( $lang_obj->locale ) ) {
+        return $output; // Unknown language code -- leave Polylang's own output alone.
+    }
+
+    $attributes = array();
+    if ( ! empty( $lang_obj->is_rtl ) ) {
+        $attributes[] = 'dir="rtl"';
+    }
+
+    $lang_attr = str_replace( '_', '-', $lang_obj->locale );
+    if ( 'text/html' === get_option( 'html_type' ) || 'html' === $doctype ) {
+        $attributes[] = 'lang="' . esc_attr( $lang_attr ) . '"';
+    }
+    if ( 'text/html' !== get_option( 'html_type' ) || 'xhtml' === $doctype ) {
+        $attributes[] = 'xml:lang="' . esc_attr( $lang_attr ) . '"';
+    }
+
+    return implode( ' ', $attributes );
+}
+add_filter( 'language_attributes', 'globalfxhub_fix_track_b_fallback_language_attributes', 20, 2 );
