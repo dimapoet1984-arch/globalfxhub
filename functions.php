@@ -442,7 +442,25 @@ function globalfxhub_sync_templated_pages_across_languages() {
         flush_rewrite_rules();
     }
 }
-add_action( 'init', 'globalfxhub_sync_templated_pages_across_languages', 20 );
+/*
+ * EMERGENCY DISABLE -- 2026-10-29. This function has no lock/guard
+ * against concurrent requests: two overlapping page loads both read
+ * pll_get_post_translations() before either one's
+ * pll_save_post_translations() lands, so both decide no translation
+ * exists and both create one, for every language, every time this
+ * races. Confirmed live via the REST API today: reviews-2 through
+ * reviews-15 (14 fresh duplicate pages, all empty, all status=publish)
+ * were created in the same second, 2026-10-29T08:59:57 -- the same
+ * pattern hit every page in its managed list (reviews, learn, compare,
+ * news, countries, best, regulation, broker-finder, cost-calculator,
+ * regulation-checker, broker-changelog), each now sitting at 12-15
+ * duplicate pages. Disabled here, hook left in place below, until this
+ * is rewritten with a real lock (see docs/TRANSLATION_PLAYBOOK.md
+ * section 3.4) and the existing duplicates are cleaned up. Do not
+ * re-enable by deleting this comment without fixing the race first --
+ * every page load while 7+ languages are active will make it worse.
+ */
+// add_action( 'init', 'globalfxhub_sync_templated_pages_across_languages', 20 );
 
 /**
  * /blog/ needs a WordPress "posts page" (Settings > Reading) set, or the
