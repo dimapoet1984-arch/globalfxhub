@@ -97,3 +97,47 @@ def iter_field_paths(content_type):
     KeyError for an unrecognized one -- never silently returns an
     empty list for a typo'd content_type name."""
     return list(FIELDS[content_type])
+
+
+def resolve_field_values(fields, field_path):
+    """Applies one field_path spec (as used in FIELDS above) against
+    one item's "fields" dict from the track-b-source REST endpoint.
+
+    A plain path ("blurb") resolves to at most one (concrete_name, value)
+    pair, concrete_name equal to the path itself. A path with an
+    "[]" segment ("paragraphs[]", "faqs[].q") expands to one pair per
+    array element, with the index baked into a concrete field name
+    ("paragraphs[0]", "faqs[0].q") -- that concrete name is exactly
+    what gets stored as the `field` column in wp_globalfxhub_translations
+    and looked up again by globalfxhub_tf() at render time, so it must
+    be stable across runs (it is: built from the array's own order,
+    never regenerated differently for the same source data).
+
+    Returns [] for a field that doesn't exist on this particular item
+    (e.g. "additional_eu_note" on a country that doesn't have one) or
+    is empty -- never raises, since that's expected, normal variation
+    across items of the same content_type, not an error."""
+
+    def walk(obj, segments, prefix):
+        if not segments:
+            if obj in (None, "", []):
+                return []
+            return [(prefix, obj)]
+        seg = segments[0]
+        rest = segments[1:]
+        if seg.endswith("[]"):
+            key = seg[:-2]
+            lst = obj.get(key) if isinstance(obj, dict) else None
+            if not isinstance(lst, list):
+                return []
+            results = []
+            for i, elem in enumerate(lst):
+                sub_prefix = f"{prefix}.{key}[{i}]" if prefix else f"{key}[{i}]"
+                results.extend(walk(elem, rest, sub_prefix))
+            return results
+        if not isinstance(obj, dict) or seg not in obj:
+            return []
+        sub_prefix = f"{prefix}.{seg}" if prefix else seg
+        return walk(obj[seg], rest, sub_prefix)
+
+    return walk(fields, field_path.split("."), "")

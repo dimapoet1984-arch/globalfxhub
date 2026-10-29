@@ -104,6 +104,35 @@ function globalfxhub_tfe( $content_type, $content_id, $field, $english_value, $l
 }
 
 /**
+ * Every existing translation row for one (content_type, lang) pair,
+ * as { content_id: { field: value } } -- what the pipeline
+ * (i18n/translate_track_b.py) fetches ONCE per content_type/language
+ * to know what's already done, rather than one request per field
+ * (11 fields x 139 brokers x 7 languages would otherwise be 10,703
+ * individual lookups for brokers alone).
+ */
+function globalfxhub_tf_get_all( $content_type, $lang ) {
+    global $wpdb;
+    $table = globalfxhub_track_b_table_name();
+    $rows  = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT content_id, field, value FROM {$table} WHERE content_type = %s AND lang = %s",
+            $content_type,
+            $lang
+        ),
+        ARRAY_A
+    );
+    $by_content_id = array();
+    foreach ( $rows as $row ) {
+        if ( '' === $row['value'] ) {
+            continue; // an intentionally-cleared row (see globalfxhub_tf_set()'s docblock) -- not "done".
+        }
+        $by_content_id[ $row['content_id'] ][ $row['field'] ] = $row['value'];
+    }
+    return $by_content_id;
+}
+
+/**
  * Upserts one translation row. $value may be deleted (passed as an
  * empty string) to intentionally clear a bad translation back to the
  * English fallback -- an empty value is treated as "not translated"
@@ -160,8 +189,112 @@ function globalfxhub_register_track_b_rest_routes() {
             ),
         )
     );
+
+    register_rest_route(
+        'globalfxhub/v1',
+        '/track-b-source/(?P<content_type>[a-z_]+)',
+        array(
+            'methods'             => 'GET',
+            'callback'            => 'globalfxhub_rest_get_track_b_source',
+            'permission_callback' => '__return_true', // same public data every Track B page already renders -- no new disclosure.
+            'args'                => array(
+                'content_type' => array( 'required' => true, 'type' => 'string' ),
+            ),
+        )
+    );
+
+    register_rest_route(
+        'globalfxhub/v1',
+        '/track-b-translations/(?P<content_type>[a-z_]+)/(?P<lang>[a-z-]+)',
+        array(
+            'methods'             => 'GET',
+            'callback'            => function ( WP_REST_Request $request ) {
+                return globalfxhub_tf_get_all( $request->get_param( 'content_type' ), $request->get_param( 'lang' ) );
+            },
+            'permission_callback' => function () {
+                return current_user_can( 'edit_pages' );
+            },
+            'args'                => array(
+                'content_type' => array( 'required' => true, 'type' => 'string' ),
+                'lang'         => array( 'required' => true, 'type' => 'string' ),
+            ),
+        )
+    );
 }
 add_action( 'rest_api_init', 'globalfxhub_register_track_b_rest_routes' );
+
+/**
+ * Read-only English source data for the translation pipeline
+ * (i18n/translate_track_b.py), since there's no WP post to read
+ * title/content from the way Track A does -- this is the actual
+ * PHP-array data every Track B template renders, by content_type.
+ * Returns the item's FULL field set rather than pre-filtering to
+ * just the translatable ones: i18n/track_b_fields.py is the single
+ * authoritative list of which fields are worth translating, and
+ * keeping that decision in one place (Python) means this endpoint
+ * never needs to be kept in sync with it.
+ *
+ * GET /wp-json/globalfxhub/v1/track-b-source/{content_type}
+ * Returns: { "items": [ { "id": "<content_id>", "fields": {...} }, ... ] }
+ */
+function globalfxhub_rest_get_track_b_source( WP_REST_Request $request ) {
+    $content_type = $request->get_param( 'content_type' );
+
+    switch ( $content_type ) {
+        case 'broker':
+            $items = array();
+            foreach ( globalfxhub_get_brokers() as $broker ) {
+                $items[] = array( 'id' => $broker['slug'], 'fields' => $broker );
+            }
+            return array( 'items' => $items );
+
+        case 'country':
+            $items = array();
+            foreach ( globalfxhub_get_countries() as $key => $country ) {
+                $items[] = array( 'id' => $key, 'fields' => $country );
+            }
+            return array( 'items' => $items );
+
+        case 'best_list':
+            // 'filter' and 'sort_key' are PHP closures -- not
+            // JSON-serializable, and not text to translate anyway --
+            // so this is the one content_type that can't just return
+            // the raw array; it rebuilds only the text fields.
+            $items = array();
+            foreach ( globalfxhub_get_best_lists() as $key => $list ) {
+                $items[] = array(
+                    'id'     => $key,
+                    'fields' => array(
+                        'title'      => $list['title'],
+                        'intro'      => $list['intro'],
+                        'sort_label' => $list['sort_label'],
+                    ),
+                );
+            }
+            return array( 'items' => $items );
+
+        case 'regulation':
+            $items = array();
+            foreach ( globalfxhub_get_regulation_pages() as $key => $page ) {
+                $items[] = array( 'id' => $key, 'fields' => $page );
+            }
+            return array( 'items' => $items );
+
+        case 'broker_news':
+            $items = array();
+            foreach ( globalfxhub_get_broker_news_items() as $item ) {
+                $items[] = array( 'id' => globalfxhub_broker_news_item_slug( $item ), 'fields' => $item );
+            }
+            return array( 'items' => $items );
+
+        default:
+            return new WP_Error(
+                'gfh_unknown_content_type',
+                "Unknown content_type: {$content_type}",
+                array( 'status' => 404 )
+            );
+    }
+}
 
 function globalfxhub_rest_set_track_b_translation( WP_REST_Request $request ) {
     $ok = globalfxhub_tf_set(
