@@ -1,0 +1,29 @@
+name: i18n fix home stub slugs
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run (list only) or execute (rename the 7 home-<language> pages to 'home')"
+        required: true
+        default: "dry-run"
+        type: choice
+        options:
+          - dry-run
+          - execute
+
+jobs:
+  fix-slugs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install requests
+      - name: Run fix
+        env:
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: python3 i18n/fix_home_stub_slugs.py --mode ${{ inputs.mode }}
