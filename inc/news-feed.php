@@ -57,10 +57,20 @@ function globalfxhub_news_feed_sources() {
         array( 'name' => 'CNBC — Top News',             'url' => 'https://www.cnbc.com/id/100003114/device/rss/rss.html' ),
         array( 'name' => 'Investing.com — Forex News',  'url' => 'https://www.investing.com/rss/news_1.rss' ),
         array( 'name' => 'ForexLive',                   'url' => 'https://www.forexlive.com/feed/' ),
-        array( 'name' => 'DailyFX',                      'url' => 'https://www.dailyfx.com/feeds/all' ),
-        array( 'name' => 'FXStreet — News',             'url' => 'https://www.fxstreet.com/rss/news' ),
-        array( 'name' => 'Kitco News',                  'url' => 'https://www.kitco.com/rss/KitcoNews.xml' ),
-        array( 'name' => 'Yahoo Finance',               'url' => 'https://finance.yahoo.com/news/rssindex' ),
+        // DailyFX, Kitco News, and Yahoo Finance's old general-news feed
+        // (checked live 2026-10-30 via the /news-feed-debug REST route)
+        // all now 404/403. Research turned up no confirmed working
+        // replacement for any of the three -- DailyFX appears to be
+        // getting folded into IG's own site, Kitco has no official RSS
+        // left (only unofficial third-party scrapers, which this
+        // pipeline's own design explicitly avoids relying on), and
+        // Yahoo's old general feed is reportedly dead with no
+        // general-market equivalent (only single-ticker feeds remain,
+        // not a drop-in replacement) -- so all three are dropped rather
+        // than replaced with an unverified guess. FXStreet's old feed
+        // also 403s; its one plausible lead (subscriptions.fxstreet.com)
+        // is being tested live below rather than assumed.
+        array( 'name' => 'FXStreet — News',             'url' => 'https://subscriptions.fxstreet.com/rss/news.aspx' ),
     );
 }
 
