@@ -34,6 +34,7 @@ import requests
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from glossary import LANGUAGES
 from slugify import transliterate_slug
+from translate import request_with_retry
 
 WP_BASE = "https://globalfxhub.net/wp-json/wp/v2"
 
@@ -73,7 +74,7 @@ def main():
     auth = (username, app_password)
 
     for en_id, translations in CATEGORY_TRANSLATIONS.items():
-        resp = requests.request("GET", f"{WP_BASE}/categories/{en_id}", auth=auth, timeout=30)
+        resp = request_with_retry("GET", f"{WP_BASE}/categories/{en_id}", auth=auth, timeout=30)
         resp.raise_for_status()
         en_term = resp.json()
         en_name = en_term["name"]
@@ -94,29 +95,63 @@ def main():
             translated_name = translations[lang]
             slug = transliterate_slug(translated_name, fallback_prefix=f"{en_term['slug']}-{lang}")
 
+            # Check for an existing term with this exact slug before
+            # creating one -- confirmed live 2026-10-30 that a prior
+            # partial run (a timeout on the final link-back step,
+            # after the term was already created and tagged) can leave
+            # exactly this kind of orphan: a real term that exists and
+            # has the right gfh_term_lang, but was never linked into
+            # the English term's gfh_term_translations, so the
+            # "already linked" check above never saw it. Re-creating
+            # blindly would produce a duplicate category instead of
+            # finishing the one link step that actually failed.
+            lookup_resp = request_with_retry("GET", f"{WP_BASE}/categories", params={"slug": slug}, auth=auth, timeout=30)
+            lookup_resp.raise_for_status()
+            matches = lookup_resp.json()
+
             if args.dry_run:
-                print(f"  {lang}: WOULD create term {translated_name!r} (slug {slug}) and link it")
+                if matches:
+                    print(f"  {lang}: term {translated_name!r} (slug {slug}) already exists as id {matches[0]['id']} -- WOULD link it (not create a duplicate)")
+                else:
+                    print(f"  {lang}: WOULD create term {translated_name!r} (slug {slug}) and link it")
                 continue
 
-            create_resp = requests.request(
-                "POST", f"{WP_BASE}/categories",
-                json={"name": translated_name, "slug": slug, "parent": 0},
-                auth=auth, timeout=30,
-            )
-            create_resp.raise_for_status()
-            new_term = create_resp.json()
-            new_id = new_term["id"]
+            if matches:
+                new_id = matches[0]["id"]
+                print(f"  {lang}: found existing orphaned term {translated_name!r} (slug {slug}, id {new_id}) -- reusing it instead of creating a duplicate")
+            else:
+                create_resp = request_with_retry(
+                    "POST", f"{WP_BASE}/categories",
+                    json={"name": translated_name, "slug": slug, "parent": 0},
+                    auth=auth, timeout=30,
+                )
+                create_resp.raise_for_status()
+                new_term = create_resp.json()
+                new_id = new_term["id"]
 
-            requests.request(
+            request_with_retry(
                 "POST", f"{WP_BASE}/categories/{new_id}",
                 json={"gfh_term_lang": lang},
                 auth=auth, timeout=30,
             ).raise_for_status()
 
-            requests.request(
+            # This specific call is the one that needs real resilience:
+            # inc/i18n-term-rest-connector.php's gfh_term_translations
+            # setter waits on a process-wide lock for up to 70s before
+            # giving up (the SAME lock + the SAME 60s stale-recovery
+            # threshold as the post-level gfh_translations setter) --
+            # confirmed live this exact call timing out at this
+            # script's original timeout=30 is what created the orphan
+            # this function now has to detect and heal above.
+            # request_with_retry()'s own timeout kwarg governs each
+            # individual attempt; a longer per-attempt timeout here
+            # means a single attempt can actually outlast the lock
+            # wait instead of giving up long before the server was
+            # ever going to answer.
+            request_with_retry(
                 "POST", f"{WP_BASE}/categories/{en_id}",
                 json={"gfh_term_translations": {lang: new_id}},
-                auth=auth, timeout=30,
+                auth=auth, timeout=90,
             ).raise_for_status()
 
             print(f"  {lang}: created {translated_name!r} (slug {slug}, id {new_id}) and linked")
