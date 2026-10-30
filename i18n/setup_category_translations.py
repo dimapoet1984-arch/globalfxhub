@@ -109,6 +109,27 @@ def main():
             lookup_resp.raise_for_status()
             matches = lookup_resp.json()
 
+            # A slug match is only a reusable orphan if it's NOT already
+            # claimed by some OTHER language. Confirmed live 2026-10-30:
+            # "Noticias" (es) and "Notícias" (pt) both transliterate to
+            # the same ASCII slug "noticias" once accents are stripped
+            # -- a real collision between two different target
+            # languages, not a partial-failure orphan. Treating it as
+            # one and reusing the term silently relabeled the live
+            # Spanish "News" term to Portuguese and dropped the "es"
+            # link entirely (Polylang derives a group's membership from
+            # each member term's OWN current language tag, so changing
+            # that tag out from under an already-linked term removes it
+            # from its old slot). Disambiguate with a language suffix
+            # instead of reusing in this case, same as slugify's own
+            # non-Latin-script fallback already does for a different
+            # reason.
+            collision = bool( matches ) and matches[0].get("gfh_term_lang") and matches[0]["gfh_term_lang"] != lang
+            if collision:
+                slug = f"{slug}-{lang}"
+                print(f"  {lang}: slug {translated_name!r} collides with the existing {matches[0]['gfh_term_lang']} term (id {matches[0]['id']}) -- using {slug!r} instead")
+                matches = []
+
             if args.dry_run:
                 if matches:
                     print(f"  {lang}: term {translated_name!r} (slug {slug}) already exists as id {matches[0]['id']} -- WOULD link it (not create a duplicate)")
