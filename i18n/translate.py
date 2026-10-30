@@ -146,7 +146,7 @@ def fetch_all_items(auth, post_type):
                 "page": page,
                 "orderby": "id",
                 "order": "asc",
-                "_fields": "id,slug,status,parent,template,title,excerpt,content,gfh_lang,gfh_translations",
+                "_fields": "id,slug,status,parent,template,title,excerpt,content,gfh_lang,gfh_translations,categories",
             },
             auth=auth,
             timeout=30,
@@ -162,6 +162,47 @@ def fetch_all_items(auth, post_type):
             break
         page += 1
     return items
+
+
+def fetch_category_term_map(auth):
+    """English category id -> {lang: translated term id}, for every
+    category already linked into a Polylang translation group via
+    inc/i18n-term-rest-connector.php (set up by
+    i18n/setup_category_translations.py). Fetched fresh each run,
+    reading every category's OWN gfh_term_translations rather than a
+    hardcoded id list, so a newly-translated category is picked up
+    with no code change here.
+
+    A category counts as the group's English anchor when its own
+    translations dict maps "en" back to its own id -- the same shape
+    i18n/setup_category_translations.py writes."""
+    resp = request_with_retry(
+        "GET", f"{WP_BASE}/categories",
+        params={"per_page": 100, "_fields": "id,gfh_term_translations"},
+        auth=auth, timeout=30,
+    )
+    resp.raise_for_status()
+    term_map = {}
+    for cat in resp.json():
+        translations = cat.get("gfh_term_translations") or {}
+        if translations.get("en") == cat["id"]:
+            term_map[cat["id"]] = translations
+    return term_map
+
+
+def resolve_translated_categories(item_categories, lang, category_term_map):
+    """Maps a source item's English category ids to their lang-specific
+    translated term ids, via the map fetch_category_term_map() built.
+    A category with no translation on file for this lang (or that
+    isn't a real translated category at all, e.g. the default
+    "Uncategorized") is simply dropped -- never translated to
+    something wrong, never blocks the rest of the item."""
+    resolved = []
+    for cat_id in item_categories or []:
+        translations = category_term_map.get(cat_id) or {}
+        if lang in translations:
+            resolved.append(translations[lang])
+    return resolved
 
 
 def order_parents_first(items):
@@ -291,7 +332,7 @@ def translate_item_pieces(client, translate_system, review_system, item, segment
     return parsed, translated_by_id, warnings
 
 
-def create_or_update_translation(auth, item, lang, parsed, translated_content, parent_translation_id):
+def create_or_update_translation(auth, item, lang, parsed, translated_content, parent_translation_id, category_term_map=None):
     """Only ever called in --mode translate -- dry-run never reaches
     this far (process_item returns before any Claude call, let alone
     a write, when args.mode == "dry-run")."""
@@ -312,6 +353,10 @@ def create_or_update_translation(auth, item, lang, parsed, translated_content, p
     if item["_post_type"] == "page" and parent_translation_id:
         payload["parent"] = parent_translation_id
 
+    translated_categories = resolve_translated_categories(item.get("categories"), lang, category_term_map or {})
+    if translated_categories:
+        payload["categories"] = translated_categories
+
     resp = request_with_retry("POST", f"{WP_BASE}/{item['_post_type']}s", json=payload, auth=auth, timeout=60)
     resp.raise_for_status()
     new_item = resp.json()
@@ -329,7 +374,7 @@ def create_or_update_translation(auth, item, lang, parsed, translated_content, p
     return new_item["id"]
 
 
-def process_item(client, auth, translate_system, review_system, item, lang, reviewer_model, translated_parent_ids, mode):
+def process_item(client, auth, translate_system, review_system, item, lang, reviewer_model, translated_parent_ids, mode, category_term_map=None):
     content_html = (item.get("content") or {}).get("rendered", "")
     try:
         ok, _ = verify_round_trip(content_html)
@@ -353,7 +398,7 @@ def process_item(client, auth, translate_system, review_system, item, lang, revi
     translated_content = rebuild(segments, translated_by_id)
     parent_translation_id = translated_parent_ids.get(item.get("parent") or 0)
 
-    new_id = create_or_update_translation(auth, item, lang, parsed, translated_content, parent_translation_id)
+    new_id = create_or_update_translation(auth, item, lang, parsed, translated_content, parent_translation_id, category_term_map)
     print(f"  OK {item_description(item)} -> {lang} (new id {new_id}, {len(warnings)} piece(s) left in English)")
     return {"status": "translated", "new_id": new_id, "warnings": warnings}
 
@@ -394,6 +439,7 @@ def main():
     # whether to actually process it.
 
     client = None if args.mode == "dry-run" else tc.get_client()
+    category_term_map = fetch_category_term_map(auth) if args.mode == "translate" else {}
     start_time = time.monotonic()
     counts = {}
 
@@ -431,7 +477,7 @@ def main():
             # otherwise-healthy run across the other 1,000+ items and
             # every remaining language -- log it, count it, move on.
             try:
-                result = process_item(client, auth, translate_system, review_system, item, lang, reviewer_model, translated_parent_ids, args.mode)
+                result = process_item(client, auth, translate_system, review_system, item, lang, reviewer_model, translated_parent_ids, args.mode, category_term_map)
             except Exception as exc:
                 print(f"  FAILED {item_description(item)} / {lang}: {exc} -- skipping this item, continuing with the rest of the run.")
                 lang_counts["failed"] += 1
