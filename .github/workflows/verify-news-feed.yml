@@ -1,0 +1,18 @@
+name: verify news feed pipeline
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call the news-feed debug REST route
+        env:
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: |
+          curl -sS -u "$WP_USERNAME:$WP_APP_PASSWORD" \
+            -X POST \
+            -w "\nHTTP %{http_code}\n" \
+            "https://globalfxhub.net/wp-json/globalfxhub/v1/news-feed-debug"
