@@ -7,22 +7,56 @@ jobs:
   diagnose:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch the CySEC CIF register page and inspect its structure
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Playwright
         run: |
-          curl -sSL -A "Mozilla/5.0 (compatible; GlobalFXHubRegistryCheck/1.0)" \
-            -w "\n\nHTTP %{http_code}\n" \
-            "https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/" \
-            -o /tmp/cysec.html
-          echo "--- byte size ---"
-          wc -c /tmp/cysec.html
-          echo "--- first 3000 chars ---"
-          head -c 3000 /tmp/cysec.html
-          echo
-          echo "--- grep for a few known license numbers ---"
-          grep -o '.\{80\}309/16.\{80\}' /tmp/cysec.html || echo "309/16 not found"
-          grep -o '.\{80\}400/21.\{80\}' /tmp/cysec.html || echo "400/21 not found"
-          grep -o '.\{80\}125/10.\{80\}' /tmp/cysec.html || echo "125/10 not found"
-          echo "--- any xlsx/csv/pdf download links ---"
-          grep -oE 'href="[^"]*\.(xlsx|csv|pdf)"' /tmp/cysec.html | head -10 || echo "none found"
-          echo "--- rough count of license-number-shaped strings (NNN/NN) ---"
-          grep -oE '[0-9]{2,3}/[0-9]{2}' /tmp/cysec.html | sort -u | wc -l
+          pip install playwright
+          playwright install --with-deps chromium
+      - name: Render the CySEC register page with a real browser and inspect it
+        run: |
+          python3 - <<'PYEOF'
+          from playwright.sync_api import sync_playwright
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page()
+              page.goto(
+                  "https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/",
+                  wait_until="networkidle",
+                  timeout=60000,
+              )
+              page.wait_for_timeout(3000)
+
+              text = page.inner_text("body")
+              print("--- rendered body text length ---")
+              print(len(text))
+
+              print("--- known license numbers present in rendered text? ---")
+              for num in ["309/16", "400/21", "125/10"]:
+                  print(num, "->", "FOUND" if num in text else "not found")
+
+              tables = page.query_selector_all("table")
+              print(f"--- {len(tables)} <table> element(s) found ---")
+              for i, t in enumerate(tables[:3]):
+                  rows = t.query_selector_all("tr")
+                  print(f"table[{i}]: {len(rows)} row(s)")
+                  if rows:
+                      print(f"  first row text: {rows[0].inner_text()[:200]!r}")
+                      if len(rows) > 1:
+                          print(f"  second row text: {rows[1].inner_text()[:200]!r}")
+
+              # Fallback: look for any repeating list/grid container if no <table>.
+              print("--- a 2000-char slice of rendered body text, around the first known number or the middle ---")
+              idx = -1
+              for num in ["309/16", "400/21", "125/10"]:
+                  idx = text.find(num)
+                  if idx != -1:
+                      break
+              if idx == -1:
+                  idx = len(text) // 2
+              print(text[max(0, idx - 500):idx + 1500])
+
+              browser.close()
+          PYEOF
