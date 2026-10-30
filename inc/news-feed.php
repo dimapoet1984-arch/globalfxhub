@@ -657,6 +657,31 @@ function globalfxhub_news_debug() {
 add_action( 'init', 'globalfxhub_news_debug' );
 
 /**
+ * REST equivalent of globalfxhub_news_debug() above, for verifying this
+ * pipeline from outside a logged-in wp-admin session (e.g. CI, or any
+ * automated check using an application password) -- application
+ * passwords authenticate REST requests but not plain cookie-gated page
+ * loads like ?globalfxhub_news_debug=1, so that endpoint alone can't be
+ * exercised without a real admin browser session. Same gate
+ * (current_user_can('manage_options')), same underlying call, same
+ * force=true semantics (bypasses the 7-day minimum-gap guard and, if a
+ * story clears the significance bar, really publishes -- this was
+ * never a separate dry-run mode, just an immediate forced run).
+ */
+function globalfxhub_register_news_feed_debug_route() {
+    register_rest_route( 'globalfxhub/v1', '/news-feed-debug', array(
+        'methods'             => 'POST',
+        'callback'            => function () {
+            return rest_ensure_response( globalfxhub_fetch_and_publish_news( true ) );
+        },
+        'permission_callback' => function () {
+            return current_user_can( 'manage_options' );
+        },
+    ) );
+}
+add_action( 'rest_api_init', 'globalfxhub_register_news_feed_debug_route' );
+
+/**
  * Lets any post be marked noindex via postmeta (_news_noindex) -- the
  * mechanism a lower-quality legacy post could be flagged with without
  * unpublishing it outright, and that nothing this pipeline currently
