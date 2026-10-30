@@ -42,6 +42,17 @@ WP_BASE = "https://globalfxhub.net/wp-json/wp/v2"
 
 POST_TYPES = ["page", "post"]
 
+# These three pages exist only to 301-redirect a stale URL to its real
+# replacement (functions.php's globalfxhub_legacy_slug_redirects()) --
+# confirmed via the REST API they're all permanently empty (0 bytes of
+# content), so there's nothing here worth translating, and "guides"
+# specifically still carries a dead template reference
+# ("page-guides.php", removed when /guides/ became /learn/) that
+# WordPress's REST API rejects outright (400) when copied onto a new
+# translated page -- which crashed a full --languages all run after
+# exactly one item on 2026-10-30, before this exclusion was added.
+LEGACY_REDIRECT_ONLY_SLUGS = {"guides", "contact-us", "terms-of-use"}
+
 RETRY_ATTEMPTS = 4
 RETRY_BACKOFF_SECONDS = 3
 
@@ -371,6 +382,7 @@ def main():
     for post_type in POST_TYPES:
         all_items.extend(fetch_all_items(auth, post_type))
     all_items = order_parents_first(all_items)
+    all_items = [item for item in all_items if item["slug"] not in LEGACY_REDIRECT_ONLY_SLUGS]
     # Deliberately NOT filtering all_items down to item_filter here --
     # a selected child page's real parent (e.g. "news" when --items
     # only names "news/markets") must still be visited so its EXISTING
@@ -389,7 +401,7 @@ def main():
         translate_system = tc.build_system_prompt(glossary_block_for_prompt(lang), tc.TRANSLATE_ROLE_INSTRUCTIONS)
         review_system = tc.build_system_prompt(glossary_block_for_prompt(lang), tc.REVIEW_ROLE_INSTRUCTIONS)
         translated_parent_ids = {}
-        lang_counts = {"would_translate": 0, "translated": 0, "skipped_round_trip": 0, "skipped_splitter_error": 0, "already_done": 0}
+        lang_counts = {"would_translate": 0, "translated": 0, "skipped_round_trip": 0, "skipped_splitter_error": 0, "already_done": 0, "failed": 0}
         counts[lang] = lang_counts
 
         print(f"\n=== {lang} ===")
@@ -412,7 +424,18 @@ def main():
                 # supply the parent link for its children some other run).
                 continue
 
-            result = process_item(client, auth, translate_system, review_system, item, lang, reviewer_model, translated_parent_ids, args.mode)
+            # A single item's bad/stale data (e.g. a dead template
+            # reference WordPress's REST API rejects with a 400 --
+            # exactly what happened to "guides" on 2026-10-30, before
+            # LEGACY_REDIRECT_ONLY_SLUGS existed) must never abort an
+            # otherwise-healthy run across the other 1,000+ items and
+            # every remaining language -- log it, count it, move on.
+            try:
+                result = process_item(client, auth, translate_system, review_system, item, lang, reviewer_model, translated_parent_ids, args.mode)
+            except Exception as exc:
+                print(f"  FAILED {item_description(item)} / {lang}: {exc} -- skipping this item, continuing with the rest of the run.")
+                lang_counts["failed"] += 1
+                continue
             lang_counts[result["status"]] = lang_counts.get(result["status"], 0) + 1
             if result.get("new_id") and item["_post_type"] == "page":
                 translated_parent_ids[item["id"]] = result["new_id"]
