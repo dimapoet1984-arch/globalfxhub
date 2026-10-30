@@ -69,6 +69,16 @@ function globalfxhub_news_feed_sources() {
         // is reportedly dead with no general-market equivalent (only
         // single-ticker feeds remain). The 6 sources below are each
         // individually confirmed live and working.
+        // Added 2026-10-30, both confirmed live: each central bank's
+        // own press releases are inherently high-impact triggers by
+        // definition (FOMC statements, rate decisions), a strong fit
+        // for this pipeline's significance-gated design -- and a
+        // primary source, not wire coverage of one. press_all.xml
+        // already covers the Fed's monetary-policy/enforcement/banking-
+        // reg category feeds, so only that one Fed feed is added
+        // (not all 5 category feeds, which would just be redundant).
+        array( 'name' => 'Federal Reserve — All Press Releases', 'url' => 'https://www.federalreserve.gov/feeds/press_all.xml' ),
+        array( 'name' => 'European Central Bank — Press',        'url' => 'https://www.ecb.europa.eu/rss/press.xml' ),
     );
 }
 
