@@ -7,56 +7,21 @@ jobs:
   diagnose:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install Playwright
+      - name: Plain curl (known to return a real 200 + full page previously)
         run: |
-          pip install playwright
-          playwright install --with-deps chromium
-      - name: Render the CySEC register page with a real browser and inspect it
-        run: |
-          python3 - <<'PYEOF'
-          from playwright.sync_api import sync_playwright
-
-          with sync_playwright() as p:
-              browser = p.chromium.launch()
-              page = browser.new_page()
-              page.goto(
-                  "https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/",
-                  wait_until="networkidle",
-                  timeout=60000,
-              )
-              page.wait_for_timeout(3000)
-
-              text = page.inner_text("body")
-              print("--- rendered body text length ---")
-              print(len(text))
-
-              print("--- known license numbers present in rendered text? ---")
-              for num in ["309/16", "400/21", "125/10"]:
-                  print(num, "->", "FOUND" if num in text else "not found")
-
-              tables = page.query_selector_all("table")
-              print(f"--- {len(tables)} <table> element(s) found ---")
-              for i, t in enumerate(tables[:3]):
-                  rows = t.query_selector_all("tr")
-                  print(f"table[{i}]: {len(rows)} row(s)")
-                  if rows:
-                      print(f"  first row text: {rows[0].inner_text()[:200]!r}")
-                      if len(rows) > 1:
-                          print(f"  second row text: {rows[1].inner_text()[:200]!r}")
-
-              # Fallback: look for any repeating list/grid container if no <table>.
-              print("--- a 2000-char slice of rendered body text, around the first known number or the middle ---")
-              idx = -1
-              for num in ["309/16", "400/21", "125/10"]:
-                  idx = text.find(num)
-                  if idx != -1:
-                      break
-              if idx == -1:
-                  idx = len(text) // 2
-              print(text[max(0, idx - 500):idx + 1500])
-
-              browser.close()
-          PYEOF
+          curl -sSL -A "Mozilla/5.0 (compatible; GlobalFXHubRegistryCheck/1.0)" \
+            -w "\n\nHTTP %{http_code}\n" \
+            "https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/" \
+            -o /tmp/cysec.html
+          echo "--- byte size ---"
+          wc -c /tmp/cysec.html
+          echo "--- does this response look like a WAF block page? ---"
+          grep -i "web page blocked\|attack id" /tmp/cysec.html || echo "no block-page markers found -- looks like a real response"
+          echo "--- any fetch()/XHR/ajax/api hints in the JS ---"
+          grep -ioE '(fetch\(|XMLHttpRequest|\.ajax\(|/api/[a-z0-9/_-]*|\.asmx[a-z0-9/_?=&-]*|/_vti_bin/[a-z0-9/_-]*|webmethod)' /tmp/cysec.html | sort -u | head -40
+          echo "--- any data-* attributes that might hint at a widget/component name ---"
+          grep -ioE 'data-[a-z-]+="[^"]{0,60}"' /tmp/cysec.html | sort -u | head -30
+          echo "--- any <script> src referencing something other than known CDNs (jquery/bootstrap/aos/fancybox/owlcarousel/cdnjs/jsdelivr/unpkg/googleapis) ---"
+          grep -oE '<script[^>]*src="[^"]*"' /tmp/cysec.html | grep -viE 'jquery|bootstrap|aos|fancybox|owl.carousel|cdnjs|jsdelivr|unpkg|googleapis|gstatic' | sort -u | head -20
+          echo "--- look for a specific content container near where a results grid might render (search for common CMS widget markers) ---"
+          grep -oE 'id="[a-zA-Z0-9_]*[Rr]esult[a-zA-Z0-9_]*"|id="[a-zA-Z0-9_]*[Gg]rid[a-zA-Z0-9_]*"|id="[a-zA-Z0-9_]*[Ll]ist[a-zA-Z0-9_]*"' /tmp/cysec.html | sort -u | head -20
