@@ -18,6 +18,19 @@
  * inc/i18n-track-b-routing.php's approach) avoids ever having to
  * create or maintain a second, third, ... nav_menu object per
  * language in wp-admin.
+ *
+ * Confirmed live 2026-11-02, AFTER deploying both filters below: they
+ * never fired at all. has_nav_menu( 'primary' ) is apparently false
+ * on this install right now, so header.php's real code path is
+ * globalfxhub_fallback_menu() (functions.php) -- a hand-written
+ * fallback that already called globalfxhub_t() for labels (which is
+ * why titles translated correctly) but bare home_url() for every
+ * href (why URLs didn't). That function now calls
+ * globalfxhub_nav_url() directly instead -- the actual fix. The two
+ * filters below are left in place, tested, and harmless: if a real
+ * 'primary' menu is ever assigned in wp-admin, wp_nav_menu() starts
+ * being used instead of the fallback, and these filters pick up the
+ * exact same job with no further changes needed.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

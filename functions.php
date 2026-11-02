@@ -143,27 +143,27 @@ add_action( 'wp_enqueue_scripts', 'globalfxhub_scripts' );
  */
 function globalfxhub_fallback_menu() {
     echo '<ul class="nav__links" id="navLinks">';
-    echo '<li><a href="' . esc_url( home_url( '/reviews/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_reviews' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/best/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_best' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( globalfxhub_nav_url( '/reviews/', 'reviews' ) ) . '">' . esc_html( globalfxhub_t( 'nav_reviews' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( globalfxhub_nav_url( '/best/', 'best' ) ) . '">' . esc_html( globalfxhub_t( 'nav_best' ) ) . '</a></li>';
 
     echo '<li class="nav__dropdown">';
     echo '<button type="button" class="nav__dropdown-toggle">' . esc_html( globalfxhub_t( 'nav_tools' ) ) . '</button>';
     echo '<ul class="nav__dropdown-menu">';
-    echo '<li><a href="' . esc_url( home_url( '/broker-finder/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_finder' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/compare/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_compare' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/cost-calculator/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_cost_calculator' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/regulation-checker/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_regulation_checker' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/broker-changelog/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_changelog' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( globalfxhub_nav_url( '/broker-finder/', 'broker-finder' ) ) . '">' . esc_html( globalfxhub_t( 'nav_finder' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( globalfxhub_nav_url( '/compare/', 'compare' ) ) . '">' . esc_html( globalfxhub_t( 'nav_compare' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( globalfxhub_nav_url( '/cost-calculator/', 'cost-calculator' ) ) . '">' . esc_html( globalfxhub_t( 'nav_cost_calculator' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( globalfxhub_nav_url( '/regulation-checker/', 'regulation-checker' ) ) . '">' . esc_html( globalfxhub_t( 'nav_regulation_checker' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( globalfxhub_nav_url( '/broker-changelog/', 'broker-changelog' ) ) . '">' . esc_html( globalfxhub_t( 'nav_changelog' ) ) . '</a></li>';
     echo '</ul>';
     echo '</li>';
 
     echo '<li class="nav__dropdown">';
     echo '<button type="button" class="nav__dropdown-toggle">' . esc_html( globalfxhub_t( 'nav_research' ) ) . '</button>';
     echo '<ul class="nav__dropdown-menu">';
-    echo '<li><a href="' . esc_url( home_url( '/learn/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_learn' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/news/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_news' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/regulation/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_regulation' ) ) . '</a></li>';
-    echo '<li><a href="' . esc_url( home_url( '/countries/' ) ) . '">' . esc_html( globalfxhub_t( 'nav_countries' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( globalfxhub_nav_url( '/learn/', 'learn' ) ) . '">' . esc_html( globalfxhub_t( 'nav_learn' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( globalfxhub_nav_url( '/news/', 'news' ) ) . '">' . esc_html( globalfxhub_t( 'nav_news' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( globalfxhub_nav_url( '/regulation/', 'regulation' ) ) . '">' . esc_html( globalfxhub_t( 'nav_regulation' ) ) . '</a></li>';
+    echo '<li><a href="' . esc_url( globalfxhub_nav_url( '/countries/', 'countries' ) ) . '">' . esc_html( globalfxhub_t( 'nav_countries' ) ) . '</a></li>';
     echo '</ul>';
     echo '</li>';
 
