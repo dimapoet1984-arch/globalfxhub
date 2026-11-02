@@ -65,7 +65,7 @@ $globalfxhub_ticker_render = array_merge( $globalfxhub_ticker_items, $globalfxhu
         </form>
         <div class="search-results" id="navSearchResults" hidden></div>
       </div>
-      <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" class="nav__cta"><?php globalfxhub_te( 'nav_cta' ); ?></a>
+      <a href="<?php echo esc_url( globalfxhub_nav_url( '/reviews/', 'reviews' ) ); ?>" class="nav__cta"><?php globalfxhub_te( 'nav_cta' ); ?></a>
       <?php if ( GLOBALFXHUB_LANG_SWITCHER_ENABLED && function_exists( 'pll_the_languages' ) ) : ?>
       <div class="langsel">
         <?php
@@ -76,6 +76,16 @@ $globalfxhub_ticker_render = array_merge( $globalfxhub_ticker_items, $globalfxhu
             'show_names'        => 1,
             'display_names_as'  => 'name',
         ) );
+        // Only offer languages that have actually passed the launch
+        // checklist (GLOBALFXHUB_LIVE_LANGUAGES, inc/i18n-live-languages.php)
+        // -- a language still mid-translation stays reachable by
+        // direct URL (and noindexed) but isn't surfaced as a switcher
+        // option until it's been verified ready.
+        if ( $lang_links && defined( 'GLOBALFXHUB_LIVE_LANGUAGES' ) ) {
+            $lang_links = array_filter( $lang_links, function ( $l ) {
+                return in_array( $l['slug'], GLOBALFXHUB_LIVE_LANGUAGES, true );
+            } );
+        }
         if ( $lang_links ) :
         ?>
         <select onchange="if(this.value) window.location.href=this.value;">

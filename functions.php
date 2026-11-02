@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * already entered under Languages > Translations, so nothing is lost by
  * leaving this off.
  */
-define( 'GLOBALFXHUB_LANG_SWITCHER_ENABLED', false );
+define( 'GLOBALFXHUB_LANG_SWITCHER_ENABLED', true );
 
 require get_template_directory() . '/inc/candlestick-patterns.php';
 require get_template_directory() . '/inc/translatable-strings.php';
@@ -41,6 +41,7 @@ require get_template_directory() . '/inc/i18n-rest-connector.php';
 require get_template_directory() . '/inc/i18n-term-rest-connector.php';
 require get_template_directory() . '/inc/i18n-track-b-translations.php';
 require get_template_directory() . '/inc/i18n-track-b-routing.php';
+require get_template_directory() . '/inc/i18n-nav-menu.php';
 
 /**
  * Editorial bylines shown on articles, keyed by slug. These are
