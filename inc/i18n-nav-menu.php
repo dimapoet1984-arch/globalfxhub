@@ -61,10 +61,16 @@ function globalfxhub_nav_url( $fallback_path, $english_slug = null ) {
         }
     }
 
-    if ( function_exists( 'pll_home_url' ) ) {
-        return trailingslashit( pll_home_url( $lang ) ) . ltrim( $fallback_path, '/' );
-    }
-    return home_url( $fallback_path );
+    // No real (or no yet-existing) translation to resolve to -- prefix
+    // the language code directly onto the English path, matching
+    // inc/i18n-track-b-routing.php's own URL convention exactly
+    // (confirmed live 2026-11-02: an earlier version of this function
+    // called a `pll_home_url()` helper that doesn't actually exist in
+    // this Polylang install, which silently fell through to the bare,
+    // un-prefixed home_url() below for every single nav item -- labels
+    // translated, but not one URL did. Plain string prefixing needs no
+    // Polylang function this theme hasn't already proven live.)
+    return home_url( '/' . $lang . $fallback_path );
 }
 
 /**
