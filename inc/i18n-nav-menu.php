@@ -125,3 +125,57 @@ function globalfxhub_translate_primary_nav_items( $items, $args ) {
     return $items;
 }
 add_filter( 'wp_nav_menu_objects', 'globalfxhub_translate_primary_nav_items', 10, 2 );
+
+/**
+ * Confirmed live 2026-11-02: the wp_nav_menu_objects fix above
+ * correctly translates every item's $item->title (labels rendered
+ * translated), but NOT ONE item's URL made it into the rendered
+ * <a href> -- every link stayed on the bare English URL. Something
+ * between that filter and the final HTML re-derives the href rather
+ * than trusting $item->url (WordPress core's own Walker_Nav_Menu
+ * reads $item->url into $atts['href'] and then runs
+ * 'nav_menu_link_attributes' over it, so a plugin on this site is
+ * most likely resetting $atts['href'] from the item's original
+ * object_id on that later hook). Setting $atts['href'] directly, on
+ * this filter, at a very late priority, is the one point guaranteed
+ * to be the actual last word on the rendered href regardless of
+ * whatever is doing that -- belt-and-suspenders with the filter
+ * above rather than a replacement for it, since the title fix there
+ * is proven working and this isolates the URL fix to exactly the
+ * part that wasn't.
+ */
+function globalfxhub_translate_primary_nav_href( $atts, $item, $args ) {
+    if ( empty( $args->theme_location ) || 'primary' !== $args->theme_location ) {
+        return $atts;
+    }
+    if ( ! function_exists( 'pll_current_language' ) || ! function_exists( 'pll_default_language' ) ) {
+        return $atts;
+    }
+    $lang = pll_current_language();
+    if ( ! $lang || $lang === pll_default_language() ) {
+        return $atts;
+    }
+
+    $label_map = globalfxhub_primary_nav_label_map();
+    $title     = isset( $item->title ) ? $item->title : '';
+    // The title at this point may already be translated (this filter
+    // runs after wp_nav_menu_objects) -- match on either the original
+    // English label or its translation, so this works whether or not
+    // the title-translation filter above also ran.
+    $english_label = $title;
+    foreach ( $label_map as $english => $mapped ) {
+        if ( $title === $english || $title === globalfxhub_t( $mapped[0] ) ) {
+            $english_label = $english;
+            break;
+        }
+    }
+    if ( ! isset( $label_map[ $english_label ] ) ) {
+        return $atts;
+    }
+    list( , $slug ) = $label_map[ $english_label ];
+    if ( $slug ) {
+        $atts['href'] = globalfxhub_nav_url( '/' . $slug . '/', $slug );
+    }
+    return $atts;
+}
+add_filter( 'nav_menu_link_attributes', 'globalfxhub_translate_primary_nav_href', 999, 3 );
