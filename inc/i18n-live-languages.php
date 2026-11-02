@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'GLOBALFXHUB_LIVE_LANGUAGES', array( 'en' ) );
+define( 'GLOBALFXHUB_LIVE_LANGUAGES', array( 'en', 'es', 'de', 'ar' ) );
 
 function globalfxhub_is_live_language( $lang = null ) {
     if ( ! function_exists( 'pll_current_language' ) ) {
