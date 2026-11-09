@@ -134,6 +134,7 @@ elseif ( $broker ) :
     <span class="review-head__tag"><?php echo esc_html( $reg_label ); ?><?php echo $broker['founded'] ? ' &middot; est. ' . esc_html( $broker['founded'] ) : ''; ?></span>
   </div>
   <div class="review-head__dates" style="font-size:12.5px;color:var(--ink-soft);margin-top:6px;display:flex;flex-wrap:wrap;gap:14px;">
+    <span>Researched &amp; fact-checked by: <a href="<?php echo esc_url( home_url( '/editorial-policy/' ) ); ?>" style="color:var(--ink-soft);text-decoration:underline;">GlobalFXHub Research Team</a></span>
     <span>Data last reviewed: <?php echo esc_html( $review_dates['data_reviewed'] ); ?></span>
     <span>Regulation last reviewed: <?php echo esc_html( $review_dates['regulation_reviewed'] ); ?></span>
     <span>Pricing last checked: <?php echo esc_html( $review_dates['pricing_checked'] ); ?></span>

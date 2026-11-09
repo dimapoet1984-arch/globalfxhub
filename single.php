@@ -75,7 +75,12 @@ if ( $theme_hero_image ) :
     <div class="author__avatar"></div>
     <div>
       <div class="author__name">Written by <?php echo esc_html( $byline['name'] ); ?></div>
-      <div class="author__role"><?php echo esc_html( $byline['role'] ); ?> · Published <?php echo esc_html( get_the_date() ); ?></div>
+      <div class="author__role">
+        <?php echo esc_html( $byline['role'] ); ?> · Published <?php echo esc_html( get_the_date() ); ?>
+        <?php if ( get_the_modified_date( 'U' ) > get_the_date( 'U' ) ) : ?>
+        · Last reviewed <?php echo esc_html( get_the_modified_date() ); ?>
+        <?php endif; ?>
+      </div>
       <?php if ( ! empty( $byline['bio'] ) ) : ?>
       <div class="author__bio"><?php echo esc_html( $byline['bio'] ); ?></div>
       <?php endif; ?>
