@@ -128,10 +128,22 @@ function globalfxhub_sitemap_urls() {
     // actual permalink settings. lastmod uses WordPress's own
     // post_modified_gmt -- a real timestamp WP already maintains,
     // never a guess.
+    //
+    // Excludes posts in a not-yet-launched Polylang language (see
+    // inc/i18n-live-languages.php) using the SAME post-ID list that
+    // already keeps them out of core's and Yoast's own sitemaps --
+    // this file's get_posts() call has no language filter of its own,
+    // so without this it was listing noindexed fr/pl/it/pt posts
+    // (confirmed live: foreign-language slugs with no /xx/ prefix at
+    // all turning up in /sitemap.xml) right alongside launched ones.
+    $unlaunched_post_ids = function_exists( 'globalfxhub_unlaunched_language_post_ids' )
+        ? globalfxhub_unlaunched_language_post_ids( 'post' )
+        : array();
     $native_post_ids = get_posts( array(
         'post_type'      => 'post',
         'post_status'    => 'publish',
         'posts_per_page' => -1,
+        'post__not_in'   => $unlaunched_post_ids,
         'fields'         => 'ids',
     ) );
     foreach ( $native_post_ids as $post_id ) {
@@ -140,9 +152,12 @@ function globalfxhub_sitemap_urls() {
 
     // --- Service pages (About, How We Test, Why Trust Us, Advertiser
     // Disclosure, Terms, Privacy, Contact, Editorial Policy) ---
+    $unlaunched_page_ids = function_exists( 'globalfxhub_unlaunched_language_post_ids' )
+        ? globalfxhub_unlaunched_language_post_ids( 'page' )
+        : array();
     foreach ( array_keys( globalfxhub_get_service_pages() ) as $slug ) {
         $page = get_page_by_path( $slug );
-        if ( $page ) {
+        if ( $page && ! in_array( $page->ID, $unlaunched_page_ids, true ) ) {
             $add( get_permalink( $page->ID ), 0.4, get_post_modified_time( 'Y-m-d', true, $page->ID ) );
         }
     }
