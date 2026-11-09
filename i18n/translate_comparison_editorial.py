@@ -115,7 +115,7 @@ def translate_and_review(client, lang, items):
     parsed, _ = tc.structured_request(
         client, tc.HAIKU_MODEL, system,
         TRANSLATE_USER_TEMPLATE.format(lang=lang, items=json.dumps(items, ensure_ascii=False)),
-        BATCH_SCHEMA, tc.TRANSLATE_EFFORT, max_tokens=4000,
+        BATCH_SCHEMA, tc.TRANSLATE_EFFORT, max_tokens=8000,
     )
     draft = {item["id"]: item["text"] for item in parsed["translations"]}
 
@@ -124,7 +124,7 @@ def translate_and_review(client, lang, items):
     reviewed, _ = tc.structured_request(
         client, tc.HAIKU_MODEL, review_system,
         REVIEW_USER_TEMPLATE.format(lang=lang, source=json.dumps(items, ensure_ascii=False), translation=json.dumps(draft_items, ensure_ascii=False)),
-        BATCH_SCHEMA, tc.REVIEW_EFFORT, max_tokens=4000,
+        BATCH_SCHEMA, tc.REVIEW_EFFORT, max_tokens=8000,
     )
     return {item["id"]: item["text"] for item in reviewed["translations"]}
 
