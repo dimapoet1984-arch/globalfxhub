@@ -1756,23 +1756,21 @@ function globalfxhub_get_external_reviews() {
  * across sources with a confirmed rating on a comparable (non-Trust-Score)
  * scale. Returns null for average when no such rating is on file.
  */
+/**
+ * Deliberately does NOT blend these into one combined average. Rescaling
+ * ForexPeaceArmy/BrokerChooser/DailyForex ratings onto a common /5 and
+ * averaging them implies the sites measure the same thing on comparable
+ * scales -- they don't (different criteria, different sample sizes,
+ * some driven by aggrieved-trader self-selection, some by vendor
+ * trust-score formulas unrelated to user sentiment). Individual ratings
+ * are kept, each with its own source/url/date/note, so a reader can
+ * judge each on its own terms rather than being handed one number that
+ * launders that disagreement away.
+ */
 function globalfxhub_broker_external_reviews( $slug ) {
     $all = globalfxhub_get_external_reviews();
-    $reviews = isset( $all[ $slug ] ) ? $all[ $slug ] : array();
-
-    $sum = 0;
-    $count = 0;
-    foreach ( $reviews as $r ) {
-        if ( null === $r['rating'] || ! empty( $r['exclude_from_average'] ) ) {
-            continue;
-        }
-        $sum += ( $r['rating'] / $r['scale'] ) * 5;
-        $count++;
-    }
-
     return array(
-        'reviews' => $reviews,
-        'average' => $count > 0 ? round( $sum / $count, 1 ) : null,
+        'reviews' => isset( $all[ $slug ] ) ? $all[ $slug ] : array(),
     );
 }
 

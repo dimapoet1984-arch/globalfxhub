@@ -277,7 +277,7 @@ if ( ! empty( $ext['reviews'] ) ) :
 ?>
 <div class="wrap" style="padding-bottom:20px;">
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;">What other reviewers say</h2>
-  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">Ratings as found via each site's published/indexed content, not our own testing and not independently re-verified against the live page -- treat as a snapshot and check the source before relying on it. Each card links to where we found it.</p>
+  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">Ratings as found via each site's published/indexed content, not our own testing and not independently re-verified against the live page -- treat as a snapshot and check the source before relying on it. We don't combine these into one blended average: each site measures different things on different scales (some are user-sentiment ratings, others vendor trust-score formulas), so averaging them would imply a comparability that isn't really there. Each card links to where we found it -- read them individually, on their own terms.</p>
   <div class="external-reviews">
     <?php foreach ( $ext['reviews'] as $r ) : ?>
     <a href="<?php echo esc_url( $r['url'] ); ?>" target="_blank" rel="noopener nofollow" class="external-review-card">
@@ -290,12 +290,6 @@ if ( ! empty( $ext['reviews'] ) ) :
       <?php if ( ! empty( $r['note'] ) ) : ?><div class="external-review-card__note"><?php echo esc_html( $r['note'] ); ?></div><?php endif; ?>
     </a>
     <?php endforeach; ?>
-    <?php if ( null !== $ext['average'] ) : ?>
-    <div class="external-review-card external-review-card--average">
-      <div class="external-review-card__source">Average of star-rated sources above</div>
-      <div class="external-review-card__score"><?php echo esc_html( $ext['average'] ); ?> <span>/ 5</span></div>
-    </div>
-    <?php endif; ?>
   </div>
 </div>
 <?php endif; ?>
