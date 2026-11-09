@@ -78,6 +78,7 @@ function globalfxhub_regulation_checker_geography_map() {
         'CMA'             => array( 'geography' => 'Kenya', 'register_url' => 'https://www.cma.or.ke/' ),
         'SCB'             => array( 'geography' => 'The Bahamas', 'register_url' => 'https://www.scb.gov.bs/registrant-licensee-search/' ),
         'FSAS'            => array( 'geography' => 'Seychelles', 'register_url' => 'https://fsaseychelles.sc/' ),
+        'Central Bank of Ireland' => array( 'geography' => 'Ireland', 'register_url' => 'https://registers.centralbank.ie/' ),
     );
 }
 
@@ -135,11 +136,33 @@ function globalfxhub_broker_regulation_dossier( $broker ) {
 
     $other_regulators = array();
     foreach ( (array) ( $broker['other_reg'] ?? array() ) as $code ) {
+        /*
+         * A handful of brokers (e.g. IG: 'ASIC', '+9 more Tier-1')
+         * carry a "+N more" count-style placeholder in this field
+         * rather than a real regulator code -- useful shorthand for a
+         * compact review-page tag, but it isn't a licence this
+         * Regulation Checker can look up or link to, and rendering it
+         * as if it were one produced a broken-looking record (no
+         * geography, no verification link). Render it as an explicit,
+         * honest note instead of a fake/missing regulator entry.
+         * other_reg_count (the scoring input) is untouched -- this is
+         * a display-layer fix only.
+         */
+        if ( preg_match( '/^\+\d+\s+more\b/i', $code ) ) {
+            $other_regulators[] = array(
+                'code'         => $code,
+                'geography'    => null,
+                'register_url' => null,
+                'note'         => 'Not individually itemized or independently verified here -- see this broker\'s review page.',
+            );
+            continue;
+        }
         $mapped = $geo_map[ $code ] ?? null;
         $other_regulators[] = array(
             'code'         => $code,
             'geography'    => $mapped['geography'] ?? null,
             'register_url' => $mapped['register_url'] ?? null,
+            'note'         => null,
         );
     }
 

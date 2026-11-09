@@ -130,7 +130,7 @@ const RC_BROKERS = <?php echo wp_json_encode( $rc_payload ); ?>;
     rows += regRow('CySEC (Cyprus)', b.cysec, 'Cyprus, passportable across the EU/EEA (subject to host-country notification)');
     rows += regRow('FSA Seychelles (offshore)', b.seychelles, 'Seychelles -- offshore, no statutory investor compensation scheme');
     b.other_regulators.forEach(function(r) {
-      rows += regRow(r.code, { number: null, passported: false, note: 'Listed among confirmed regulators', register_url: r.register_url }, r.geography);
+      rows += regRow(r.code, { number: null, passported: false, note: r.note || 'Listed among confirmed regulators', register_url: r.register_url }, r.geography);
     });
 
     if (!rows) {
