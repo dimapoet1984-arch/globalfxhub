@@ -1886,7 +1886,27 @@ function globalfxhub_score_non_trading_fees( $broker ) {
     return max( 1.0, min( 5.0, $score ) );
 }
 
-/** Execution/trading conditions (10%): confirmed execution model, discounted for confirmed fund-manipulation red flags. */
+/**
+ * A red-flag phrase in a broker's free-text research notes may only move a
+ * numerical score when the SAME text also carries a corroborating,
+ * attributable finding -- a regulator, a named tracker's own adjudication
+ * (e.g. ForexPeaceArmy's own "guilty" verdict), a settlement/fine, or a
+ * confirmed licence action. A bare anonymous/user complaint ("a single,
+ * unverified account", "one Trustpilot review", "forum post", "alleged")
+ * must never dock a score on its own -- see the Vantos Markets case this
+ * guarded against: one unverified 2022 Trustpilot complaint was previously
+ * enough, by itself, to cost it 1.25 points on deposits/withdrawals.
+ */
+function globalfxhub_text_has_corroborated_finding( $text ) {
+    return (bool) preg_match(
+        '/\b(regulator|cysec|fca|asic|fsca|dfsa|cma\b|cftc|consob|bafin|amf\b|sec\b|'
+        . 'fined|fine of|settlement|settled with|guilty|licen[cs]e (withdrawn|suspended|revoked|renounc)|'
+        . 'blacklist|official register|investor alert|own (guilty|finding)|investigation|consent order)\b/i',
+        $text
+    );
+}
+
+/** Execution/trading conditions (10%): confirmed execution model, discounted only for corroborated fund-manipulation findings -- an anonymous complaint alone does not move this score. */
 function globalfxhub_score_execution( $broker ) {
     $score = 3.0;
     $model = $broker['execution_model'] ?? '';
@@ -1902,7 +1922,9 @@ function globalfxhub_score_execution( $broker ) {
     );
     foreach ( $red_flags as $term ) {
         if ( false !== stripos( $text, $term ) ) {
-            $score -= 1.0;
+            if ( globalfxhub_text_has_corroborated_finding( $text ) ) {
+                $score -= 1.0;
+            }
             break;
         }
     }
@@ -1938,7 +1960,7 @@ function globalfxhub_score_product_range( $broker ) {
     return max( 1.0, min( 5.0, 1.0 + 0.5 * $bucket_count ) );
 }
 
-/** Deposits & withdrawals (5%): confirmed fees/speed vs. confirmed delay/refusal complaints. */
+/** Deposits & withdrawals (5%): confirmed fees/speed vs. corroborated delay/refusal findings -- a bare, self-described "unverified" or "single account" complaint must not move this on its own (see globalfxhub_text_has_corroborated_finding()). */
 function globalfxhub_score_deposits_withdrawals( $broker ) {
     $text = $broker['withdrawal_deposit_note'] ?? null;
     if ( empty( $text ) || false !== stripos( $text, 'not found' ) ) {
@@ -1948,7 +1970,8 @@ function globalfxhub_score_deposits_withdrawals( $broker ) {
     if ( preg_match( '/\bno (deposit|withdrawal).{0,20}fee|fee-free|free withdrawal/i', $text ) ) {
         $score += 0.75;
     }
-    if ( preg_match( '/withdrawal (refus|block|delay)|stalled|withheld|frozen|denied|additional (payment|fee|document)|profit clearance/i', $text ) ) {
+    if ( preg_match( '/withdrawal (refus|block|delay)|stalled|withheld|frozen|denied|additional (payment|fee|document)|profit clearance/i', $text )
+        && globalfxhub_text_has_corroborated_finding( $text ) ) {
         $score -= 1.25;
     }
     return max( 1.0, min( 5.0, $score ) );
