@@ -12,6 +12,7 @@
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/about/', 'about' ) ); ?>"><?php globalfxhub_te( 'footer_about' ); ?></a></li>
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/how-we-test/', 'how-we-test' ) ); ?>"><?php globalfxhub_te( 'footer_how_we_test' ); ?></a></li>
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/why-trust-us/', 'why-trust-us' ) ); ?>"><?php globalfxhub_te( 'footer_why_trust_us' ); ?></a></li>
+          <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/editorial-policy/', 'editorial-policy' ) ); ?>"><?php globalfxhub_te( 'footer_editorial_policy' ); ?></a></li>
         </ul>
         <?php endif; ?>
       </div>
@@ -24,6 +25,7 @@
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/cost-calculator/', 'cost-calculator' ) ); ?>"><?php globalfxhub_te( 'nav_cost_calculator' ); ?></a></li>
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/regulation-checker/', 'regulation-checker' ) ); ?>"><?php globalfxhub_te( 'nav_regulation_checker' ); ?></a></li>
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/broker-changelog/', 'broker-changelog' ) ); ?>"><?php globalfxhub_te( 'nav_changelog' ); ?></a></li>
+          <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/corrections/', 'corrections' ) ); ?>"><?php globalfxhub_te( 'footer_corrections' ); ?></a></li>
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/learn/', 'learn' ) ); ?>"><?php globalfxhub_te( 'nav_learn' ); ?></a></li>
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/news/markets/' ) ); ?>"><?php globalfxhub_te( 'footer_fx_market_news' ); ?></a></li>
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/news/brokers/' ) ); ?>"><?php globalfxhub_te( 'footer_broker_news' ); ?></a></li>

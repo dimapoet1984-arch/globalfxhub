@@ -33,6 +33,7 @@ require get_template_directory() . '/inc/cost-calculator.php';
 require get_template_directory() . '/inc/regulation-checker.php';
 require get_template_directory() . '/inc/broker-changelog.php';
 require get_template_directory() . '/inc/changelog-subscribers.php';
+require get_template_directory() . '/inc/corrections-log.php';
 require get_template_directory() . '/inc/learn-articles.php';
 require get_template_directory() . '/inc/promo-banners.php';
 require get_template_directory() . '/inc/sitemap.php';
@@ -50,17 +51,28 @@ require get_template_directory() . '/inc/i18n-nav-menu.php';
  * certifications, or track record), just a name, role, and a general
  * description of what they write about.
  */
+/**
+ * These used to name two individual personas ("Elena Marsh", "Tom
+ * Whitfield") with invented bios -- no such people exist at
+ * GlobalFXHub, so that was a fabricated byline, exactly the kind of
+ * fake-author pattern E-E-A-T guidelines (and plain honesty) rule out.
+ * Until the site has real, named researchers willing to be credited
+ * (with a real photo, bio, and LinkedIn -- see /editorial-policy/),
+ * content is attributed to the team as a whole rather than to an
+ * invented person. Never add an individual name/bio here that isn't
+ * a real person who actually did the work.
+ */
 function globalfxhub_get_authors() {
     return array(
         'markets-editor' => array(
-            'name' => 'Elena Marsh',
-            'role' => 'Markets Editor',
-            'bio'  => 'Writes about broker regulation, market structure, and how to evaluate trading platforms for GlobalFXHub.',
+            'name' => 'GlobalFXHub Research Team',
+            'role' => 'Broker & market research',
+            'bio'  => 'Compiled from public regulatory registers and broker disclosures using our disclosed methodology -- see /how-we-test/ and /editorial-policy/ for how we research, fact-check, and correct this content.',
         ),
         'technical-writer' => array(
-            'name' => 'Tom Whitfield',
-            'role' => 'Technical Analysis Writer',
-            'bio'  => 'Covers chart reading and technical analysis for GlobalFXHub, including our candlestick pattern library.',
+            'name' => 'GlobalFXHub Research Team',
+            'role' => 'Trading education & technical analysis',
+            'bio'  => 'Writes our educational content on chart reading and technical analysis -- see /editorial-policy/ for how we research, fact-check, and correct this content.',
         ),
     );
 }
