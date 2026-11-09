@@ -53,8 +53,7 @@ if ( $vs_pair ) {
 <?php
 $vs_editorial = null;
 if ( $vs_pair ) {
-    $vs_editorial_all = globalfxhub_get_editorial_comparisons();
-    $vs_editorial = $vs_editorial_all[ $vs_pair['a']['slug'] . '-' . $vs_pair['b']['slug'] ] ?? null;
+    $vs_editorial = globalfxhub_get_localized_editorial_comparison( $vs_pair['a']['slug'] . '-' . $vs_pair['b']['slug'] );
 }
 if ( $vs_editorial ) :
 ?>

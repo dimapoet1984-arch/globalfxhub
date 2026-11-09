@@ -24,6 +24,86 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Per-language translations of each editorial comparison's content,
+ * keyed by pair then by language, flattened the same way
+ * i18n/translate_comparison_editorial.py flattens it for the real
+ * translate+review pipeline (point-list items as choose_a_point_1..N,
+ * FAQs as faq_N_q/faq_N_a) -- globalfxhub_get_localized_editorial_comparison()
+ * reassembles the structure. Populated via that script's output, same
+ * as every other hand-curated translation table in this theme; empty
+ * for a language/pair until that translation run has actually been
+ * inserted here.
+ */
+function globalfxhub_editorial_comparison_translations() {
+    return array(
+        'pepperstone-ic-markets' => array(
+            // Filled in once i18n/translate_comparison_editorial.py's
+            // real translate+review run completes.
+        ),
+    );
+}
+
+/**
+ * Reassembles a flat {id: text} translation map (see
+ * globalfxhub_editorial_comparison_translations() above) back into
+ * the same nested structure globalfxhub_get_editorial_comparisons()
+ * uses, overlaid onto the English entry as a fallback for any key the
+ * translation doesn't cover (e.g. a_slug/b_slug, which never need
+ * translating).
+ */
+function globalfxhub_get_localized_editorial_comparison( $key ) {
+    $all = globalfxhub_get_editorial_comparisons();
+    if ( ! isset( $all[ $key ] ) ) {
+        return null;
+    }
+    $entry = $all[ $key ];
+
+    $lang = function_exists( 'pll_current_language' ) ? pll_current_language() : 'en';
+    $translations = globalfxhub_editorial_comparison_translations();
+    $flat = $translations[ $key ][ $lang ] ?? array();
+    if ( empty( $flat ) ) {
+        return $entry;
+    }
+
+    $get = function( $id, $fallback ) use ( $flat ) {
+        return $flat[ $id ] ?? $fallback;
+    };
+
+    $entry['meta_title']            = $get( 'meta_title', $entry['meta_title'] );
+    $entry['meta_description']      = $get( 'meta_description', $entry['meta_description'] );
+    $entry['intro']                 = $get( 'intro', $entry['intro'] );
+    $entry['verdict']               = $get( 'verdict', $entry['verdict'] );
+    $entry['choose_a_heading']      = $get( 'choose_a_heading', $entry['choose_a_heading'] );
+    $entry['choose_b_heading']      = $get( 'choose_b_heading', $entry['choose_b_heading'] );
+    $entry['worth_knowing_heading'] = $get( 'worth_knowing_heading', $entry['worth_knowing_heading'] );
+    $entry['worth_knowing']         = $get( 'worth_knowing', $entry['worth_knowing'] );
+
+    foreach ( array( 'choose_a_points' => 'choose_a_point_', 'choose_b_points' => 'choose_b_point_' ) as $list_key => $prefix ) {
+        $entry[ $list_key ] = array_values( array_map(
+            function( $i, $point ) use ( $get, $prefix ) {
+                return $get( $prefix . ( $i + 1 ), $point );
+            },
+            array_keys( $entry[ $list_key ] ),
+            $entry[ $list_key ]
+        ) );
+    }
+
+    $entry['faqs'] = array_values( array_map(
+        function( $i, $faq ) use ( $get ) {
+            $n = $i + 1;
+            return array(
+                'q' => $get( "faq_{$n}_q", $faq['q'] ),
+                'a' => $get( "faq_{$n}_a", $faq['a'] ),
+            );
+        },
+        array_keys( $entry['faqs'] ),
+        $entry['faqs']
+    ) );
+
+    return $entry;
+}
+
+/**
  * Editorial comparisons involving a given broker (either side), for
  * contextual linking from that broker's own review page -- a reader
  * already looking at this broker is exactly who an editorially-curated
@@ -46,7 +126,6 @@ function globalfxhub_editorial_comparisons_for_broker( $slug ) {
         }
         $matches[] = array(
             'url'   => home_url( '/compare/' . $key . '/' ),
-            'title' => $entry['meta_title'] ?? ( $entry['a_slug'] . ' vs ' . $entry['b_slug'] ),
             'other' => $other,
         );
     }

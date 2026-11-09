@@ -41,7 +41,7 @@ function globalfxhub_translatable_strings() {
 
         'link_how_we_score', 'link_all_articles', 'link_all_news', 'link_all_guides', 'link_open_compare',
 
-        'table_broker', 'table_spread', 'table_platforms', 'table_score', 'btn_read_review',
+        'table_broker', 'table_spread', 'table_platforms', 'table_score', 'btn_read_review', 'rev_vs_our_verdict',
     );
 }
 
@@ -156,6 +156,7 @@ function globalfxhub_string_text( $key ) {
         'table_platforms' => 'Platforms',
         'table_score' => 'Score',
         'btn_read_review' => 'Read review',
+        'rev_vs_our_verdict' => 'our verdict',
     );
 
     return isset( $strings[ $key ] ) ? $strings[ $key ] : $key;
@@ -259,7 +260,7 @@ function globalfxhub_live_string_translations() {
             'link_all_news' => 'Todas las noticias →', 'link_all_guides' => 'Todas las guías →',
             'link_open_compare' => 'Abrir la herramienta de comparación →',
             'table_broker' => 'Bróker', 'table_spread' => 'Spread prom.', 'table_platforms' => 'Plataformas',
-            'table_score' => 'Puntuación', 'btn_read_review' => 'Leer reseña',
+            'table_score' => 'Puntuación', 'btn_read_review' => 'Leer reseña', 'rev_vs_our_verdict' => 'nuestro veredicto',
         ),
         'de' => array(
             'nav_reviews' => 'Testberichte', 'nav_learn' => 'Lernen', 'nav_news' => 'Nachrichten',
@@ -326,7 +327,7 @@ function globalfxhub_live_string_translations() {
             'link_all_news' => 'Alle Nachrichten →', 'link_all_guides' => 'Alle Leitfäden →',
             'link_open_compare' => 'Vergleichstool öffnen →',
             'table_broker' => 'Broker', 'table_spread' => 'Ø Spread', 'table_platforms' => 'Plattformen',
-            'table_score' => 'Bewertung', 'btn_read_review' => 'Testbericht lesen',
+            'table_score' => 'Bewertung', 'btn_read_review' => 'Testbericht lesen', 'rev_vs_our_verdict' => 'unser Fazit',
         ),
         'ar' => array(
             'nav_reviews' => 'المراجعات', 'nav_learn' => 'تعلم', 'nav_news' => 'أخبار',
@@ -393,7 +394,7 @@ function globalfxhub_live_string_translations() {
             'link_all_news' => 'جميع الأخبار ←', 'link_all_guides' => 'جميع الأدلة ←',
             'link_open_compare' => 'افتح أداة المقارنة ←',
             'table_broker' => 'الوسيط', 'table_spread' => 'متوسط السبريد', 'table_platforms' => 'المنصات',
-            'table_score' => 'التقييم', 'btn_read_review' => 'اقرأ المراجعة',
+            'table_score' => 'التقييم', 'btn_read_review' => 'اقرأ المراجعة', 'rev_vs_our_verdict' => 'رأينا النهائي',
         ),
         'fr' => array(
             'nav_reviews' => 'Avis', 'nav_learn' => 'Apprendre', 'nav_news' => 'Actualités',
@@ -460,7 +461,7 @@ function globalfxhub_live_string_translations() {
             'link_all_news' => 'Toutes les actualités →', 'link_all_guides' => 'Tous les guides →',
             'link_open_compare' => "Ouvrir l'outil de comparaison →",
             'table_broker' => 'Courtier', 'table_spread' => 'Spread moy.', 'table_platforms' => 'Plateformes',
-            'table_score' => 'Note', 'btn_read_review' => "Lire l'avis",
+            'table_score' => 'Note', 'btn_read_review' => "Lire l'avis", 'rev_vs_our_verdict' => 'notre verdict',
         ),
         'pl' => array(
             'nav_reviews' => 'Recenzje', 'nav_learn' => 'Nauka', 'nav_news' => 'Wiadomości',
@@ -527,7 +528,7 @@ function globalfxhub_live_string_translations() {
             'link_all_news' => 'Wszystkie wiadomości →', 'link_all_guides' => 'Wszystkie przewodniki →',
             'link_open_compare' => 'Otwórz narzędzie porównania →',
             'table_broker' => 'Broker', 'table_spread' => 'Śr. spread', 'table_platforms' => 'Platformy',
-            'table_score' => 'Ocena', 'btn_read_review' => 'Czytaj recenzję',
+            'table_score' => 'Ocena', 'btn_read_review' => 'Czytaj recenzję', 'rev_vs_our_verdict' => 'nasza ocena',
         ),
         'it' => array(
             'nav_reviews' => 'Recensioni', 'nav_learn' => 'Impara', 'nav_news' => 'Notizie',
@@ -594,7 +595,7 @@ function globalfxhub_live_string_translations() {
             'link_all_news' => 'Tutte le notizie →', 'link_all_guides' => 'Tutte le guide →',
             'link_open_compare' => 'Apri lo strumento di confronto →',
             'table_broker' => 'Broker', 'table_spread' => 'Spread medio', 'table_platforms' => 'Piattaforme',
-            'table_score' => 'Punteggio', 'btn_read_review' => 'Leggi la recensione',
+            'table_score' => 'Punteggio', 'btn_read_review' => 'Leggi la recensione', 'rev_vs_our_verdict' => 'il nostro verdetto',
         ),
         'pt' => array(
             'nav_reviews' => 'Avaliações', 'nav_learn' => 'Aprenda', 'nav_news' => 'Notícias',
@@ -661,7 +662,7 @@ function globalfxhub_live_string_translations() {
             'link_all_news' => 'Todas as notícias →', 'link_all_guides' => 'Todos os guias →',
             'link_open_compare' => 'Abrir a ferramenta de comparação →',
             'table_broker' => 'Corretora', 'table_spread' => 'Spread méd.', 'table_platforms' => 'Plataformas',
-            'table_score' => 'Pontuação', 'btn_read_review' => 'Ler avaliação',
+            'table_score' => 'Pontuação', 'btn_read_review' => 'Ler avaliação', 'rev_vs_our_verdict' => 'nosso veredito',
         ),
     );
 }
