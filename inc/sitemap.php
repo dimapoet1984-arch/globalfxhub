@@ -39,12 +39,16 @@ function globalfxhub_sitemap_query_vars( $vars ) {
 add_filter( 'query_vars', 'globalfxhub_sitemap_query_vars' );
 
 /**
- * Returns every indexable URL as array( array( 'loc' => ..., 'priority' => ... ), ... ).
+ * Returns every indexable URL as array( array( 'loc' => ..., 'priority' => ..., 'lastmod' => ... ), ... ).
+ * 'lastmod' is omitted entirely (not guessed) for any URL without a
+ * genuine underlying date -- a fabricated lastmod is worse than none,
+ * since search engines use it to decide whether a page is worth
+ * re-crawling.
  */
 function globalfxhub_sitemap_urls() {
     $urls = array();
-    $add  = function( $loc, $priority = 0.6 ) use ( &$urls ) {
-        $urls[] = array( 'loc' => $loc, 'priority' => $priority );
+    $add  = function( $loc, $priority = 0.6, $lastmod = null ) use ( &$urls ) {
+        $urls[] = array( 'loc' => $loc, 'priority' => $priority, 'lastmod' => $lastmod );
     };
 
     $add( home_url( '/' ), 1.0 );
@@ -53,7 +57,12 @@ function globalfxhub_sitemap_urls() {
     $add( home_url( '/reviews/' ), 0.8 );
     $brokers = globalfxhub_get_brokers();
     foreach ( $brokers as $b ) {
-        $add( home_url( '/reviews/' . $b['slug'] . '/' ), 0.7 );
+        // 'data_reviewed' is the same date already shown to readers on
+        // the review page itself ("Data last reviewed: ...") -- reusing
+        // it here rather than inventing a separate figure.
+        $review_dates = globalfxhub_broker_review_dates( $b );
+        $lastmod = strtotime( $review_dates['data_reviewed'] );
+        $add( home_url( '/reviews/' . $b['slug'] . '/' ), 0.7, $lastmod ? date( 'Y-m-d', $lastmod ) : null );
     }
     $top40 = globalfxhub_top_ranked_broker_slugs( 40 );
     foreach ( $top40 as $slug ) {
@@ -107,14 +116,18 @@ function globalfxhub_sitemap_urls() {
     $add( home_url( '/news/markets/' ), 0.6 );
     $add( home_url( '/news/brokers/' ), 0.6 );
     foreach ( globalfxhub_get_broker_news_items() as $item ) {
-        $add( home_url( '/news/brokers/' . globalfxhub_broker_news_item_slug( $item ) . '/' ), 0.5 );
+        // Each item's own 'date' field -- a genuine fact about that
+        // item, not a guess.
+        $add( home_url( '/news/brokers/' . globalfxhub_broker_news_item_slug( $item ) . '/' ), 0.5, $item['date'] ?? null );
     }
 
     // --- Native posts (Learn guides + FX Market News articles) --
     // every published post, whatever its category, since single.php
     // renders all of them; get_permalink() is used rather than a
     // guessed URL pattern so this can never drift from the site's
-    // actual permalink settings.
+    // actual permalink settings. lastmod uses WordPress's own
+    // post_modified_gmt -- a real timestamp WP already maintains,
+    // never a guess.
     $native_post_ids = get_posts( array(
         'post_type'      => 'post',
         'post_status'    => 'publish',
@@ -122,15 +135,15 @@ function globalfxhub_sitemap_urls() {
         'fields'         => 'ids',
     ) );
     foreach ( $native_post_ids as $post_id ) {
-        $add( get_permalink( $post_id ), 0.6 );
+        $add( get_permalink( $post_id ), 0.6, get_post_modified_time( 'Y-m-d', true, $post_id ) );
     }
 
     // --- Service pages (About, How We Test, Why Trust Us, Advertiser
-    // Disclosure, Terms, Privacy, Contact) ---
+    // Disclosure, Terms, Privacy, Contact, Editorial Policy) ---
     foreach ( array_keys( globalfxhub_get_service_pages() ) as $slug ) {
         $page = get_page_by_path( $slug );
         if ( $page ) {
-            $add( get_permalink( $page->ID ), 0.4 );
+            $add( get_permalink( $page->ID ), 0.4, get_post_modified_time( 'Y-m-d', true, $page->ID ) );
         }
     }
 
@@ -144,6 +157,9 @@ function globalfxhub_render_sitemap() {
     foreach ( globalfxhub_sitemap_urls() as $u ) {
         echo "  <url>\n";
         echo '    <loc>' . esc_url( $u['loc'] ) . "</loc>\n";
+        if ( ! empty( $u['lastmod'] ) ) {
+            echo '    <lastmod>' . esc_html( $u['lastmod'] ) . "</lastmod>\n";
+        }
         echo '    <priority>' . esc_html( number_format( $u['priority'], 1 ) ) . "</priority>\n";
         echo "  </url>\n";
     }
