@@ -35,6 +35,7 @@ require get_template_directory() . '/inc/broker-changelog.php';
 require get_template_directory() . '/inc/changelog-subscribers.php';
 require get_template_directory() . '/inc/corrections-log.php';
 require get_template_directory() . '/inc/learn-articles.php';
+require get_template_directory() . '/inc/learn-broker-stats.php';
 require get_template_directory() . '/inc/promo-banners.php';
 require get_template_directory() . '/inc/sitemap.php';
 require get_template_directory() . '/inc/canonical-urls.php';
