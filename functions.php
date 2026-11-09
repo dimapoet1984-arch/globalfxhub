@@ -69,11 +69,17 @@ function globalfxhub_get_authors() {
             'name' => 'GlobalFXHub Research Team',
             'role' => 'Broker & market research',
             'bio'  => 'Compiled from public regulatory registers and broker disclosures using our disclosed methodology -- see /how-we-test/ and /editorial-policy/ for how we research, fact-check, and correct this content.',
+            // "GlobalFXHub Research Team" names a team, not an
+            // individual -- Article schema's author must be typed
+            // Organization here, never Person, or it misrepresents a
+            // team as a natural person.
+            'schema_type' => 'Organization',
         ),
         'technical-writer' => array(
             'name' => 'GlobalFXHub Research Team',
             'role' => 'Trading education & technical analysis',
             'bio'  => 'Writes our educational content on chart reading and technical analysis -- see /editorial-policy/ for how we research, fact-check, and correct this content.',
+            'schema_type' => 'Organization',
         ),
     );
 }
@@ -93,6 +99,9 @@ function globalfxhub_get_post_byline( $post_id ) {
         'name' => get_the_author_meta( 'display_name', get_post_field( 'post_author', $post_id ) ),
         'role' => 'Independent market education',
         'bio'  => '',
+        // A real WordPress user account, as opposed to the team-level
+        // attribution above -- see 'schema_type' there.
+        'schema_type' => 'Person',
     );
 }
 
@@ -955,24 +964,23 @@ function globalfxhub_review_seo_head() {
     );
     echo '<meta name="description" content="' . esc_attr( $description ) . '">' . "\n";
 
-    $schema = array(
-        '@context'     => 'https://schema.org',
-        '@type'        => 'Review',
-        'itemReviewed' => array(
-            '@type' => 'FinancialService',
-            'name'  => $broker['name'],
-        ),
-        'reviewRating' => array(
-            '@type'       => 'Rating',
-            'ratingValue' => (string) $broker['scores']['overall'],
-            'bestRating'  => '5',
-            'worstRating' => '1',
-        ),
-        'author'    => array( '@type' => 'Organization', 'name' => 'GlobalFXHub' ),
-        'publisher' => array( '@type' => 'Organization', 'name' => 'GlobalFXHub' ),
-        'url'       => home_url( '/reviews/' . $broker['slug'] . '/' ),
-    );
-    echo '<script type="application/ld+json">' . wp_json_encode( $schema ) . '</script>' . "\n";
+    /*
+     * Deliberately NOT marking this up as Review/Rating schema. The
+     * 0-5 figure here is this site's own editorial score against its
+     * own disclosed methodology -- not a genuine third-party or
+     * customer review -- and Google's structured data guidelines
+     * explicitly treat that as a "self-serving review" violation
+     * (review/rating markup must reflect independent reviews of the
+     * reviewed entity, not the publisher's own first-party
+     * assessment). A broker is also not one of the entity types
+     * Google actually supports a review rich result for. This was
+     * previously emitting exactly that: itemReviewed FinancialService
+     * + reviewRating.ratingValue = our own score, authored by
+     * GlobalFXHub about GlobalFXHub's own content. Removed rather
+     * than left in place or "improved" -- see task 17 of the SEO
+     * audit (structured data) and its explicit instruction not to add
+     * unsupported review/rating schema.
+     */
 
     $faqs = globalfxhub_broker_faqs( $broker );
     if ( ! empty( $faqs ) ) {
@@ -1122,7 +1130,7 @@ function globalfxhub_extended_seo_head() {
             'description'   => $excerpt ? wp_strip_all_tags( $excerpt ) : null,
             'datePublished' => get_the_date( 'c' ),
             'dateModified'  => get_the_modified_date( 'c' ),
-            'author'        => array( '@type' => 'Person', 'name' => $byline['name'] ),
+            'author'        => array( '@type' => $byline['schema_type'] ?? 'Person', 'name' => $byline['name'] ),
             'publisher'     => array( '@type' => 'Organization', 'name' => 'GlobalFXHub' ),
             'url'           => get_permalink(),
         ), function( $v ) { return null !== $v; } );
@@ -1309,19 +1317,32 @@ function globalfxhub_breadcrumb_schema() {
         echo '<script type="application/ld+json">' . wp_json_encode( $breadcrumb_schema ) . '</script>' . "\n";
     }
 
-    echo '<script type="application/ld+json">' . wp_json_encode( array(
-        '@context' => 'https://schema.org',
-        '@type'    => 'Organization',
-        'name'     => 'GlobalFXHub',
-        'url'      => home_url( '/' ),
-    ) ) . '</script>' . "\n";
+    /*
+     * Yoast SEO (added 2026-10-29) already emits its own Organization
+     * + WebSite nodes in its schema @graph on every page, unconditionally
+     * -- that's core Yoast behavior, not a toggle. Emitting a second,
+     * separate (non-@id-linked) Organization and WebSite block here
+     * whenever Yoast is active would leave two disconnected entities
+     * describing the same real-world site on the same page, which is
+     * exactly the kind of structured-data conflict a schema audit
+     * flags. Same "defer to Yoast when it's active" pattern already
+     * used in inc/i18n-live-languages.php.
+     */
+    if ( ! defined( 'WPSEO_VERSION' ) ) {
+        echo '<script type="application/ld+json">' . wp_json_encode( array(
+            '@context' => 'https://schema.org',
+            '@type'    => 'Organization',
+            'name'     => 'GlobalFXHub',
+            'url'      => home_url( '/' ),
+        ) ) . '</script>' . "\n";
 
-    echo '<script type="application/ld+json">' . wp_json_encode( array(
-        '@context' => 'https://schema.org',
-        '@type'    => 'WebSite',
-        'name'     => 'GlobalFXHub',
-        'url'      => home_url( '/' ),
-    ) ) . '</script>' . "\n";
+        echo '<script type="application/ld+json">' . wp_json_encode( array(
+            '@context' => 'https://schema.org',
+            '@type'    => 'WebSite',
+            'name'     => 'GlobalFXHub',
+            'url'      => home_url( '/' ),
+        ) ) . '</script>' . "\n";
+    }
 }
 add_action( 'wp_head', 'globalfxhub_breadcrumb_schema', 5 );
 
