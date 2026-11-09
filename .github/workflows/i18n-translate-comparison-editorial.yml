@@ -1,0 +1,20 @@
+name: i18n translate comparison editorial
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install requests anthropic
+      - name: Translate the Pepperstone vs IC Markets editorial content
+        env:
+          TRANSLATION_API_KEY: ${{ secrets.TRANSLATION_API_KEY }}
+        run: |
+          python3 i18n/translate_comparison_editorial.py
