@@ -616,6 +616,23 @@ function globalfxhub_country_flag_emoji( $iso ) {
  * presence, leaving them in this ranking would make that claim false for
  * whichever one turned up.
  */
+/**
+ * Short other_reg-style codes that, when held by a broker, are a
+ * direct, country-specific regulatory licence (not an EU-passporting
+ * inference) for that EU member state. Deliberately short: only the
+ * two currently backed by an actual broker in the dataset (BaFin --
+ * GBE Brokers, JFD Brokers; KNF -- XTB, who's HQ'd in Poland anyway)
+ * are listed, rather than guessing codes for all 27 states. Add a
+ * country's own-language regulator code here once a broker in the
+ * dataset is confirmed to actually hold it.
+ */
+function globalfxhub_eu_direct_national_regulator_codes() {
+    return array(
+        'germany' => 'BaFin',
+        'poland'  => 'KNF',
+    );
+}
+
 function globalfxhub_country_broker_ranking( $country, $limit = 10 ) {
     $all = array_filter( globalfxhub_get_brokers(), function( $b ) {
         return null !== $b['cysec'];
@@ -624,12 +641,34 @@ function globalfxhub_country_broker_ranking( $country, $limit = 10 ) {
         return $a['rank'] <=> $b['rank'];
     } );
 
+    $direct_codes = globalfxhub_eu_direct_national_regulator_codes();
+    $direct_code = $direct_codes[ $country['slug'] ] ?? null;
+
     $local = array();
     $rest  = array();
     foreach ( $all as $broker ) {
         $primary_hq = ! empty( $broker['hq'] ) ? preg_split( '/[(;]/', $broker['hq'], 2 )[0] : '';
         $broker['is_local_hq'] = '' !== $primary_hq && false !== stripos( $primary_hq, $country['hq_match'] );
-        if ( $broker['is_local_hq'] ) {
+        $has_direct_national_licence = $direct_code && ! empty( $broker['other_reg'] )
+            && 0 < count( array_filter( $broker['other_reg'], function( $r ) use ( $direct_code ) {
+                return false !== stripos( $r, $direct_code );
+            } ) );
+        /*
+         * 'confirmed' when there's actual entity-level evidence this
+         * broker operates IN this specific country -- a confirmed
+         * local HQ/office, OR a confirmed DIRECT licence from this
+         * country's own regulator (e.g. GBE Brokers/JFD Brokers hold
+         * BaFin despite being Cyprus-HQ'd) -- 'inferred' for every
+         * other row, since holding a CySEC licence only confirms the
+         * RIGHT to passport into any EU/EEA state, never that this
+         * specific country's retail clients are actually, currently
+         * being onboarded. See the task 24 audit: this page's ranking
+         * table previously showed no distinction at all between these
+         * two cases.
+         */
+        $broker['availability_status'] = ( $broker['is_local_hq'] || $has_direct_national_licence ) ? 'confirmed' : 'inferred';
+        $broker['has_direct_national_licence'] = $has_direct_national_licence;
+        if ( $broker['is_local_hq'] || $has_direct_national_licence ) {
             $local[] = $broker;
         } else {
             $rest[] = $broker;
@@ -665,6 +704,11 @@ function globalfxhub_country_broker_ranking_other_reg( $country, $limit = 10 ) {
     foreach ( $all as $broker ) {
         $primary_hq = ! empty( $broker['hq'] ) ? preg_split( '/[(;]/', $broker['hq'], 2 )[0] : '';
         $broker['is_local_hq'] = '' !== $primary_hq && false !== stripos( $primary_hq, $country['hq_match'] );
+        // Every broker here already passed a direct match against
+        // THIS country's own regulator (the filter above) -- a
+        // confirmed, country-specific licence, not an EU-passporting
+        // inference -- so every row is 'confirmed' regardless of HQ.
+        $broker['availability_status'] = 'confirmed';
         if ( $broker['is_local_hq'] ) {
             $local[] = $broker;
         } else {

@@ -139,12 +139,20 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
         }
         if ( ! empty( $b['is_local_hq'] ) ) {
             $tag .= ' &middot; <strong style="color:var(--teal);">Headquartered in ' . esc_html( $country['name'] ) . '</strong>';
+        } elseif ( ! empty( $b['has_direct_national_licence'] ) ) {
+            $tag .= ' &middot; <strong style="color:var(--teal);">Direct ' . esc_html( $country['regulator'] ?? $country['name'] ) . ' licence</strong>';
         }
+        $availability_badges = array(
+            'confirmed' => array( 'label' => 'CONFIRMED', 'title' => 'Confirmed: a direct, country-specific regulatory match or a confirmed local entity/office -- not an inference.', 'color' => 'var(--teal)' ),
+            'inferred'  => array( 'label' => 'INFERRED', 'title' => 'Inferred: this broker holds a CySEC licence capable of being passported here under MiFID II, but we have no confirmation it currently onboards retail clients from this specific country.', 'color' => '#b8860b' ),
+            'unverified' => array( 'label' => 'UNVERIFIED', 'title' => 'Unverified: availability in this country could not be independently confirmed or inferred from this broker\'s disclosed regulatory footprint.', 'color' => 'var(--ink-soft)' ),
+        );
+        $availability_badge = $availability_badges[ $b['availability_status'] ?? 'unverified' ];
     ?>
     <div class="rank-row">
       <span class="rank-num"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
       <span class="rank-broker">
-        <span class="rank-broker__name"><?php echo esc_html( $b['name'] ); ?></span>
+        <span class="rank-broker__name"><?php echo esc_html( $b['name'] ); ?> <span title="<?php echo esc_attr( $availability_badge['title'] ); ?>" style="font-size:10px;font-weight:700;letter-spacing:0.03em;color:<?php echo esc_attr( $availability_badge['color'] ); ?>;border:1px solid currentColor;border-radius:3px;padding:1px 5px;vertical-align:middle;cursor:help;"><?php echo esc_html( $availability_badge['label'] ); ?></span></span>
         <span class="rank-broker__tag"><?php echo wp_kses( $tag, array( 'strong' => array( 'style' => array() ) ) ); ?></span>
       </span>
       <span class="rank-detail col-fees"><?php echo null !== $b['spread_eurusd'] ? esc_html( $b['spread_eurusd'] ) . ' pips (EUR/USD)' : 'Not confirmed'; ?></span>
