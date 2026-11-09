@@ -37,6 +37,7 @@ require get_template_directory() . '/inc/corrections-log.php';
 require get_template_directory() . '/inc/learn-articles.php';
 require get_template_directory() . '/inc/promo-banners.php';
 require get_template_directory() . '/inc/sitemap.php';
+require get_template_directory() . '/inc/canonical-urls.php';
 require get_template_directory() . '/inc/i18n-live-languages.php';
 require get_template_directory() . '/inc/i18n-rest-connector.php';
 require get_template_directory() . '/inc/i18n-term-rest-connector.php';
