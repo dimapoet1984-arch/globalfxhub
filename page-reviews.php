@@ -152,6 +152,9 @@ elseif ( $broker ) :
   <?php endif; ?>
   <div class="hero__actions" style="margin-top:22px;">
     <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold">Compare vs another broker</a>
+    <?php foreach ( globalfxhub_editorial_comparisons_for_broker( $broker['slug'] ) as $editorial_vs ) : ?>
+    <a href="<?php echo esc_url( $editorial_vs['url'] ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $broker['name'] . ' vs ' . $editorial_vs['other']['name'] . ': our verdict' ); ?></a>
+    <?php endforeach; ?>
     <a href="<?php echo esc_url( home_url( '/broker-finder/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);">Find similar brokers</a>
     <?php if ( globalfxhub_broker_alternatives( $broker['slug'] ) ) : ?>
     <a href="<?php echo esc_url( home_url( '/reviews/' . $broker['slug'] . '/alternatives/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);">See alternatives</a>

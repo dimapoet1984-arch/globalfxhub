@@ -144,7 +144,11 @@ function globalfxhub_vs_comparison_rows( $a, $b ) {
 function globalfxhub_vs_seo_title( $title_parts ) {
     $pair = globalfxhub_vs_pair( get_query_var( 'vs_a' ), get_query_var( 'vs_b' ) );
     if ( $pair ) {
-        $title_parts['title'] = $pair['a']['name'] . ' vs ' . $pair['b']['name'] . ' ' . date( 'Y' ) . ' Compared';
+        $editorial = globalfxhub_get_editorial_comparisons();
+        $key = $pair['a']['slug'] . '-' . $pair['b']['slug'];
+        $title_parts['title'] = ! empty( $editorial[ $key ]['meta_title'] )
+            ? $editorial[ $key ]['meta_title']
+            : $pair['a']['name'] . ' vs ' . $pair['b']['name'] . ' ' . date( 'Y' ) . ' Compared';
     }
     return $title_parts;
 }
@@ -167,10 +171,29 @@ function globalfxhub_vs_seo_head() {
     }
     $a = $pair['a'];
     $b = $pair['b'];
-    $description = sprintf(
-        '%s vs %s: compare regulation, cost, platforms, and score side by side -- %s scored %s/5, %s scored %s/5 under our disclosed nine-category methodology.',
-        $a['name'], $b['name'], $a['name'], $a['scores']['overall'], $b['name'], $b['scores']['overall']
-    );
+    $editorial = globalfxhub_get_editorial_comparisons();
+    $key = $a['slug'] . '-' . $b['slug'];
+    $description = ! empty( $editorial[ $key ]['meta_description'] )
+        ? $editorial[ $key ]['meta_description']
+        : sprintf(
+            '%s vs %s: compare regulation, cost, platforms, and score side by side -- %s scored %s/5, %s scored %s/5 under our disclosed nine-category methodology.',
+            $a['name'], $b['name'], $a['name'], $a['scores']['overall'], $b['name'], $b['scores']['overall']
+        );
     echo '<meta name="description" content="' . esc_attr( $description ) . '">' . "\n";
+
+    if ( ! empty( $editorial[ $key ]['faqs'] ) ) {
+        $faq_schema = array(
+            '@context'   => 'https://schema.org',
+            '@type'      => 'FAQPage',
+            'mainEntity' => array_map( function( $faq ) {
+                return array(
+                    '@type'          => 'Question',
+                    'name'           => $faq['q'],
+                    'acceptedAnswer' => array( '@type' => 'Answer', 'text' => $faq['a'] ),
+                );
+            }, $editorial[ $key ]['faqs'] ),
+        );
+        echo '<script type="application/ld+json">' . wp_json_encode( $faq_schema ) . '</script>' . "\n";
+    }
 }
 add_action( 'wp_head', 'globalfxhub_vs_seo_head', 5 );

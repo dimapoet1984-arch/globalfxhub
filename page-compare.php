@@ -50,6 +50,43 @@ if ( $vs_pair ) {
   <?php endif; ?>
 </div>
 
+<?php
+$vs_editorial = null;
+if ( $vs_pair ) {
+    $vs_editorial_all = globalfxhub_get_editorial_comparisons();
+    $vs_editorial = $vs_editorial_all[ $vs_pair['a']['slug'] . '-' . $vs_pair['b']['slug'] ] ?? null;
+}
+if ( $vs_editorial ) :
+?>
+<div class="wrap art-body" style="padding-bottom:20px;">
+  <p><?php echo esc_html( $vs_editorial['intro'] ); ?></p>
+  <p><strong>The verdict:</strong> <?php echo esc_html( $vs_editorial['verdict'] ); ?></p>
+  <div class="guides__grid" style="margin:20px 0;">
+    <div class="guide" style="cursor:default;">
+      <h3><?php echo esc_html( $vs_editorial['choose_a_heading'] ); ?></h3>
+      <ul>
+        <?php foreach ( $vs_editorial['choose_a_points'] as $point ) : ?>
+        <li><?php echo esc_html( $point ); ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+    <div class="guide" style="cursor:default;">
+      <h3><?php echo esc_html( $vs_editorial['choose_b_heading'] ); ?></h3>
+      <ul>
+        <?php foreach ( $vs_editorial['choose_b_points'] as $point ) : ?>
+        <li><?php echo esc_html( $point ); ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  </div>
+  <?php if ( ! empty( $vs_editorial['worth_knowing'] ) ) : ?>
+  <div class="methodology-note" style="margin-bottom:0;">
+    <strong><?php echo esc_html( $vs_editorial['worth_knowing_heading'] ); ?></strong> <?php echo esc_html( $vs_editorial['worth_knowing'] ); ?>
+  </div>
+  <?php endif; ?>
+</div>
+<?php endif; ?>
+
 <div class="wrap">
   <div class="picker">
     <div>
@@ -71,7 +108,7 @@ if ( $vs_pair ) {
     // actual crawlable inbound links to their /compare/{a}-vs-{b}/
     // pages, not only reachable via a button click no crawler follows.
     $vs_preset_pairs = array(
-        array( 'ig', 'xtb' ), array( 'etoro', 'plus500' ), array( 'xm', 'pepperstone' ),
+        array( 'pepperstone', 'ic-markets' ), array( 'ig', 'xtb' ), array( 'etoro', 'plus500' ), array( 'xm', 'pepperstone' ),
         array( 'ic-markets', 'fxpro' ), array( 'fxcm', 'capital-com' ), array( 'avatrade', 'tickmill' ),
     );
     $vs_ranked_slugs = globalfxhub_top_ranked_broker_slugs( 40 );
@@ -142,6 +179,17 @@ if ( $vs_pair ) {
       echo implode( ' &middot; ', $vs_related_links ); ?>
     </p>
     <?php endif; ?>
+    <?php endif; ?>
+    <?php if ( $vs_editorial && ! empty( $vs_editorial['faqs'] ) ) : ?>
+    <div style="margin:0 0 28px;">
+      <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:0 0 12px;">Frequently asked questions</h2>
+      <?php foreach ( $vs_editorial['faqs'] as $faq ) : ?>
+      <div style="margin-bottom:18px;">
+        <p style="font-weight:600;margin:0 0 4px;color:var(--navy);"><?php echo esc_html( $faq['q'] ); ?></p>
+        <p style="margin:0;color:var(--ink-soft);line-height:1.6;"><?php echo esc_html( $faq['a'] ); ?></p>
+      </div>
+      <?php endforeach; ?>
+    </div>
     <?php endif; ?>
     <div class="methodology-note">
       <strong>How this score is calculated:</strong> Nine weighted categories against a fixed, disclosed rubric -- regulation & client protection 30%, trading costs 20%, non-trading fees 10%, platforms & tools 10%, execution/trading conditions 10%, product range 5%, deposits/withdrawals 5%, transparency 5%, track record 5% -- not a ranking relative to other brokers, and not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.

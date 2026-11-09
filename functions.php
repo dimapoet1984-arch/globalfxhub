@@ -27,6 +27,7 @@ require get_template_directory() . '/inc/countries.php';
 require get_template_directory() . '/inc/best.php';
 require get_template_directory() . '/inc/regulation.php';
 require get_template_directory() . '/inc/broker-finder.php';
+require get_template_directory() . '/inc/broker-comparison-editorial.php';
 require get_template_directory() . '/inc/broker-vs.php';
 require get_template_directory() . '/inc/broker-alternatives.php';
 require get_template_directory() . '/inc/cost-calculator.php';
