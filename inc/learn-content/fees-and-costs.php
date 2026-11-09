@@ -45,7 +45,7 @@ function globalfxhub_learn_content_fees_and_costs() {
 </ol>
 <p>Each of these questions is covered in more depth in the other articles in this series. If you want to see how a broker's overall fee profile compares against others, independent broker comparisons and reviews are good starting points, since they lay out cost-related details side by side rather than leaving you to hunt through separate terms pages.</p>
 
-<h2>The bottom line</h2>
+<h2>Why the full picture matters</h2>
 <p>No single fee tells the whole story. A broker's total cost to you depends on how its spread, commission, swap and account-maintenance policies interact with your personal trading habits. Learning to ask about all of them -- not just the spread shown in the ad -- is what separates a quick guess from a real comparison.</p>
 HTML
             ,
@@ -78,7 +78,7 @@ HTML
 <h2>Using a calculator instead of guessing</h2>
 <p>Doing this math by hand for every broker you're considering gets tedious fast, especially once you factor in your own trade size and frequency. Our <a href="https://globalfxhub.net/cost-calculator/">Forex Spread Cost Calculator</a> estimates your annual spread cost from your account size, trades per month, and typical trade size, which is the clearest way to see how a tight-spread-plus-commission setup stacks up against a standard spread for your specific trading pattern -- it's worth running your numbers through it rather than relying on a broker's marketing comparison, which is naturally going to favor its own account type.</p>
 
-<h2>The bottom line</h2>
+<h2>Do the math for your own trading pattern</h2>
 <p>There's no universal answer to "spread or commission" -- it depends entirely on your trade size and how often you trade. The honest approach is to do the arithmetic for your own habits rather than trusting either account type's marketing framing, and to remember that swap fees and other charges sit outside this comparison entirely.</p>
 HTML
             ,
@@ -113,7 +113,7 @@ HTML
 </ul>
 <p>Checking a broker's own account comparison page, or independent reviews, alongside our <a href="https://globalfxhub.net/compare/">broker comparison tool</a>, is a reasonable way to see both account types' actual numbers side by side rather than guessing from the labels.</p>
 
-<h2>The bottom line</h2>
+<h2>Check the terms, not just the name</h2>
 <p>"Raw spread" and "standard" are two different ways of packaging the same underlying cost. Neither is automatically cheaper -- it depends on your trading pattern -- and the account's execution style can matter just as much as its pricing label. Reading the specific account terms, rather than assuming from the name alone, is the only reliable way to know which one actually suits how you trade.</p>
 HTML
             ,
@@ -147,7 +147,7 @@ HTML
 <h2>Why this matters for your trading cost</h2>
 <p>Swap fees don't affect day traders who close every position before the rollover cut-off, but they matter a great deal to swing and position traders who hold trades for days, weeks, or longer. Because the actual swap rate varies by pair, by direction, and by broker, and changes as interest rate differentials shift, it isn't a figure that can be reliably averaged or quoted as a single number across many brokers -- it's genuinely specific to the pair and timing of each trade, which is why brokers disclose it as a rate schedule rather than a flat fee.</p>
 
-<h2>The bottom line</h2>
+<h2>A cost worth checking before you hold overnight</h2>
 <p>A swap fee is the practical expression of the interest rate gap between two currencies, applied each time a leveraged position rolls over to the next trading day. It can be a cost or a credit depending on direction and the prevailing rate differential, and it's a real factor to check before holding any forex position for more than a day.</p>
 HTML
             ,
@@ -180,7 +180,7 @@ HTML
 <li><strong>Anyone using high leverage</strong> should remember that financing is calculated on your full position size, not just your margin, so a highly leveraged position can carry a larger financing charge relative to the capital you've actually committed.</li>
 </ul>
 
-<h2>The bottom line</h2>
+<h2>Check it before you hold past the cut-off</h2>
 <p>Overnight financing exists because a leveraged position is, in effect, a funded position, and that funding carries a cost. It shows up on your statement as a small daily debit or credit, varies by instrument and direction, and is worth checking directly on your platform before you plan to hold anything open past the daily cut-off.</p>
 HTML
             ,
@@ -218,7 +218,7 @@ HTML
 </ul>
 <p>Our <a href="https://globalfxhub.net/broker-finder/">broker finder</a> is a useful starting point if you specifically want to find brokers that don't charge this fee, since it's exactly the kind of account-terms detail that's easy to miss on a broker's main marketing pages.</p>
 
-<h2>The bottom line</h2>
+<h2>A cost that depends on time, not trading</h2>
 <p>An inactivity fee is a cost tied to time, not trading -- it exists independently of your spread or commission costs and can affect you even if you never place a single trade in a given account. It's a minor detail for active traders but worth checking carefully if you expect long gaps between trading sessions.</p>
 HTML
             ,
@@ -252,7 +252,7 @@ HTML
 <li><strong>Compare your bank's and your broker's conversion rates</strong> before assuming either one is giving you a fair deal -- banks and payment processors often apply their own markup independently of anything the broker charges.</li>
 </ul>
 
-<h2>The bottom line</h2>
+<h2>An easy fee to overlook</h2>
 <p>Currency conversion fees are easy to overlook because they're rarely itemized as a separate charge, but they're a genuine cost for anyone whose account currency doesn't line up neatly with their banking or trading activity. Checking your broker's account currency options and conversion policy before you fund an account is a simple way to avoid paying this cost unnecessarily, and it takes only a few minutes to look up compared with discovering it after the fact on a statement.</p>
 HTML
             ,
@@ -296,7 +296,7 @@ HTML
 <h2>Why this is easy to miss when choosing a broker</h2>
 <p>Deposit and withdrawal terms are usually buried in account or payment pages rather than featured in marketing material, which means this cost often goes unnoticed until the first time someone tries to withdraw funds. It's a good idea to treat this the same way you'd treat spread or commission: part of the real cost of using a broker, not an afterthought. Independent broker reviews typically cover payment-method details so you can check this before committing funds to a new account.</p>
 
-<h2>The bottom line</h2>
+<h2>Check your specific method before funding</h2>
 <p>Deposit and withdrawal fees sit outside the usual spread-and-commission conversation, but they're a genuine cost that varies a lot by broker, by payment method, and sometimes by your own bank. Checking the specific terms for the method you plan to use, before you fund an account, avoids an unpleasant surprise later -- especially since the fee you encounter on your first withdrawal is often the first time this cost becomes visible at all.</p>
 HTML
             ,
@@ -342,7 +342,7 @@ HTML
 <li>Assume that any cost not explicitly ruled out probably applies in some form -- and verify rather than assume it doesn't.</li>
 </ul>
 
-<h2>The bottom line</h2>
+<h2>Read the fee schedule, not just the ad</h2>
 <p>The fees that catch traders off guard are rarely secret -- they're simply less advertised than spread and commission. A few minutes spent reading a broker's actual fee schedule before opening an account is one of the most useful habits you can build as a beginner.</p>
 HTML
             ,
@@ -387,7 +387,7 @@ HTML
 <h2>Letting a calculator do the spread portion for you</h2>
 <p>Steps 2 and 3 involve the most repetitive arithmetic, and it's easy to make a small multiplication error by hand, especially when comparing more than two brokers at once. Our <a href="https://globalfxhub.net/cost-calculator/">Forex Spread Cost Calculator</a> estimates your annual EUR/USD spread cost directly from your account size, trades per month, and trade size, across researched brokers -- removing that part of the manual math. It's worth noting, in the same honest spirit as this guide, that the calculator focuses specifically on confirmed spread data and discloses commission and overnight financing as real, separate costs it doesn't attempt to estimate, since those vary too much by account type and trading pattern to average reliably. You'll still want to add your own estimates for those components using the steps above, since a broker's own fee schedule is still the best source for the specific commission and swap figures it publishes.</p>
 
-<h2>The bottom line</h2>
+<h2>Add it all up for how you actually trade</h2>
 <p>A fair broker comparison adds spread, commission, likely swap, and any other relevant fees together for your own realistic trading pattern, rather than comparing a single advertised number. It takes a bit more effort than reading a marketing page, but it's the only way to know which broker is actually cheaper for how you trade.</p>
 HTML
             ,
