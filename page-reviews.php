@@ -294,10 +294,23 @@ if ( ! empty( $ext['reviews'] ) ) :
 </div>
 <?php endif; ?>
 
-<?php $changelog_entries = array_slice( globalfxhub_get_broker_changelog( $broker['slug'] ), 0, 5 ); ?>
+<?php
+/*
+ * "Baseline recorded" entries (field === null) mark when tracking
+ * started for this broker, not a real change -- showing one under a
+ * "Recent changes" heading would read as if something had actually
+ * changed when nothing has. Only genuine field-diff entries belong
+ * here; see inc/broker-changelog.php.
+ */
+$changelog_entries = array_values( array_filter( globalfxhub_get_broker_changelog( $broker['slug'] ), function( $entry ) {
+    return null !== $entry['field'];
+} ) );
+$changelog_entries = array_slice( $changelog_entries, 0, 5 );
+?>
 <div class="wrap" style="padding-bottom:40px;">
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;">Recent changes</h2>
   <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">A dated log of when our own published data about this broker actually changed -- not a reconstructed history of what the broker itself did. See the full <a href="<?php echo esc_url( home_url( '/broker-changelog/' ) ); ?>" style="color:var(--teal);">change log tool</a> for every broker.</p>
+  <?php if ( ! empty( $changelog_entries ) ) : ?>
   <div class="rankings">
     <?php foreach ( $changelog_entries as $i => $entry ) : ?>
     <div class="rank-row" style="grid-template-columns:44px 160px 1fr;">
@@ -307,6 +320,9 @@ if ( ! empty( $ext['reviews'] ) ) :
     </div>
     <?php endforeach; ?>
   </div>
+  <?php else : ?>
+  <p style="color:var(--ink-soft);font-size:14.5px;">No tracked field (pricing, platforms, licence numbers) has changed for this broker since we started tracking -- that's not the same as nothing ever having changed about the broker itself, just that our own published data hasn't needed a correction yet.</p>
+  <?php endif; ?>
 </div>
 
 <?php
