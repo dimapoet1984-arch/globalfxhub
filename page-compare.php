@@ -64,7 +64,31 @@ if ( $vs_pair ) {
     <button id="compareBtn" type="button">Compare</button>
   </div>
 
-  <div class="presets" id="presets"></div>
+  <div class="presets" id="presets">
+    <?php
+    // Server-rendered as real <a href> links (not just a JS click
+    // handler that re-renders the picker client-side) so these are
+    // actual crawlable inbound links to their /compare/{a}-vs-{b}/
+    // pages, not only reachable via a button click no crawler follows.
+    $vs_preset_pairs = array(
+        array( 'ig', 'xtb' ), array( 'etoro', 'plus500' ), array( 'xm', 'pepperstone' ),
+        array( 'ic-markets', 'fxpro' ), array( 'fxcm', 'capital-com' ), array( 'avatrade', 'tickmill' ),
+    );
+    $vs_ranked_slugs = globalfxhub_top_ranked_broker_slugs( 40 );
+    foreach ( $vs_preset_pairs as list( $preset_a, $preset_b ) ) {
+        $preset_pair = globalfxhub_vs_pair( $preset_a, $preset_b );
+        if ( ! $preset_pair ) {
+            continue;
+        }
+        $pos_a = array_search( $preset_a, $vs_ranked_slugs, true );
+        $pos_b = array_search( $preset_b, $vs_ranked_slugs, true );
+        list( $url_first, $url_second ) = ( $pos_a < $pos_b ) ? array( $preset_a, $preset_b ) : array( $preset_b, $preset_a );
+        ?>
+        <a class="preset" href="<?php echo esc_url( home_url( '/compare/' . $url_first . '-vs-' . $url_second . '/' ) ); ?>"><?php echo esc_html( $preset_pair['a']['name'] . ' vs ' . $preset_pair['b']['name'] ); ?></a>
+        <?php
+    }
+    ?>
+  </div>
 
   <div id="empty-state"<?php echo $vs_pair ? ' style="display:none;"' : ''; ?>>Choose two brokers above (or pick a popular comparison) to see the full side-by-side breakdown.</div>
 
@@ -99,6 +123,25 @@ if ( $vs_pair ) {
       &middot;
       <a href="<?php echo esc_url( home_url( '/compare/' ) ); ?>" style="color:var(--teal);">Compare different brokers &rarr;</a>
     </p>
+    <?php
+    $vs_related = array();
+    foreach ( array( $vs_a, $vs_b ) as $vs_side ) {
+        $vs_other_side = ( $vs_side === $vs_a ) ? $vs_b : $vs_a;
+        foreach ( globalfxhub_broker_vs_related_pairs( $vs_side['slug'], $vs_other_side['slug'], 2 ) as $rel ) {
+            if ( ! isset( $vs_related[ $rel['url'] ] ) ) {
+                $vs_related[ $rel['url'] ] = $vs_side['name'] . ' vs ' . $rel['broker']['name'];
+            }
+        }
+    }
+    if ( ! empty( $vs_related ) ) :
+    ?>
+    <p style="font-size:13.5px;margin:0 0 16px;color:var(--ink-soft);">Also compare:
+      <?php $vs_related_links = array(); foreach ( $vs_related as $rel_url => $rel_label ) {
+          $vs_related_links[] = '<a href="' . esc_url( $rel_url ) . '" style="color:var(--teal);">' . esc_html( $rel_label ) . '</a>';
+      }
+      echo implode( ' &middot; ', $vs_related_links ); ?>
+    </p>
+    <?php endif; ?>
     <?php endif; ?>
     <div class="methodology-note">
       <strong>How this score is calculated:</strong> Nine weighted categories against a fixed, disclosed rubric -- regulation & client protection 30%, trading costs 20%, non-trading fees 10%, platforms & tools 10%, execution/trading conditions 10%, product range 5%, deposits/withdrawals 5%, transparency 5%, track record 5% -- not a ranking relative to other brokers, and not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
@@ -133,19 +176,11 @@ const PRESET_B = <?php echo wp_json_encode( $b_param ); ?>;
     selB.add(new Option(b.name, b.slug));
   });
 
-  const presets = [
-    ['ig','xtb'], ['etoro','plus500'], ['xm','pepperstone'],
-    ['ic-markets','fxpro'], ['fxcm','capital-com'], ['avatrade','tickmill']
-  ];
-  presets.forEach(([a,b]) => {
-    if(!bySlug[a] || !bySlug[b]) return;
-    const btnEl = document.createElement('button');
-    btnEl.className = 'preset';
-    btnEl.type = 'button';
-    btnEl.textContent = bySlug[a].name + ' vs ' + bySlug[b].name;
-    btnEl.addEventListener('click', () => { selA.value = a; selB.value = b; render(); });
-    presetsEl.appendChild(btnEl);
-  });
+  // The six "popular comparisons" are now server-rendered as real
+  // <a href> links directly to their /compare/{a}-vs-{b}/ page (see
+  // the PHP block above #presets) rather than built here as
+  // JS-only buttons -- that gave them a crawlable inbound link
+  // instead of only a client-side re-render no crawler follows.
 
   function render(){
     const a = bySlug[selA.value];

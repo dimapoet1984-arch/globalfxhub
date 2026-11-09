@@ -55,6 +55,60 @@ function globalfxhub_vs_pair( $slug_a, $slug_b ) {
 }
 
 /**
+ * A handful of OTHER real, eligible pairings involving $slug -- used
+ * to give every one of the up-to-780 combinatorial vs-pages a couple
+ * of genuine, on-topic inbound links from sibling comparison pages.
+ * Without this, a pair's only path in was the sitemap itself (not a
+ * content link search engines weigh for discovery/ranking the same
+ * way) or the six hand-picked pairs on the /compare/ tool page -- most
+ * of the long tail had no real internal link pointing to it at all.
+ *
+ * Picks the closest-ranked other top-40 brokers, expanding outward
+ * from $slug's own rank position -- the most genuinely comparable
+ * peers (similar standing), not an arbitrary or sitewide-spam
+ * selection. URL slug order always matches globalfxhub_sitemap_urls()'s
+ * own convention (better-ranked broker first) so this never generates
+ * a different URL for a pair than the one already in the sitemap.
+ */
+function globalfxhub_broker_vs_related_pairs( $slug, $exclude_slug = null, $count = 3 ) {
+    $ranked = globalfxhub_top_ranked_broker_slugs( 40 );
+    $pos = array_search( $slug, $ranked, true );
+    if ( false === $pos ) {
+        return array();
+    }
+
+    $candidates = array();
+    $total = count( $ranked );
+    for ( $radius = 1; $radius <= $total && count( $candidates ) < $count; $radius++ ) {
+        foreach ( array( $pos - $radius, $pos + $radius ) as $i ) {
+            if ( $i < 0 || $i >= $total || count( $candidates ) >= $count ) {
+                continue;
+            }
+            $cand = $ranked[ $i ];
+            if ( $cand === $slug || $cand === $exclude_slug || in_array( $cand, $candidates, true ) ) {
+                continue;
+            }
+            $candidates[] = $cand;
+        }
+    }
+
+    $pairs = array();
+    foreach ( $candidates as $cand ) {
+        $broker = globalfxhub_get_broker_by_slug( $cand );
+        if ( ! $broker ) {
+            continue;
+        }
+        $cand_pos = array_search( $cand, $ranked, true );
+        list( $first, $second ) = ( $pos < $cand_pos ) ? array( $slug, $cand ) : array( $cand, $slug );
+        $pairs[] = array(
+            'broker' => $broker,
+            'url'    => home_url( '/compare/' . $first . '-vs-' . $second . '/' ),
+        );
+    }
+    return $pairs;
+}
+
+/**
  * Server-rendered comparison rows -- the exact same field list
  * page-compare.php's own client-side tool already displays for a pair
  * (same source data, same globalfxhub_broker_regulation_label() this
