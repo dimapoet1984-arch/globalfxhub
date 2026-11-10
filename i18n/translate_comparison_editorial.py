@@ -43,7 +43,7 @@ SOURCE = {
     "meta_title": "Pepperstone vs IC Markets (2026): Which Broker Should You Choose?",
     "meta_description": "Pepperstone vs IC Markets compared on regulation, cost, platforms, and track record -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
     "intro": "Pepperstone and IC Markets are both built around the same pitch: tight ECN-style pricing aimed at active and algorithmic traders, not a mass-market retail product. That similarity is exactly why they get compared so often -- but the two brokers actually differ in ways that matter more than their shared \"built for serious traders\" positioning suggests.",
-    "verdict": "Pepperstone holds the wider Tier-1 regulatory footprint (CySEC, FCA, ASIC, and DFSA, against IC Markets' CySEC and ASIC), a far lower minimum deposit ($10 vs $200), and one more supported platform (TradingView, alongside MT4/MT5/cTrader). IC Markets edges ahead on our on-file headline EUR/USD spread (0.8 pips against Pepperstone's 1.1), and has a longer operating history (founded 2007 vs 2010) -- though both brokers also offer a separate raw-spread-plus-commission tier not captured by that single headline figure, so check each broker's current account terms for your specific setup. Under our disclosed methodology, Pepperstone scores 3.64/5 overall against IC Markets' 3.07/5, driven mainly by the regulation category (30% of the total score, and Pepperstone's biggest advantage).",
+    "verdict": "Pepperstone holds the wider Tier-1 regulatory footprint (CySEC, FCA, ASIC, and DFSA, against IC Markets' CySEC and ASIC), a far lower minimum deposit ($10 vs $200), and one more supported platform (TradingView, alongside MT4/MT5/cTrader). IC Markets edges ahead on our on-file headline EUR/USD spread (0.8 pips against Pepperstone's 1.1), and has a longer operating history (founded 2007 vs 2010) -- though both brokers also offer a separate raw-spread-plus-commission tier not captured by that single headline figure, so check each broker's current account terms for your specific setup. Under our disclosed methodology, Pepperstone scores 3.75/5 overall against IC Markets' 3.46/5, driven mainly by the regulation category (30% of the total score, and Pepperstone's biggest advantage).",
     "choose_a_heading": "Choose Pepperstone if...",
     "choose_a_point_1": "You want the broader regulatory footprint -- Pepperstone holds CySEC, FCA, ASIC, and DFSA authorisation, against IC Markets' CySEC and ASIC.",
     "choose_a_point_2": "You're starting with a small account -- Pepperstone's $10 minimum deposit is a fraction of IC Markets' $200.",
@@ -88,7 +88,7 @@ This is editorial comparison content for a forex/CFD broker research site,
 comparing two specific, named brokers (Pepperstone and IC Markets) on
 regulation, cost, platforms, and track record. Every number, broker name,
 regulator code (CySEC, FCA, ASIC, DFSA), and currency figure ($10, $200,
-0.8 pips, 1.1 pips, 3.64/5, 3.07/5, 2007, 2010, etc.) is a sourced fact --
+0.8 pips, 1.1 pips, 3.75/5, 3.46/5, 2007, 2010, etc.) is a sourced fact --
 preserve every one of them EXACTLY, never translating, rounding, or
 reordering them. Translate the surrounding prose naturally.
 
