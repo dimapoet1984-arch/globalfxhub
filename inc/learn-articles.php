@@ -333,7 +333,9 @@ function globalfxhub_ensure_learn_articles() {
         if ( empty( $article['content'] ) ) {
             continue; // not drafted yet -- never publish a stub
         }
-        if ( get_page_by_path( $article['slug'], OBJECT, 'post' ) ) {
+        $existing = get_page_by_path( $article['slug'], OBJECT, 'post' );
+        if ( $existing ) {
+            globalfxhub_unstick_missed_schedule( $existing );
             continue; // already provisioned
         }
 
@@ -359,6 +361,37 @@ function globalfxhub_ensure_learn_articles() {
     }
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_learn_articles' );
+
+/**
+ * A post inserted above with status 'future' is published only by
+ * WordPress's own internal publish_future_post single-cron-event,
+ * scheduled for the post's exact post_date_gmt at insert time. That's
+ * WP-Cron's pseudo-cron -- it only runs due events when something
+ * actually visits the site at or after that timestamp -- so a quiet
+ * period right at the scheduled moment leaves the post stuck at
+ * status 'future' with a post_date now in the past (wp-admin calls
+ * this "Missed schedule") forever, since nothing else ever revisits
+ * an already-provisioned post: the loop above treats "the post
+ * already exists" as "nothing to do," regardless of its status.
+ *
+ * Matches a live symptom reported 2026-11-10 (three Learn articles
+ * showing "Missed schedule" in wp-admin) -- this is the only place in
+ * the theme that ever sets post_status to 'future' (inc/learn-articles.php,
+ * confirmed via a full-codebase grep), so it's the only plausible
+ * source. Runs on every after_setup_theme like the rest of this
+ * provisioning, but only ever touches a post that's both still
+ * 'future' AND already past its own scheduled time -- a genuinely
+ * future-dated post is left alone for WP-Cron to publish normally.
+ */
+function globalfxhub_unstick_missed_schedule( $post ) {
+    if ( 'future' !== $post->post_status ) {
+        return;
+    }
+    if ( strtotime( $post->post_date_gmt . ' GMT' ) > time() ) {
+        return; // genuinely still scheduled for later -- leave it to WP-Cron
+    }
+    wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'publish' ) );
+}
 
 /**
  * Appends a "More in this cluster" block linking to sibling articles --
