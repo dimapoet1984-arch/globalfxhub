@@ -83,6 +83,19 @@ if ( $vs_editorial ) :
     <strong><?php echo esc_html( $vs_editorial['worth_knowing_heading'] ); ?></strong> <?php echo esc_html( $vs_editorial['worth_knowing'] ); ?>
   </div>
   <?php endif; ?>
+  <?php
+  $vs_research_links = array_merge(
+      globalfxhub_broker_research_articles_for_broker( $vs_pair['a']['slug'] ),
+      globalfxhub_broker_research_articles_for_broker( $vs_pair['b']['slug'] )
+  );
+  if ( ! empty( $vs_research_links ) ) :
+  ?>
+  <p style="margin:14px 0 0;font-size:13.5px;">Related research:
+    <?php foreach ( $vs_research_links as $i => $research_link ) : ?>
+    <a href="<?php echo esc_url( $research_link['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $research_link['title'] ); ?></a><?php echo ( $i < count( $vs_research_links ) - 1 ) ? ' &middot; ' : ''; ?>
+    <?php endforeach; ?>
+  </p>
+  <?php endif; ?>
 </div>
 <?php endif; ?>
 

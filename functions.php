@@ -30,6 +30,7 @@ require get_template_directory() . '/inc/broker-finder.php';
 require get_template_directory() . '/inc/broker-comparison-editorial.php';
 require get_template_directory() . '/inc/broker-vs.php';
 require get_template_directory() . '/inc/broker-alternatives.php';
+require get_template_directory() . '/inc/broker-research-articles.php';
 require get_template_directory() . '/inc/cost-calculator.php';
 require get_template_directory() . '/inc/regulation-checker.php';
 require get_template_directory() . '/inc/broker-changelog.php';
@@ -890,7 +891,7 @@ add_action( 'after_switch_theme', 'flush_rewrite_rules' );
  * doesn't cover a route added in a file like inc/broker-vs.php that
  * touches no page at all).
  */
-define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-10-29-2' );
+define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-11-10-1' );
 
 function globalfxhub_maybe_flush_rewrite_rules() {
     if ( get_option( 'globalfxhub_rewrite_rules_version' ) !== GLOBALFXHUB_REWRITE_RULES_VERSION ) {
@@ -920,7 +921,7 @@ function globalfxhub_review_seo_title( $title_parts ) {
         if ( $broker ) {
             $title_parts['title'] = $broker['name'] . ' Review ' . date( 'Y' ) . ': Regulation & Fees';
         }
-    } elseif ( is_page( 'reviews' ) ) {
+    } elseif ( is_page( 'reviews' ) && ! get_query_var( 'broker_alts' ) && ! get_query_var( 'broker_research' ) ) {
         $title_parts['title'] = 'Forex Broker Reviews ' . date( 'Y' ) . ': All CySEC-Regulated Brokers Rated';
     }
     return $title_parts;
@@ -942,7 +943,7 @@ add_filter( 'get_canonical_url', 'globalfxhub_review_canonical' );
 function globalfxhub_review_seo_head() {
     $slug = get_query_var( 'broker' );
     if ( ! $slug ) {
-        if ( is_page( 'reviews' ) ) {
+        if ( is_page( 'reviews' ) && ! get_query_var( 'broker_alts' ) && ! get_query_var( 'broker_research' ) ) {
             echo '<meta name="description" content="' . esc_attr( 'In-depth, individually scored reviews of every broker in our rankings -- CySEC-, FCA-, or Seychelles FSA-licensed, or more than one -- covering regulation, cost, platforms, and track record, built from a disclosed methodology.' ) . '">' . "\n";
         }
         return;
@@ -1182,6 +1183,21 @@ function globalfxhub_breadcrumb_schema() {
                     array( 'name' => 'Reviews', 'item' => home_url( '/reviews/' ) ),
                     array( 'name' => $alts_data['broker']['name'], 'item' => home_url( '/reviews/' . $alts_data['broker']['slug'] . '/' ) ),
                     array( 'name' => 'Alternatives', 'item' => home_url( '/reviews/' . $alts_data['broker']['slug'] . '/alternatives/' ) ),
+                );
+            }
+        }
+    }
+
+    if ( null === $trail ) {
+        $research_slug = get_query_var( 'broker_research' );
+        $research_kind = get_query_var( 'broker_research_kind' );
+        if ( $research_slug && $research_kind ) {
+            $research_data = globalfxhub_get_broker_research_article( $research_slug, $research_kind );
+            if ( $research_data ) {
+                $trail = array(
+                    array( 'name' => 'Reviews', 'item' => home_url( '/reviews/' ) ),
+                    array( 'name' => $research_data['broker']['name'], 'item' => home_url( '/reviews/' . $research_data['broker_slug'] . '/' ) ),
+                    array( 'name' => $research_data['title'], 'item' => home_url( '/reviews/' . $research_data['broker_slug'] . '/' . $research_data['kind'] . '/' ) ),
                 );
             }
         }

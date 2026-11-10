@@ -70,6 +70,9 @@ function globalfxhub_sitemap_urls() {
             $add( home_url( '/reviews/' . $slug . '/alternatives/' ), 0.4 );
         }
     }
+    foreach ( globalfxhub_get_broker_research_articles() as $research_entry ) {
+        $add( home_url( '/reviews/' . $research_entry['broker_slug'] . '/' . $research_entry['kind'] . '/' ), 0.5 );
+    }
 
     // --- Compare (static vs-pages: both brokers must be top-40) ---
     $add( home_url( '/compare/' ), 0.6 );

@@ -47,6 +47,7 @@ function globalfxhub_learn_content_fees_and_costs() {
 
 <h2>Why the full picture matters</h2>
 <p>No single fee tells the whole story. A broker's total cost to you depends on how its spread, commission, swap and account-maintenance policies interact with your personal trading habits. Learning to ask about all of them -- not just the spread shown in the ad -- is what separates a quick guess from a real comparison.</p>
+<p>For a worked example of this whole fee breakdown applied to one specific broker, see <a href="https://globalfxhub.net/reviews/pepperstone/fees/">Pepperstone Fees Explained</a>.</p>
 HTML
             ,
         ),
@@ -76,7 +77,7 @@ HTML
 <p>Spread and commission are only part of the picture. Holding positions overnight brings swap fees into play regardless of which pricing model you're on, and some raw-spread accounts pair their lower trading costs with other charges elsewhere, such as higher minimum deposits or different withdrawal terms. A full comparison should look at the whole fee structure, not just spread versus commission in isolation.</p>
 
 <h2>Using a calculator instead of guessing</h2>
-<p>Doing this math by hand for every broker you're considering gets tedious fast, especially once you factor in your own trade size and frequency. Our <a href="https://globalfxhub.net/cost-calculator/">Forex Spread Cost Calculator</a> estimates your annual spread cost from your account size, trades per month, and typical trade size, which is the clearest way to see how a tight-spread-plus-commission setup stacks up against a standard spread for your specific trading pattern -- it's worth running your numbers through it rather than relying on a broker's marketing comparison, which is naturally going to favor its own account type.</p>
+<p>Doing this math by hand for every broker you're considering gets tedious fast, especially once you factor in your own trade size and frequency. Our <a href="https://globalfxhub.net/cost-calculator/">Forex Spread Cost Calculator</a> estimates your annual spread cost from your account size, trades per month, and typical trade size, which is the clearest way to see how a tight-spread-plus-commission setup stacks up against a standard spread for your specific trading pattern -- it's worth running your numbers through it rather than relying on a broker's marketing comparison, which is naturally going to favor its own account type. For a real example of a standard-vs-raw-spread account split, see <a href="https://globalfxhub.net/reviews/pepperstone/fees/">Pepperstone Fees Explained</a>, which breaks down its Standard and Razor accounts.</p>
 
 <h2>Do the math for your own trading pattern</h2>
 <p>There's no universal answer to "spread or commission" -- it depends entirely on your trade size and how often you trade. The honest approach is to do the arithmetic for your own habits rather than trusting either account type's marketing framing, and to remember that swap fees and other charges sit outside this comparison entirely.</p>

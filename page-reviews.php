@@ -19,9 +19,69 @@ $alts_data = $alts_slug ? globalfxhub_broker_alternatives( $alts_slug ) : null;
 if ( $alts_slug && ! $alts_data ) {
     status_header( 404 );
 }
+
+$research_slug = get_query_var( 'broker_research' );
+$research_kind = get_query_var( 'broker_research_kind' );
+$research_entry = ( $research_slug && $research_kind ) ? globalfxhub_get_localized_broker_research_article( $research_slug, $research_kind ) : null;
+if ( $research_slug && $research_kind && ! $research_entry ) {
+    status_header( 404 );
+}
 ?>
 
-<?php if ( $alts_slug ) :
+<?php if ( $research_slug && $research_kind ) :
+    if ( ! $research_entry ) :
+?>
+
+<div class="wrap page-head">
+  <div class="eyebrow">BROKER RESEARCH</div>
+  <h1>Article not available</h1>
+  <p>We don't have that research article yet. <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);">See all researched broker reviews</a>.</p>
+</div>
+
+    <?php else :
+        $rb = $research_entry['broker'];
+    ?>
+
+<div class="wrap crumb">
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
+  <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>">Reviews</a> /
+  <a href="<?php echo esc_url( home_url( '/reviews/' . $rb['slug'] . '/' ) ); ?>"><?php echo esc_html( $rb['name'] ); ?></a> /
+  <?php echo esc_html( $research_entry['title'] ); ?>
+</div>
+
+<?php globalfxhub_promo_banner(); ?>
+
+<div class="wrap page-head">
+  <div class="eyebrow">BROKER <?php echo esc_html( strtoupper( $research_entry['kind'] ) ); ?></div>
+  <h1><?php echo esc_html( $research_entry['title'] ); ?></h1>
+  <p><?php echo esc_html( $research_entry['intro'] ); ?></p>
+</div>
+
+<div class="wrap" style="padding-bottom:20px;">
+  <?php foreach ( $research_entry['sections'] as $i => $section ) : ?>
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:28px 0 10px;"><?php echo esc_html( $section['heading'] ); ?></h2>
+  <p style="color:var(--ink-soft);line-height:1.7;"><?php echo esc_html( $section['body'] ); ?></p>
+  <?php if ( 0 === $i ) : ?>
+  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) . '?broker=' . rawurlencode( $rb['slug'] ) ); ?>" style="color:var(--teal);">Try our Forex Spread Cost Calculator against your own trade size &rarr;</a></p>
+  <?php endif; ?>
+  <?php endforeach; ?>
+</div>
+
+<div class="wrap" style="padding-bottom:40px;">
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 12px;">Frequently asked questions</h2>
+  <div>
+    <?php foreach ( $research_entry['faqs'] as $faq ) : ?>
+    <div style="margin-bottom:18px;">
+      <p style="font-weight:600;margin:0 0 4px;color:var(--navy);"><?php echo esc_html( $faq['q'] ); ?></p>
+      <p style="margin:0;color:var(--ink-soft);line-height:1.6;"><?php echo esc_html( $faq['a'] ); ?></p>
+    </div>
+    <?php endforeach; ?>
+  </div>
+  <p style="margin-top:4px;"><a href="<?php echo esc_url( home_url( '/reviews/' . $rb['slug'] . '/' ) ); ?>" style="color:var(--teal);">&larr; Back to the full <?php echo esc_html( $rb['name'] ); ?> review</a></p>
+</div>
+
+    <?php endif;
+elseif ( $alts_slug ) :
     if ( ! $alts_data ) :
 ?>
 
@@ -154,6 +214,9 @@ elseif ( $broker ) :
     <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold">Compare vs another broker</a>
     <?php foreach ( globalfxhub_editorial_comparisons_for_broker( $broker['slug'] ) as $editorial_vs ) : ?>
     <a href="<?php echo esc_url( $editorial_vs['url'] ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $broker['name'] . ' vs ' . $editorial_vs['other']['name'] ); ?>: <?php globalfxhub_te( 'rev_vs_our_verdict' ); ?></a>
+    <?php endforeach; ?>
+    <?php foreach ( globalfxhub_broker_research_articles_for_broker( $broker['slug'] ) as $research_link ) : ?>
+    <a href="<?php echo esc_url( $research_link['url'] ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $research_link['title'] ); ?></a>
     <?php endforeach; ?>
     <a href="<?php echo esc_url( home_url( '/broker-finder/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);">Find similar brokers</a>
     <?php if ( globalfxhub_broker_alternatives( $broker['slug'] ) ) : ?>
