@@ -12,9 +12,46 @@ get_header();
 
 $regpage_slug = get_query_var( 'regpage' );
 $reg_pages = globalfxhub_get_regulation_pages();
+$reg_comparison = $regpage_slug ? globalfxhub_get_localized_regulation_comparison( $regpage_slug ) : null;
 ?>
 
-<?php if ( $regpage_slug && isset( $reg_pages[ $regpage_slug ] ) ) :
+<?php if ( $reg_comparison ) : ?>
+
+<div class="wrap crumb">
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
+  <a href="<?php echo esc_url( home_url( '/regulation/' ) ); ?>">Regulation</a> /
+  <?php echo esc_html( $reg_comparison['title'] ); ?>
+</div>
+
+<?php globalfxhub_promo_banner(); ?>
+
+<div class="wrap page-head">
+  <div class="eyebrow">REGULATION</div>
+  <h1><?php echo esc_html( $reg_comparison['title'] ); ?></h1>
+  <p><?php echo esc_html( $reg_comparison['intro'] ); ?></p>
+</div>
+
+<div class="wrap art-body" style="padding-bottom:20px;">
+  <?php foreach ( $reg_comparison['sections'] as $section ) : ?>
+  <h2><?php echo esc_html( $section['heading'] ); ?></h2>
+  <p><?php echo esc_html( $section['body'] ); ?></p>
+  <?php endforeach; ?>
+</div>
+
+<div class="wrap" style="padding-bottom:40px;">
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 12px;">Frequently asked questions</h2>
+  <div>
+    <?php foreach ( $reg_comparison['faqs'] as $faq ) : ?>
+    <div style="margin-bottom:18px;">
+      <p style="font-weight:600;margin:0 0 4px;color:var(--navy);"><?php echo esc_html( $faq['q'] ); ?></p>
+      <p style="margin:0;color:var(--ink-soft);line-height:1.6;"><?php echo esc_html( $faq['a'] ); ?></p>
+    </div>
+    <?php endforeach; ?>
+  </div>
+  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:4px;">See <a href="<?php echo esc_url( home_url( '/regulation/' ) ); ?>" style="color:var(--teal);">all regulation pages</a>.</p>
+</div>
+
+<?php elseif ( $regpage_slug && isset( $reg_pages[ $regpage_slug ] ) ) :
     $page_data = $reg_pages[ $regpage_slug ];
 ?>
 
@@ -61,6 +98,12 @@ $reg_pages = globalfxhub_get_regulation_pages();
     <a href="<?php echo esc_url( home_url( '/regulation/' . $slug . '/' ) ); ?>" class="guide">
       <h3><?php echo esc_html( $page_data['title'] ); ?></h3>
       <p><?php echo esc_html( $page_data['summary'] ); ?></p>
+    </a>
+    <?php endforeach; ?>
+    <?php foreach ( globalfxhub_get_regulation_comparisons() as $cmp_slug => $cmp_data ) : ?>
+    <a href="<?php echo esc_url( home_url( '/regulation/' . $cmp_slug . '/' ) ); ?>" class="guide">
+      <h3><?php echo esc_html( $cmp_data['title'] ); ?></h3>
+      <p><?php echo esc_html( $cmp_data['meta_description'] ); ?></p>
     </a>
     <?php endforeach; ?>
   </div>

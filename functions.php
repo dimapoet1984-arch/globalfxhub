@@ -26,6 +26,7 @@ require get_template_directory() . '/inc/broker-news.php';
 require get_template_directory() . '/inc/countries.php';
 require get_template_directory() . '/inc/best.php';
 require get_template_directory() . '/inc/regulation.php';
+require get_template_directory() . '/inc/regulation-comparisons.php';
 require get_template_directory() . '/inc/broker-finder.php';
 require get_template_directory() . '/inc/broker-comparison-editorial.php';
 require get_template_directory() . '/inc/broker-vs.php';
@@ -1250,8 +1251,14 @@ function globalfxhub_breadcrumb_schema() {
     if ( null === $trail ) {
         $regpage_slug = get_query_var( 'regpage' );
         if ( $regpage_slug ) {
+            $reg_comparison = globalfxhub_get_regulation_comparison( $regpage_slug );
             $reg_pages = globalfxhub_get_regulation_pages();
-            if ( isset( $reg_pages[ $regpage_slug ] ) ) {
+            if ( $reg_comparison ) {
+                $trail = array(
+                    array( 'name' => 'Regulation', 'item' => home_url( '/regulation/' ) ),
+                    array( 'name' => $reg_comparison['title'], 'item' => home_url( '/regulation/' . $regpage_slug . '/' ) ),
+                );
+            } elseif ( isset( $reg_pages[ $regpage_slug ] ) ) {
                 $trail = array(
                     array( 'name' => 'Regulation', 'item' => home_url( '/regulation/' ) ),
                     array( 'name' => $reg_pages[ $regpage_slug ]['title'], 'item' => home_url( '/regulation/' . $regpage_slug . '/' ) ),

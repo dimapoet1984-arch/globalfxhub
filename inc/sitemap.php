@@ -104,6 +104,9 @@ function globalfxhub_sitemap_urls() {
     foreach ( array_keys( globalfxhub_get_regulation_pages() ) as $slug ) {
         $add( home_url( '/regulation/' . $slug . '/' ), 0.6 );
     }
+    foreach ( array_keys( globalfxhub_get_regulation_comparisons() ) as $slug ) {
+        $add( home_url( '/regulation/' . $slug . '/' ), 0.6 );
+    }
 
     // --- Standalone tools ---
     $add( home_url( '/broker-finder/' ), 0.7 );

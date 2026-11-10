@@ -58,7 +58,7 @@ HTML
 <p>Search the firm's exact legal entity name and its Firm Reference Number (FRN) on the official FCA Financial Services Register, which is the regulator's own public database rather than a third-party summary. The register shows the firm's current authorisation status, the specific activities it is permitted to carry out, and any current warnings about clone firms using a similar name. Checking the register directly -- rather than relying on a logo or badge displayed on a broker's own website -- is the only reliable way to confirm a UK regulatory claim.</p>
 <h2>Client Categorisation Matters Too</h2>
 <p>FCA protections, including leverage caps and some conduct rules, generally apply to clients classified as "retail." A firm may offer to reclassify a client as "professional" on request, which can unlock higher leverage but also strips away several retail protections, including some complaint and compensation routes. Reclassification should be something you actively choose and understand, not something that happens as a default step in account opening -- if a broker is encouraging it heavily without explaining what you give up, that is worth pausing on.</p>
-<p>For how FCA protection compares with other regulators' approaches, including which ones run a comparable compensation scheme and which don't, see our <a href="https://globalfxhub.net/regulation/">regulation knowledge base</a>, which covers requirements and licensing region by region.</p>
+<p>For how FCA protection compares with other regulators' approaches, including which ones run a comparable compensation scheme and which don't, see our <a href="https://globalfxhub.net/regulation/">regulation knowledge base</a>, which covers requirements and licensing region by region, or our <a href="https://globalfxhub.net/regulation/fca-vs-cysec/">FCA vs CySEC comparison</a> directly.</p>
 HTML
         ),
 
@@ -79,7 +79,7 @@ HTML
 <p>Search the firm's exact legal entity name -- not its brand name -- on CySEC's official register of Cypriot Investment Firms. Confirm that the licence number shown there matches what the broker discloses, and check the current status of the licence rather than assuming a number alone means the firm is actively authorised today.</p>
 <h2>Why So Many Brokers Choose Cyprus Specifically</h2>
 <p>Cyprus's popularity as an EU licensing hub is partly historical and partly practical: the country built up deep regulatory and legal expertise in investment firms over a long period, and the licensing and compliance costs involved are generally lower than in some larger EU financial centres, while the licence itself carries the same MiFID passporting rights. None of that makes a CySEC licence weaker in substance than, say, a comparable licence issued in Germany or France -- the underlying EU rulebook is the same -- but it does explain why the brand name "CySEC" shows up on so many broker websites rather than a more obscure national regulator from elsewhere in the bloc.</p>
-<p>For how the ICF compares with the UK's FSCS and with offshore regulators that run no compensation scheme at all, see our <a href="https://globalfxhub.net/regulation/">regulation knowledge base</a>.</p>
+<p>For how the ICF compares with the UK's FSCS and with offshore regulators that run no compensation scheme at all, see our <a href="https://globalfxhub.net/regulation/">regulation knowledge base</a>, or our <a href="https://globalfxhub.net/regulation/fca-vs-cysec/">FCA vs CySEC comparison</a> directly.</p>
 HTML
         ),
 
