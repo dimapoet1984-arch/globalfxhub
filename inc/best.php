@@ -65,7 +65,7 @@ function globalfxhub_get_best_lists() {
         ),
         'mt4-mt5' => array(
             'title'      => 'Best MT4 / MT5 Brokers',
-            'intro'      => 'Filtered to brokers confirmed to support MetaTrader 4 or MetaTrader 5, ranked by overall score.',
+            'intro'      => 'Filtered to brokers confirmed to support MetaTrader 4 or MetaTrader 5, ranked by overall score. See our <a href="' . home_url( '/research/forex-trading-platform-adoption-report/' ) . '">Forex Trading Platform Adoption Report</a> for how common each platform actually is across our full research set.',
             'sort_label' => 'Overall score',
             'filter'     => function( $b ) { return in_array( 'MT4', $b['platforms'], true ) || in_array( 'MT5', $b['platforms'], true ); },
             'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },

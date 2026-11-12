@@ -1,0 +1,25 @@
+name: i18n translate research reports
+
+on:
+  workflow_dispatch:
+    inputs:
+      keys:
+        description: "Comma-separated report keys to translate (blank = all)"
+        required: false
+        default: ""
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install requests anthropic
+      - name: Translate research reports
+        env:
+          TRANSLATION_API_KEY: ${{ secrets.TRANSLATION_API_KEY }}
+        run: |
+          python3 i18n/translate_research_reports.py --keys "${{ github.event.inputs.keys }}"

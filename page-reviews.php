@@ -64,6 +64,9 @@ if ( $research_slug && $research_kind && ! $research_entry ) {
   <?php if ( 0 === $i ) : ?>
   <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) . '?broker=' . rawurlencode( $rb['slug'] ) ); ?>" style="color:var(--teal);">Try our Forex Spread Cost Calculator against your own trade size &rarr;</a></p>
   <?php endif; ?>
+  <?php if ( 'fees' === $research_entry['kind'] && 4 === $i ) : ?>
+  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/research/forex-trading-platform-adoption-report/' ) ); ?>" style="color:var(--teal);">See the full Forex Trading Platform Adoption Report &rarr;</a></p>
+  <?php endif; ?>
   <?php endforeach; ?>
 </div>
 

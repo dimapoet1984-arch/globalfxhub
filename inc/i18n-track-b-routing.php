@@ -73,22 +73,32 @@ function globalfxhub_track_b_routing_rewrite_rules() {
     }
 
     $routes = array(
-        // [ 'path regex (lang already captured as group 1 by the caller)', 'container_slug', 'extra query vars, $matches offset by +1' ]
+        // [ 'path regex (lang already captured as group 1 by the caller)', 'container_slug', 'extra query vars, $matches offset by +1 -- an int is a backreference, a string is a literal value' ]
         array( 'reviews/([^/]+)/alternatives/?$', 'reviews', array( 'broker_alts' => 2 ) ),
+        // The two broker-research kinds (inc/broker-research-articles.php)
+        // must come before the bare reviews/([^/]+)/?$ rule below, same
+        // reason /alternatives/ already does -- otherwise that broader
+        // pattern would swallow "fees"/"regulation" as if it were a
+        // broker slug. broker_research_kind isn't captured from the URL
+        // (the rule itself is kind-specific), so it's passed as a
+        // literal rather than a $matches[] backreference.
+        array( 'reviews/([^/]+)/fees/?$', 'reviews', array( 'broker_research' => 2, 'broker_research_kind' => 'fees' ) ),
+        array( 'reviews/([^/]+)/regulation/?$', 'reviews', array( 'broker_research' => 2, 'broker_research_kind' => 'regulation' ) ),
         array( 'reviews/([^/]+)/?$', 'reviews', array( 'broker' => 2 ) ),
         array( 'best/([^/]+)/?$', 'best', array( 'bestlist' => 2 ) ),
         array( 'regulation/([^/]+)/?$', 'regulation', array( 'regpage' => 2 ) ),
         array( 'countries/([^/]+)/?$', 'countries', array( 'country' => 2 ) ),
         array( 'compare/([^/]+)-vs-([^/]+)/?$', 'compare', array( 'vs_a' => 2, 'vs_b' => 3 ) ),
         array( 'news/brokers/([^/]+)/?$', 'news/brokers', array( 'broker_news_item' => 2 ) ),
+        array( 'research/([^/]+)/?$', 'research', array( 'report' => 2 ) ),
     );
 
     foreach ( $routes as $route ) {
         list( $path, $container_slug, $extra_vars ) = $route;
 
         $query = 'index.php?gfh_track_b_container=' . rawurlencode( $container_slug ) . '&lang=$matches[1]';
-        foreach ( $extra_vars as $var_name => $match_index ) {
-            $query .= '&' . $var_name . '=$matches[' . $match_index . ']';
+        foreach ( $extra_vars as $var_name => $value ) {
+            $query .= '&' . $var_name . '=' . ( is_int( $value ) ? '$matches[' . $value . ']' : $value );
         }
 
         add_rewrite_rule( '^(' . $lang_pattern . ')/' . $path, $query, 'top' );

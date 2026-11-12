@@ -108,6 +108,12 @@ function globalfxhub_sitemap_urls() {
         $add( home_url( '/regulation/' . $slug . '/' ), 0.6 );
     }
 
+    // --- Research ---
+    $add( home_url( '/research/' ), 0.7 );
+    foreach ( array_keys( globalfxhub_get_research_reports() ) as $slug ) {
+        $add( home_url( '/research/' . $slug . '/' ), 0.6 );
+    }
+
     // --- Standalone tools ---
     $add( home_url( '/broker-finder/' ), 0.7 );
     $add( home_url( '/cost-calculator/' ), 0.6 );

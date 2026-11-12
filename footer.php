@@ -32,6 +32,7 @@
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/compare/', 'compare' ) ); ?>"><?php globalfxhub_te( 'footer_compare_brokers' ); ?></a></li>
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/best/', 'best' ) ); ?>"><?php globalfxhub_te( 'nav_best' ); ?></a></li>
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/regulation/', 'regulation' ) ); ?>"><?php globalfxhub_te( 'nav_regulation' ); ?></a></li>
+          <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/research/', 'research' ) ); ?>"><?php globalfxhub_te( 'nav_research' ); ?></a></li>
           <li><a href="<?php echo esc_url( globalfxhub_nav_url( '/countries/', 'countries' ) ); ?>"><?php globalfxhub_te( 'nav_countries' ); ?></a></li>
         </ul>
         <?php endif; ?>

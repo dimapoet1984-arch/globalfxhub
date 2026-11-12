@@ -27,6 +27,7 @@ require get_template_directory() . '/inc/countries.php';
 require get_template_directory() . '/inc/best.php';
 require get_template_directory() . '/inc/regulation.php';
 require get_template_directory() . '/inc/regulation-comparisons.php';
+require get_template_directory() . '/inc/research-reports.php';
 require get_template_directory() . '/inc/broker-finder.php';
 require get_template_directory() . '/inc/broker-comparison-editorial.php';
 require get_template_directory() . '/inc/broker-vs.php';
@@ -318,6 +319,11 @@ function globalfxhub_ensure_regulation_page() {
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_regulation_page' );
 
+function globalfxhub_ensure_research_page() {
+    globalfxhub_ensure_templated_page( 'research', 'Research', 'page-research.php' );
+}
+add_action( 'after_setup_theme', 'globalfxhub_ensure_research_page' );
+
 /**
  * IA cleanup redirects (301, permanent): the old /guides/ index moved to
  * /learn/, and the default WordPress "Blog" archive (an unfiltered feed
@@ -522,6 +528,7 @@ function globalfxhub_do_sync_templated_pages_across_languages() {
         'countries'  => array( 'Countries', 'page-countries.php' ),
         'best'       => array( 'Best Brokers', 'page-best.php' ),
         'regulation' => array( 'Regulation', 'page-regulation.php' ),
+        'research'   => array( 'Research', 'page-research.php' ),
         'broker-finder' => array( 'Broker Finder', 'page-broker-finder.php' ),
         'cost-calculator' => array( 'Forex Spread Cost Calculator', 'page-cost-calculator.php' ),
         'regulation-checker' => array( 'Broker Regulation Checker', 'page-regulation-checker.php' ),
@@ -892,7 +899,7 @@ add_action( 'after_switch_theme', 'flush_rewrite_rules' );
  * doesn't cover a route added in a file like inc/broker-vs.php that
  * touches no page at all).
  */
-define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-11-10-1' );
+define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-11-12-1' );
 
 function globalfxhub_maybe_flush_rewrite_rules() {
     if ( get_option( 'globalfxhub_rewrite_rules_version' ) !== GLOBALFXHUB_REWRITE_RULES_VERSION ) {
@@ -1266,6 +1273,21 @@ function globalfxhub_breadcrumb_schema() {
             }
         } elseif ( is_page( 'regulation' ) ) {
             $trail = array( array( 'name' => 'Regulation', 'item' => home_url( '/regulation/' ) ) );
+        }
+    }
+
+    if ( null === $trail ) {
+        $report_slug = get_query_var( 'report' );
+        if ( $report_slug ) {
+            $report = globalfxhub_get_research_report( $report_slug );
+            if ( $report ) {
+                $trail = array(
+                    array( 'name' => 'Research', 'item' => home_url( '/research/' ) ),
+                    array( 'name' => $report['title'], 'item' => home_url( '/research/' . $report_slug . '/' ) ),
+                );
+            }
+        } elseif ( is_page( 'research' ) ) {
+            $trail = array( array( 'name' => 'Research', 'item' => home_url( '/research/' ) ) );
         }
     }
 
