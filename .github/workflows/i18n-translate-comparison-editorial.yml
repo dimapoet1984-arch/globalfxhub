@@ -1,7 +1,12 @@
 name: i18n translate comparison editorial
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      keys:
+        description: "Comma-separated comparison keys to translate (blank = all)"
+        required: false
+        default: ""
 
 jobs:
   translate:
@@ -13,8 +18,8 @@ jobs:
           python-version: "3.12"
       - name: Install dependencies
         run: pip install requests anthropic
-      - name: Translate the Pepperstone vs IC Markets editorial content
+      - name: Translate broker-vs-broker editorial comparisons
         env:
           TRANSLATION_API_KEY: ${{ secrets.TRANSLATION_API_KEY }}
         run: |
-          python3 i18n/translate_comparison_editorial.py
+          python3 i18n/translate_comparison_editorial.py --keys "${{ github.event.inputs.keys }}"
