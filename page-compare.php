@@ -121,7 +121,7 @@ if ( $vs_editorial ) :
     // pages, not only reachable via a button click no crawler follows.
     $vs_preset_pairs = array(
         array( 'pepperstone', 'ic-markets' ), array( 'ig', 'xtb' ), array( 'etoro', 'plus500' ), array( 'xm', 'pepperstone' ),
-        array( 'ic-markets', 'fxpro' ), array( 'fxcm', 'capital-com' ), array( 'avatrade', 'tickmill' ),
+        array( 'ic-markets', 'fxpro' ), array( 'fxcm', 'capital-com' ), array( 'avatrade', 'tickmill' ), array( 'exness', 'xm' ),
     );
     $vs_ranked_slugs = globalfxhub_top_ranked_broker_slugs( 40 );
     foreach ( $vs_preset_pairs as list( $preset_a, $preset_b ) ) {

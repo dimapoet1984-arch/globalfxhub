@@ -270,7 +270,7 @@ function globalfxhub_editorial_comparisons_for_broker( $slug ) {
             continue;
         }
         $matches[] = array(
-            'url'   => home_url( '/compare/' . $key . '/' ),
+            'url'   => home_url( '/compare/' . $entry['a_slug'] . '-vs-' . $entry['b_slug'] . '/' ),
             'other' => $other,
         );
     }
@@ -309,6 +309,38 @@ function globalfxhub_get_editorial_comparisons() {
                 array(
                     'q' => 'Which has the lower trading cost, Pepperstone or IC Markets?',
                     'a' => 'On our on-file headline EUR/USD spread, IC Markets is tighter at 0.8 pips against Pepperstone\'s 1.1 pips. Both also offer a separate raw-spread-plus-commission tier (Pepperstone\'s Razor, IC Markets\' Raw Spread) with broadly similar commission levels -- check each broker\'s own current fee schedule for your specific account type before relying on either headline figure.',
+                ),
+            ),
+        ),
+        'exness-xm' => array(
+            'a_slug'           => 'exness',
+            'b_slug'           => 'xm',
+            'meta_title'       => 'Exness vs XM (2026): Which Broker Should You Choose?',
+            'meta_description' => 'Exness vs XM compared on spreads, fees, platforms, and regulation -- using our disclosed methodology, not marketing claims. See which fits your trading style.',
+            'intro' => 'Exness and XM are both Cyprus-headquartered, CySEC-licensed brokers with a large international retail client base and a long operating history -- which is exactly why they get compared so often. But the two differ sharply on cost and platform breadth, in ways a shared "established, well-known broker" reputation doesn\'t capture.',
+            'verdict' => 'Exness holds a clear overall edge under our disclosed methodology, scoring 3.97/5 against XM\'s 3.42/5 -- driven mainly by cost (Exness\'s 0.2-pip on-file EUR/USD spread against XM\'s 1.1 pips) and platform breadth (Exness supports MT4, MT5, and its own proprietary Exness Terminal; XM supports MT4 and MT5 only). Both hold the same regulation score (4.2/5) despite different specific footprints: XM adds ASIC and DFSA alongside CySEC, while Exness adds South Africa\'s FSCA and Kenya\'s CMA -- neither broker\'s FCA status is independently confirmed as serving retail clients, and Exness\'s own disclosures state its FCA entity specifically does not. XM\'s $5 minimum deposit is the lower, single clearly-confirmed figure; Exness\'s typical $10 minimum is reported to go as low as $1 via some payment methods, though that specific claim wasn\'t independently confirmed.',
+            'choose_a_heading' => 'Choose Exness if...',
+            'choose_a_points' => array(
+                'Trading cost is your priority -- Exness\'s on-file EUR/USD spread of 0.2 pips is dramatically tighter than XM\'s 1.1 pips, reflected in a much higher cost score (4.74/5 against 3.57/5).',
+                'You want an explicit no-inactivity-fee policy -- multiple independent sources confirm Exness charges none, while XM charges a $15 one-off fee after 90 days of inactivity plus an ongoing $5/month afterward.',
+                'Platform choice matters to you -- Exness supports MT4, MT5, and its own proprietary Exness Terminal; XM supports MT4 and MT5 only.',
+            ),
+            'choose_b_heading' => 'Choose XM if...',
+            'choose_b_points' => array(
+                'You\'re starting with a very small, clearly-confirmed minimum -- XM\'s $5 minimum deposit is a single reliable figure, where Exness\'s reported minimums conflict across sources (commonly $10, but cited as low as $1 on some payment methods and as high as $200 for its Pro account elsewhere).',
+                'You want a wider menu of account types for different trading styles -- XM offers five (Micro, Standard, Ultra Low, Zero, and a direct Shares account), against Exness\'s four (Standard, Pro, Raw Spread, and Zero).',
+                'You want ASIC and DFSA alongside CySEC specifically -- XM\'s additional regulators are both established Tier-1-style jurisdictions, where Exness\'s additional coverage (FSCA, CMA) sits outside that set.',
+            ),
+            'worth_knowing_heading' => 'Worth knowing before you decide',
+            'worth_knowing' => 'Both brokers\' execution models carry some ambiguity in independent sourcing. More recent coverage of XM describes it as operating a market-maker/dealing-desk model on most accounts, despite older material positioning it as no-dealing-desk -- the two accounts appear to reflect a shift over time rather than a live disagreement. Exness is different: current independent sources actively disagree, with some describing a market-maker/dealing-desk default and Exness\'s own marketing describing STP/no-dealing-desk execution -- a genuine, unresolved conflict we could not settle in our research. If execution model matters to your strategy, checking each broker\'s own order-execution policy directly is the only way to get a current, authoritative answer.',
+            'faqs' => array(
+                array(
+                    'q' => 'Which is cheaper, Exness or XM?',
+                    'a' => 'Exness, by a wide margin on our on-file figures: its EUR/USD spread of 0.2 pips is far tighter than XM\'s 1.1 pips, and its cost score under our methodology (4.74/5) is correspondingly far ahead of XM\'s (3.57/5).',
+                ),
+                array(
+                    'q' => 'Does Exness or XM charge an inactivity fee?',
+                    'a' => 'XM does: a $15 one-off fee after 90 days of inactivity, followed by an ongoing $5/month charge if the account stays dormant. Multiple independent sources confirm Exness charges no inactivity fee at all.',
                 ),
             ),
         ),
