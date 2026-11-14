@@ -87,6 +87,7 @@ function globalfxhub_track_b_routing_rewrite_rules() {
         array( 'reviews/([^/]+)/?$', 'reviews', array( 'broker' => 2 ) ),
         array( 'best/([^/]+)/?$', 'best', array( 'bestlist' => 2 ) ),
         array( 'regulation/([^/]+)/?$', 'regulation', array( 'regpage' => 2 ) ),
+        array( 'regulators/([^/]+)/?$', 'regulators', array( 'regulator' => 2 ) ),
         array( 'countries/([^/]+)/?$', 'countries', array( 'country' => 2 ) ),
         array( 'compare/([^/]+)-vs-([^/]+)/?$', 'compare', array( 'vs_a' => 2, 'vs_b' => 3 ) ),
         array( 'news/brokers/([^/]+)/?$', 'news/brokers', array( 'broker_news_item' => 2 ) ),

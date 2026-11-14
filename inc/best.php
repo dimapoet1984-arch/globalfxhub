@@ -44,14 +44,14 @@ function globalfxhub_get_best_lists() {
         ),
         'cysec-regulated' => array(
             'title'      => 'Best CySEC-Regulated Brokers',
-            'intro'      => 'Filtered to brokers holding a direct CySEC licence or EU/MiFID-passported regulation, ranked by overall score. CySEC-regulated brokers carry EU investor-compensation-scheme protection -- see our <a href="' . home_url( '/regulation/cysec/' ) . '">CySEC regulation page</a> for what that actually covers.',
+            'intro'      => 'Filtered to brokers holding a direct CySEC licence or EU/MiFID-passported regulation, ranked by overall score. CySEC-regulated brokers carry EU investor-compensation-scheme protection -- see our <a href="' . home_url( '/regulation/cysec/' ) . '">CySEC regulation page</a> for what that actually covers, or our <a href="' . home_url( '/regulators/cysec/' ) . '">CySEC licence register</a> for legal entity and licence number per broker.',
             'sort_label' => 'Overall score',
             'filter'     => function( $b ) { return null !== $b['cysec']; },
             'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },
         ),
         'fca-regulated' => array(
             'title'      => 'Best FCA-Regulated (UK) Brokers',
-            'intro'      => 'Filtered to brokers holding a direct UK Financial Conduct Authority licence, ranked by overall score. See our <a href="' . home_url( '/regulation/fca/' ) . '">FCA regulation page</a> for what FSCS protection actually covers.',
+            'intro'      => 'Filtered to brokers holding a direct UK Financial Conduct Authority licence, ranked by overall score. See our <a href="' . home_url( '/regulation/fca/' ) . '">FCA regulation page</a> for what FSCS protection actually covers, or our <a href="' . home_url( '/regulators/fca/' ) . '">FCA licence register</a> for the FRN per broker.',
             'sort_label' => 'Overall score',
             'filter'     => function( $b ) { return ! empty( $b['fca'] ) || ! empty( $b['fca_note'] ); },
             'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },

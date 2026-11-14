@@ -27,6 +27,7 @@ require get_template_directory() . '/inc/countries.php';
 require get_template_directory() . '/inc/best.php';
 require get_template_directory() . '/inc/regulation.php';
 require get_template_directory() . '/inc/regulation-comparisons.php';
+require get_template_directory() . '/inc/regulator-entities.php';
 require get_template_directory() . '/inc/research-reports.php';
 require get_template_directory() . '/inc/broker-finder.php';
 require get_template_directory() . '/inc/broker-comparison-editorial.php';
@@ -325,6 +326,11 @@ function globalfxhub_ensure_research_page() {
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_research_page' );
 
+function globalfxhub_ensure_regulators_page() {
+    globalfxhub_ensure_templated_page( 'regulators', 'Regulators', 'page-regulators.php' );
+}
+add_action( 'after_setup_theme', 'globalfxhub_ensure_regulators_page' );
+
 /**
  * IA cleanup redirects (301, permanent): the old /guides/ index moved to
  * /learn/, and the default WordPress "Blog" archive (an unfiltered feed
@@ -530,6 +536,7 @@ function globalfxhub_do_sync_templated_pages_across_languages() {
         'best'       => array( 'Best Brokers', 'page-best.php' ),
         'regulation' => array( 'Regulation', 'page-regulation.php' ),
         'research'   => array( 'Research', 'page-research.php' ),
+        'regulators' => array( 'Regulators', 'page-regulators.php' ),
         'broker-finder' => array( 'Broker Finder', 'page-broker-finder.php' ),
         'cost-calculator' => array( 'Forex Spread Cost Calculator', 'page-cost-calculator.php' ),
         'regulation-checker' => array( 'Broker Regulation Checker', 'page-regulation-checker.php' ),
@@ -858,6 +865,7 @@ function globalfxhub_review_rewrite_rules() {
     add_rewrite_rule( '^reviews/([^/]+)/?$', 'index.php?pagename=reviews&broker=$matches[1]', 'top' );
     add_rewrite_rule( '^best/([^/]+)/?$', 'index.php?pagename=best&bestlist=$matches[1]', 'top' );
     add_rewrite_rule( '^regulation/([^/]+)/?$', 'index.php?pagename=regulation&regpage=$matches[1]', 'top' );
+    add_rewrite_rule( '^regulators/([^/]+)/?$', 'index.php?pagename=regulators&regulator=$matches[1]', 'top' );
 }
 add_action( 'init', 'globalfxhub_review_rewrite_rules' );
 
@@ -865,6 +873,7 @@ function globalfxhub_review_query_vars( $vars ) {
     $vars[] = 'broker';
     $vars[] = 'bestlist';
     $vars[] = 'regpage';
+    $vars[] = 'regulator';
     return $vars;
 }
 add_filter( 'query_vars', 'globalfxhub_review_query_vars' );
@@ -900,7 +909,7 @@ add_action( 'after_switch_theme', 'flush_rewrite_rules' );
  * doesn't cover a route added in a file like inc/broker-vs.php that
  * touches no page at all).
  */
-define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-11-12-1' );
+define( 'GLOBALFXHUB_REWRITE_RULES_VERSION', '2026-11-14-1' );
 
 function globalfxhub_maybe_flush_rewrite_rules() {
     if ( get_option( 'globalfxhub_rewrite_rules_version' ) !== GLOBALFXHUB_REWRITE_RULES_VERSION ) {
@@ -1274,6 +1283,21 @@ function globalfxhub_breadcrumb_schema() {
             }
         } elseif ( is_page( 'regulation' ) ) {
             $trail = array( array( 'name' => 'Regulation', 'item' => home_url( '/regulation/' ) ) );
+        }
+    }
+
+    if ( null === $trail ) {
+        $regulator_slug = get_query_var( 'regulator' );
+        if ( $regulator_slug ) {
+            $entities = globalfxhub_get_regulator_entities();
+            if ( isset( $entities[ $regulator_slug ] ) ) {
+                $trail = array(
+                    array( 'name' => 'Regulators', 'item' => home_url( '/regulators/' ) ),
+                    array( 'name' => $entities[ $regulator_slug ]['name'], 'item' => home_url( '/regulators/' . $regulator_slug . '/' ) ),
+                );
+            }
+        } elseif ( is_page( 'regulators' ) ) {
+            $trail = array( array( 'name' => 'Regulators', 'item' => home_url( '/regulators/' ) ) );
         }
     }
 

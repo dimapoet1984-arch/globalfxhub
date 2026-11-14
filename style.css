@@ -419,6 +419,10 @@ Text Domain: globalfxhub
   .confidence-badge--high {background:rgba(47,111,94,.12);color:var(--teal);}
   .confidence-badge--medium {background:rgba(184,134,47,.14);color:var(--gold-text);}
   .confidence-badge--low {background:rgba(164,68,50,.12);color:var(--brick, #a44432);}
+
+  /* ---------- Regulator entity page (page-regulators.php) ---------- */
+  .regulator-roster .rank-row {grid-template-columns:40px 1.8fr 1fr auto;}
+  @media (max-width:720px){ .regulator-roster .rank-row{grid-template-columns:32px 1fr auto;} }
   .review-proscons {display:grid;grid-template-columns:1fr 1fr;gap:24px;}
   @media (max-width:600px){ .review-proscons{grid-template-columns:1fr;} }
   .review-proscons h3 {font-family:var(--font-display);font-weight:500;font-size:17px;margin:0 0 12px;}
