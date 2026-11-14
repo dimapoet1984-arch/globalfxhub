@@ -17,14 +17,17 @@
  * globalfxhub_get_brokers() on every load, never hardcoded, so they
  * can't drift the way a written-once stat could.
  *
- * Scoped to the three regulators this dataset has structured per-
- * broker fields for (a licence-number field, consistently populated
- * or explicitly null) -- cysec, fca, seychelles. Other regulators
- * that show up in a broker's 'other_reg' list (ASIC, FSCA, DFSA, ...)
- * have only a bare "holds this licence" flag with no per-broker
- * licence number, so a page for those would need new regulator-facts
- * research, not just data assembly -- left for a follow-up rather
- * than shipped thin or guessed.
+ * Five regulators total. CySEC, FCA, and Seychelles FSA have a
+ * structured per-broker licence-number field (consistently populated
+ * or explicitly null); ASIC and FSCA only have a bare "holds this
+ * licence" flag from the free-text 'other_reg' list, with no per-
+ * broker licence number -- their roster rows and facts panel are
+ * honest about that gap (see 'tracks_licence_numbers' below and
+ * globalfxhub_regulator_entity_bearing_slugs()) rather than guessing
+ * a number or implying one exists. Other regulators that show up in
+ * 'other_reg' (DFSA, FMA, MAS, CMA, ...) have smaller sample counts
+ * in this dataset and still need their own regulator-facts research
+ * before a page is worth adding -- left for a follow-up.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -44,6 +47,7 @@ function globalfxhub_get_regulator_entities() {
             'register_url'       => 'https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/',
             'register_label'     => "CySEC's official register of Cypriot Investment Firms",
             'broker_field'        => 'cysec',
+            'tracks_licence_numbers' => true,
             'related_regulation_slug' => 'cysec',
             'related_best_slug'  => 'cysec-regulated',
         ),
@@ -58,6 +62,7 @@ function globalfxhub_get_regulator_entities() {
             'register_url'       => 'https://register.fca.org.uk/s/',
             'register_label'     => 'the official FCA Financial Services Register',
             'broker_field'        => 'fca',
+            'tracks_licence_numbers' => true,
             'related_regulation_slug' => 'fca',
             'related_best_slug'  => 'fca-regulated',
         ),
@@ -72,25 +77,68 @@ function globalfxhub_get_regulator_entities() {
             'register_url'       => 'https://fsaseychelles.sc/',
             'register_label'     => 'the official FSA Seychelles register',
             'broker_field'        => 'seychelles',
+            'tracks_licence_numbers' => true,
             'related_regulation_slug' => 'seychelles-fsa',
             'related_best_slug'  => null,
+        ),
+        'asic' => array(
+            'name'               => 'ASIC',
+            'full_name'          => 'Australian Securities and Investments Commission',
+            'jurisdiction'       => 'Australia -- licenses firms as Australian Financial Services (AFS) Licensees',
+            'leverage_note'      => "Binding retail CFD leverage caps under ASIC's Product Intervention Order (in force since 29 March 2021, extended to 23 May 2027): 30:1 on major FX pairs, 20:1 on minor FX pairs/gold/major indices, 10:1 on other commodities/minor indices, 5:1 on shares, 2:1 on crypto-assets, plus mandatory negative balance protection.",
+            'compensation_scheme' => 'Compensation Scheme of Last Resort (CSLR) -- scope uncertain for CFDs',
+            'compensation_cap'   => 'Pays unpaid AFCA determinations up to AU$150,000, but its confirmed scope is personal financial advice, securities dealing for retail clients, and credit -- whether a CFD/forex broker dispute counts as "securities dealing" isn\'t clearly confirmed from public guidance, so this isn\'t presented as a confirmed safety net for a CFD/forex-specific loss.',
+            'complaint_process'  => "A client disputes an AFS Licensee directly with the firm first; unresolved complaints can go to the Australian Financial Complaints Authority (AFCA), an independent external dispute resolution body whose determinations are binding on the firm.",
+            'register_url'       => 'https://www.asic.gov.au/online-services/search-asic-s-registers/professional-registers/',
+            'register_label'     => "ASIC's Professional Registers Search (search by AFS Licence number or entity name)",
+            'broker_field'        => null,
+            'tracks_licence_numbers' => false,
+            'related_regulation_slug' => null,
+            'related_learn_slug' => 'asic-forex-regulation-explained',
+            'related_best_slug'  => 'asic-regulated',
+        ),
+        'fsca' => array(
+            'name'               => 'FSCA',
+            'full_name'          => 'Financial Sector Conduct Authority (South Africa)',
+            'jurisdiction'       => 'South Africa -- licenses firms as Financial Services Providers (FSPs), typically authorised as Over-the-Counter Derivative Providers (ODPs) for this industry',
+            'leverage_note'      => "No confirmed leverage cap found in FSCA public guidance -- its Joint Standard 2 of 2020 covers margin for non-centrally-cleared OTC derivatives, a different mechanism from a retail leverage ceiling. FSCA-regulated brokers commonly advertise leverage up to 1:500 or higher.",
+            'compensation_scheme' => null,
+            'compensation_cap'   => null,
+            'complaint_process'  => "A client disputes an FSCA-licensed FSP directly with the firm first; if unresolved, the FAIS Ombud -- an independent, free dispute-resolution body -- can investigate and issue a determination, which can be sent back for reconsideration via the Financial Services Tribunal. For complaints received on or after 1 July 2024, the Ombud can award up to R3.5 million in compensation (up from an R800,000 cap that applied to older complaints).",
+            'register_url'       => 'https://www.fsca.co.za/Fais/Search_FSP.htm',
+            'register_label'     => "the FSCA's FSP register (search by name or FSP number)",
+            'broker_field'        => null,
+            'tracks_licence_numbers' => false,
+            'related_regulation_slug' => null,
+            'related_learn_slug' => 'fsca-forex-regulation-explained',
+            'related_best_slug'  => 'fsca-regulated',
         ),
     );
 }
 
 /**
- * Which of the three structured regulators a broker holds, using the
- * exact same conditions globalfxhub_broker_regulation_label() and the
+ * Which of the five regulators a broker holds, using the exact same
+ * conditions globalfxhub_broker_regulation_label() and the
  * 'cysec-regulated'/'fca-regulated' best-list filters (inc/best.php)
- * already use -- so "holds a CySEC licence" means the same thing on
- * every page that claims it, by construction rather than by two
- * separately-written conditions drifting apart.
+ * already use for cysec/fca -- so "holds a CySEC licence" means the
+ * same thing on every page that claims it, by construction rather
+ * than by two separately-written conditions drifting apart.
+ *
+ * 'asic' and 'fsca' have no per-broker licence-number field -- just
+ * a bare "holds this licence" signal from the free-text 'other_reg'
+ * list, matched against the exact strings that list consistently
+ * uses ('ASIC', 'FSCA'; confirmed by a full-dataset scan, no near-
+ * miss spellings). See globalfxhub_get_regulator_entities()'s
+ * 'tracks_licence_numbers' flag for how the roster template reflects
+ * that difference rather than implying a confirmed-but-missing number.
  */
 function globalfxhub_broker_regulator_flags( $broker ) {
     return array(
         'cysec'          => null !== $broker['cysec'],
         'fca'            => ! empty( $broker['fca'] ) || ! empty( $broker['fca_note'] ),
         'seychelles-fsa' => ! empty( $broker['seychelles'] ) || ( ! empty( $broker['seychelles_note'] ) && array_key_exists( 'seychelles', $broker ) && null === $broker['seychelles'] ),
+        'asic'           => in_array( 'ASIC', $broker['other_reg'] ?? array(), true ),
+        'fsca'           => in_array( 'FSCA', $broker['other_reg'] ?? array(), true ),
     );
 }
 
@@ -113,30 +161,52 @@ function globalfxhub_broker_regulator_licence_number( $broker, $regulator_slug )
 }
 
 /**
+ * Regulators whose per-broker 'entity' field is confirmed (against
+ * the raw data) to reliably name the entity holding THAT specific
+ * licence -- cysec/fca/seychelles-fsa only. 'asic'/'fsca' are always
+ * secondary licences layered on top of one of these three (no broker
+ * holds ASIC/FSCA as its only regulator in this dataset), and have
+ * no field of their own confirming which entity holds them, so their
+ * roster never claims one -- see globalfxhub_regulator_entity_brokers().
+ */
+function globalfxhub_regulator_entity_bearing_slugs() {
+    return array( 'cysec', 'fca', 'seychelles-fsa' );
+}
+
+/**
  * The live roster for one regulator: every broker in our researched
  * set that currently holds it, with a licence number where disclosed
- * and a legal entity name ONLY when this broker holds exactly this
- * one of the three structured regulators -- a broker holding both
- * CySEC and FCA has a single 'entity' field that's reliably the
- * CySEC/EU entity (confirmed against the raw data), so showing it
- * again under "FCA" would misattribute a legal entity to the wrong
- * licence. Rather than guess which of a multi-entity broker's names
- * belongs to which regulator, this just doesn't claim one -- the
- * broker's own review page has the full multi-entity breakdown.
+ * (cysec/fca/seychelles-fsa only -- see globalfxhub_broker_regulator_licence_number())
+ * and a legal entity name ONLY when both (a) this regulator is one of
+ * the three entity-bearing ones above, AND (b) this broker holds
+ * exactly one of those three -- a broker holding both CySEC and FCA
+ * has a single 'entity' field that's reliably the CySEC/EU entity
+ * (confirmed against the raw data), so showing it again under "FCA"
+ * would misattribute a legal entity to the wrong licence. Rather than
+ * guess which of a multi-entity broker's names belongs to which
+ * regulator, this just doesn't claim one -- the broker's own review
+ * page has the full multi-entity breakdown.
  */
 function globalfxhub_regulator_entity_brokers( $regulator_slug ) {
+    $entity_bearing_slugs = globalfxhub_regulator_entity_bearing_slugs();
     $rows = array();
     foreach ( globalfxhub_get_brokers() as $broker ) {
         $flags = globalfxhub_broker_regulator_flags( $broker );
         if ( empty( $flags[ $regulator_slug ] ) ) {
             continue;
         }
-        $held_count = count( array_filter( $flags ) );
+        $entity_bearing_held = 0;
+        foreach ( $entity_bearing_slugs as $s ) {
+            if ( ! empty( $flags[ $s ] ) ) {
+                $entity_bearing_held++;
+            }
+        }
+        $show_entity = in_array( $regulator_slug, $entity_bearing_slugs, true ) && 1 === $entity_bearing_held;
         $rows[] = array(
             'slug'            => $broker['slug'],
             'name'            => $broker['name'],
             'licence_number'  => globalfxhub_broker_regulator_licence_number( $broker, $regulator_slug ),
-            'entity'          => ( 1 === $held_count && ! empty( $broker['entity'] ) ) ? $broker['entity'] : null,
+            'entity'          => ( $show_entity && ! empty( $broker['entity'] ) ) ? $broker['entity'] : null,
             'review_url'      => home_url( '/reviews/' . $broker['slug'] . '/' ),
             'rank'            => $broker['rank'],
         );
@@ -203,7 +273,7 @@ function globalfxhub_regulator_entity_seo_head() {
         return;
     }
     if ( is_page( 'regulators' ) ) {
-        echo '<meta name="description" content="' . esc_attr( 'Which of our 139 researched forex/CFD brokers currently hold a licence from each regulator -- CySEC, FCA, and Seychelles FSA -- with jurisdiction, compensation cover, and the official register for each.' ) . '">' . "\n";
+        echo '<meta name="description" content="' . esc_attr( 'Which of our 139 researched forex/CFD brokers currently hold a licence from each regulator -- CySEC, FCA, Seychelles FSA, ASIC, and FSCA -- with jurisdiction, compensation cover, and the official register for each.' ) . '">' . "\n";
     }
 }
 add_action( 'wp_head', 'globalfxhub_regulator_entity_seo_head', 5 );

@@ -56,6 +56,20 @@ function globalfxhub_get_best_lists() {
             'filter'     => function( $b ) { return ! empty( $b['fca'] ) || ! empty( $b['fca_note'] ); },
             'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },
         ),
+        'asic-regulated' => array(
+            'title'      => 'Best ASIC-Regulated (Australian) Brokers',
+            'intro'      => 'Filtered to brokers that disclose an Australian Securities and Investments Commission (ASIC) licence alongside their primary regulator, ranked by overall score. See our <a href="' . home_url( '/learn/asic-forex-regulation-explained/' ) . '">ASIC regulation guide</a> for what ASIC\'s leverage caps and the Compensation Scheme of Last Resort actually cover, or our <a href="' . home_url( '/regulators/asic/' ) . '">ASIC licence register</a> for the full roster.',
+            'sort_label' => 'Overall score',
+            'filter'     => function( $b ) { return in_array( 'ASIC', $b['other_reg'] ?? array(), true ); },
+            'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },
+        ),
+        'fsca-regulated' => array(
+            'title'      => 'Best FSCA-Regulated (South African) Brokers',
+            'intro'      => 'Filtered to brokers that disclose a South African Financial Sector Conduct Authority (FSCA) licence alongside their primary regulator, ranked by overall score. See our <a href="' . home_url( '/learn/fsca-forex-regulation-explained/' ) . '">FSCA regulation guide</a> for why it imposes no leverage cap comparable to CySEC/FCA/ASIC, or our <a href="' . home_url( '/regulators/fsca/' ) . '">FSCA licence register</a> for the full roster.',
+            'sort_label' => 'Overall score',
+            'filter'     => function( $b ) { return in_array( 'FSCA', $b['other_reg'] ?? array(), true ); },
+            'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },
+        ),
         'multi-asset' => array(
             'title'      => 'Best Multi-Asset Brokers',
             'intro'      => 'Ranked by our product-range score -- the breadth of confirmed asset classes (forex, indices, shares, commodities, crypto, bonds, ETFs, and more) each broker offers.',

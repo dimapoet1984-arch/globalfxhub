@@ -60,8 +60,10 @@ if ( $regulator_slug && ! $entity ) {
     </tbody>
   </table>
   <p style="color:var(--ink-soft);font-size:13.5px;margin:0 0 20px;">
-    <?php if ( isset( $reg_pages[ $entity['related_regulation_slug'] ] ) ) : ?>
+    <?php if ( $entity['related_regulation_slug'] && isset( $reg_pages[ $entity['related_regulation_slug'] ] ) ) : ?>
     See our <a href="<?php echo esc_url( home_url( '/regulation/' . $entity['related_regulation_slug'] . '/' ) ); ?>" style="color:var(--teal);">full <?php echo esc_html( $entity['name'] ); ?> explainer</a> for what this licence does and doesn't guarantee.
+    <?php elseif ( ! empty( $entity['related_learn_slug'] ) ) : ?>
+    See our <a href="<?php echo esc_url( home_url( '/learn/' . $entity['related_learn_slug'] . '/' ) ); ?>" style="color:var(--teal);">full <?php echo esc_html( $entity['name'] ); ?> regulation guide</a> for what this licence does and doesn't guarantee.
     <?php endif; ?>
     <?php if ( $entity['related_best_slug'] ) : ?>
     See our ranked <a href="<?php echo esc_url( home_url( '/best/' . $entity['related_best_slug'] . '/' ) ); ?>" style="color:var(--teal);">best <?php echo esc_html( $entity['name'] ); ?>-regulated brokers</a> list.
@@ -71,19 +73,29 @@ if ( $regulator_slug && ! $entity ) {
 
 <div class="wrap" style="padding-bottom:40px;">
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;"><?php echo esc_html( $entity['name'] ); ?>-licensed brokers in our research set</h2>
+  <?php if ( $entity['tracks_licence_numbers'] ) : ?>
   <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">Legal entity is shown only where this broker holds exactly this one of the regulators we track per-entity (CySEC, FCA, Seychelles FSA) -- a broker holding two of these has one disclosed entity name that reliably belongs to only one of them, so we don't guess which. See the broker's own review for its full multi-entity breakdown where it holds more than one.</p>
+  <?php else : ?>
+  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">We track that each broker below discloses a <?php echo esc_html( $entity['name'] ); ?> licence, but not the specific licence number or which legal entity holds it -- that detail isn't consistently available in our research for this regulator. See the broker's own review for whatever entity/licence detail it discloses directly.</p>
+  <?php endif; ?>
   <?php if ( empty( $brokers ) ) : ?>
   <p>No broker in our researched set currently holds this licence.</p>
   <?php else : ?>
   <div class="rankings regulator-roster">
     <div class="rank-row head">
-      <span></span><span>Broker</span><span class="col-fees">Licence number</span><span></span>
+      <span></span><span>Broker</span><span class="col-fees"><?php echo esc_html( $entity['tracks_licence_numbers'] ? 'Licence number' : 'Status' ); ?></span><span></span>
     </div>
     <?php foreach ( $brokers as $i => $row ) : ?>
     <div class="rank-row">
       <span class="rank-num"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
       <span class="rank-broker"><span class="rank-broker__name"><?php echo esc_html( $row['name'] ); ?></span><?php if ( $row['entity'] ) : ?><span class="rank-broker__tag"><?php echo esc_html( $row['entity'] ); ?></span><?php endif; ?></span>
-      <span class="rank-detail col-fees"><?php echo esc_html( $row['licence_number'] ? $row['licence_number'] : 'Not independently confirmed' ); ?></span>
+      <span class="rank-detail col-fees"><?php
+        if ( $entity['tracks_licence_numbers'] ) {
+            echo esc_html( $row['licence_number'] ? $row['licence_number'] : 'Not independently confirmed' );
+        } else {
+            echo esc_html( 'Licence held (number not tracked)' );
+        }
+      ?></span>
       <span class="rank-ctas">
         <a href="<?php echo esc_url( $row['review_url'] ); ?>" class="rank-cta">Read review</a>
       </span>
