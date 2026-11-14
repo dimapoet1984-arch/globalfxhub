@@ -31,6 +31,11 @@ on:
         description: "Stop gracefully after this many minutes (blank = no limit); GitHub's own job limit is 6 hours"
         required: false
         default: ""
+      refresh:
+        description: "Re-translate --items even if already translated, updating the existing translated post in place (no effect with items=all)"
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   translate:
@@ -53,4 +58,5 @@ jobs:
             --languages ${{ inputs.languages }} \
             --items ${{ inputs.items }} \
             --reviewer ${{ inputs.reviewer }} \
-            ${{ inputs.max_minutes != '' && format('--max-minutes {0}', inputs.max_minutes) || '' }}
+            ${{ inputs.max_minutes != '' && format('--max-minutes {0}', inputs.max_minutes) || '' }} \
+            ${{ inputs.refresh && '--refresh' || '' }}
