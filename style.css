@@ -412,6 +412,13 @@ Text Domain: globalfxhub
   @media (max-width:900px){ .review-grid{grid-template-columns:1fr;} }
   .review-facts {margin-bottom:28px;}
   .review-facts th {width:220px;}
+  .confidence-badge {
+    display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;
+    padding:2px 7px;border-radius:2px;margin-left:8px;white-space:nowrap;cursor:help;
+  }
+  .confidence-badge--high {background:rgba(47,111,94,.12);color:var(--teal);}
+  .confidence-badge--medium {background:rgba(184,134,47,.14);color:var(--gold-text);}
+  .confidence-badge--low {background:rgba(164,68,50,.12);color:var(--brick, #a44432);}
   .review-proscons {display:grid;grid-template-columns:1fr 1fr;gap:24px;}
   @media (max-width:600px){ .review-proscons{grid-template-columns:1fr;} }
   .review-proscons h3 {font-family:var(--font-display);font-weight:500;font-size:17px;margin:0 0 12px;}

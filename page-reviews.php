@@ -243,7 +243,7 @@ elseif ( $broker ) :
         <tr><th>Founded</th><td><?php echo esc_html( $broker['founded'] ? $broker['founded'] : $not_confirmed ); ?></td></tr>
         <tr><th>Headquarters</th><td><?php echo esc_html( $broker['hq'] ? $broker['hq'] : $not_confirmed ); ?></td></tr>
         <tr><th>Minimum deposit</th><td><?php echo esc_html( $broker['min_deposit_display'] ? $broker['min_deposit_display'] : $not_confirmed ); ?></td></tr>
-        <tr><th>Avg. spread (EUR/USD)</th><td><?php echo null !== $broker['spread_eurusd'] ? esc_html( $broker['spread_eurusd'] ) . ' pips' : esc_html( $not_confirmed ); ?></td></tr>
+        <tr><th>Avg. spread (EUR/USD)</th><td><?php echo null !== $broker['spread_eurusd'] ? esc_html( $broker['spread_eurusd'] ) . ' pips' : esc_html( $not_confirmed ); ?><?php echo globalfxhub_data_confidence_badge_html( $broker, 'spread_eurusd' ); ?></td></tr>
         <tr><th>Platforms</th><td><?php echo esc_html( $broker['platforms'] ? implode( ', ', $broker['platforms'] ) : $not_confirmed ); ?></td></tr>
         <tr><th>Instruments</th><td><?php echo esc_html( $broker['instruments'] ? $broker['instruments'] : $not_confirmed ); ?></td></tr>
       </tbody>
@@ -316,7 +316,7 @@ elseif ( $broker ) :
   <table class="compare-table review-facts">
     <tbody>
       <?php foreach ( $deep_dive_fields as $field_key => $field_label ) : ?>
-      <tr><th><?php echo esc_html( $field_label ); ?></th><td><?php echo esc_html( ! empty( $broker[ $field_key ] ) ? $broker[ $field_key ] : $deep_dive_na ); ?></td></tr>
+      <tr><th><?php echo esc_html( $field_label ); ?></th><td><?php echo esc_html( ! empty( $broker[ $field_key ] ) ? $broker[ $field_key ] : $deep_dive_na ); ?><?php echo globalfxhub_data_confidence_badge_html( $broker, $field_key ); ?></td></tr>
       <?php endforeach; ?>
     </tbody>
   </table>
