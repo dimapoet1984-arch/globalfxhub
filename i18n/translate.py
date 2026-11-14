@@ -18,10 +18,22 @@ Usage:
     python3 translate.py --mode dry-run  --languages es,de
     python3 translate.py --mode translate --languages es --items 281,282
     python3 translate.py --mode translate --languages all --reviewer sonnet
+    python3 translate.py --mode translate --languages es,de --items 250,252 --refresh
 
 --mode dry-run makes ZERO Claude API calls (playbook's "translate-dry":
 counts only) -- it still hits the WP REST API (read-only) to report
 exactly how many items in each language actually need work.
+
+--refresh only has an effect combined with an explicit --items list
+(never --items all, to avoid accidentally re-translating the whole
+site): for those specific items, re-translates a language even if a
+translation already exists, UPDATING that existing translated post in
+place (its id, its slug/URL, and its gfh_lang/gfh_translations links
+all stay exactly as they were) rather than creating a second, orphaned
+post the way simply clearing needs_translation()'s check would. This
+is the path for "the English source changed, the translation is now
+stale" -- there's no automatic staleness DETECTION here (no comparison
+of modified dates), so the caller decides which items need it.
 """
 import argparse
 import json
@@ -222,11 +234,6 @@ def order_parents_first(items):
     return sorted(items, key=depth)
 
 
-def needs_translation(item, lang):
-    translations = item.get("gfh_translations") or {}
-    return lang not in translations
-
-
 def item_description(item):
     title = (item.get("title") or {}).get("rendered", "") or item["slug"]
     return f"{item['_post_type']} \"{title}\" (slug: {item['slug']})"
@@ -332,14 +339,22 @@ def translate_item_pieces(client, translate_system, review_system, item, segment
     return parsed, translated_by_id, warnings
 
 
-def create_or_update_translation(auth, item, lang, parsed, translated_content, parent_translation_id, category_term_map=None):
+def create_or_update_translation(auth, item, lang, parsed, translated_content, parent_translation_id, category_term_map=None, existing_translation_id=None):
     """Only ever called in --mode translate -- dry-run never reaches
     this far (process_item returns before any Claude call, let alone
-    a write, when args.mode == "dry-run")."""
-    slug = transliterate_slug(parsed["slug_source"] or parsed["title"], fallback_prefix=f"{item['slug']}-{lang}")
+    a write, when args.mode == "dry-run").
+
+    existing_translation_id is set only on a --refresh pass (see
+    module docstring): the existing translated post is UPDATED in
+    place -- its id, slug/URL, gfh_lang, and the English item's
+    gfh_translations link all stay exactly as they already are, so
+    'slug' is deliberately left out of the payload (an update POST
+    with no 'slug' key leaves WordPress's own current value alone;
+    regenerating one here could silently change a live, indexed URL).
+    With no existing_translation_id, behavior is unchanged from
+    before: create a new post and link it."""
     payload = {
         "title": parsed["title"],
-        "slug": slug,
         "content": translated_content,
         "excerpt": parsed["excerpt"],
         "status": item["status"],
@@ -348,6 +363,8 @@ def create_or_update_translation(auth, item, lang, parsed, translated_content, p
             "gfh_seo_desc": parsed["seo_description"],
         },
     }
+    if not existing_translation_id:
+        payload["slug"] = transliterate_slug(parsed["slug_source"] or parsed["title"], fallback_prefix=f"{item['slug']}-{lang}")
     if item.get("template"):
         payload["template"] = item["template"]
     if item["_post_type"] == "page" and parent_translation_id:
@@ -356,6 +373,14 @@ def create_or_update_translation(auth, item, lang, parsed, translated_content, p
     translated_categories = resolve_translated_categories(item.get("categories"), lang, category_term_map or {})
     if translated_categories:
         payload["categories"] = translated_categories
+
+    if existing_translation_id:
+        resp = request_with_retry(
+            "POST", f"{WP_BASE}/{item['_post_type']}s/{existing_translation_id}",
+            json=payload, auth=auth, timeout=60,
+        )
+        resp.raise_for_status()
+        return resp.json()["id"]
 
     resp = request_with_retry("POST", f"{WP_BASE}/{item['_post_type']}s", json=payload, auth=auth, timeout=60)
     resp.raise_for_status()
@@ -374,7 +399,7 @@ def create_or_update_translation(auth, item, lang, parsed, translated_content, p
     return new_item["id"]
 
 
-def process_item(client, auth, translate_system, review_system, item, lang, reviewer_model, translated_parent_ids, mode, category_term_map=None):
+def process_item(client, auth, translate_system, review_system, item, lang, reviewer_model, translated_parent_ids, mode, category_term_map=None, existing_translation_id=None):
     content_html = (item.get("content") or {}).get("rendered", "")
     try:
         ok, _ = verify_round_trip(content_html)
@@ -398,8 +423,9 @@ def process_item(client, auth, translate_system, review_system, item, lang, revi
     translated_content = rebuild(segments, translated_by_id)
     parent_translation_id = translated_parent_ids.get(item.get("parent") or 0)
 
-    new_id = create_or_update_translation(auth, item, lang, parsed, translated_content, parent_translation_id, category_term_map)
-    print(f"  OK {item_description(item)} -> {lang} (new id {new_id}, {len(warnings)} piece(s) left in English)")
+    new_id = create_or_update_translation(auth, item, lang, parsed, translated_content, parent_translation_id, category_term_map, existing_translation_id=existing_translation_id)
+    verb = "updated existing" if existing_translation_id else "new"
+    print(f"  OK {item_description(item)} -> {lang} ({verb} id {new_id}, {len(warnings)} piece(s) left in English)")
     return {"status": "translated", "new_id": new_id, "warnings": warnings}
 
 
@@ -410,10 +436,13 @@ def main():
     parser.add_argument("--items", default="all", help="Comma-separated post/page IDs, or 'all'.")
     parser.add_argument("--reviewer", choices=["haiku", "sonnet"], default="haiku")
     parser.add_argument("--max-minutes", type=float, default=None)
+    parser.add_argument("--refresh", action="store_true", help="Re-translate --items even if already translated, updating the existing translated post in place. Ignored with --items all.")
     args = parser.parse_args()
 
     languages = LANGUAGES if args.languages == "all" else args.languages.split(",")
     item_filter = None if args.items == "all" else {int(x) for x in args.items.split(",")}
+    if args.refresh and item_filter is None:
+        print("--refresh has no effect with --items all -- ignoring it (pass an explicit --items list to use it).")
     reviewer_model = tc.SONNET_MODEL if args.reviewer == "sonnet" else tc.HAIKU_MODEL
 
     username = os.environ.get("WP_USERNAME")
@@ -456,14 +485,18 @@ def main():
                 print(f"\n--max-minutes {args.max_minutes} reached -- stopping early. Re-run to pick up where this left off (already-translated items are skipped automatically).")
                 break
 
-            if not needs_translation(item, lang):
+            is_selected = item_filter is None or item["id"] in item_filter
+            existing_translation_id = (item.get("gfh_translations") or {}).get(lang)
+            force_refresh = bool(args.refresh and item_filter is not None and is_selected and existing_translation_id)
+
+            if existing_translation_id and not force_refresh:
                 if item["_post_type"] == "page":
-                    translated_parent_ids[item["id"]] = (item.get("gfh_translations") or {})[lang]
-                if item_filter is None or item["id"] in item_filter:
+                    translated_parent_ids[item["id"]] = existing_translation_id
+                if is_selected:
                     lang_counts["already_done"] += 1
                 continue
 
-            if item_filter is not None and item["id"] not in item_filter:
+            if not is_selected:
                 # Not selected for this run, and not already translated
                 # either -- nothing to backfill, nothing to count, just
                 # move on (its own translation, if ever created, will
@@ -477,7 +510,11 @@ def main():
             # otherwise-healthy run across the other 1,000+ items and
             # every remaining language -- log it, count it, move on.
             try:
-                result = process_item(client, auth, translate_system, review_system, item, lang, reviewer_model, translated_parent_ids, args.mode, category_term_map)
+                result = process_item(
+                    client, auth, translate_system, review_system, item, lang, reviewer_model,
+                    translated_parent_ids, args.mode, category_term_map,
+                    existing_translation_id=(existing_translation_id if force_refresh else None),
+                )
             except Exception as exc:
                 print(f"  FAILED {item_description(item)} / {lang}: {exc} -- skipping this item, continuing with the rest of the run.")
                 lang_counts["failed"] += 1
