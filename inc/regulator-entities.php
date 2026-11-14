@@ -17,17 +17,26 @@
  * globalfxhub_get_brokers() on every load, never hardcoded, so they
  * can't drift the way a written-once stat could.
  *
- * Five regulators total. CySEC, FCA, and Seychelles FSA have a
+ * Nine regulators total. CySEC, FCA, and Seychelles FSA have a
  * structured per-broker licence-number field (consistently populated
- * or explicitly null); ASIC and FSCA only have a bare "holds this
- * licence" flag from the free-text 'other_reg' list, with no per-
- * broker licence number -- their roster rows and facts panel are
- * honest about that gap (see 'tracks_licence_numbers' below and
+ * or explicitly null); the other six (ASIC, FSCA, DFSA, FMA-NZ, MAS,
+ * CMA-Kenya) only have a bare "holds this licence" flag from the
+ * free-text 'other_reg' list, with no per-broker licence number --
+ * their roster rows and facts panel are honest about that gap (see
+ * 'tracks_licence_numbers' below and
  * globalfxhub_regulator_entity_bearing_slugs()) rather than guessing
- * a number or implying one exists. Other regulators that show up in
- * 'other_reg' (DFSA, FMA, MAS, CMA, ...) have smaller sample counts
- * in this dataset and still need their own regulator-facts research
- * before a page is worth adding -- left for a follow-up.
+ * a number or implying one exists.
+ *
+ * DFSA/FMA-NZ/MAS/CMA-Kenya have small sample counts in this dataset
+ * (10/4/5/3 of 139 brokers respectively) and, except for DFSA, no
+ * dedicated Learn-cluster explainer -- that cluster's "Broker
+ * regulation" roster is a fixed, already-full 10-article list
+ * (inc/learn-articles.php), so rather than unilaterally expanding it,
+ * their 'related_learn_slug' points at the general
+ * forex-broker-regulation-explained overview instead of a dedicated
+ * piece. No new /best/{slug}-regulated/ list was added for any of
+ * the four either: with only 3-9 brokers, a separate ranked list
+ * would just repeat this page's own roster table.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -113,6 +122,78 @@ function globalfxhub_get_regulator_entities() {
             'related_learn_slug' => 'fsca-forex-regulation-explained',
             'related_best_slug'  => 'fsca-regulated',
         ),
+        'dfsa' => array(
+            'name'               => 'DFSA',
+            'full_name'          => 'Dubai Financial Services Authority',
+            'jurisdiction'       => 'Dubai International Financial Centre (DIFC) -- a defined financial free zone, distinct from the UAE\'s wider federal regulators',
+            'leverage_note'      => "Raised minimum margin requirements for retail clients effective 6 December 2021: 3.33% margin (30:1 leverage) on major FX pairs, 5% (20:1) on gold, and 10% (10:1) on oil -- confirmed against this site's own UAE country-page research. A 2025 industry report instead cited a 50:1 retail cap on majors, which conflicts with the 2021 margin rule; treat that higher figure as unconfirmed or possibly outdated. These limits don't apply to clients who qualify for and elect Professional classification, who can reportedly access much higher leverage.",
+            'compensation_scheme' => null,
+            'compensation_cap'   => null,
+            'complaint_process'  => "DFSA-authorised firms must have their own adequate complaint-handling mechanism, and a client disputes the firm directly first. The DFSA itself will consider a written complaint about specific matters (integrity and fair dealing, corporate governance failures, or misuse of the DIFC/DFSA name), but it isn't a general-purpose ombudsman for every type of client dispute. No DFSA-administered investor compensation scheme for retail CFD/forex client losses was confirmed -- its framework centres on licensing, capital, and client-money segregation rather than a standing compensation fund.",
+            'register_url'       => 'https://www.dfsa.ae/public-register/firms',
+            'register_label'     => "the DFSA's public register of authorised firms",
+            'broker_field'        => null,
+            'tracks_licence_numbers' => false,
+            'related_regulation_slug' => null,
+            'related_learn_slug' => 'dfsa-forex-regulation-explained',
+            'related_best_slug'  => null,
+        ),
+        // Keyed 'fma-nz', not 'fma': Austria's regulator is ALSO named
+        // "FMA" (Finanzmarktaufsicht -- see inc/countries.php's
+        // 'austria' entry), a completely different body. The four
+        // brokers holding this licence in our dataset (thinkmarkets,
+        // plus500, cmc-markets, axi) are all UK/AU/Israel-HQ'd with no
+        // Austria connection, confirming this is New Zealand's FMA --
+        // but the bare acronym alone is genuinely ambiguous, so the
+        // key and the 'other_reg' match below are kept explicit.
+        'fma-nz' => array(
+            'name'               => 'FMA (NZ)',
+            'full_name'          => 'Financial Markets Authority (New Zealand)',
+            'jurisdiction'       => 'New Zealand -- forex/CFD trading is regulated as derivatives trading, requiring a Derivatives Issuer (DI) licence',
+            'leverage_note'      => "No leverage cap currently in force -- licensed Derivatives Issuers set their own limits, which the FMA has found range from 30:1 to 500:1 across licensees. The FMA proposed (2024) capping retail CFD leverage at up to 30:1; as of this research that proposal's final status wasn't confirmed, so treat any cap as not yet in effect unless you confirm otherwise directly with the FMA or the broker.",
+            'compensation_scheme' => null,
+            'compensation_cap'   => null,
+            'complaint_process'  => "A client disputes a registered Financial Service Provider (FSP) directly first, then can escalate to that FSP's Dispute Resolution Scheme (DRS) -- e.g. Financial Services Complaints Ltd (FSCL) -- found by searching the Financial Service Providers Register (FSPR). There's no statutory compensation fund; a DRS investigates and can resolve a dispute, but doesn't guarantee a payout. Being on the FSPR itself is a weaker signal than it sounds -- historically a firm could register without any real New Zealand presence, so registration alone isn't proof of being actively supervised the way a DI licence is.",
+            'register_url'       => 'https://fsp-register.companiesoffice.govt.nz/',
+            'register_label'     => "the Financial Service Providers Register (FSPR)",
+            'broker_field'        => null,
+            'tracks_licence_numbers' => false,
+            'related_regulation_slug' => null,
+            'related_learn_slug' => 'forex-broker-regulation-explained',
+            'related_best_slug'  => null,
+        ),
+        'mas' => array(
+            'name'               => 'MAS',
+            'full_name'          => 'Monetary Authority of Singapore',
+            'jurisdiction'       => 'Singapore -- leveraged forex/CFD trading requires a Capital Markets Services (CMS) licence under the Securities and Futures Act',
+            'leverage_note'      => "MAS cut the retail forex leverage cap from 50:1 to 20:1 in 2019 -- confirmed against this site's own Singapore country-page research, though not independently re-confirmed against the current MAS rulebook for this page. A Singapore \"accredited investor\" (meeting the jurisdiction's wealth/experience criteria) can reportedly access up to 50:1, with correspondingly reduced regulatory protection. Offshore brokers serving Singapore residents outside MAS's licensing regime aren't bound by this cap at all.",
+            'compensation_scheme' => null,
+            'compensation_cap'   => null,
+            'complaint_process'  => "The Financial Industry Disputes Resolution Centre (FIDREC) is Singapore's independent dispute-resolution body for retail financial disputes, including against CMS licensees. We couldn't confirm FIDREC's specific claim limits or process details for a forex/CFD dispute from public guidance, so check directly with FIDREC or MAS before assuming a specific compensation amount. No MAS-administered investor compensation scheme specific to CFD/forex broker insolvency was confirmed -- its framework centres on licensing conditions, segregated client accounts, and a mandatory Customer Knowledge Assessment rather than a standing compensation fund.",
+            'register_url'       => 'https://eservices.mas.gov.sg/fid',
+            'register_label'     => "the MAS Financial Institutions Directory (FID)",
+            'broker_field'        => null,
+            'tracks_licence_numbers' => false,
+            'related_regulation_slug' => null,
+            'related_learn_slug' => 'forex-broker-regulation-explained',
+            'related_best_slug'  => null,
+        ),
+        'cma-kenya' => array(
+            'name'               => 'CMA (Kenya)',
+            'full_name'          => "Capital Markets Authority of Kenya",
+            'jurisdiction'       => 'Kenya -- licenses "non-dealing" online forex brokers, "dealing" forex brokers (market makers), and forex money managers as separate categories, each with its own minimum-capital requirement',
+            'leverage_note'      => "Commonly reported at a maximum of 1:400, repeated consistently across industry sources but not confirmed against the CMA's own published regulations directly.",
+            'compensation_scheme' => null,
+            'compensation_cap'   => null,
+            'complaint_process'  => "A client reports a dispute to the CMA directly (and to the police for suspected fraud). Whether Kenya's Investor Compensation Fund (ICF) -- designed for failures of licensed stockbrokers and dealers -- extends to online forex broker clients specifically is something our sources genuinely disagreed on, so this isn't presented as a confirmed safety net either way.",
+            'register_url'       => 'https://www.cma.or.ke/',
+            'register_label'     => "the CMA's published list of licensed online forex brokers, dealers, and money managers",
+            'broker_field'        => null,
+            'tracks_licence_numbers' => false,
+            'related_regulation_slug' => null,
+            'related_learn_slug' => 'forex-broker-regulation-explained',
+            'related_best_slug'  => null,
+        ),
     );
 }
 
@@ -139,6 +220,10 @@ function globalfxhub_broker_regulator_flags( $broker ) {
         'seychelles-fsa' => ! empty( $broker['seychelles'] ) || ( ! empty( $broker['seychelles_note'] ) && array_key_exists( 'seychelles', $broker ) && null === $broker['seychelles'] ),
         'asic'           => in_array( 'ASIC', $broker['other_reg'] ?? array(), true ),
         'fsca'           => in_array( 'FSCA', $broker['other_reg'] ?? array(), true ),
+        'dfsa'           => in_array( 'DFSA', $broker['other_reg'] ?? array(), true ),
+        'fma-nz'         => in_array( 'FMA', $broker['other_reg'] ?? array(), true ),
+        'mas'            => in_array( 'MAS', $broker['other_reg'] ?? array(), true ),
+        'cma-kenya'      => in_array( 'CMA', $broker['other_reg'] ?? array(), true ),
     );
 }
 
@@ -273,7 +358,10 @@ function globalfxhub_regulator_entity_seo_head() {
         return;
     }
     if ( is_page( 'regulators' ) ) {
-        echo '<meta name="description" content="' . esc_attr( 'Which of our 139 researched forex/CFD brokers currently hold a licence from each regulator -- CySEC, FCA, Seychelles FSA, ASIC, and FSCA -- with jurisdiction, compensation cover, and the official register for each.' ) . '">' . "\n";
+        $all_entities = globalfxhub_get_regulator_entities();
+        $names = implode( ', ', array_column( $all_entities, 'name' ) );
+        $desc = 'Which of our 139 researched forex/CFD brokers currently hold a licence from each of these ' . count( $all_entities ) . ' regulators -- ' . $names . ' -- with jurisdiction, compensation cover, and the official register for each.';
+        echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
     }
 }
 add_action( 'wp_head', 'globalfxhub_regulator_entity_seo_head', 5 );
