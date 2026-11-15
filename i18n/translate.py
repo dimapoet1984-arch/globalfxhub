@@ -68,6 +68,15 @@ LEGACY_REDIRECT_ONLY_SLUGS = {"guides", "contact-us", "terms-of-use"}
 RETRY_ATTEMPTS = 4
 RETRY_BACKOFF_SECONDS = 3
 
+# Specifically for linking a new translation back into its source's
+# gfh_translations (see link_back_to_source() below) -- a much longer
+# budget than RETRY_ATTEMPTS/RETRY_BACKOFF_SECONDS give on their own,
+# because inc/i18n-rest-connector.php's sync lock can legitimately
+# stay held for close to 70s under real concurrent per-language runs
+# (that file's own comment), not just a flaky blip.
+LINK_BACK_ATTEMPTS = 6
+LINK_BACK_BACKOFF_SECONDS = 15
+
 TRACK_A_SCHEMA = {
     "type": "object",
     "properties": {
@@ -339,6 +348,37 @@ def translate_item_pieces(client, translate_system, review_system, item, segment
     return parsed, translated_by_id, warnings
 
 
+def link_back_to_source(auth, item, lang, new_id):
+    """Writes the new translation into the source item's
+    gfh_translations -- the step that actually makes it visible as
+    "already done" to main()'s own check (and every other reader).
+    Retried on its own, much longer budget than request_with_retry's
+    default 4 attempts/~18s total: confirmed live 2026-11-15 that
+    isn't enough patience for inc/i18n-rest-connector.php's lock,
+    which can legitimately stay held close to 70s under real
+    concurrent per-language runs -- not just a flaky blip. Letting
+    this give up too early is exactly how a newly-created, published
+    post was being left permanently unlinked, invisible to every
+    later run's "does a translation already exist" check, so each
+    retry created yet another new post instead of noticing one
+    already existed -- the root cause of the duplicate-post clusters
+    found that day."""
+    last_exc = None
+    for attempt in range(1, LINK_BACK_ATTEMPTS + 1):
+        try:
+            request_with_retry(
+                "POST", f"{WP_BASE}/{item['_post_type']}s/{item['id']}",
+                json={"gfh_translations": {lang: new_id}}, auth=auth, timeout=30,
+            ).raise_for_status()
+            return
+        except Exception as exc:
+            last_exc = exc
+            if attempt < LINK_BACK_ATTEMPTS:
+                print(f"  (link-back attempt {attempt}/{LINK_BACK_ATTEMPTS} failed, retrying in {LINK_BACK_BACKOFF_SECONDS}s: {exc})")
+                time.sleep(LINK_BACK_BACKOFF_SECONDS)
+    raise last_exc
+
+
 def create_or_update_translation(auth, item, lang, parsed, translated_content, parent_translation_id, category_term_map=None, existing_translation_id=None):
     """Only ever called in --mode translate -- dry-run never reaches
     this far (process_item returns before any Claude call, let alone
@@ -386,15 +426,25 @@ def create_or_update_translation(auth, item, lang, parsed, translated_content, p
     resp.raise_for_status()
     new_item = resp.json()
 
-    request_with_retry(
-        "POST", f"{WP_BASE}/{item['_post_type']}s/{new_item['id']}",
-        json={"gfh_lang": lang}, auth=auth, timeout=30,
-    ).raise_for_status()
+    try:
+        request_with_retry(
+            "POST", f"{WP_BASE}/{item['_post_type']}s/{new_item['id']}",
+            json={"gfh_lang": lang}, auth=auth, timeout=30,
+        ).raise_for_status()
 
-    request_with_retry(
-        "POST", f"{WP_BASE}/{item['_post_type']}s/{item['id']}",
-        json={"gfh_translations": {lang: new_item["id"]}}, auth=auth, timeout=30,
-    ).raise_for_status()
+        link_back_to_source(auth, item, lang, new_item["id"])
+    except Exception:
+        # new_item is already created and published at this point --
+        # if it's left unlinked, it's permanently invisible to the
+        # "already done" check above, so a re-run would create yet
+        # another new post on top of this one instead of noticing a
+        # translation already exists. Trash it (reversible) so a
+        # re-run starts clean instead of piling up another orphan.
+        request_with_retry(
+            "DELETE", f"{WP_BASE}/{item['_post_type']}s/{new_item['id']}",
+            params={"force": "false"}, auth=auth, timeout=30,
+        )
+        raise
 
     return new_item["id"]
 
