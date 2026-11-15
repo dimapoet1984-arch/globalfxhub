@@ -123,6 +123,7 @@ function globalfxhub_sitemap_urls() {
     // --- Standalone tools ---
     $add( home_url( '/broker-finder/' ), 0.7 );
     $add( home_url( '/cost-calculator/' ), 0.6 );
+    $add( home_url( '/data/' ), 0.7 );
     $add( home_url( '/broker-changelog/' ), 0.6 );
     $add( home_url( '/regulation-checker/' ), 0.6 );
 

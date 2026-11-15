@@ -331,6 +331,11 @@ function globalfxhub_ensure_regulators_page() {
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_regulators_page' );
 
+function globalfxhub_ensure_data_page() {
+    globalfxhub_ensure_templated_page( 'data', 'GlobalFXHub Data', 'page-data.php' );
+}
+add_action( 'after_setup_theme', 'globalfxhub_ensure_data_page' );
+
 /**
  * IA cleanup redirects (301, permanent): the old /guides/ index moved to
  * /learn/, and the default WordPress "Blog" archive (an unfiltered feed
@@ -537,6 +542,7 @@ function globalfxhub_do_sync_templated_pages_across_languages() {
         'regulation' => array( 'Regulation', 'page-regulation.php' ),
         'research'   => array( 'Research', 'page-research.php' ),
         'regulators' => array( 'Regulators', 'page-regulators.php' ),
+        'data'       => array( 'GlobalFXHub Data', 'page-data.php' ),
         'broker-finder' => array( 'Broker Finder', 'page-broker-finder.php' ),
         'cost-calculator' => array( 'Forex Spread Cost Calculator', 'page-cost-calculator.php' ),
         'regulation-checker' => array( 'Broker Regulation Checker', 'page-regulation-checker.php' ),
@@ -1111,6 +1117,7 @@ function globalfxhub_extended_seo_head() {
         'regulation-checker' => 'Search any researched broker for its full regulation dossier: legal entity, FCA/CySEC numbers, named Tier-1 regulators, offshore entities, which regulator covers which geography, and direct register links.',
         'broker-changelog'   => "Search any researched broker for a dated log of when our published data about it actually changed -- a spread update, a new licence number, a platform added or dropped.",
         'compare'            => 'Pick any two researched brokers to compare regulation, cost, platforms, and score, generated instantly from the same data behind our rankings.',
+        'data'               => 'An overview of the research behind this site: how many brokers, regulators, and confirmed licences we track, and every report, comparison, and tool built from that same dataset -- with live counts, not numbers frozen at publish time.',
     );
     foreach ( $tool_descriptions as $page_slug => $description ) {
         if ( is_page( $page_slug ) ) {
@@ -1349,6 +1356,7 @@ function globalfxhub_breadcrumb_schema() {
             'cost-calculator'    => 'Forex Spread Cost Calculator',
             'regulation-checker' => 'Broker Regulation Checker',
             'broker-changelog'   => 'Broker Change Log',
+            'data'               => 'GlobalFXHub Data',
             'learn'              => 'Learn',
         );
         foreach ( $flat_pages as $page_slug => $label ) {

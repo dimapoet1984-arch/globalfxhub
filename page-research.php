@@ -101,7 +101,7 @@ if ( $report_slug && ! $report ) {
 <div class="wrap page-head">
   <div class="eyebrow">RESEARCH</div>
   <h1><?php the_title(); ?></h1>
-  <p>Original data studies built directly from our own 139-broker research set -- platform adoption, regulation, fees, and more, computed from the same dataset behind every review and ranking on this site, not a separate survey or a third-party source.</p>
+  <p>Original data studies built directly from our own 139-broker research set -- platform adoption, regulation, fees, and more, computed from the same dataset behind every review and ranking on this site, not a separate survey or a third-party source. See <a href="<?php echo esc_url( home_url( '/data/' ) ); ?>" style="color:var(--teal);">GlobalFXHub Data</a> for the full research operation this is one part of.</p>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
