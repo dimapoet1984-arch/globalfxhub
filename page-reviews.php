@@ -111,32 +111,40 @@ elseif ( $alts_slug ) :
 <div class="wrap page-head">
   <div class="eyebrow">BROKER ALTERNATIVES</div>
   <h1><?php echo esc_html( $ref['name'] ); ?> Alternatives</h1>
-  <p>Brokers below share at least two of <?php echo esc_html( $ref['name'] ); ?>'s confirmed instruments or platforms, ranked by our disclosed nine-category score -- not a popularity guess or a paid placement.</p>
+  <p>Brokers below share at least two of <?php echo esc_html( $ref['name'] ); ?>'s confirmed instruments or platforms, ranked by our disclosed nine-category score -- not a popularity guess or a paid placement. Each one lists the specific, concrete reasons -- a real platform it offers, a real deposit or spread figure, a real regulator count or founding year -- that might actually make it worth switching to, not just a "similar broker" label.</p>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
   <?php if ( empty( $alt_brokers ) ) : ?>
   <p style="padding:24px;color:var(--ink-soft);">No sufficiently similar broker found in our researched set.</p>
   <?php else : ?>
-  <div class="rankings">
-    <div class="rank-row head">
-      <span></span><span>Broker</span><span class="col-fees">Min. deposit</span><span class="col-plat">Platforms</span><span>Score</span><span></span>
-    </div>
+  <div class="alt-cards">
     <?php foreach ( $alt_brokers as $i => $alt ) :
         $vs_pair_check = globalfxhub_vs_pair( $ref['slug'], $alt['slug'] );
     ?>
-    <div class="rank-row">
-      <span class="rank-num"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-      <span class="rank-broker"><span class="rank-broker__name"><?php echo esc_html( $alt['name'] ); ?></span><span class="rank-broker__tag"><?php echo esc_html( globalfxhub_broker_regulation_label( $alt ) ); ?></span></span>
-      <span class="rank-detail col-fees"><?php echo esc_html( $alt['min_deposit_display'] ? $alt['min_deposit_display'] : 'Not confirmed' ); ?></span>
-      <span class="rank-detail col-plat"><?php echo esc_html( $alt['platforms'] ? implode( ', ', $alt['platforms'] ) : 'Not confirmed' ); ?></span>
-      <span class="rank-score"><?php echo esc_html( $alt['scores']['overall'] ?? 'N/A' ); ?> / 5</span>
-      <span class="rank-ctas">
+    <div class="alt-card">
+      <div class="alt-card__head">
+        <span class="alt-card__rank"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+        <span class="alt-card__name"><?php echo esc_html( $alt['name'] ); ?></span>
+        <span class="alt-card__tag"><?php echo esc_html( globalfxhub_broker_regulation_label( $alt ) ); ?></span>
+        <span class="alt-card__score"><?php echo esc_html( $alt['scores']['overall'] ?? 'N/A' ); ?> / 5</span>
+      </div>
+      <?php if ( ! empty( $alt['reasons'] ) ) : ?>
+      <ul class="alt-card__reasons">
+        <?php foreach ( $alt['reasons'] as $reason ) : ?>
+        <li><?php echo esc_html( $reason ); ?></li>
+        <?php endforeach; ?>
+      </ul>
+      <?php else : ?>
+      <p class="alt-card__reasons alt-card__reasons--neutral">No single confirmed detail clearly favors <?php echo esc_html( $alt['name'] ); ?> over <?php echo esc_html( $ref['name'] ); ?> in our research -- the two are a close match on cost, regulation, platforms, and track record. Worth comparing directly if something else (execution style, customer service, a specific feature) matters to you.</p>
+      <?php endif; ?>
+      <p class="alt-card__meta"><?php echo esc_html( $alt['min_deposit_display'] ? $alt['min_deposit_display'] . ' minimum deposit' : 'Minimum deposit not confirmed' ); ?> &middot; <?php echo esc_html( $alt['platforms'] ? implode( ', ', $alt['platforms'] ) : 'Platforms not confirmed' ); ?></p>
+      <div class="alt-card__ctas">
         <a href="<?php echo esc_url( home_url( '/reviews/' . $alt['slug'] . '/' ) ); ?>" class="rank-cta">Read review</a>
         <?php if ( $vs_pair_check ) : ?>
         <a href="<?php echo esc_url( home_url( '/compare/' . $ref['slug'] . '-vs-' . $alt['slug'] . '/' ) ); ?>" class="rank-cta">Compare vs <?php echo esc_html( $ref['name'] ); ?></a>
         <?php endif; ?>
-      </span>
+      </div>
     </div>
     <?php endforeach; ?>
   </div>
