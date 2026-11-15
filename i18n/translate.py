@@ -535,6 +535,24 @@ def main():
                 print(f"\n--max-minutes {args.max_minutes} reached -- stopping early. Re-run to pick up where this left off (already-translated items are skipped automatically).")
                 break
 
+            if item.get("gfh_lang") not in (None, "", "en"):
+                # Track A only ever translates FROM an English source.
+                # all_items deliberately isn't pre-filtered by language
+                # (see the comment above -- a selected child page's
+                # parent must still be visited for the translated_parent_ids
+                # backfill), but an already-translated item must never
+                # itself become a source for ANOTHER language: confirmed
+                # live 2026-11-15 that iterating over every item
+                # regardless of its own gfh_lang made a fresh language
+                # (it/pt, with nothing "already_done" yet to mask it)
+                # report ~2,776 items "would_translate" -- close to the
+                # total item count across every existing language, not
+                # the ~254 real English sources -- which would have
+                # created Italian/Portuguese translations straight from
+                # Arabic/Polish/French/Spanish/German content instead of
+                # the English originals.
+                continue
+
             is_selected = item_filter is None or item["id"] in item_filter
             existing_translation_id = (item.get("gfh_translations") or {}).get(lang)
             force_refresh = bool(args.refresh and item_filter is not None and is_selected and existing_translation_id)
