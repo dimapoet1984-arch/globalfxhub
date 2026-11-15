@@ -42,6 +42,32 @@ if ( $report_slug && ! $report ) {
   <p><?php echo esc_html( $report['intro'] ); ?></p>
 </div>
 
+<?php if ( ! empty( $report['methodology'] ) ) :
+    $m = $report['methodology'];
+    $method_rows = array(
+        'sample_size'       => 'Sample size',
+        'data_as_of'        => 'Data as of',
+        'metric_definition' => 'How we define "confirmed"',
+        'missing_data'      => 'Missing data',
+        'source_hierarchy'  => 'Source hierarchy',
+        'compiled'          => 'Report compiled',
+    );
+?>
+<div class="wrap" style="padding-bottom:4px;">
+  <div class="research-methodology">
+    <h2>Methodology</h2>
+    <dl>
+      <?php foreach ( $method_rows as $key => $label ) : if ( empty( $m[ $key ] ) ) continue; ?>
+      <div class="research-methodology__row">
+        <dt><?php echo esc_html( $label ); ?></dt>
+        <dd><?php echo esc_html( $m[ $key ] ); ?></dd>
+      </div>
+      <?php endforeach; ?>
+    </dl>
+  </div>
+</div>
+<?php endif; ?>
+
 <div class="wrap art-body" style="padding-bottom:20px;">
   <?php foreach ( $report['sections'] as $section ) : ?>
   <h2><?php echo esc_html( $section['heading'] ); ?></h2>

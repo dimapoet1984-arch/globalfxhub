@@ -78,6 +78,14 @@ function globalfxhub_get_research_reports() {
                     'body'    => "Beyond the big four, 22 of the 139 brokers confirm exactly one platform, and 5 of those are MT4-only. The rest of the dataset is a long tail of broker-specific proprietary platforms -- each one typically confirmed for exactly one broker, with no single proprietary platform used by more than a handful of brokers -- so \"proprietary\" is common as a category but fragmented in practice, unlike the real cross-broker standardisation MT4, MT5, cTrader, and TradingView each represent. 12 of the 139 brokers have no platform confirmed in our research at all; we're treating that as an honest data gap rather than guessing, consistent with how every other unconfirmed field on this site is handled.",
                 ),
             ),
+            'methodology' => array(
+                'sample_size'       => "139 brokers -- our full currently-researched set. Every broker we've reviewed is included in every count and percentage in this report; none were excluded or sampled out.",
+                'data_as_of'        => "Platform support is reviewed on the same rolling cycle as the rest of each broker's review data, most recently refreshed 8 October 2026.",
+                'metric_definition' => '"Confirmed" means the specific platform (MT4, MT5, cTrader, TradingView, or a named proprietary platform) was independently verifiable from the broker\'s own site, account-opening flow, or app-store listing -- never inferred from broker type, account tier, or marketing copy alone.',
+                'missing_data'      => '12 of the 139 brokers have no platform confirmed in our research. They stay in every denominator (139) and are counted as "no platform confirmed" rather than guessed at or silently dropped -- unconfirmed platform support is not the same claim as "no platforms," and this report doesn\'t collapse that distinction.',
+                'source_hierarchy'  => "Primary: the broker's own platform-download page, account-opening flow, or app-store listing. Secondary (used only where primary confirmation wasn't available): a reputable third-party broker-comparison or review source, as already disclosed on that broker's own review page. A broker's own marketing claim, unverified against either of these, was never treated as confirmation on its own.",
+                'compiled'          => '12 November 2026',
+            ),
             'faqs' => array(
                 array(
                     'q' => 'Is MT4 being phased out by forex brokers?',

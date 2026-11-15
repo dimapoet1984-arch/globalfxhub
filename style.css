@@ -438,6 +438,21 @@ Text Domain: globalfxhub
   .alt-card__reasons--neutral {padding-left:0;color:var(--ink-soft);font-size:13.5px;}
   .alt-card__meta {font-size:13px;color:var(--ink-soft);margin:0 0 14px;}
   .alt-card__ctas {display:flex;gap:8px;flex-wrap:wrap;}
+
+  /* ---------- Research report methodology box (page-research.php) ---------- */
+  .research-methodology {
+    border:1px solid var(--rule);border-left:3px solid var(--gold);background:var(--paper-raised);
+    padding:22px 26px;margin:4px 0 8px;
+  }
+  .research-methodology h2 {font-family:var(--font-display);font-weight:500;font-size:17px;margin:0 0 6px;}
+  .research-methodology dl {margin:0;}
+  .research-methodology__row {
+    display:grid;grid-template-columns:170px 1fr;gap:16px;padding:12px 0;border-top:1px solid var(--rule);
+  }
+  .research-methodology__row:first-child {border-top:none;}
+  .research-methodology dt {font-weight:600;font-size:13px;color:var(--ink);}
+  .research-methodology dd {margin:0;font-size:13.5px;color:var(--ink-soft);line-height:1.55;}
+  @media (max-width:640px){ .research-methodology__row{grid-template-columns:1fr;gap:4px;} }
   .review-proscons {display:grid;grid-template-columns:1fr 1fr;gap:24px;}
   @media (max-width:600px){ .review-proscons{grid-template-columns:1fr;} }
   .review-proscons h3 {font-family:var(--font-display);font-weight:500;font-size:17px;margin:0 0 12px;}
