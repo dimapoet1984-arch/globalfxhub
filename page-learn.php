@@ -15,6 +15,7 @@ $learn_query = new WP_Query( array(
     'category_name'  => 'learn',
     'orderby'        => 'date',
     'order'          => 'ASC',
+    'lang'           => globalfxhub_current_content_lang(),
 ) );
 
 $clusters = globalfxhub_learn_clusters();

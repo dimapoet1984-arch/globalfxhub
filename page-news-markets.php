@@ -14,6 +14,7 @@ $fx_market_news_query = new WP_Query( array(
     'category_name'  => 'fx-market-news',
     'orderby'        => 'date',
     'order'          => 'DESC',
+    'lang'           => globalfxhub_current_content_lang(),
 ) );
 ?>
 

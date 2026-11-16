@@ -1,0 +1,30 @@
+name: content language filtering tests
+
+on:
+  push:
+    branches:
+      - claude/pensive-hamilton-vhnqkw
+      - claude/practical-allen-k72bmy
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+      - name: Lint PHP files touched by the i18n content-language fix
+        run: |
+          php -l inc/i18n-content-language.php
+          php -l functions.php
+          php -l front-page.php
+          php -l single.php
+          php -l page-learn.php
+          php -l page-news.php
+          php -l page-news-markets.php
+      - name: Run content-language filtering tests (Polylang active)
+        run: php tests/test-content-language-filtering.php
+      - name: Run content-language filtering tests (Polylang inactive)
+        run: php tests/test-content-language-filtering-no-polylang.php

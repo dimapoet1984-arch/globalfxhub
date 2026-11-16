@@ -251,6 +251,7 @@ GlobalFXHubBrokerSearch.init(
           'post_type'      => 'post',
           'posts_per_page' => 6,
           'ignore_sticky_posts' => true,
+          'lang'           => globalfxhub_current_content_lang(),
       ) );
       if ( $recent->have_posts() ) :
           while ( $recent->have_posts() ) : $recent->the_post();
@@ -278,6 +279,7 @@ $globalfxhub_fx_news_query = new WP_Query( array(
     'category_name'  => 'fx-market-news',
     'orderby'        => 'date',
     'order'          => 'DESC',
+    'lang'           => globalfxhub_current_content_lang(),
 ) );
 $globalfxhub_broker_news_preview = array_slice( globalfxhub_get_broker_news_items(), 0, 3 );
 $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
@@ -471,6 +473,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
           'category_name'  => 'learn',
           'orderby'        => 'date',
           'order'          => 'ASC',
+          'lang'           => globalfxhub_current_content_lang(),
       ) );
       if ( $home_guides->have_posts() ) :
           while ( $home_guides->have_posts() ) : $home_guides->the_post();

@@ -95,6 +95,7 @@ $related = new WP_Query( array(
     'post__not_in'   => array( get_the_ID() ),
     'orderby'        => 'rand',
     'ignore_sticky_posts' => true,
+    'lang'           => globalfxhub_current_content_lang(),
 ) );
 if ( $related->have_posts() ) :
 ?>
