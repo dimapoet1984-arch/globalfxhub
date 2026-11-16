@@ -32,14 +32,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function globalfxhub_finder_instrument_categories() {
     return array(
-        'forex'       => 'Forex',
-        'indices'     => 'Indices',
-        'shares'      => 'Shares / stocks',
-        'commodities' => 'Commodities (incl. metals, energies)',
-        'crypto'      => 'Crypto',
-        'bonds'       => 'Bonds',
-        'etfs'        => 'ETFs',
-        'futures'     => 'Futures',
+        'forex'       => globalfxhub_t( 'finder_instr_forex' ),
+        'indices'     => globalfxhub_t( 'finder_instr_indices' ),
+        'shares'      => globalfxhub_t( 'finder_instr_shares' ),
+        'commodities' => globalfxhub_t( 'finder_instr_commodities' ),
+        'crypto'      => globalfxhub_t( 'finder_instr_crypto' ),
+        'bonds'       => globalfxhub_t( 'finder_instr_bonds' ),
+        'etfs'        => globalfxhub_t( 'finder_instr_etfs' ),
+        'futures'     => globalfxhub_t( 'finder_instr_futures' ),
     );
 }
 
@@ -87,7 +87,7 @@ function globalfxhub_finder_platform_categories() {
         'MT5'         => 'MetaTrader 5',
         'cTrader'     => 'cTrader',
         'TradingView' => 'TradingView',
-        'other'       => 'Proprietary / other platform',
+        'other'       => globalfxhub_t( 'finder_platform_other' ),
     );
 }
 
@@ -113,11 +113,11 @@ function globalfxhub_broker_platform_tags( $broker ) {
  */
 function globalfxhub_finder_deposit_bands() {
     return array(
-        ''     => 'Any amount',
-        '100'  => '$100 or less',
-        '250'  => '$250 or less',
-        '500'  => '$500 or less',
-        '1000' => '$1,000 or less',
+        ''     => globalfxhub_t( 'finder_deposit_any' ),
+        '100'  => globalfxhub_t( 'finder_deposit_100' ),
+        '250'  => globalfxhub_t( 'finder_deposit_250' ),
+        '500'  => globalfxhub_t( 'finder_deposit_500' ),
+        '1000' => globalfxhub_t( 'finder_deposit_1000' ),
     );
 }
 
@@ -128,18 +128,19 @@ function globalfxhub_finder_deposit_bands() {
  * those pages already say about the same broker.
  */
 function globalfxhub_finder_regulation_options() {
+    $cysec_page_link = '<a href="' . home_url( '/regulation/cysec/' ) . '">' . esc_html( globalfxhub_t( 'finder_cysec_page_link' ) ) . '</a>';
     return array(
         ''      => array(
-            'label' => 'Any, including offshore-only',
-            'note'  => 'No regulation filter applied.',
+            'label' => globalfxhub_t( 'finder_reg_any_label' ),
+            'note'  => globalfxhub_t( 'finder_reg_any_note' ),
         ),
         'eu'    => array(
-            'label' => 'At least CySEC / EU-passported',
-            'note'  => 'Holds a direct CySEC licence or EU/MiFID-passported regulation -- see our ' . '<a href="' . home_url( '/regulation/cysec/' ) . '">CySEC regulation page</a> for what that protection actually covers.',
+            'label' => globalfxhub_t( 'finder_reg_eu_label' ),
+            'note'  => sprintf( esc_html( globalfxhub_t( 'finder_reg_eu_note' ) ), $cysec_page_link ),
         ),
         'tier1' => array(
-            'label' => 'Tier-1 regulator held directly (FCA, ASIC, etc.)',
-            'note'  => 'Holds a direct UK FCA licence, or another Tier-1 regulator (e.g. ASIC) is listed among its confirmed licences.',
+            'label' => globalfxhub_t( 'finder_reg_tier1_label' ),
+            'note'  => globalfxhub_t( 'finder_reg_tier1_note' ),
         ),
     );
 }
@@ -169,26 +170,26 @@ function globalfxhub_broker_meets_regulation_option( $broker, $option ) {
 function globalfxhub_finder_trading_styles() {
     return array(
         'any'               => array(
-            'label' => 'No particular style / not sure',
-            'note'  => 'Uses our standard overall-score weighting (regulation 30%, cost 20%, the rest 50% across six more categories) -- the same ranking used sitewide.',
+            'label' => globalfxhub_t( 'finder_style_any_label' ),
+            'note'  => globalfxhub_t( 'finder_style_any_note' ),
             'boost' => array(),
             'reduce'=> array(),
         ),
         'beginner'          => array(
-            'label' => 'New to trading',
-            'note'  => 'Weighted more toward platforms & tools, non-trading fees, and transparency (clarity matters most starting out); weighted less toward execution sophistication and product-range breadth, which matter more once a strategy is established.',
+            'label' => globalfxhub_t( 'finder_style_beginner_label' ),
+            'note'  => globalfxhub_t( 'finder_style_beginner_note' ),
             'boost' => array( 'platforms', 'non_trading_fees', 'transparency' ),
             'reduce'=> array( 'execution', 'product_range' ),
         ),
         'active-trading'    => array(
-            'label' => 'Active / frequent trading (day trading, scalping)',
-            'note'  => 'Weighted more toward trading costs and execution quality, since both compound with trade frequency; weighted less toward track record and deposit/withdrawal convenience.',
+            'label' => globalfxhub_t( 'finder_style_active_label' ),
+            'note'  => globalfxhub_t( 'finder_style_active_note' ),
             'boost' => array( 'cost', 'execution' ),
             'reduce'=> array( 'track_record', 'deposits_withdrawals' ),
         ),
         'long-term-investor'=> array(
-            'label' => 'Long-term / occasional trading',
-            'note'  => 'Weighted more toward regulation & client protection, track record, and product range, since safety and breadth matter more than shaving fractions of a pip off an occasional trade; weighted less toward execution speed and cost.',
+            'label' => globalfxhub_t( 'finder_style_longterm_label' ),
+            'note'  => globalfxhub_t( 'finder_style_longterm_note' ),
             'boost' => array( 'regulation', 'track_record', 'product_range' ),
             'reduce'=> array( 'execution', 'cost' ),
         ),

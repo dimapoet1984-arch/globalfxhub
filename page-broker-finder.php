@@ -18,26 +18,26 @@ $finder_styles      = globalfxhub_finder_trading_styles();
 ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> / <?php the_title(); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">BROKER FINDER</div>
+  <div class="eyebrow"><?php globalfxhub_te( 'finder_eyebrow' ); ?></div>
   <h1><?php the_title(); ?></h1>
-  <p>Answer six questions and we'll filter our full researched broker set down to the ones that actually match -- built from the same disclosed data and scores as every ranking on this site, not a separate commercial shortlist.</p>
+  <p><?php globalfxhub_te( 'finder_intro' ); ?></p>
   <?php $tool_learn_link = globalfxhub_resolve_learn_link( globalfxhub_tool_learn_links()['broker-finder'] ); if ( $tool_learn_link ) : ?>
-  <p style="font-size:13.5px;margin-top:8px;"><a href="<?php echo esc_url( $tool_learn_link['url'] ); ?>" style="color:var(--teal);">New to this? <?php echo esc_html( $tool_learn_link['label'] ); ?> &rarr;</a></p>
+  <p style="font-size:13.5px;margin-top:8px;"><a href="<?php echo esc_url( $tool_learn_link['url'] ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'cmp_new_to_this' ); ?> <?php echo esc_html( $tool_learn_link['label'] ); ?> &rarr;</a></p>
   <?php endif; ?>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
   <div class="finder">
     <div class="finder__step">
-      <label for="finderCountry">1. Country</label>
+      <label for="finderCountry"><?php globalfxhub_te( 'finder_label_country' ); ?></label>
       <select id="finderCountry">
-        <option value="">Any / outside the EU</option>
+        <option value=""><?php globalfxhub_te( 'finder_opt_any_country' ); ?></option>
         <?php foreach ( $finder_countries as $slug => $label ) : ?>
         <option value="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $label ); ?></option>
         <?php endforeach; ?>
@@ -45,7 +45,7 @@ $finder_styles      = globalfxhub_finder_trading_styles();
     </div>
 
     <div class="finder__step">
-      <label for="finderDeposit">2. Minimum deposit you can meet</label>
+      <label for="finderDeposit"><?php globalfxhub_te( 'finder_label_deposit' ); ?></label>
       <select id="finderDeposit">
         <?php foreach ( $finder_deposits as $value => $label ) : ?>
         <option value="<?php echo esc_attr( $value ); ?>"><?php echo esc_html( $label ); ?></option>
@@ -54,9 +54,9 @@ $finder_styles      = globalfxhub_finder_trading_styles();
     </div>
 
     <div class="finder__step">
-      <label for="finderPlatform">3. Platform</label>
+      <label for="finderPlatform"><?php globalfxhub_te( 'finder_label_platform' ); ?></label>
       <select id="finderPlatform">
-        <option value="">Any platform</option>
+        <option value=""><?php globalfxhub_te( 'finder_opt_any_platform' ); ?></option>
         <?php foreach ( $finder_platforms as $key => $label ) : ?>
         <option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></option>
         <?php endforeach; ?>
@@ -64,7 +64,7 @@ $finder_styles      = globalfxhub_finder_trading_styles();
     </div>
 
     <div class="finder__step finder__step--wide">
-      <label>4. Instruments you want to trade (any selected must all be offered)</label>
+      <label><?php globalfxhub_te( 'finder_label_instruments' ); ?></label>
       <div class="finder__checks" id="finderInstruments">
         <?php foreach ( $finder_instruments as $key => $label ) : ?>
         <label class="finder__check"><input type="checkbox" value="<?php echo esc_attr( $key ); ?>"> <?php echo esc_html( $label ); ?></label>
@@ -73,7 +73,7 @@ $finder_styles      = globalfxhub_finder_trading_styles();
     </div>
 
     <div class="finder__step">
-      <label for="finderRegulation">5. Regulation preference</label>
+      <label for="finderRegulation"><?php globalfxhub_te( 'finder_label_regulation' ); ?></label>
       <select id="finderRegulation">
         <?php foreach ( $finder_regulations as $value => $opt ) : ?>
         <option value="<?php echo esc_attr( $value ); ?>"><?php echo esc_html( $opt['label'] ); ?></option>
@@ -83,7 +83,7 @@ $finder_styles      = globalfxhub_finder_trading_styles();
     </div>
 
     <div class="finder__step">
-      <label for="finderStyle">6. Trading style</label>
+      <label for="finderStyle"><?php globalfxhub_te( 'finder_label_style' ); ?></label>
       <select id="finderStyle">
         <?php foreach ( $finder_styles as $key => $style ) : ?>
         <option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $style['label'] ); ?></option>
@@ -96,16 +96,25 @@ $finder_styles      = globalfxhub_finder_trading_styles();
   <div id="finderCountryWarning" class="methodology-note" style="display:none;margin:0 0 24px;"></div>
 
   <div class="finder__summary">
-    <div class="finder__count">These <span id="finderResultCount">0</span> brokers meet your criteria</div>
+    <div class="finder__count"><?php globalfxhub_te( 'finder_results_prefix' ); ?> <span id="finderResultCount">0</span> <?php globalfxhub_te( 'finder_results_suffix' ); ?></div>
     <p class="finder__countrylink" id="finderCountryLink"></p>
   </div>
 
-  <div id="finderEmpty" class="finder__empty" style="display:none;">No brokers in our researched set currently meet all of these criteria -- try loosening one of your filters above.</div>
+  <div id="finderEmpty" class="finder__empty" style="display:none;"><?php globalfxhub_te( 'finder_empty_state' ); ?></div>
 
   <div class="rankings" id="finderResults"></div>
 
   <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;">
-    Country availability reflects only whether a broker holds a CySEC licence or EU/MiFID-passported regulation -- the same test already applied on every <a href="<?php echo esc_url( home_url( '/countries/' ) ); ?>" style="color:var(--teal);">country page</a>. It is not a guarantee that a given broker has completed the specific host-country notification, or that every product/account type is available there -- see the relevant country page for that nuance. "Trading style" re-weights our existing disclosed score categories (see hint above); it adds no new, unverified claim about any broker. Built from our <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">disclosed nine-category methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
+    <?php
+    $finder_country_link_html = '<a href="' . esc_url( home_url( '/countries/' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'finder_country_page_link' ) ) . '</a>';
+    echo sprintf( esc_html( globalfxhub_t( 'finder_disclaimer_p1' ) ), $finder_country_link_html );
+    ?>
+    <?php globalfxhub_te( 'finder_disclaimer_p2' ); ?> <?php globalfxhub_te( 'finder_disclaimer_p3' ); ?>
+    <?php
+    $finder_methodology_link_html = '<a href="' . esc_url( home_url( '/#method' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'best_methodology_link' ) ) . '</a>';
+    echo sprintf( esc_html( globalfxhub_t( 'finder_built_from_methodology' ) ), $finder_methodology_link_html );
+    ?>
+    <?php globalfxhub_te( 'tb_methodology_verify' ); ?>
   </p>
 </div>
 
@@ -115,6 +124,16 @@ const FINDER_REG_NOTES = <?php echo wp_json_encode( array_map( function( $o ) { 
 const FINDER_STYLE_NOTES = <?php echo wp_json_encode( array_map( function( $s ) { return $s['note']; }, $finder_styles ) ); ?>;
 const FINDER_COUNTRY_LABELS = <?php echo wp_json_encode( $finder_countries ); ?>;
 const FINDER_COUNTRIES_URL = <?php echo wp_json_encode( home_url( '/countries/' ) ); ?>;
+// Translated strings for the two JS-built messages below (the
+// per-selection "see local detail" link and the country-eligibility
+// warning), which interpolate a country name that's only known once
+// the visitor picks one, so these can't be rendered server-side.
+const T = <?php echo wp_json_encode( array(
+    'see_local_detail' => globalfxhub_t( 'finder_js_see_local_detail' ),
+    'country_guide_link' => globalfxhub_t( 'finder_js_country_guide_link' ),
+    'country_warning_strong' => globalfxhub_t( 'finder_js_country_warning_strong' ),
+    'country_warning_body' => globalfxhub_t( 'finder_js_country_warning_body' ),
+) ); ?>;
 
 (function(){
   const countrySel = document.getElementById('finderCountry');
@@ -174,12 +193,12 @@ const FINDER_COUNTRIES_URL = <?php echo wp_json_encode( home_url( '/countries/' 
     regHint.textContent = FINDER_REG_NOTES[regulation] || '';
     styleHint.textContent = FINDER_STYLE_NOTES[style] || '';
     countryLink.innerHTML = country
-      ? 'See full local detail for ' + FINDER_COUNTRY_LABELS[country] + ': <a href="' + FINDER_COUNTRIES_URL + country + '/" style="color:var(--teal);">country regulation, tax & deposit guide &rarr;</a>'
+      ? T.see_local_detail.replace('%s', FINDER_COUNTRY_LABELS[country]) + ' <a href="' + FINDER_COUNTRIES_URL + country + '/" style="color:var(--teal);">' + T.country_guide_link + '</a>'
       : '';
 
     if (country) {
       countryWarning.style.display = 'block';
-      countryWarning.innerHTML = '<strong>This is a regulatory proxy, not confirmed availability.</strong> A broker is shown here because it holds a CySEC licence or EU/MiFID-passported regulation -- not because we\'ve confirmed it accepts clients from ' + FINDER_COUNTRY_LABELS[country] + ', which legal entity would actually serve you, or that every account type is offered there. Always confirm directly on the broker\'s own site, by country, before opening an account.';
+      countryWarning.innerHTML = '<strong>' + T.country_warning_strong + '</strong> ' + T.country_warning_body.replace('%s', FINDER_COUNTRY_LABELS[country]);
     } else {
       countryWarning.style.display = 'none';
     }
