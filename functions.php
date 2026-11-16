@@ -697,23 +697,64 @@ function globalfxhub_ensure_blog_page() {
         return;
     }
 
-    $page = get_page_by_path( 'blog' );
-    if ( ! $page ) {
-        $page_id = wp_insert_post( array(
-            'post_title'  => 'Blog',
-            'post_name'   => 'blog',
-            'post_status' => 'publish',
-            'post_type'   => 'page',
-        ) );
-        if ( ! $page_id || is_wp_error( $page_id ) ) {
+    /*
+     * Confirmed live: 25 duplicate "Blog" pages (blog-2 .. blog-26,
+     * cleaned up via i18n/trash_duplicate_blog_pages.py) accumulated
+     * between 2026-10-30 and 2026-11-15, roughly one new one every
+     * time this ran under a language context where the lookup below
+     * didn't find the real page. get_page_by_path() runs through
+     * WP_Query, which Polylang filters to the current request's
+     * language via pre_get_posts -- so a request under /fr/, /pl/,
+     * etc. never saw the real English "blog" page (id 10, the one
+     * page_for_posts is actually set to) and inserted a brand new one
+     * instead, every time. page_for_posts is a single site-wide
+     * WordPress setting, not a per-language Polylang concept, so this
+     * lookup has to bypass Polylang's language filter entirely --
+     * 'lang' => '' is Polylang's documented way to tell a query to
+     * ignore it. The whole read-then-maybe-insert is also serialized
+     * against concurrent requests with the same cross-process lock
+     * globalfxhub_sync_templated_pages_across_languages() already uses
+     * below, since two requests racing the gap between this read and
+     * the insert can otherwise each create their own page.
+     */
+    if ( ! globalfxhub_acquire_i18n_sync_lock() ) {
+        return; // another request is already resolving this -- don't race it
+    }
+    try {
+        $current = (int) get_option( 'page_for_posts' );
+        if ( $current && get_post( $current ) ) {
             return;
         }
-    } else {
-        $page_id = $page->ID;
-    }
 
-    update_option( 'page_for_posts', $page_id );
-    flush_rewrite_rules();
+        $existing = get_posts( array(
+            'post_type'      => 'page',
+            'name'           => 'blog',
+            'post_status'    => 'publish',
+            'posts_per_page' => 1,
+            'lang'           => '',
+        ) );
+        $page_id = $existing ? $existing[0]->ID : 0;
+
+        if ( ! $page_id ) {
+            $page_id = wp_insert_post( array(
+                'post_title'  => 'Blog',
+                'post_name'   => 'blog',
+                'post_status' => 'publish',
+                'post_type'   => 'page',
+            ) );
+            if ( ! $page_id || is_wp_error( $page_id ) ) {
+                return;
+            }
+            if ( function_exists( 'pll_set_post_language' ) && function_exists( 'pll_default_language' ) ) {
+                pll_set_post_language( $page_id, pll_default_language() );
+            }
+        }
+
+        update_option( 'page_for_posts', $page_id );
+        flush_rewrite_rules();
+    } finally {
+        globalfxhub_release_i18n_sync_lock();
+    }
 }
 add_action( 'after_setup_theme', 'globalfxhub_ensure_blog_page' );
 
