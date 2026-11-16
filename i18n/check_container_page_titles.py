@@ -53,21 +53,36 @@ def main():
         sys.exit(1)
     auth = (username, app_password)
 
+    # ?slug= query params get a 403 (WAF/security-plugin rule, not a real
+    # permissions issue -- confirmed live), so pull every page and index
+    # by slug client-side instead of filtering server-side.
+    by_slug = {}
+    for page in range(1, 61):
+        resp = request_with_retry(
+            "GET", f"{WP_BASE}/pages",
+            params={
+                "per_page": 100, "page": page, "orderby": "id", "order": "asc",
+                "_fields": "id,slug,title,status",
+            },
+            auth=auth, timeout=30,
+        )
+        if resp.status_code == 400:
+            break
+        resp.raise_for_status()
+        items = resp.json()
+        if not items:
+            break
+        for item in items:
+            by_slug[item["slug"]] = item
+
     for lang in LANGS:
         print(f"=== {lang} ===")
         for slug in SLUGS:
             canonical_slug = f"{slug}-{lang}"
-            resp = request_with_retry(
-                "GET", f"{WP_BASE}/pages",
-                params={"slug": canonical_slug, "_fields": "id,slug,title,status"},
-                auth=auth, timeout=30,
-            )
-            resp.raise_for_status()
-            results = resp.json()
-            if not results:
+            page = by_slug.get(canonical_slug)
+            if not page:
                 print(f"  {canonical_slug}: NOT FOUND")
                 continue
-            page = results[0]
             title = (page.get("title") or {}).get("rendered", "")
             english = ENGLISH_TITLES[slug]
             flag = "UNTRANSLATED" if title.strip() == english else "translated"
