@@ -99,7 +99,7 @@ const CC_BROKERS = <?php echo wp_json_encode( $cc_payload['brokers'] ); ?>;
         + '<span class="rank-detail col-plat">$' + r.cost_per_trade.toFixed(2) + '</span>'
         + '<span class="rank-score">$' + r.annual.toFixed(2) + (r.pct_of_account !== null ? ' <span style="color:var(--ink-soft);font-size:12px;">(' + r.pct_of_account.toFixed(2) + '% of account)</span>' : '') + '</span>'
         + '<span class="rank-ctas">'
-        + '<a href="' + r.review_url + '" class="rank-cta">Read review</a>'
+        + '<a href="' + r.review_url + '" class="rank-cta">' + <?php echo wp_json_encode( globalfxhub_t( 'btn_read_review' ) ); ?> + '</a>'
         + '</span>'
         + '</div>';
     });

@@ -104,7 +104,7 @@ function globalfxhub_translatable_strings() {
         'cty_headquartered_in', 'cty_direct_licence_tag',
 
         // --- inc/broker-vs.php (compare-tool row labels) ---
-        'cmp_row_overall_score', 'finder_match_score_label',
+        'cmp_row_overall_score', 'finder_match_score_label', 'reg_checker_entity_not_confirmed',
 
         // --- page-best.php ---
         'best_eyebrow', 'best_no_brokers_match', 'best_built_from_note',
@@ -338,6 +338,7 @@ function globalfxhub_string_text( $key ) {
 
         'cmp_row_overall_score' => 'Overall score',
         'finder_match_score_label' => 'Match score',
+        'reg_checker_entity_not_confirmed' => 'Not confirmed in our research',
 
         'best_eyebrow' => 'BEST BROKERS',
         'best_no_brokers_match' => 'No brokers in our researched set currently meet this list\'s criteria.',
@@ -560,6 +561,7 @@ function globalfxhub_live_string_translations() {
 
             'cmp_row_overall_score' => 'Puntuación general',
             'finder_match_score_label' => 'Puntuación de coincidencia',
+            'reg_checker_entity_not_confirmed' => 'No confirmado en nuestra investigación',
 
             'best_eyebrow' => 'MEJORES BRÓKERS',
             'best_no_brokers_match' => 'Ningún bróker de nuestro conjunto investigado cumple actualmente los criterios de esta lista.',

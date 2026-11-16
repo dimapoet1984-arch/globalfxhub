@@ -121,8 +121,8 @@ const RC_BROKERS = <?php echo wp_json_encode( $rc_payload ); ?>;
 
     nameEl.textContent = b.name;
     hqEl.textContent = b.hq ? ('HQ: ' + b.hq) : '';
-    lastVerifiedEl.textContent = 'Regulation last reviewed: ' + b.review_dates.regulation_reviewed + ' · Next scheduled review: ' + b.review_dates.next_review;
-    entityEl.textContent = b.entity || 'Not confirmed in our research';
+    lastVerifiedEl.textContent = <?php echo wp_json_encode( globalfxhub_t( 'rev_regulation_last_reviewed' ) ); ?> + ' ' + b.review_dates.regulation_reviewed + ' · ' + <?php echo wp_json_encode( globalfxhub_t( 'rev_next_scheduled_review' ) ); ?> + ' ' + b.review_dates.next_review;
+    entityEl.textContent = b.entity || <?php echo wp_json_encode( globalfxhub_t( 'reg_checker_entity_not_confirmed' ) ); ?>;
     reviewLinkEl.href = b.review_url;
 
     let rows = '';
