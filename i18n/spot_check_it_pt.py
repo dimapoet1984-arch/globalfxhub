@@ -39,20 +39,29 @@ def main():
         sys.exit(1)
     auth = (username, app_password)
 
-    for lang in ("it", "pt"):
-        print(f"=== {lang} ===\n")
-        for post_type in ("posts", "pages"):
-            resp = request_with_retry(
-                "GET", f"{WP_BASE}/{post_type}",
-                params={
-                    "per_page": 3, "orderby": "id", "order": "desc",
-                    "_fields": "id,slug,title,content,gfh_lang",
-                    "lang": lang,
-                },
-                auth=auth, timeout=30,
-            )
-            resp.raise_for_status()
-            items = resp.json()
+    # This theme's custom REST fields (inc/i18n-rest-connector.php) only
+    # expose gfh_lang per-item on GET -- they don't wire up `?lang=`
+    # query filtering, so passing lang= here is silently ignored and
+    # returns the newest items overall regardless of language
+    # (confirmed live: an earlier version of this script got identical
+    # "it" and "pt" results back, both actually Portuguese, because pt
+    # finished last and so held the globally-newest post ids). Fetch a
+    # batch of recent items with no language filter instead, and
+    # filter by gfh_lang client-side.
+    for post_type in ("posts", "pages"):
+        resp = request_with_retry(
+            "GET", f"{WP_BASE}/{post_type}",
+            params={
+                "per_page": 50, "orderby": "id", "order": "desc",
+                "_fields": "id,slug,title,content,gfh_lang",
+            },
+            auth=auth, timeout=30,
+        )
+        resp.raise_for_status()
+        batch = resp.json()
+        for lang in ("it", "pt"):
+            print(f"=== {lang} ({post_type}) ===\n")
+            items = [p for p in batch if p.get("gfh_lang") == lang][:3]
             for item in items:
                 title = strip_html((item.get("title") or {}).get("rendered", ""))
                 content = strip_html((item.get("content") or {}).get("rendered", ""))
