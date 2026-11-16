@@ -18,35 +18,35 @@ if ( isset( $_GET['unsubscribe'] ) ) {
     $cl_subscribe_result = globalfxhub_changelog_subscribe( isset( $_POST['changelog_email'] ) ? wp_unslash( $_POST['changelog_email'] ) : '' );
 }
 $cl_subscribe_messages = array(
-    'subscribed'         => array( 'ok', "You're subscribed -- we'll only email you when a tracked broker fact actually changes." ),
-    'already_subscribed' => array( 'ok', "That email is already subscribed to broker data change alerts." ),
-    'invalid'            => array( 'error', 'That doesn\'t look like a valid email address -- please try again.' ),
-    'unsubscribed'       => array( 'ok', "You've been unsubscribed from broker data change alerts." ),
+    'subscribed'         => array( 'ok', globalfxhub_t( 'cl_msg_subscribed' ) ),
+    'already_subscribed' => array( 'ok', globalfxhub_t( 'cl_msg_already_subscribed' ) ),
+    'invalid'            => array( 'error', globalfxhub_t( 'cl_msg_invalid' ) ),
+    'unsubscribed'       => array( 'ok', globalfxhub_t( 'cl_msg_unsubscribed' ) ),
 );
 ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> / <?php the_title(); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">BROKER CHANGE LOG</div>
+  <div class="eyebrow"><?php globalfxhub_te( 'cl_eyebrow' ); ?></div>
   <h1><?php the_title(); ?></h1>
-  <p>Search any of our researched brokers for a dated log of when our published data about it actually changed -- a spread update, a new licence number, a platform added or dropped.</p>
+  <p><?php globalfxhub_te( 'cl_intro' ); ?></p>
   <?php $tool_learn_link = globalfxhub_resolve_learn_link( globalfxhub_tool_learn_links()['broker-changelog'] ); if ( $tool_learn_link ) : ?>
-  <p style="font-size:13.5px;margin-top:8px;"><a href="<?php echo esc_url( $tool_learn_link['url'] ); ?>" style="color:var(--teal);">New to this? <?php echo esc_html( $tool_learn_link['label'] ); ?> &rarr;</a></p>
+  <p style="font-size:13.5px;margin-top:8px;"><a href="<?php echo esc_url( $tool_learn_link['url'] ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'cmp_new_to_this' ); ?> <?php echo esc_html( $tool_learn_link['label'] ); ?> &rarr;</a></p>
   <?php endif; ?>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
   <div class="methodology-note" style="margin:0 0 28px;">
-    <strong>What this is, and isn't.</strong> Each entry here comes from this site's own data being diffed against what was previously published, dated to when that diff was detected -- never a reconstructed history of what a broker itself did before we started tracking. A broker showing only a single "Baseline recorded" entry simply hasn't had a tracked field change since this log began; it isn't a sign nothing has ever changed about that broker.
+    <strong><?php globalfxhub_te( 'cl_what_this_is_strong' ); ?></strong> <?php globalfxhub_te( 'cl_what_this_is_body' ); ?>
   </div>
 
   <div class="methodology-note" style="margin:0 0 28px;background:var(--navy,#0d2436);color:#fff;">
-    <strong>Get notified when something actually changes.</strong> Subscribe below and we'll email you only when this log records a genuine change to a tracked fact (a spread update, a new licence number, a platform added or dropped) across any broker we cover -- never a generic newsletter, and never more than one email per change we detect. Unsubscribe any time with the link in that email.
+    <strong><?php globalfxhub_te( 'cl_get_notified_strong' ); ?></strong> <?php globalfxhub_te( 'cl_get_notified_body' ); ?>
     <?php if ( $cl_subscribe_result && isset( $cl_subscribe_messages[ $cl_subscribe_result ] ) ) :
         list( $cl_msg_type, $cl_msg_text ) = $cl_subscribe_messages[ $cl_subscribe_result ];
     ?>
@@ -55,15 +55,15 @@ $cl_subscribe_messages = array(
     <form method="post" style="margin:14px 0 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
       <?php wp_nonce_field( 'globalfxhub_changelog_subscribe', 'globalfxhub_changelog_subscribe_nonce' ); ?>
       <input type="email" name="changelog_email" placeholder="you@example.com" required style="flex:1;min-width:220px;padding:10px 12px;border-radius:6px;border:1px solid var(--rule);">
-      <button type="submit" class="btn btn--gold" style="white-space:nowrap;">Notify me of changes</button>
+      <button type="submit" class="btn btn--gold" style="white-space:nowrap;"><?php globalfxhub_te( 'cl_notify_button' ); ?></button>
     </form>
     <?php endif; ?>
   </div>
 
   <div class="picker" style="grid-template-columns:1fr;">
     <div>
-      <label for="clSearch">Search a broker</label>
-      <input type="text" id="clSearch" list="clBrokerList" placeholder="e.g. Pepperstone" autocomplete="off">
+      <label for="clSearch"><?php globalfxhub_te( 'rc_label_search' ); ?></label>
+      <input type="text" id="clSearch" list="clBrokerList" placeholder="<?php echo esc_attr( globalfxhub_t( 'rc_search_placeholder' ) ); ?>" autocomplete="off">
       <datalist id="clBrokerList">
         <?php foreach ( $cl_payload as $b ) : ?>
         <option value="<?php echo esc_attr( $b['name'] ); ?>">
@@ -72,19 +72,29 @@ $cl_subscribe_messages = array(
     </div>
   </div>
 
-  <div id="clEmpty" class="finder__empty">Search a broker above (e.g. "Pepperstone") to see its change log.</div>
+  <div id="clEmpty" class="finder__empty"><?php globalfxhub_te( 'cl_empty_state' ); ?></div>
 
   <div id="clLog" style="display:none;">
     <h2 id="clName" style="font-family:var(--font-display);font-weight:500;font-size:26px;margin:28px 0 16px;"></h2>
     <div class="rankings" id="clEntries"></div>
     <p style="margin-top:14px;">
-      <a id="clReviewLink" href="#" style="color:var(--teal);">Read the full broker review &rarr;</a>
+      <a id="clReviewLink" href="#" style="color:var(--teal);"><?php globalfxhub_te( 'rc_read_full_review_link' ); ?></a>
     </p>
   </div>
 </div>
 
 <script>
 const CL_BROKERS = <?php echo wp_json_encode( $cl_payload ); ?>;
+// Translated strings for the JS-rendered change log below. Note: the
+// entries' own e.summary text is generated and persisted in wp_options
+// by inc/broker-changelog.php at write time, not translated here --
+// that's a separate, deferred architectural issue (see that file).
+const T = <?php echo wp_json_encode( array(
+    'changelog_suffix' => globalfxhub_t( 'cl_changelog_suffix' ),
+    'no_history' => globalfxhub_t( 'cl_no_history' ),
+    'col_date' => globalfxhub_t( 'cl_col_date' ),
+    'col_what_changed' => globalfxhub_t( 'cl_col_what_changed' ),
+) ); ?>;
 
 (function(){
   const searchEl = document.getElementById('clSearch');
@@ -107,14 +117,14 @@ const CL_BROKERS = <?php echo wp_json_encode( $cl_payload ); ?>;
   function render(b) {
     emptyEl.style.display = 'none';
     logEl.style.display = 'block';
-    nameEl.textContent = b.name + ' -- change log';
+    nameEl.textContent = b.name + ' ' + T.changelog_suffix;
     reviewLinkEl.href = b.review_url;
 
     if (!b.entries.length) {
-      entriesEl.innerHTML = '<p style="padding:24px;color:var(--ink-soft);">No change history recorded yet for this broker.</p>';
+      entriesEl.innerHTML = '<p style="padding:24px;color:var(--ink-soft);">' + T.no_history + '</p>';
       return;
     }
-    let html = '<div class="rank-row head" style="grid-template-columns:44px 160px 1fr;"><span></span><span>Date</span><span>What changed</span></div>';
+    let html = '<div class="rank-row head" style="grid-template-columns:44px 160px 1fr;"><span></span><span>' + T.col_date + '</span><span>' + T.col_what_changed + '</span></div>';
     b.entries.forEach(function(e, i) {
       html += '<div class="rank-row" style="grid-template-columns:44px 160px 1fr;">'
         + '<span class="rank-num">' + String(i + 1).padStart(2, '0') + '</span>'
