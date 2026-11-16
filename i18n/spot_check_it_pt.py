@@ -49,16 +49,26 @@ def main():
     # batch of recent items with no language filter instead, and
     # filter by gfh_lang client-side.
     for post_type in ("posts", "pages"):
-        resp = request_with_retry(
-            "GET", f"{WP_BASE}/{post_type}",
-            params={
-                "per_page": 50, "orderby": "id", "order": "desc",
-                "_fields": "id,slug,title,content,gfh_lang",
-            },
-            auth=auth, timeout=30,
-        )
-        resp.raise_for_status()
-        batch = resp.json()
+        # "it" finished earlier in the run than "pt" (lower post IDs), so a
+        # single newest-50 page can miss "it" entirely. Pull several pages
+        # of recent items instead of just the newest one.
+        batch = []
+        for page in (1, 2, 3, 4, 5):
+            resp = request_with_retry(
+                "GET", f"{WP_BASE}/{post_type}",
+                params={
+                    "per_page": 100, "page": page, "orderby": "id", "order": "desc",
+                    "_fields": "id,slug,title,content,gfh_lang",
+                },
+                auth=auth, timeout=30,
+            )
+            resp.raise_for_status()
+            page_items = resp.json()
+            if not page_items:
+                break
+            batch.extend(page_items)
+            if all(len([p for p in batch if p.get("gfh_lang") == lang]) >= 3 for lang in ("it", "pt")):
+                break
         for lang in ("it", "pt"):
             print(f"=== {lang} ({post_type}) ===\n")
             items = [p for p in batch if p.get("gfh_lang") == lang][:3]
