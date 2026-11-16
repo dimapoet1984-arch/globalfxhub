@@ -141,7 +141,7 @@ elseif ( $alts_slug ) :
       <?php else : ?>
       <p class="alt-card__reasons alt-card__reasons--neutral"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_alt_no_clear_favor' ), $alt['name'], $ref['name'] ) ); ?></p>
       <?php endif; ?>
-      <p class="alt-card__meta"><?php echo esc_html( $alt['min_deposit_display'] ? sprintf( globalfxhub_t( 'rev_alt_min_deposit' ), $alt['min_deposit_display'] ) : globalfxhub_t( 'rev_alt_min_deposit_not_confirmed' ) ); ?> &middot; <?php echo esc_html( $alt['platforms'] ? implode( ', ', $alt['platforms'] ) : globalfxhub_t( 'rev_alt_platforms_not_confirmed' ) ); ?></p>
+      <p class="alt-card__meta"><?php echo esc_html( $alt['min_deposit_display'] ? sprintf( globalfxhub_t( 'rev_alt_min_deposit' ), $alt['min_deposit_display'] ) : globalfxhub_t( 'rev_alt_min_deposit_not_confirmed' ) ); ?> &middot; <?php echo esc_html( $alt['platforms'] ? globalfxhub_render_platforms_list( $alt['platforms'] ) : globalfxhub_t( 'rev_alt_platforms_not_confirmed' ) ); ?></p>
       <div class="alt-card__ctas">
         <a href="<?php echo esc_url( home_url( '/reviews/' . $alt['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
         <?php if ( $vs_pair_check ) : ?>
@@ -255,7 +255,7 @@ elseif ( $broker ) :
         <tr><th><?php globalfxhub_te( 'rev_headquarters' ); ?></th><td><?php echo esc_html( $broker['hq'] ? $broker['hq'] : $not_confirmed ); ?></td></tr>
         <tr><th><?php globalfxhub_te( 'rev_minimum_deposit' ); ?></th><td><?php echo esc_html( $broker['min_deposit_display'] ? $broker['min_deposit_display'] : $not_confirmed ); ?></td></tr>
         <tr><th><?php globalfxhub_te( 'rev_avg_spread_eurusd' ); ?></th><td><?php echo null !== $broker['spread_eurusd'] ? esc_html( $broker['spread_eurusd'] ) . ' pips' : esc_html( $not_confirmed ); ?><?php echo globalfxhub_data_confidence_badge_html( $broker, 'spread_eurusd' ); ?></td></tr>
-        <tr><th><?php globalfxhub_te( 'table_platforms' ); ?></th><td><?php echo esc_html( $broker['platforms'] ? implode( ', ', $broker['platforms'] ) : $not_confirmed ); ?></td></tr>
+        <tr><th><?php globalfxhub_te( 'table_platforms' ); ?></th><td><?php echo esc_html( $broker['platforms'] ? globalfxhub_render_platforms_list( $broker['platforms'] ) : $not_confirmed ); ?></td></tr>
         <tr><th><?php globalfxhub_te( 'rev_instruments' ); ?></th><td><?php echo esc_html( $broker['instruments'] ? $broker['instruments'] : $not_confirmed ); ?></td></tr>
       </tbody>
     </table>
@@ -470,7 +470,7 @@ $others = array_slice( $others, 0, 3 );
         <span class="rank-broker__tag"><?php echo esc_html( globalfxhub_broker_regulation_label( $b ) ); ?><?php echo $b['founded'] ? ' &middot; ' . esc_html( sprintf( globalfxhub_t( 'rev_founded_inline' ), $b['founded'] ) ) : ''; ?></span>
       </span>
       <span class="rank-detail col-fees"><?php echo null !== $b['spread_eurusd'] ? esc_html( $b['spread_eurusd'] ) . ' pips (EUR/USD)' : esc_html( globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
-      <span class="rank-detail col-plat"><?php echo esc_html( $b['platforms'] ? implode( ', ', $b['platforms'] ) : globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
+      <span class="rank-detail col-plat"><?php echo esc_html( $b['platforms'] ? globalfxhub_render_platforms_list( $b['platforms'] ) : globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
       <span class="rank-score"><?php echo esc_html( $b['scores']['overall'] ); ?> / 5</span>
       <span class="rank-ctas">
         <a href="<?php echo esc_url( home_url( '/reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>

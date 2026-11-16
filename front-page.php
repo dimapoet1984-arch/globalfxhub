@@ -347,7 +347,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
       foreach ( $fp_top15 as $fp_b ) :
           $fp_tag = globalfxhub_broker_regulation_label( $fp_b );
           if ( $fp_b['founded'] ) {
-              $fp_tag .= ' &middot; est. ' . $fp_b['founded'];
+              $fp_tag .= ' &middot; ' . sprintf( globalfxhub_t( 'rev_founded_inline' ), $fp_b['founded'] );
           }
       ?>
       <div class="rank-row">
@@ -356,8 +356,8 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
           <span class="rank-broker__name"><?php echo esc_html( $fp_b['name'] ); ?></span>
           <span class="rank-broker__tag"><?php echo esc_html( $fp_tag ); ?></span>
         </span>
-        <span class="rank-detail col-fees"><?php echo null !== $fp_b['spread_eurusd'] ? esc_html( $fp_b['spread_eurusd'] ) . ' pips (EUR/USD)' : 'Not confirmed'; ?></span>
-        <span class="rank-detail col-plat"><?php echo esc_html( $fp_b['platforms'] ? implode( ', ', $fp_b['platforms'] ) : 'Not confirmed' ); ?></span>
+        <span class="rank-detail col-fees"><?php echo null !== $fp_b['spread_eurusd'] ? esc_html( $fp_b['spread_eurusd'] ) . ' pips (EUR/USD)' : esc_html( globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
+        <span class="rank-detail col-plat"><?php echo esc_html( $fp_b['platforms'] ? globalfxhub_render_platforms_list( $fp_b['platforms'] ) : globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
         <span class="rank-score"><?php echo esc_html( $fp_b['scores']['overall'] ); ?> / 5</span>
         <span class="rank-ctas">
           <a href="<?php echo esc_url( home_url( '/reviews/' . $fp_b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>

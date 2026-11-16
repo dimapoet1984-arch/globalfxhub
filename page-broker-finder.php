@@ -143,18 +143,20 @@ const FINDER_COUNTRIES_URL = <?php echo wp_json_encode( home_url( '/countries/' 
     emptyEl.style.display = 'none';
     resultsEl.style.display = '';
 
-    let html = '<div class="rank-row head"><span></span><span>Broker</span><span class="col-fees">Min. deposit</span><span class="col-plat">Platforms</span><span>Match score</span><span></span></div>';
+    const notConfirmedLabel = <?php echo wp_json_encode( globalfxhub_t( 'tb_not_confirmed' ) ); ?>;
+    const naLabel = <?php echo wp_json_encode( globalfxhub_t( 'rev_na_abbr' ) ); ?>;
+    let html = '<div class="rank-row head"><span></span><span>' + <?php echo wp_json_encode( globalfxhub_t( 'table_broker' ) ); ?> + '</span><span class="col-fees">' + <?php echo wp_json_encode( globalfxhub_t( 'rev_minimum_deposit' ) ); ?> + '</span><span class="col-plat">' + <?php echo wp_json_encode( globalfxhub_t( 'table_platforms' ) ); ?> + '</span><span>' + <?php echo wp_json_encode( globalfxhub_t( 'finder_match_score_label' ) ); ?> + '</span><span></span></div>';
     results.forEach((b, i) => {
       const score = b.style_scores[styleKey];
       html += '<div class="rank-row">'
         + '<span class="rank-num">' + String(i + 1).padStart(2, '0') + '</span>'
         + '<span class="rank-broker"><span class="rank-broker__name">' + b.name + '</span><span class="rank-broker__tag">' + b.regulation_label + '</span></span>'
-        + '<span class="rank-detail col-fees">' + (b.min_deposit_display || 'Not confirmed') + '</span>'
-        + '<span class="rank-detail col-plat">' + (b.platforms.length ? b.platforms.join(', ') : 'Not confirmed') + '</span>'
-        + '<span class="rank-score">' + (score !== null ? score.toFixed(2) : 'N/A') + ' / 5</span>'
+        + '<span class="rank-detail col-fees">' + (b.min_deposit_display || notConfirmedLabel) + '</span>'
+        + '<span class="rank-detail col-plat">' + (b.platforms.length ? b.platforms.join(', ') : notConfirmedLabel) + '</span>'
+        + '<span class="rank-score">' + (score !== null ? score.toFixed(2) : naLabel) + ' / 5</span>'
         + '<span class="rank-ctas">'
-        + '<a href="' + b.review_url + '" class="rank-cta">Read review</a>'
-        + '<a href="#" class="rank-cta rank-cta--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">Visit Broker</a>'
+        + '<a href="' + b.review_url + '" class="rank-cta">' + <?php echo wp_json_encode( globalfxhub_t( 'btn_read_review' ) ); ?> + '</a>'
+        + '<a href="#" class="rank-cta rank-cta--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">' + <?php echo wp_json_encode( globalfxhub_t( 'tb_visit_broker' ) ); ?> + '</a>'
         + '</span>'
         + '</div>';
     });

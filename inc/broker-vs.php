@@ -119,25 +119,28 @@ function globalfxhub_broker_vs_related_pairs( $slug, $exclude_slug = null, $coun
  * description of the same two brokers.
  */
 function globalfxhub_vs_comparison_rows( $a, $b ) {
-    $na = 'Not independently confirmed';
+    $na = globalfxhub_t( 'tb_not_independently_confirmed' );
     $or_na = function( $v, $suffix = '' ) use ( $na ) {
         return ( null === $v || '' === $v ) ? $na : ( $v . $suffix );
     };
     $reg_note = function( $x ) {
         return implode( ' ', array_filter( array( $x['cysec_note'] ?? null, $x['fca_note'] ?? null, $x['seychelles_note'] ?? null ) ) );
     };
+    $platforms_or_na = function( $platforms ) use ( $na ) {
+        return $platforms ? globalfxhub_render_platforms_list( $platforms ) : $na;
+    };
 
     return array(
-        array( 'label' => 'Overall score', 'a' => $a['scores']['overall'] . ' / 5', 'b' => $b['scores']['overall'] . ' / 5' ),
-        array( 'label' => 'Regulation', 'a' => globalfxhub_broker_regulation_label( $a ), 'note_a' => $reg_note( $a ), 'b' => globalfxhub_broker_regulation_label( $b ), 'note_b' => $reg_note( $b ) ),
-        array( 'label' => 'Entity', 'a' => $a['entity'] ?? $na, 'b' => $b['entity'] ?? $na ),
-        array( 'label' => 'Founded', 'a' => $or_na( $a['founded'] ?? null ), 'b' => $or_na( $b['founded'] ?? null ) ),
-        array( 'label' => 'Headquarters', 'a' => $or_na( $a['hq'] ?? null ), 'b' => $or_na( $b['hq'] ?? null ) ),
-        array( 'label' => 'Minimum deposit', 'a' => $or_na( $a['min_deposit_display'] ?? null ), 'b' => $or_na( $b['min_deposit_display'] ?? null ) ),
-        array( 'label' => 'Avg. spread (EUR/USD)', 'a' => $or_na( $a['spread_eurusd'] ?? null, ' pips' ), 'b' => $or_na( $b['spread_eurusd'] ?? null, ' pips' ) ),
-        array( 'label' => 'Platforms', 'a' => $a['platforms'] ? implode( ', ', $a['platforms'] ) : $na, 'b' => $b['platforms'] ? implode( ', ', $b['platforms'] ) : $na ),
-        array( 'label' => 'Other Tier-1 regulators', 'a' => $a['other_reg'] ? implode( ', ', $a['other_reg'] ) : 'None confirmed', 'b' => $b['other_reg'] ? implode( ', ', $b['other_reg'] ) : 'None confirmed' ),
-        array( 'label' => 'Instruments', 'a' => $or_na( $a['instruments'] ?? null ), 'b' => $or_na( $b['instruments'] ?? null ) ),
+        array( 'label' => globalfxhub_t( 'cmp_row_overall_score' ), 'a' => $a['scores']['overall'] . ' / 5', 'b' => $b['scores']['overall'] . ' / 5' ),
+        array( 'label' => globalfxhub_t( 'nav_regulation' ), 'a' => globalfxhub_broker_regulation_label( $a ), 'note_a' => $reg_note( $a ), 'b' => globalfxhub_broker_regulation_label( $b ), 'note_b' => $reg_note( $b ) ),
+        array( 'label' => globalfxhub_t( 'rev_regulated_entity' ), 'a' => $a['entity'] ?? $na, 'b' => $b['entity'] ?? $na ),
+        array( 'label' => globalfxhub_t( 'rev_founded' ), 'a' => $or_na( $a['founded'] ?? null ), 'b' => $or_na( $b['founded'] ?? null ) ),
+        array( 'label' => globalfxhub_t( 'rev_headquarters' ), 'a' => $or_na( $a['hq'] ?? null ), 'b' => $or_na( $b['hq'] ?? null ) ),
+        array( 'label' => globalfxhub_t( 'rev_minimum_deposit' ), 'a' => $or_na( $a['min_deposit_display'] ?? null ), 'b' => $or_na( $b['min_deposit_display'] ?? null ) ),
+        array( 'label' => globalfxhub_t( 'rev_avg_spread_eurusd' ), 'a' => $or_na( $a['spread_eurusd'] ?? null, ' pips' ), 'b' => $or_na( $b['spread_eurusd'] ?? null, ' pips' ) ),
+        array( 'label' => globalfxhub_t( 'table_platforms' ), 'a' => $platforms_or_na( $a['platforms'] ), 'b' => $platforms_or_na( $b['platforms'] ) ),
+        array( 'label' => globalfxhub_t( 'rev_other_tier1' ), 'a' => $a['other_reg'] ? implode( ', ', $a['other_reg'] ) : globalfxhub_t( 'tb_none_confirmed' ), 'b' => $b['other_reg'] ? implode( ', ', $b['other_reg'] ) : globalfxhub_t( 'tb_none_confirmed' ) ),
+        array( 'label' => globalfxhub_t( 'rev_instruments' ), 'a' => $or_na( $a['instruments'] ?? null ), 'b' => $or_na( $b['instruments'] ?? null ) ),
     );
 }
 

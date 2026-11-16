@@ -130,22 +130,22 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
 <div class="wrap" style="padding-bottom:60px;">
   <div class="rankings">
     <div class="rank-row head">
-      <span></span><span>Broker</span><span class="col-fees">Avg. spread</span><span class="col-plat">Platforms</span><span>Score</span><span></span>
+      <span></span><span><?php globalfxhub_te( 'table_broker' ); ?></span><span class="col-fees"><?php globalfxhub_te( 'table_spread' ); ?></span><span class="col-plat"><?php globalfxhub_te( 'table_platforms' ); ?></span><span><?php globalfxhub_te( 'table_score' ); ?></span><span></span>
     </div>
     <?php foreach ( $ranked as $i => $b ) :
         $tag = globalfxhub_broker_regulation_label( $b );
         if ( $b['founded'] ) {
-            $tag .= ' &middot; est. ' . $b['founded'];
+            $tag .= ' &middot; ' . esc_html( sprintf( globalfxhub_t( 'rev_founded_inline' ), $b['founded'] ) );
         }
         if ( ! empty( $b['is_local_hq'] ) ) {
-            $tag .= ' &middot; <strong style="color:var(--teal);">Headquartered in ' . esc_html( $country['name'] ) . '</strong>';
+            $tag .= ' &middot; <strong style="color:var(--teal);">' . esc_html( sprintf( globalfxhub_t( 'cty_headquartered_in' ), $country['name'] ) ) . '</strong>';
         } elseif ( ! empty( $b['has_direct_national_licence'] ) ) {
-            $tag .= ' &middot; <strong style="color:var(--teal);">Direct ' . esc_html( $country['regulator'] ?? $country['name'] ) . ' licence</strong>';
+            $tag .= ' &middot; <strong style="color:var(--teal);">' . esc_html( sprintf( globalfxhub_t( 'cty_direct_licence_tag' ), $country['regulator'] ?? $country['name'] ) ) . '</strong>';
         }
         $availability_badges = array(
-            'confirmed' => array( 'label' => 'CONFIRMED', 'title' => 'Confirmed: a direct, country-specific regulatory match or a confirmed local entity/office -- not an inference.', 'color' => 'var(--teal)' ),
-            'inferred'  => array( 'label' => 'INFERRED', 'title' => 'Inferred: this broker holds a CySEC licence capable of being passported here under MiFID II, but we have no confirmation it currently onboards retail clients from this specific country.', 'color' => '#b8860b' ),
-            'unverified' => array( 'label' => 'UNVERIFIED', 'title' => 'Unverified: availability in this country could not be independently confirmed or inferred from this broker\'s disclosed regulatory footprint.', 'color' => 'var(--ink-soft)' ),
+            'confirmed' => array( 'label' => globalfxhub_t( 'cty_badge_confirmed_label' ), 'title' => globalfxhub_t( 'cty_badge_confirmed_title' ), 'color' => 'var(--teal)' ),
+            'inferred'  => array( 'label' => globalfxhub_t( 'cty_badge_inferred_label' ), 'title' => globalfxhub_t( 'cty_badge_inferred_title' ), 'color' => '#b8860b' ),
+            'unverified' => array( 'label' => globalfxhub_t( 'cty_badge_unverified_label' ), 'title' => globalfxhub_t( 'cty_badge_unverified_title' ), 'color' => 'var(--ink-soft)' ),
         );
         $availability_badge = $availability_badges[ $b['availability_status'] ?? 'unverified' ];
     ?>
@@ -155,12 +155,12 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
         <span class="rank-broker__name"><?php echo esc_html( $b['name'] ); ?> <span title="<?php echo esc_attr( $availability_badge['title'] ); ?>" style="font-size:10px;font-weight:700;letter-spacing:0.03em;color:<?php echo esc_attr( $availability_badge['color'] ); ?>;border:1px solid currentColor;border-radius:3px;padding:1px 5px;vertical-align:middle;cursor:help;"><?php echo esc_html( $availability_badge['label'] ); ?></span></span>
         <span class="rank-broker__tag"><?php echo wp_kses( $tag, array( 'strong' => array( 'style' => array() ) ) ); ?></span>
       </span>
-      <span class="rank-detail col-fees"><?php echo null !== $b['spread_eurusd'] ? esc_html( $b['spread_eurusd'] ) . ' pips (EUR/USD)' : 'Not confirmed'; ?></span>
-      <span class="rank-detail col-plat"><?php echo esc_html( $b['platforms'] ? implode( ', ', $b['platforms'] ) : 'Not confirmed' ); ?></span>
+      <span class="rank-detail col-fees"><?php echo null !== $b['spread_eurusd'] ? esc_html( $b['spread_eurusd'] ) . ' pips (EUR/USD)' : esc_html( globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
+      <span class="rank-detail col-plat"><?php echo esc_html( $b['platforms'] ? globalfxhub_render_platforms_list( $b['platforms'] ) : globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
       <span class="rank-score"><?php echo esc_html( $b['scores']['overall'] ); ?> / 5</span>
       <span class="rank-ctas">
-        <a href="<?php echo esc_url( home_url( '/reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta">Read review</a>
-        <a href="#" class="rank-cta rank-cta--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">Visit Broker</a>
+        <a href="<?php echo esc_url( home_url( '/reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+        <a href="#" class="rank-cta rank-cta--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;"><?php globalfxhub_te( 'tb_visit_broker' ); ?></a>
       </span>
     </div>
     <?php endforeach; ?>

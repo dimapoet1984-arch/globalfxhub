@@ -327,7 +327,11 @@ function globalfxhub_finder_broker_payload() {
             'rank'              => $b['rank'],
             'min_deposit_usd'   => $b['min_deposit_usd'],
             'min_deposit_display'=> $b['min_deposit_display'],
-            'platforms'         => $b['platforms'],
+            // Translates the "Proprietary" descriptor at render time
+            // (same helper used everywhere else this field is displayed),
+            // without changing the underlying broker data -- see
+            // globalfxhub_render_platforms_list() in inc/translatable-strings.php.
+            'platforms'         => array_map( 'globalfxhub_render_platform_name', $b['platforms'] ),
             'platform_tags'     => globalfxhub_broker_platform_tags( $b ),
             'instrument_tags'   => globalfxhub_broker_instrument_tags( $b ),
             'instruments_text'  => $b['instruments'],

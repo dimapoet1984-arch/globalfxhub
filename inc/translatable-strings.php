@@ -83,6 +83,32 @@ function globalfxhub_translatable_strings() {
 
         'rev_index_h1', 'rev_index_eyebrow', 'rev_index_intro', 'rev_showing_results_for', 'rev_clear_search',
         'rev_no_brokers_matched', 'rev_view_all_reviews',
+
+        // --- structured broker-data presentation: the ONE field that
+        // safely converts to a semantic value + i18n label without a
+        // data-model change (see globalfxhub_render_platforms_list() --
+        // the 'platforms' array mixes protected brand names (MT4, MT5,
+        // cTrader, TradingView, never translated) with the literal
+        // English word "Proprietary" as a category descriptor, e.g.
+        // "Proprietary (XTrend)"; the brand name is preserved exactly,
+        // only the descriptor word is translated at render time) ---
+        'platform_type_proprietary',
+
+        // --- page-countries.php availability badges (already a clean
+        // semantic enum, $b['availability_status'] -- 'confirmed' /
+        // 'inferred' / 'unverified' -- just needed the label/tooltip
+        // text routed through i18n) ---
+        'cty_badge_confirmed_label', 'cty_badge_confirmed_title',
+        'cty_badge_inferred_label', 'cty_badge_inferred_title',
+        'cty_badge_unverified_label', 'cty_badge_unverified_title',
+        'cty_headquartered_in', 'cty_direct_licence_tag',
+
+        // --- inc/broker-vs.php (compare-tool row labels) ---
+        'cmp_row_overall_score', 'finder_match_score_label',
+
+        // --- page-best.php ---
+        'best_eyebrow', 'best_no_brokers_match', 'best_built_from_note',
+        'best_methodology_link', 'best_all_lists_link', 'best_index_h1', 'best_index_intro', 'best_top15_label',
     );
 }
 
@@ -298,6 +324,29 @@ function globalfxhub_string_text( $key ) {
         'rev_clear_search' => 'clear search',
         'rev_no_brokers_matched' => 'No brokers matched "%s".',
         'rev_view_all_reviews' => 'View all reviews →',
+
+        'platform_type_proprietary' => 'Proprietary',
+
+        'cty_badge_confirmed_label' => 'CONFIRMED',
+        'cty_badge_confirmed_title' => 'Confirmed: a direct, country-specific regulatory match or a confirmed local entity/office -- not an inference.',
+        'cty_badge_inferred_label' => 'INFERRED',
+        'cty_badge_inferred_title' => 'Inferred: this broker holds a CySEC licence capable of being passported here under MiFID II, but we have no confirmation it currently onboards retail clients from this specific country.',
+        'cty_badge_unverified_label' => 'UNVERIFIED',
+        'cty_badge_unverified_title' => 'Unverified: availability in this country could not be independently confirmed or inferred from this broker\'s disclosed regulatory footprint.',
+        'cty_headquartered_in' => 'Headquartered in %s',
+        'cty_direct_licence_tag' => 'Direct %s licence',
+
+        'cmp_row_overall_score' => 'Overall score',
+        'finder_match_score_label' => 'Match score',
+
+        'best_eyebrow' => 'BEST BROKERS',
+        'best_no_brokers_match' => 'No brokers in our researched set currently meet this list\'s criteria.',
+        'best_built_from_note' => 'Built from our %1$s -- the same absolute rubric and the same scores shown on every individual review, filtered and sorted for this specific list rather than scored differently for it. See %2$s.',
+        'best_methodology_link' => 'disclosed nine-category methodology',
+        'best_all_lists_link' => 'all best-broker lists',
+        'best_index_h1' => 'Best Brokers',
+        'best_index_intro' => 'Filtered, re-sorted views of the same broker dataset and the same disclosed scores used sitewide -- never a separate, looser standard for a commercially-framed page. Pick a list below.',
+        'best_top15_label' => 'TOP 15',
     );
 
     return isset( $strings[ $key ] ) ? $strings[ $key ] : $key;
@@ -497,6 +546,29 @@ function globalfxhub_live_string_translations() {
             'rev_clear_search' => 'borrar búsqueda',
             'rev_no_brokers_matched' => 'Ningún bróker coincide con "%s".',
             'rev_view_all_reviews' => 'Ver todas las reseñas →',
+
+            'platform_type_proprietary' => 'Propia',
+
+            'cty_badge_confirmed_label' => 'CONFIRMADO',
+            'cty_badge_confirmed_title' => 'Confirmado: una coincidencia regulatoria directa y específica del país, o una entidad/oficina local confirmada -- no es una inferencia.',
+            'cty_badge_inferred_label' => 'INFERIDO',
+            'cty_badge_inferred_title' => 'Inferido: este bróker tiene una licencia de CySEC capaz de pasaportarse aquí bajo MiFID II, pero no tenemos confirmación de que actualmente acepte clientes minoristas de este país específico.',
+            'cty_badge_unverified_label' => 'NO VERIFICADO',
+            'cty_badge_unverified_title' => 'No verificado: la disponibilidad en este país no pudo confirmarse ni inferirse de forma independiente a partir del perfil regulatorio divulgado de este bróker.',
+            'cty_headquartered_in' => 'Con sede en %s',
+            'cty_direct_licence_tag' => 'Licencia directa de %s',
+
+            'cmp_row_overall_score' => 'Puntuación general',
+            'finder_match_score_label' => 'Puntuación de coincidencia',
+
+            'best_eyebrow' => 'MEJORES BRÓKERS',
+            'best_no_brokers_match' => 'Ningún bróker de nuestro conjunto investigado cumple actualmente los criterios de esta lista.',
+            'best_built_from_note' => 'Construido a partir de nuestra %1$s -- la misma rúbrica absoluta y las mismas puntuaciones que aparecen en cada reseña individual, filtradas y ordenadas para esta lista específica en lugar de puntuarse de forma distinta para ella. Ver %2$s.',
+            'best_methodology_link' => 'metodología divulgada de nueve categorías',
+            'best_all_lists_link' => 'todas las listas de mejores brókers',
+            'best_index_h1' => 'Mejores Brókers',
+            'best_index_intro' => 'Vistas filtradas y reordenadas del mismo conjunto de brókers y las mismas puntuaciones divulgadas usadas en todo el sitio -- nunca un estándar separado y más flexible para una página con enfoque comercial. Elige una lista a continuación.',
+            'best_top15_label' => 'TOP 15',
         ),
         'de' => array(
             'nav_reviews' => 'Testberichte', 'nav_learn' => 'Lernen', 'nav_news' => 'Nachrichten',
@@ -924,4 +996,37 @@ function globalfxhub_t( $key ) {
 }
 function globalfxhub_te( $key ) {
     echo esc_html( globalfxhub_t( $key ) );
+}
+
+/**
+ * Renders one entry from a broker's 'platforms' array for display.
+ *
+ * $broker['platforms'] mixes protected brand names that must never be
+ * translated (MT4, MT5, cTrader, TradingView, ProRealTime, ...) with
+ * the literal English word "Proprietary" as a category descriptor,
+ * sometimes with the actual proprietary platform's own brand name in
+ * parentheses (e.g. "Proprietary (XTrend)"). This is the one field in
+ * the broker dataset where presentation prose is genuinely stored as
+ * data -- the underlying strings are left completely untouched (no
+ * data-model change, no risk to the other templates that read this
+ * field), and only the "Proprietary" descriptor is translated here,
+ * at render time, through globalfxhub_t(). Any brand name inside the
+ * parentheses is preserved exactly.
+ */
+function globalfxhub_render_platform_name( $platform ) {
+    if ( preg_match( '/^Proprietary(?:\s*\((.+)\))?$/', $platform, $matches ) ) {
+        $label = globalfxhub_t( 'platform_type_proprietary' );
+        return isset( $matches[1] ) ? $label . ' (' . $matches[1] . ')' : $label;
+    }
+    return $platform;
+}
+
+/**
+ * Renders a broker's whole 'platforms' array as a display string --
+ * the drop-in replacement for implode( ', ', $broker['platforms'] )
+ * used across front-page.php, page-best.php, page-reviews.php,
+ * page-countries.php, and inc/broker-vs.php.
+ */
+function globalfxhub_render_platforms_list( $platforms ) {
+    return implode( ', ', array_map( 'globalfxhub_render_platform_name', (array) $platforms ) );
 }
