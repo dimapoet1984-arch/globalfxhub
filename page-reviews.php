@@ -33,9 +33,12 @@ if ( $research_slug && $research_kind && ! $research_entry ) {
 ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">BROKER RESEARCH</div>
-  <h1>Article not available</h1>
-  <p>We don't have that research article yet. <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);">See all researched broker reviews</a>.</p>
+  <div class="eyebrow"><?php globalfxhub_te( 'rev_research_eyebrow' ); ?></div>
+  <h1><?php globalfxhub_te( 'rev_research_not_available_h1' ); ?></h1>
+  <p><?php
+  $see_all_link = '<a href="' . esc_url( home_url( '/reviews/' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'rev_see_all_reviews_link' ) ) . '</a>';
+  echo sprintf( esc_html( globalfxhub_t( 'rev_research_not_available_body' ) ), $see_all_link );
+  ?></p>
 </div>
 
     <?php else :
@@ -43,8 +46,8 @@ if ( $research_slug && $research_kind && ! $research_entry ) {
     ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>">Reviews</a> /
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
+  <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>"><?php globalfxhub_te( 'nav_reviews' ); ?></a> /
   <a href="<?php echo esc_url( home_url( '/reviews/' . $rb['slug'] . '/' ) ); ?>"><?php echo esc_html( $rb['name'] ); ?></a> /
   <?php echo esc_html( $research_entry['title'] ); ?>
 </div>
@@ -52,7 +55,7 @@ if ( $research_slug && $research_kind && ! $research_entry ) {
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">BROKER <?php echo esc_html( strtoupper( $research_entry['kind'] ) ); ?></div>
+  <div class="eyebrow"><?php globalfxhub_te( 'fees' === $research_entry['kind'] ? 'rev_research_eyebrow_fees' : 'rev_research_eyebrow_regulation' ); ?></div>
   <h1><?php echo esc_html( $research_entry['title'] ); ?></h1>
   <p><?php echo esc_html( $research_entry['intro'] ); ?></p>
 </div>
@@ -62,16 +65,16 @@ if ( $research_slug && $research_kind && ! $research_entry ) {
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:28px 0 10px;"><?php echo esc_html( $section['heading'] ); ?></h2>
   <p style="color:var(--ink-soft);line-height:1.7;"><?php echo esc_html( $section['body'] ); ?></p>
   <?php if ( 0 === $i ) : ?>
-  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) . '?broker=' . rawurlencode( $rb['slug'] ) ); ?>" style="color:var(--teal);">Try our Forex Spread Cost Calculator against your own trade size &rarr;</a></p>
+  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) . '?broker=' . rawurlencode( $rb['slug'] ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_research_try_calculator_link' ); ?></a></p>
   <?php endif; ?>
   <?php if ( 'fees' === $research_entry['kind'] && 4 === $i ) : ?>
-  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/research/forex-trading-platform-adoption-report/' ) ); ?>" style="color:var(--teal);">See the full Forex Trading Platform Adoption Report &rarr;</a></p>
+  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/research/forex-trading-platform-adoption-report/' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_research_full_report_link' ); ?></a></p>
   <?php endif; ?>
   <?php endforeach; ?>
 </div>
 
 <div class="wrap" style="padding-bottom:40px;">
-  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 12px;">Frequently asked questions</h2>
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 12px;"><?php globalfxhub_te( 'rev_faq_h2' ); ?></h2>
   <div>
     <?php foreach ( $research_entry['faqs'] as $faq ) : ?>
     <div style="margin-bottom:18px;">
@@ -80,7 +83,7 @@ if ( $research_slug && $research_kind && ! $research_entry ) {
     </div>
     <?php endforeach; ?>
   </div>
-  <p style="margin-top:4px;"><a href="<?php echo esc_url( home_url( '/reviews/' . $rb['slug'] . '/' ) ); ?>" style="color:var(--teal);">&larr; Back to the full <?php echo esc_html( $rb['name'] ); ?> review</a></p>
+  <p style="margin-top:4px;"><a href="<?php echo esc_url( home_url( '/reviews/' . $rb['slug'] . '/' ) ); ?>" style="color:var(--teal);">&larr; <?php echo esc_html( sprintf( globalfxhub_t( 'rev_back_to_full_review' ), $rb['name'] ) ); ?></a></p>
 </div>
 
     <?php endif;
@@ -89,9 +92,9 @@ elseif ( $alts_slug ) :
 ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">BROKER ALTERNATIVES</div>
-  <h1>Alternatives not available</h1>
-  <p>We don't have an alternatives page for that broker -- it may be outside our top-ranked set. <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);">See all researched broker reviews</a>.</p>
+  <div class="eyebrow"><?php globalfxhub_te( 'rev_alt_eyebrow' ); ?></div>
+  <h1><?php globalfxhub_te( 'rev_alt_not_available_h1' ); ?></h1>
+  <p><?php echo esc_html( globalfxhub_t( 'rev_alt_not_available_body' ) ); ?> <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_see_all_reviews_link' ); ?></a>.</p>
 </div>
 
     <?php else :
@@ -100,23 +103,23 @@ elseif ( $alts_slug ) :
     ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>">Reviews</a> /
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
+  <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>"><?php globalfxhub_te( 'nav_reviews' ); ?></a> /
   <a href="<?php echo esc_url( home_url( '/reviews/' . $ref['slug'] . '/' ) ); ?>"><?php echo esc_html( $ref['name'] ); ?></a> /
-  Alternatives
+  <?php globalfxhub_te( 'rev_breadcrumb_alternatives' ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">BROKER ALTERNATIVES</div>
-  <h1><?php echo esc_html( $ref['name'] ); ?> Alternatives</h1>
-  <p>Brokers below share at least two of <?php echo esc_html( $ref['name'] ); ?>'s confirmed instruments or platforms, ranked by our disclosed nine-category score -- not a popularity guess or a paid placement. Each one lists the specific, concrete reasons -- a real platform it offers, a real deposit or spread figure, a real regulator count or founding year -- that might actually make it worth switching to, not just a "similar broker" label.</p>
+  <div class="eyebrow"><?php globalfxhub_te( 'rev_alt_eyebrow' ); ?></div>
+  <h1><?php echo esc_html( sprintf( globalfxhub_t( 'rev_alt_title' ), $ref['name'] ) ); ?></h1>
+  <p><?php echo esc_html( sprintf( globalfxhub_t( 'rev_alt_intro' ), $ref['name'] ) ); ?></p>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
   <?php if ( empty( $alt_brokers ) ) : ?>
-  <p style="padding:24px;color:var(--ink-soft);">No sufficiently similar broker found in our researched set.</p>
+  <p style="padding:24px;color:var(--ink-soft);"><?php globalfxhub_te( 'rev_no_similar_broker' ); ?></p>
   <?php else : ?>
   <div class="alt-cards">
     <?php foreach ( $alt_brokers as $i => $alt ) :
@@ -127,7 +130,7 @@ elseif ( $alts_slug ) :
         <span class="alt-card__rank"><?php echo esc_html( str_pad( (string) ( $i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
         <span class="alt-card__name"><?php echo esc_html( $alt['name'] ); ?></span>
         <span class="alt-card__tag"><?php echo esc_html( globalfxhub_broker_regulation_label( $alt ) ); ?></span>
-        <span class="alt-card__score"><?php echo esc_html( $alt['scores']['overall'] ?? 'N/A' ); ?> / 5</span>
+        <span class="alt-card__score"><?php echo esc_html( $alt['scores']['overall'] ?? globalfxhub_t( 'rev_na_abbr' ) ); ?> / 5</span>
       </div>
       <?php if ( ! empty( $alt['reasons'] ) ) : ?>
       <ul class="alt-card__reasons">
@@ -136,20 +139,20 @@ elseif ( $alts_slug ) :
         <?php endforeach; ?>
       </ul>
       <?php else : ?>
-      <p class="alt-card__reasons alt-card__reasons--neutral">No single confirmed detail clearly favors <?php echo esc_html( $alt['name'] ); ?> over <?php echo esc_html( $ref['name'] ); ?> in our research -- the two are a close match on cost, regulation, platforms, and track record. Worth comparing directly if something else (execution style, customer service, a specific feature) matters to you.</p>
+      <p class="alt-card__reasons alt-card__reasons--neutral"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_alt_no_clear_favor' ), $alt['name'], $ref['name'] ) ); ?></p>
       <?php endif; ?>
-      <p class="alt-card__meta"><?php echo esc_html( $alt['min_deposit_display'] ? $alt['min_deposit_display'] . ' minimum deposit' : 'Minimum deposit not confirmed' ); ?> &middot; <?php echo esc_html( $alt['platforms'] ? implode( ', ', $alt['platforms'] ) : 'Platforms not confirmed' ); ?></p>
+      <p class="alt-card__meta"><?php echo esc_html( $alt['min_deposit_display'] ? sprintf( globalfxhub_t( 'rev_alt_min_deposit' ), $alt['min_deposit_display'] ) : globalfxhub_t( 'rev_alt_min_deposit_not_confirmed' ) ); ?> &middot; <?php echo esc_html( $alt['platforms'] ? implode( ', ', $alt['platforms'] ) : globalfxhub_t( 'rev_alt_platforms_not_confirmed' ) ); ?></p>
       <div class="alt-card__ctas">
-        <a href="<?php echo esc_url( home_url( '/reviews/' . $alt['slug'] . '/' ) ); ?>" class="rank-cta">Read review</a>
+        <a href="<?php echo esc_url( home_url( '/reviews/' . $alt['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
         <?php if ( $vs_pair_check ) : ?>
-        <a href="<?php echo esc_url( home_url( '/compare/' . $ref['slug'] . '-vs-' . $alt['slug'] . '/' ) ); ?>" class="rank-cta">Compare vs <?php echo esc_html( $ref['name'] ); ?></a>
+        <a href="<?php echo esc_url( home_url( '/compare/' . $ref['slug'] . '-vs-' . $alt['slug'] . '/' ) ); ?>" class="rank-cta"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_compare_vs' ), $ref['name'] ) ); ?></a>
         <?php endif; ?>
       </div>
     </div>
     <?php endforeach; ?>
   </div>
   <?php endif; ?>
-  <p style="margin-top:20px;"><a href="<?php echo esc_url( home_url( '/reviews/' . $ref['slug'] . '/' ) ); ?>" style="color:var(--teal);">&larr; Back to the full <?php echo esc_html( $ref['name'] ); ?> review</a></p>
+  <p style="margin-top:20px;"><a href="<?php echo esc_url( home_url( '/reviews/' . $ref['slug'] . '/' ) ); ?>" style="color:var(--teal);">&larr; <?php echo esc_html( sprintf( globalfxhub_t( 'rev_back_to_full_review' ), $ref['name'] ) ); ?></a></p>
 </div>
 
     <?php endif;
@@ -157,59 +160,59 @@ elseif ( $broker ) :
     $pc = globalfxhub_broker_pros_cons( $broker );
     $who = globalfxhub_broker_who_for( $broker );
     $investor_protection = globalfxhub_broker_investor_protection( $broker );
-    $deep_dive_na = 'Not independently confirmed in our research -- check the broker\'s own site or contact support directly.';
+    $deep_dive_na = globalfxhub_t( 'rev_deep_dive_na' );
     $deep_dive_fields = array(
-        'account_types'          => 'Account types',
-        'execution_model'        => 'Execution model',
-        'withdrawal_deposit_note' => 'Withdrawals & deposits',
-        'overnight_financing'    => 'Overnight financing (swap)',
-        'currency_conversion_fee' => 'Currency conversion cost',
-        'inactivity_fee'         => 'Inactivity fee',
-        'customer_service_note'  => 'Customer service',
-        'mobile_note'            => 'Mobile experience',
-        'education_note'         => 'Educational offering',
+        'account_types'          => globalfxhub_t( 'rev_field_account_types' ),
+        'execution_model'        => globalfxhub_t( 'rev_field_execution_model' ),
+        'withdrawal_deposit_note' => globalfxhub_t( 'rev_field_withdrawal_deposit' ),
+        'overnight_financing'    => globalfxhub_t( 'rev_field_overnight_financing' ),
+        'currency_conversion_fee' => globalfxhub_t( 'rev_field_currency_conversion' ),
+        'inactivity_fee'         => globalfxhub_t( 'rev_field_inactivity_fee' ),
+        'customer_service_note'  => globalfxhub_t( 'rev_field_customer_service' ),
+        'mobile_note'            => globalfxhub_t( 'rev_field_mobile' ),
+        'education_note'         => globalfxhub_t( 'rev_field_education' ),
     );
     $sub_labels = array(
-        'regulation'            => 'Regulation & client protection',
-        'cost'                  => 'Trading costs',
-        'non_trading_fees'      => 'Non-trading fees',
-        'platforms'             => 'Platforms & tools',
-        'execution'              => 'Execution / trading conditions',
-        'product_range'         => 'Product range',
-        'deposits_withdrawals'  => 'Deposits & withdrawals',
-        'transparency'          => 'Transparency',
-        'track_record'          => 'Track record',
+        'regulation'            => globalfxhub_t( 'method1_h3' ),
+        'cost'                  => globalfxhub_t( 'method2_h3' ),
+        'non_trading_fees'      => globalfxhub_t( 'method3_h3' ),
+        'platforms'             => globalfxhub_t( 'method4_h3' ),
+        'execution'              => globalfxhub_t( 'method5_h3' ),
+        'product_range'         => globalfxhub_t( 'method6_h3' ),
+        'deposits_withdrawals'  => globalfxhub_t( 'method7_h3' ),
+        'transparency'          => globalfxhub_t( 'method8_h3' ),
+        'track_record'          => globalfxhub_t( 'method9_h3' ),
     );
     $reg_label = globalfxhub_broker_regulation_label( $broker );
     $verify_links = globalfxhub_broker_verify_links( $broker );
-    $not_confirmed = 'Not independently confirmed';
+    $not_confirmed = globalfxhub_t( 'tb_not_independently_confirmed' );
     $review_dates = globalfxhub_broker_review_dates( $broker );
     $section_learn_links = array_map( 'globalfxhub_resolve_learn_link', globalfxhub_review_section_learn_links() );
     $broker_faqs = globalfxhub_broker_faqs( $broker );
 ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>">Reviews</a> /
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
+  <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>"><?php globalfxhub_te( 'nav_reviews' ); ?></a> /
   <?php echo esc_html( $broker['name'] ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head review-head">
-  <div class="eyebrow">BROKER REVIEW &middot; RANK #<?php echo esc_html( str_pad( (string) $broker['rank'], 2, '0', STR_PAD_LEFT ) ); ?> OF <?php echo esc_html( count( globalfxhub_get_brokers() ) ); ?></div>
-  <h1><?php echo esc_html( $broker['name'] ); ?> review</h1>
+  <div class="eyebrow"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_eyebrow_rank' ), str_pad( (string) $broker['rank'], 2, '0', STR_PAD_LEFT ), count( globalfxhub_get_brokers() ) ) ); ?></div>
+  <h1><?php echo esc_html( sprintf( globalfxhub_t( 'rev_title_review' ), $broker['name'] ) ); ?></h1>
   <p><?php echo esc_html( $broker['blurb'] ); ?></p>
   <div class="review-head__meta">
-    <span class="review-head__score"><span class="score-num"><?php echo esc_html( $broker['scores']['overall'] ); ?></span> / 5 overall</span>
-    <span class="review-head__tag"><?php echo esc_html( $reg_label ); ?><?php echo $broker['founded'] ? ' &middot; est. ' . esc_html( $broker['founded'] ) : ''; ?></span>
+    <span class="review-head__score"><span class="score-num"><?php echo esc_html( $broker['scores']['overall'] ); ?></span> / 5 <?php globalfxhub_te( 'rev_score_overall' ); ?></span>
+    <span class="review-head__tag"><?php echo esc_html( $reg_label ); ?><?php echo $broker['founded'] ? ' &middot; ' . esc_html( sprintf( globalfxhub_t( 'rev_founded_inline' ), $broker['founded'] ) ) : ''; ?></span>
   </div>
   <div class="review-head__dates" style="font-size:12.5px;color:var(--ink-soft);margin-top:6px;display:flex;flex-wrap:wrap;gap:14px;">
-    <span>Researched &amp; fact-checked by: <a href="<?php echo esc_url( home_url( '/editorial-policy/' ) ); ?>" style="color:var(--ink-soft);text-decoration:underline;">GlobalFXHub Research Team</a></span>
-    <span>Data last reviewed: <?php echo esc_html( $review_dates['data_reviewed'] ); ?></span>
-    <span>Regulation last reviewed: <?php echo esc_html( $review_dates['regulation_reviewed'] ); ?></span>
-    <span>Pricing last checked: <?php echo esc_html( $review_dates['pricing_checked'] ); ?></span>
-    <span>Next scheduled review: <?php echo esc_html( $review_dates['next_review'] ); ?></span>
+    <span><?php globalfxhub_te( 'rev_researched_factchecked_by' ); ?> <a href="<?php echo esc_url( home_url( '/editorial-policy/' ) ); ?>" style="color:var(--ink-soft);text-decoration:underline;">GlobalFXHub Research Team</a></span>
+    <span><?php globalfxhub_te( 'rev_data_last_reviewed' ); ?> <?php echo esc_html( $review_dates['data_reviewed'] ); ?></span>
+    <span><?php globalfxhub_te( 'rev_regulation_last_reviewed' ); ?> <?php echo esc_html( $review_dates['regulation_reviewed'] ); ?></span>
+    <span><?php globalfxhub_te( 'rev_pricing_last_checked' ); ?> <?php echo esc_html( $review_dates['pricing_checked'] ); ?></span>
+    <span><?php globalfxhub_te( 'rev_next_scheduled_review' ); ?> <?php echo esc_html( $review_dates['next_review'] ); ?></span>
   </div>
   <?php
   $notice_parts = array_filter( array(
@@ -219,24 +222,24 @@ elseif ( $broker ) :
   ) );
   if ( ! empty( $notice_parts ) ) :
   ?>
-  <div class="review-notice"><strong>Worth knowing:</strong> <?php echo esc_html( implode( ' ', $notice_parts ) ); ?></div>
+  <div class="review-notice"><strong><?php globalfxhub_te( 'rev_worth_knowing' ); ?></strong> <?php echo esc_html( implode( ' ', $notice_parts ) ); ?></div>
   <?php endif; ?>
   <div class="hero__actions" style="margin-top:22px;">
-    <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold">Compare vs another broker</a>
+    <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold"><?php globalfxhub_te( 'rev_compare_vs_another' ); ?></a>
     <?php foreach ( globalfxhub_editorial_comparisons_for_broker( $broker['slug'] ) as $editorial_vs ) : ?>
     <a href="<?php echo esc_url( $editorial_vs['url'] ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $broker['name'] . ' vs ' . $editorial_vs['other']['name'] ); ?>: <?php globalfxhub_te( 'rev_vs_our_verdict' ); ?></a>
     <?php endforeach; ?>
     <?php foreach ( globalfxhub_broker_research_articles_for_broker( $broker['slug'] ) as $research_link ) : ?>
     <a href="<?php echo esc_url( $research_link['url'] ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $research_link['title'] ); ?></a>
     <?php endforeach; ?>
-    <a href="<?php echo esc_url( home_url( '/broker-finder/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);">Find similar brokers</a>
+    <a href="<?php echo esc_url( home_url( '/broker-finder/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php globalfxhub_te( 'rev_find_similar' ); ?></a>
     <?php if ( globalfxhub_broker_alternatives( $broker['slug'] ) ) : ?>
-    <a href="<?php echo esc_url( home_url( '/reviews/' . $broker['slug'] . '/alternatives/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);">See alternatives</a>
+    <a href="<?php echo esc_url( home_url( '/reviews/' . $broker['slug'] . '/alternatives/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php globalfxhub_te( 'rev_see_alternatives' ); ?></a>
     <?php endif; ?>
     <?php foreach ( $verify_links as $link ) : ?>
     <a href="<?php echo esc_url( $link['url'] ); ?>" target="_blank" rel="noopener" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $link['label'] ); ?></a>
     <?php endforeach; ?>
-    <a href="#" class="btn btn--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">Visit Broker</a>
+    <a href="#" class="btn btn--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;"><?php globalfxhub_te( 'tb_visit_broker' ); ?></a>
   </div>
 </div>
 
@@ -245,28 +248,28 @@ elseif ( $broker ) :
   <div>
     <table class="compare-table review-facts">
       <tbody>
-        <tr><th>Regulated entity</th><td><?php echo esc_html( $broker['entity'] ); ?></td></tr>
-        <tr><th>Regulation</th><td><?php echo esc_html( $reg_label ); ?></td></tr>
-        <tr><th>Other Tier-1 regulators</th><td><?php echo esc_html( $broker['other_reg'] ? implode( ', ', $broker['other_reg'] ) : 'None confirmed' ); ?></td></tr>
-        <tr><th>Founded</th><td><?php echo esc_html( $broker['founded'] ? $broker['founded'] : $not_confirmed ); ?></td></tr>
-        <tr><th>Headquarters</th><td><?php echo esc_html( $broker['hq'] ? $broker['hq'] : $not_confirmed ); ?></td></tr>
-        <tr><th>Minimum deposit</th><td><?php echo esc_html( $broker['min_deposit_display'] ? $broker['min_deposit_display'] : $not_confirmed ); ?></td></tr>
-        <tr><th>Avg. spread (EUR/USD)</th><td><?php echo null !== $broker['spread_eurusd'] ? esc_html( $broker['spread_eurusd'] ) . ' pips' : esc_html( $not_confirmed ); ?><?php echo globalfxhub_data_confidence_badge_html( $broker, 'spread_eurusd' ); ?></td></tr>
-        <tr><th>Platforms</th><td><?php echo esc_html( $broker['platforms'] ? implode( ', ', $broker['platforms'] ) : $not_confirmed ); ?></td></tr>
-        <tr><th>Instruments</th><td><?php echo esc_html( $broker['instruments'] ? $broker['instruments'] : $not_confirmed ); ?></td></tr>
+        <tr><th><?php globalfxhub_te( 'rev_regulated_entity' ); ?></th><td><?php echo esc_html( $broker['entity'] ); ?></td></tr>
+        <tr><th><?php globalfxhub_te( 'nav_regulation' ); ?></th><td><?php echo esc_html( $reg_label ); ?></td></tr>
+        <tr><th><?php globalfxhub_te( 'rev_other_tier1' ); ?></th><td><?php echo esc_html( $broker['other_reg'] ? implode( ', ', $broker['other_reg'] ) : globalfxhub_t( 'tb_none_confirmed' ) ); ?></td></tr>
+        <tr><th><?php globalfxhub_te( 'rev_founded' ); ?></th><td><?php echo esc_html( $broker['founded'] ? $broker['founded'] : $not_confirmed ); ?></td></tr>
+        <tr><th><?php globalfxhub_te( 'rev_headquarters' ); ?></th><td><?php echo esc_html( $broker['hq'] ? $broker['hq'] : $not_confirmed ); ?></td></tr>
+        <tr><th><?php globalfxhub_te( 'rev_minimum_deposit' ); ?></th><td><?php echo esc_html( $broker['min_deposit_display'] ? $broker['min_deposit_display'] : $not_confirmed ); ?></td></tr>
+        <tr><th><?php globalfxhub_te( 'rev_avg_spread_eurusd' ); ?></th><td><?php echo null !== $broker['spread_eurusd'] ? esc_html( $broker['spread_eurusd'] ) . ' pips' : esc_html( $not_confirmed ); ?><?php echo globalfxhub_data_confidence_badge_html( $broker, 'spread_eurusd' ); ?></td></tr>
+        <tr><th><?php globalfxhub_te( 'table_platforms' ); ?></th><td><?php echo esc_html( $broker['platforms'] ? implode( ', ', $broker['platforms'] ) : $not_confirmed ); ?></td></tr>
+        <tr><th><?php globalfxhub_te( 'rev_instruments' ); ?></th><td><?php echo esc_html( $broker['instruments'] ? $broker['instruments'] : $not_confirmed ); ?></td></tr>
       </tbody>
     </table>
-    <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/regulation-checker/' ) . '?broker=' . rawurlencode( $broker['slug'] ) ); ?>" style="color:var(--teal);">See <?php echo esc_html( $broker['name'] ); ?>'s full regulation dossier &rarr;</a><?php if ( $section_learn_links['regulation'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['regulation']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['regulation']['label'] ); ?></a><?php endif; ?></p>
+    <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/regulation-checker/' ) . '?broker=' . rawurlencode( $broker['slug'] ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_see_full_dossier' ), $broker['name'] ) ); ?></a><?php if ( $section_learn_links['regulation'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['regulation']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['regulation']['label'] ); ?></a><?php endif; ?></p>
 
     <div class="review-proscons">
       <div class="review-proscons__col review-proscons__pros">
-        <h3>Strengths</h3>
+        <h3><?php globalfxhub_te( 'rev_strengths' ); ?></h3>
         <ul>
           <?php foreach ( $pc['pros'] as $pro ) : ?><li><?php echo esc_html( $pro ); ?></li><?php endforeach; ?>
         </ul>
       </div>
       <div class="review-proscons__col review-proscons__cons">
-        <h3>Weaknesses</h3>
+        <h3><?php globalfxhub_te( 'rev_weaknesses' ); ?></h3>
         <ul>
           <?php foreach ( $pc['cons'] as $con ) : ?><li><?php echo esc_html( $con ); ?></li><?php endforeach; ?>
         </ul>
@@ -275,12 +278,12 @@ elseif ( $broker ) :
   </div>
 
   <div class="review-scorebox">
-    <h3>Score breakdown</h3>
+    <h3><?php globalfxhub_te( 'tb_score_breakdown' ); ?></h3>
     <?php foreach ( $sub_labels as $key => $label ) : ?>
     <div class="subscore-row">
       <?php echo esc_html( $label ); ?>
       <?php if ( null === $broker['scores'][ $key ] ) : ?>
-      <span class="review-scorebox__na">Not enough confirmed data to score</span>
+      <span class="review-scorebox__na"><?php globalfxhub_te( 'tb_not_enough_data_score' ); ?></span>
       <?php else : ?>
       <div class="bar-track"><div class="bar-fill" style="width:<?php echo esc_attr( $broker['scores'][ $key ] / 5 * 100 ); ?>%;"></div></div>
       <span class="review-scorebox__num"><?php echo esc_html( $broker['scores'][ $key ] ); ?> / 5</span>
@@ -292,26 +295,26 @@ elseif ( $broker ) :
 </div>
 
 <div class="wrap" style="padding-bottom:20px;">
-  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 20px;">Who <?php echo esc_html( $broker['name'] ); ?> is -- and isn't -- a good fit for</h2>
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 20px;"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_who_fit_title' ), $broker['name'] ) ); ?></h2>
   <div class="review-proscons">
     <div class="review-proscons__col review-proscons__pros">
-      <h3>Likely a good fit if you're...</h3>
+      <h3><?php globalfxhub_te( 'rev_good_fit_if' ); ?></h3>
       <ul>
         <?php foreach ( $who['for'] as $reason ) : ?><li><?php echo esc_html( $reason ); ?></li><?php endforeach; ?>
       </ul>
     </div>
     <div class="review-proscons__col review-proscons__cons">
-      <h3>Look elsewhere if you're...</h3>
+      <h3><?php globalfxhub_te( 'rev_look_elsewhere_if' ); ?></h3>
       <ul>
         <?php foreach ( $who['against'] as $reason ) : ?><li><?php echo esc_html( $reason ); ?></li><?php endforeach; ?>
       </ul>
     </div>
   </div>
-  <p style="color:var(--ink-soft);font-size:13px;margin-top:10px;">Derived from the same confirmed data behind this broker's score (regulation, cost, platforms, deposit minimum) -- not a separate editorial judgment.</p>
+  <p style="color:var(--ink-soft);font-size:13px;margin-top:10px;"><?php globalfxhub_te( 'rev_who_fit_note' ); ?></p>
 </div>
 
 <div class="wrap" style="padding-bottom:20px;">
-  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 10px;">Investor protection</h2>
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 10px;"><?php globalfxhub_te( 'rev_investor_protection_h2' ); ?></h2>
   <p><?php echo esc_html( $investor_protection ); ?></p>
   <?php if ( $section_learn_links['investor_protection'] ) : ?>
   <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( $section_learn_links['investor_protection']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['investor_protection']['label'] ); ?> &rarr;</a></p>
@@ -319,8 +322,8 @@ elseif ( $broker ) :
 </div>
 
 <div class="wrap" style="padding-bottom:20px;">
-  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;">Accounts, costs & support in more depth</h2>
-  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">Beyond the headline spread and minimum deposit above. Where our research hasn't independently confirmed a specific detail, we say so rather than guess -- verify directly with the broker before relying on it.</p>
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;"><?php globalfxhub_te( 'rev_deep_dive_h2' ); ?></h2>
+  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;"><?php globalfxhub_te( 'rev_deep_dive_intro' ); ?></p>
   <table class="compare-table review-facts">
     <tbody>
       <?php foreach ( $deep_dive_fields as $field_key => $field_label ) : ?>
@@ -328,11 +331,11 @@ elseif ( $broker ) :
       <?php endforeach; ?>
     </tbody>
   </table>
-  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) ); ?>" style="color:var(--teal);">See how <?php echo esc_html( $broker['name'] ); ?>'s spread cost compares across every researched broker &rarr;</a><?php if ( $section_learn_links['fees'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['fees']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['fees']['label'] ); ?></a><?php endif; ?></p>
+  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_see_cost_compare' ), $broker['name'] ) ); ?></a><?php if ( $section_learn_links['fees'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['fees']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['fees']['label'] ); ?></a><?php endif; ?></p>
 </div>
 
 <div class="wrap" style="padding-bottom:40px;">
-  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 12px;">Frequently asked questions</h2>
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 12px;"><?php globalfxhub_te( 'rev_faq_h2' ); ?></h2>
   <div>
     <?php foreach ( $broker_faqs as $faq ) : ?>
     <div style="margin-bottom:18px;">
@@ -345,7 +348,7 @@ elseif ( $broker ) :
 
 <div class="wrap">
   <div class="methodology-note">
-    <strong>How this score is calculated:</strong> Nine weighted categories against a fixed, disclosed rubric -- regulation & client protection 30%, trading costs 20%, non-trading fees 10%, platforms & tools 10%, execution/trading conditions 10%, product range 5%, deposits/withdrawals 5%, transparency 5%, track record 5% -- not a ranking relative to other brokers, and not hands-on tested. See the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full methodology</a>. Verify current terms directly with the broker and its regulator's public register before depositing funds. This is not personalized financial advice.
+    <strong><?php globalfxhub_te( 'tb_methodology_how_calculated' ); ?></strong> <?php globalfxhub_te( 'tb_methodology_note_body' ); ?> <?php globalfxhub_te( 'tb_methodology_see_the' ); ?> <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'tb_methodology_full_link' ); ?></a>. <?php globalfxhub_te( 'tb_methodology_verify' ); ?>
   </div>
 </div>
 
@@ -354,8 +357,8 @@ $ext = globalfxhub_broker_external_reviews( $broker['slug'] );
 if ( ! empty( $ext['reviews'] ) ) :
 ?>
 <div class="wrap" style="padding-bottom:20px;">
-  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;">What other reviewers say</h2>
-  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">Ratings as found via each site's published/indexed content, not our own testing and not independently re-verified against the live page -- treat as a snapshot and check the source before relying on it. We don't combine these into one blended average: each site measures different things on different scales (some are user-sentiment ratings, others vendor trust-score formulas), so averaging them would imply a comparability that isn't really there. Each card links to where we found it -- read them individually, on their own terms.</p>
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;"><?php globalfxhub_te( 'rev_external_reviews_h2' ); ?></h2>
+  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;"><?php globalfxhub_te( 'rev_external_reviews_intro' ); ?></p>
   <div class="external-reviews">
     <?php foreach ( $ext['reviews'] as $r ) : ?>
     <a href="<?php echo esc_url( $r['url'] ); ?>" target="_blank" rel="noopener nofollow" class="external-review-card">
@@ -363,7 +366,7 @@ if ( ! empty( $ext['reviews'] ) ) :
       <?php if ( null !== $r['rating'] ) : ?>
       <div class="external-review-card__score"><?php echo esc_html( $r['rating'] ); ?> <span>/ <?php echo esc_html( $r['scale'] ); ?><?php echo ! empty( $r['label'] ) ? ' ' . esc_html( $r['label'] ) : ''; ?></span></div>
       <?php else : ?>
-      <div class="external-review-card__score external-review-card__score--link">Read the review &rarr;</div>
+      <div class="external-review-card__score external-review-card__score--link"><?php globalfxhub_te( 'rev_read_the_review' ); ?></div>
       <?php endif; ?>
       <?php if ( ! empty( $r['note'] ) ) : ?><div class="external-review-card__note"><?php echo esc_html( $r['note'] ); ?></div><?php endif; ?>
     </a>
@@ -386,8 +389,11 @@ $changelog_entries = array_values( array_filter( globalfxhub_get_broker_changelo
 $changelog_entries = array_slice( $changelog_entries, 0, 5 );
 ?>
 <div class="wrap" style="padding-bottom:40px;">
-  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;">Recent changes</h2>
-  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">A dated log of when our own published data about this broker actually changed -- not a reconstructed history of what the broker itself did. See the full <a href="<?php echo esc_url( home_url( '/broker-changelog/' ) ); ?>" style="color:var(--teal);">change log tool</a> for every broker.</p>
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;"><?php globalfxhub_te( 'rev_recent_changes_h2' ); ?></h2>
+  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;"><?php globalfxhub_te( 'rev_recent_changes_intro' ); ?> <?php
+  $changelog_link = '<a href="' . esc_url( home_url( '/broker-changelog/' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'rev_change_log_tool_link' ) ) . '</a>';
+  echo sprintf( esc_html( globalfxhub_t( 'rev_recent_changes_cta' ) ), $changelog_link );
+  ?></p>
   <?php if ( ! empty( $changelog_entries ) ) : ?>
   <div class="rankings">
     <?php foreach ( $changelog_entries as $i => $entry ) : ?>
@@ -399,7 +405,7 @@ $changelog_entries = array_slice( $changelog_entries, 0, 5 );
     <?php endforeach; ?>
   </div>
   <?php else : ?>
-  <p style="color:var(--ink-soft);font-size:14.5px;">No tracked field (pricing, platforms, licence numbers) has changed for this broker since we started tracking -- that's not the same as nothing ever having changed about the broker itself, just that our own published data hasn't needed a correction yet.</p>
+  <p style="color:var(--ink-soft);font-size:14.5px;"><?php globalfxhub_te( 'rev_no_changelog_entries' ); ?></p>
   <?php endif; ?>
 </div>
 
@@ -411,7 +417,7 @@ usort( $others, function( $a, $b ) { return $a['rank'] <=> $b['rank']; } );
 $others = array_slice( $others, 0, 3 );
 ?>
 <div class="wrap" style="padding-bottom:60px;">
-  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 20px;">Other reviewed brokers</h2>
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 20px;"><?php globalfxhub_te( 'rev_other_reviewed_h2' ); ?></h2>
   <div class="guides__grid">
     <?php foreach ( $others as $other ) : ?>
     <a href="<?php echo esc_url( home_url( '/reviews/' . $other['slug'] . '/' ) ); ?>" class="guide">
@@ -439,36 +445,36 @@ $others = array_slice( $others, 0, 3 );
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">BROKER REVIEWS</div>
-  <h1><?php the_title(); ?></h1>
+  <div class="eyebrow"><?php globalfxhub_te( 'rev_index_eyebrow' ); ?></div>
+  <h1><?php globalfxhub_te( 'rev_index_h1' ); ?></h1>
   <?php if ( $search_query ) : ?>
-  <p>Showing results for "<?php echo esc_html( $search_query ); ?>" &middot; <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);">clear search</a></p>
+  <p><?php echo esc_html( sprintf( globalfxhub_t( 'rev_showing_results_for' ), $search_query ) ); ?> &middot; <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_clear_search' ); ?></a></p>
   <?php else : ?>
-  <p>In-depth reviews of every broker in our rankings -- CySEC-, FCA-, or Seychelles FSA-licensed, or more than one -- built from the same disclosed methodology behind the scores.</p>
+  <p><?php globalfxhub_te( 'rev_index_intro' ); ?></p>
   <?php endif; ?>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
   <?php if ( $search_query && empty( $brokers ) ) : ?>
-  <p style="padding:24px;color:var(--ink-soft);">No brokers matched "<?php echo esc_html( $search_query ); ?>". <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);">View all reviews →</a></p>
+  <p style="padding:24px;color:var(--ink-soft);"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_no_brokers_matched' ), $search_query ) ); ?> <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_view_all_reviews' ); ?></a></p>
   <?php else : ?>
   <div class="rankings">
     <div class="rank-row head">
-      <span></span><span>Broker</span><span class="col-fees">Avg. spread</span><span class="col-plat">Platforms</span><span>Score</span><span></span>
+      <span></span><span><?php globalfxhub_te( 'table_broker' ); ?></span><span class="col-fees"><?php globalfxhub_te( 'table_spread' ); ?></span><span class="col-plat"><?php globalfxhub_te( 'table_platforms' ); ?></span><span><?php globalfxhub_te( 'table_score' ); ?></span><span></span>
     </div>
     <?php foreach ( $brokers as $b ) : ?>
     <div class="rank-row">
       <span class="rank-num"><?php echo esc_html( str_pad( (string) $b['rank'], 2, '0', STR_PAD_LEFT ) ); ?></span>
       <span class="rank-broker">
         <span class="rank-broker__name"><?php echo esc_html( $b['name'] ); ?></span>
-        <span class="rank-broker__tag"><?php echo esc_html( globalfxhub_broker_regulation_label( $b ) ); ?><?php echo $b['founded'] ? ' &middot; est. ' . esc_html( $b['founded'] ) : ''; ?></span>
+        <span class="rank-broker__tag"><?php echo esc_html( globalfxhub_broker_regulation_label( $b ) ); ?><?php echo $b['founded'] ? ' &middot; ' . esc_html( sprintf( globalfxhub_t( 'rev_founded_inline' ), $b['founded'] ) ) : ''; ?></span>
       </span>
-      <span class="rank-detail col-fees"><?php echo null !== $b['spread_eurusd'] ? esc_html( $b['spread_eurusd'] ) . ' pips (EUR/USD)' : 'Not confirmed'; ?></span>
-      <span class="rank-detail col-plat"><?php echo esc_html( $b['platforms'] ? implode( ', ', $b['platforms'] ) : 'Not confirmed' ); ?></span>
+      <span class="rank-detail col-fees"><?php echo null !== $b['spread_eurusd'] ? esc_html( $b['spread_eurusd'] ) . ' pips (EUR/USD)' : esc_html( globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
+      <span class="rank-detail col-plat"><?php echo esc_html( $b['platforms'] ? implode( ', ', $b['platforms'] ) : globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
       <span class="rank-score"><?php echo esc_html( $b['scores']['overall'] ); ?> / 5</span>
       <span class="rank-ctas">
-        <a href="<?php echo esc_url( home_url( '/reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta">Read review</a>
-        <a href="#" class="rank-cta rank-cta--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;">Visit Broker</a>
+        <a href="<?php echo esc_url( home_url( '/reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+        <a href="#" class="rank-cta rank-cta--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;"><?php globalfxhub_te( 'tb_visit_broker' ); ?></a>
       </span>
     </div>
     <?php endforeach; ?>
