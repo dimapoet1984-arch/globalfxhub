@@ -14,37 +14,37 @@ $cc_pip_value = globalfxhub_cost_calculator_pip_value_per_lot();
 ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> / <?php the_title(); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">FOREX SPREAD COST CALCULATOR</div>
+  <div class="eyebrow"><?php globalfxhub_te( 'cc_eyebrow' ); ?></div>
   <h1><?php the_title(); ?></h1>
-  <p>Estimate your annual EUR/USD spread cost at every one of our researched brokers with a confirmed spread, based on your own trading pattern -- not a generic "our average spread" figure.</p>
+  <p><?php globalfxhub_te( 'cc_intro' ); ?></p>
   <?php $tool_learn_link = globalfxhub_resolve_learn_link( globalfxhub_tool_learn_links()['cost-calculator'] ); if ( $tool_learn_link ) : ?>
-  <p style="font-size:13.5px;margin-top:8px;"><a href="<?php echo esc_url( $tool_learn_link['url'] ); ?>" style="color:var(--teal);">New to this? <?php echo esc_html( $tool_learn_link['label'] ); ?> &rarr;</a></p>
+  <p style="font-size:13.5px;margin-top:8px;"><a href="<?php echo esc_url( $tool_learn_link['url'] ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'cmp_new_to_this' ); ?> <?php echo esc_html( $tool_learn_link['label'] ); ?> &rarr;</a></p>
   <?php endif; ?>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
   <div class="finder">
     <div class="finder__step">
-      <label for="ccAccountSize">Account size (USD)</label>
+      <label for="ccAccountSize"><?php globalfxhub_te( 'cc_label_account_size' ); ?></label>
       <input type="number" id="ccAccountSize" min="0" step="1" value="1000">
     </div>
     <div class="finder__step">
-      <label for="ccTradesPerMonth">EUR/USD trades per month</label>
+      <label for="ccTradesPerMonth"><?php globalfxhub_te( 'cc_label_trades_per_month' ); ?></label>
       <input type="number" id="ccTradesPerMonth" min="0" step="1" value="20">
     </div>
     <div class="finder__step">
-      <label for="ccTradeSize">Average trade size (lots)</label>
+      <label for="ccTradeSize"><?php globalfxhub_te( 'cc_label_trade_size' ); ?></label>
       <input type="number" id="ccTradeSize" min="0" step="0.01" value="0.10">
-      <p class="finder__hint">1.0 = standard lot (100,000 units), 0.1 = mini lot, 0.01 = micro lot.</p>
+      <p class="finder__hint"><?php globalfxhub_te( 'cc_hint_lot_sizes' ); ?></p>
     </div>
     <div class="finder__step">
-      <label for="ccHoldingPeriod">Typical holding period</label>
+      <label for="ccHoldingPeriod"><?php globalfxhub_te( 'cc_label_holding_period' ); ?></label>
       <select id="ccHoldingPeriod">
         <?php foreach ( $cc_holding_periods as $key => $label ) : ?>
         <option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></option>
@@ -54,25 +54,51 @@ $cc_pip_value = globalfxhub_cost_calculator_pip_value_per_lot();
   </div>
 
   <div id="ccOvernightNote" class="methodology-note" style="display:none;margin:0 0 24px;">
-    <strong>Overnight financing isn't included in this estimate.</strong> Since your selected holding period involves holding positions overnight, swap/financing charges will add to your real cost. Swap rates vary by broker, by direction (long vs. short), and change daily with benchmark rates -- they're documented as research notes on each broker's review page, not as a single comparable number we could multiply in here with confidence. Check the "Overnight financing" section on a broker's review page before trading with a multi-day holding period.
+    <strong><?php globalfxhub_te( 'cc_overnight_strong' ); ?></strong> <?php globalfxhub_te( 'cc_overnight_body' ); ?>
   </div>
 
   <div id="ccMarginNote" class="methodology-note" style="display:none;margin:0 0 24px;"></div>
 
   <div class="finder__summary">
-    <div class="finder__count">Estimated annual cost, cheapest first (<span id="ccResultCount">0</span> of <?php echo esc_html( $cc_payload['total_count'] ); ?> researched brokers)</div>
+    <div class="finder__count"><?php globalfxhub_te( 'cc_results_label' ); ?> (<span id="ccResultCount">0</span> <?php globalfxhub_te( 'cc_results_of' ); ?> <?php echo esc_html( $cc_payload['total_count'] ); ?> <?php globalfxhub_te( 'cc_results_suffix' ); ?>)</div>
   </div>
 
   <div class="rankings" id="ccResults"></div>
 
   <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;">
-    <?php echo esc_html( $cc_payload['excluded_count'] ); ?> of our <?php echo esc_html( $cc_payload['total_count'] ); ?> researched brokers have no independently confirmed EUR/USD spread and are excluded from this comparison entirely, rather than assumed to be free or average. This estimate covers <strong>spread cost only</strong> -- round-turn commission, common on ECN/Razor-style accounts, is a real additional cost documented in free-text research notes per broker, not as a structured number we could average with confidence, so it is not counted here. A broker with the lowest spread shown is not necessarily the lowest true cost once its commission is included -- check the "Execution model" section on that broker's review page. Formula: spread (pips) &times; $<?php echo esc_html( $cc_pip_value ); ?> per pip per standard lot (universal EUR/USD pip-value arithmetic, since USD is the quote currency) &times; trade size (lots) &times; trades/month &times; 12. Built from the same <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">disclosed methodology</a> used sitewide. Verify current spreads directly with the broker before trading -- spreads are variable in practice and the figure here is the one on file from our research.
+    <?php echo esc_html( sprintf( globalfxhub_t( 'cc_disclaimer_p1' ), $cc_payload['excluded_count'], $cc_payload['total_count'] ) ); ?>
+    <?php
+    $cc_spread_cost_only_html = '<strong>' . esc_html( globalfxhub_t( 'cc_spread_cost_only' ) ) . '</strong>';
+    echo sprintf( esc_html( globalfxhub_t( 'cc_disclaimer_p2' ) ), $cc_spread_cost_only_html );
+    ?>
+    <?php globalfxhub_te( 'cc_disclaimer_p3' ); ?>
+    <?php globalfxhub_te( 'cc_formula_label' ); ?> <?php echo esc_html( sprintf( globalfxhub_t( 'cc_formula_body' ), $cc_pip_value ) ); ?>
+    <?php
+    $cc_methodology_link_html = '<a href="' . esc_url( home_url( '/#method' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'cc_disclosed_methodology_link' ) ) . '</a>';
+    echo sprintf( esc_html( globalfxhub_t( 'cc_built_from_disclosed' ) ), $cc_methodology_link_html );
+    ?>
+    <?php globalfxhub_te( 'cc_verify_spreads' ); ?>
   </p>
 </div>
 
 <script>
 const CC_PIP_VALUE_PER_LOT = <?php echo wp_json_encode( $cc_pip_value ); ?>;
 const CC_BROKERS = <?php echo wp_json_encode( $cc_payload['brokers'] ); ?>;
+// Translated strings for the JS-rendered results table and margin
+// note below, which can't be rendered server-side since they depend
+// on the visitor's own inputs (trade size, frequency, account size).
+const T = <?php echo wp_json_encode( array(
+    'enter_inputs' => globalfxhub_t( 'cc_js_enter_inputs' ),
+    'col_broker' => globalfxhub_t( 'table_broker' ),
+    'col_spread' => globalfxhub_t( 'cc_col_spread' ),
+    'col_cost_per_trade' => globalfxhub_t( 'cc_col_cost_per_trade' ),
+    'col_annual_cost' => globalfxhub_t( 'cc_col_annual_cost' ),
+    'pips_suffix' => globalfxhub_t( 'cc_pips_suffix' ),
+    'of_account' => globalfxhub_t( 'cc_of_account' ),
+    'read_review' => globalfxhub_t( 'btn_read_review' ),
+    'margin_strong' => globalfxhub_t( 'cc_margin_strong' ),
+    'margin_body' => globalfxhub_t( 'cc_margin_body' ),
+) ); ?>;
 
 (function(){
   const accountEl = document.getElementById('ccAccountSize');
@@ -87,19 +113,19 @@ const CC_BROKERS = <?php echo wp_json_encode( $cc_payload['brokers'] ); ?>;
   function render(rows) {
     countEl.textContent = rows.length;
     if (!rows.length) {
-      resultsEl.innerHTML = '<p style="padding:24px;color:var(--ink-soft);">Enter a trade size and trade frequency above to see estimated costs.</p>';
+      resultsEl.innerHTML = '<p style="padding:24px;color:var(--ink-soft);">' + T.enter_inputs + '</p>';
       return;
     }
-    let html = '<div class="rank-row head"><span></span><span>Broker</span><span class="col-fees">EUR/USD spread</span><span class="col-plat">Cost per trade</span><span>Est. annual cost</span><span></span></div>';
+    let html = '<div class="rank-row head"><span></span><span>' + T.col_broker + '</span><span class="col-fees">' + T.col_spread + '</span><span class="col-plat">' + T.col_cost_per_trade + '</span><span>' + T.col_annual_cost + '</span><span></span></div>';
     rows.forEach(function(r, i) {
       html += '<div class="rank-row">'
         + '<span class="rank-num">' + String(i + 1).padStart(2, '0') + '</span>'
         + '<span class="rank-broker"><span class="rank-broker__name">' + r.name + '</span><span class="rank-broker__tag">' + r.regulation_label + '</span></span>'
-        + '<span class="rank-detail col-fees">' + r.spread_eurusd + ' pips</span>'
+        + '<span class="rank-detail col-fees">' + r.spread_eurusd + ' ' + T.pips_suffix + '</span>'
         + '<span class="rank-detail col-plat">$' + r.cost_per_trade.toFixed(2) + '</span>'
-        + '<span class="rank-score">$' + r.annual.toFixed(2) + (r.pct_of_account !== null ? ' <span style="color:var(--ink-soft);font-size:12px;">(' + r.pct_of_account.toFixed(2) + '% of account)</span>' : '') + '</span>'
+        + '<span class="rank-score">$' + r.annual.toFixed(2) + (r.pct_of_account !== null ? ' <span style="color:var(--ink-soft);font-size:12px;">(' + r.pct_of_account.toFixed(2) + '% ' + T.of_account + ')</span>' : '') + '</span>'
         + '<span class="rank-ctas">'
-        + '<a href="' + r.review_url + '" class="rank-cta">' + <?php echo wp_json_encode( globalfxhub_t( 'btn_read_review' ) ); ?> + '</a>'
+        + '<a href="' + r.review_url + '" class="rank-cta">' + T.read_review + '</a>'
         + '</span>'
         + '</div>';
     });
@@ -118,7 +144,10 @@ const CC_BROKERS = <?php echo wp_json_encode( $cc_payload['brokers'] ); ?>;
       const maxLots = Math.round((accountSize * 30 / 100000) * 100) / 100;
       if (tradeSizeLots > maxLots) {
         marginNote.style.display = 'block';
-        marginNote.innerHTML = '<strong>Trade size may not be feasible at this account size.</strong> At the EU retail leverage cap of 30:1 on major pairs, a $' + accountSize.toLocaleString() + ' account supports up to approximately ' + maxLots + ' standard lots of margin. Your selected trade size of ' + tradeSizeLots + ' lots would need more margin than that, higher leverage than the EU retail cap permits (available only to eligible professional clients, or outside the EU/UK where rules differ), or a larger account.';
+        marginNote.innerHTML = '<strong>' + T.margin_strong + '</strong> ' + T.margin_body
+          .replace('{ACCOUNT}', accountSize.toLocaleString())
+          .replace('{MAXLOTS}', maxLots)
+          .replace('{TRADESIZE}', tradeSizeLots);
       } else {
         marginNote.style.display = 'none';
       }

@@ -45,9 +45,9 @@ function globalfxhub_cost_calculator_pip_value_per_lot() {
 
 function globalfxhub_cost_calculator_holding_periods() {
     return array(
-        'intraday' => 'Intraday -- closed the same trading day',
-        'swing'    => 'A few days to a few weeks (swing trading)',
-        'position' => '1+ months (position trading)',
+        'intraday' => globalfxhub_t( 'cc_holding_intraday' ),
+        'swing'    => globalfxhub_t( 'cc_holding_swing' ),
+        'position' => globalfxhub_t( 'cc_holding_position' ),
     );
 }
 
