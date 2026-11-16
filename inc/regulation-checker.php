@@ -65,20 +65,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function globalfxhub_regulation_checker_geography_map() {
     return array(
-        'ASIC'            => array( 'geography' => 'Australia', 'register_url' => 'https://asic.gov.au/online-services/search-asic-registers/' ),
-        'FSCA'            => array( 'geography' => 'South Africa', 'register_url' => 'https://www.fsca.co.za/Fais/Search_FSP.htm' ),
-        'DFSA'            => array( 'geography' => 'Dubai International Financial Centre (UAE)', 'register_url' => 'https://www.dfsa.ae/public-register' ),
-        'MAS'             => array( 'geography' => 'Singapore', 'register_url' => 'https://eservices.mas.gov.sg/fid' ),
-        'BaFin'           => array( 'geography' => 'Germany', 'register_url' => 'https://www.bafin.de/EN/PublikationenDaten/Datenbanken/datenbanken_node_en.html' ),
-        'NFA/CFTC (US)'   => array( 'geography' => 'United States', 'register_url' => 'https://www.nfa.futures.org/basicnet/' ),
-        'KNF (Poland)'    => array( 'geography' => 'Poland', 'register_url' => 'https://www.knf.gov.pl/en/' ),
-        'JFSA (Japan)'    => array( 'geography' => 'Japan', 'register_url' => 'https://www.fsa.go.jp/en/' ),
-        'CIRO'            => array( 'geography' => 'Canada', 'register_url' => 'https://www.ciro.ca/' ),
-        'FMA'             => array( 'geography' => 'New Zealand', 'register_url' => 'https://fsp-register.companiesoffice.govt.nz/' ),
-        'CMA'             => array( 'geography' => 'Kenya', 'register_url' => 'https://www.cma.or.ke/' ),
-        'SCB'             => array( 'geography' => 'The Bahamas', 'register_url' => 'https://www.scb.gov.bs/registrant-licensee-search/' ),
-        'FSAS'            => array( 'geography' => 'Seychelles', 'register_url' => 'https://fsaseychelles.sc/' ),
-        'Central Bank of Ireland' => array( 'geography' => 'Ireland', 'register_url' => 'https://registers.centralbank.ie/' ),
+        'ASIC'            => array( 'geography' => globalfxhub_t( 'rc_geo_australia' ), 'register_url' => 'https://asic.gov.au/online-services/search-asic-registers/' ),
+        'FSCA'            => array( 'geography' => globalfxhub_t( 'rc_geo_south_africa' ), 'register_url' => 'https://www.fsca.co.za/Fais/Search_FSP.htm' ),
+        'DFSA'            => array( 'geography' => globalfxhub_t( 'rc_geo_dubai_ifc' ), 'register_url' => 'https://www.dfsa.ae/public-register' ),
+        'MAS'             => array( 'geography' => globalfxhub_t( 'rc_geo_singapore' ), 'register_url' => 'https://eservices.mas.gov.sg/fid' ),
+        'BaFin'           => array( 'geography' => globalfxhub_t( 'rc_geo_germany' ), 'register_url' => 'https://www.bafin.de/EN/PublikationenDaten/Datenbanken/datenbanken_node_en.html' ),
+        'NFA/CFTC (US)'   => array( 'geography' => globalfxhub_t( 'rc_geo_united_states' ), 'register_url' => 'https://www.nfa.futures.org/basicnet/' ),
+        'KNF (Poland)'    => array( 'geography' => globalfxhub_t( 'rc_geo_poland' ), 'register_url' => 'https://www.knf.gov.pl/en/' ),
+        'JFSA (Japan)'    => array( 'geography' => globalfxhub_t( 'rc_geo_japan' ), 'register_url' => 'https://www.fsa.go.jp/en/' ),
+        'CIRO'            => array( 'geography' => globalfxhub_t( 'rc_geo_canada' ), 'register_url' => 'https://www.ciro.ca/' ),
+        'FMA'             => array( 'geography' => globalfxhub_t( 'rc_geo_new_zealand' ), 'register_url' => 'https://fsp-register.companiesoffice.govt.nz/' ),
+        'CMA'             => array( 'geography' => globalfxhub_t( 'rc_geo_kenya' ), 'register_url' => 'https://www.cma.or.ke/' ),
+        'SCB'             => array( 'geography' => globalfxhub_t( 'rc_geo_bahamas' ), 'register_url' => 'https://www.scb.gov.bs/registrant-licensee-search/' ),
+        'FSAS'            => array( 'geography' => globalfxhub_t( 'rc_geo_seychelles_name' ), 'register_url' => 'https://fsaseychelles.sc/' ),
+        'Central Bank of Ireland' => array( 'geography' => globalfxhub_t( 'rc_geo_ireland' ), 'register_url' => 'https://registers.centralbank.ie/' ),
     );
 }
 
@@ -153,7 +153,7 @@ function globalfxhub_broker_regulation_dossier( $broker ) {
                 'code'         => $code,
                 'geography'    => null,
                 'register_url' => null,
-                'note'         => 'Not individually itemized or independently verified here -- see this broker\'s review page.',
+                'note'         => globalfxhub_t( 'rc_not_individually_itemized' ),
             );
             continue;
         }
