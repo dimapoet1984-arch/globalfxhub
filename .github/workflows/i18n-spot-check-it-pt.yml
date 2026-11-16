@@ -1,0 +1,20 @@
+name: i18n spot check it pt
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  spot-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install requests anthropic
+      - name: Spot-check it/pt content (read-only)
+        env:
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: python3 i18n/spot_check_it_pt.py
