@@ -26,9 +26,16 @@ jobs:
           php -l page-news-markets.php
           php -l page-reviews.php
           php -l inc/translatable-strings.php
+          php -l page-best.php
+          php -l page-countries.php
+          php -l inc/broker-vs.php
+          php -l page-broker-finder.php
+          php -l inc/broker-finder.php
       - name: Run content-language filtering tests (Polylang active)
         run: php tests/test-content-language-filtering.php
       - name: Run content-language filtering tests (Polylang inactive)
         run: php tests/test-content-language-filtering-no-polylang.php
       - name: Run Reviews-page translation-key completeness test
         run: php tests/test-reviews-page-translation-keys.php
+      - name: Run platform-rendering tests
+        run: php tests/test-platform-rendering.php
