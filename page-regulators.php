@@ -63,7 +63,7 @@ if ( $regulator_slug && ! $entity ) {
     <?php if ( $entity['related_regulation_slug'] && isset( $reg_pages[ $entity['related_regulation_slug'] ] ) ) : ?>
     See our <a href="<?php echo esc_url( globalfxhub_track_b_url( 'regulation/' . $entity['related_regulation_slug'] . '/' ) ); ?>" style="color:var(--teal);">full <?php echo esc_html( $entity['name'] ); ?> explainer</a> for what this licence does and doesn't guarantee.
     <?php elseif ( ! empty( $entity['related_learn_slug'] ) ) : ?>
-    See our <a href="<?php echo esc_url( home_url( '/learn/' . $entity['related_learn_slug'] . '/' ) ); ?>" style="color:var(--teal);">full <?php echo esc_html( $entity['name'] ); ?> regulation guide</a> for what this licence does and doesn't guarantee.
+    See our <a href="<?php echo esc_url( globalfxhub_learn_article_url( $entity['related_learn_slug'] ) ); ?>" style="color:var(--teal);">full <?php echo esc_html( $entity['name'] ); ?> regulation guide</a> for what this licence does and doesn't guarantee.
     <?php endif; ?>
     <?php if ( $entity['related_best_slug'] ) : ?>
     See our ranked <a href="<?php echo esc_url( globalfxhub_track_b_url( 'best/' . $entity['related_best_slug'] . '/' ) ); ?>" style="color:var(--teal);">best <?php echo esc_html( $entity['name'] ); ?>-regulated brokers</a> list.

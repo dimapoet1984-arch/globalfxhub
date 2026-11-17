@@ -423,7 +423,7 @@ function globalfxhub_learn_cluster_footer_filter( $content ) {
     foreach ( $siblings as $sibling ) {
         $sibling_post = get_page_by_path( $sibling['slug'], OBJECT, 'post' );
         if ( $sibling_post && 'publish' === $sibling_post->post_status ) {
-            $links[] = '<li><a href="' . esc_url( home_url( '/learn/' . $sibling['slug'] . '/' ) ) . '">' . esc_html( $sibling['title'] ) . '</a></li>';
+            $links[] = '<li><a href="' . esc_url( globalfxhub_learn_article_url( $sibling['slug'], $sibling_post ) ) . '">' . esc_html( $sibling['title'] ) . '</a></li>';
         }
     }
     if ( empty( $links ) ) {
@@ -477,7 +477,7 @@ function globalfxhub_resolve_learn_link( $entry ) {
         return null;
     }
     return array(
-        'url'   => home_url( '/learn/' . $entry['slug'] . '/' ),
+        'url'   => globalfxhub_learn_article_url( $entry['slug'], $post ),
         'label' => $entry['label'],
     );
 }

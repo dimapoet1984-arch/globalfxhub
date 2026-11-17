@@ -106,3 +106,52 @@ function globalfxhub_news_child_page_url( $child_slug ) {
 
     return get_permalink( $translated_id );
 }
+
+/**
+ * Builds a language-correct URL to a real Learn article, given its
+ * stable English slug -- the same kind of "hand-built home_url()
+ * instead of a real permalink" gap as the two helpers above, found in
+ * page-learn.php's own article grid, inc/learn-articles.php's
+ * cluster-sibling and review/tool cross-links, and page-regulators.php's
+ * "full regulation guide" link. Confirmed live: currently invisible in
+ * practice because no language has any translated Learn articles yet
+ * ("No guides published yet" on every non-English /learn-{lang}/), but
+ * it will produce a bare, unprefixed English URL the moment one is
+ * published, same as every other case this session.
+ *
+ * $slug is the article's stable English post_name. $english_post is
+ * an already-fetched WP_Post for it, if the caller has one (most
+ * callers already ran get_page_by_path( $slug, OBJECT, 'post' ) to
+ * confirm it's published before linking to it) -- passing it just
+ * avoids a second, identical lookup; omit it to have this function
+ * fetch it itself.
+ *
+ * Resolves via pll_get_post() + get_permalink(), same reasoning as
+ * globalfxhub_news_child_page_url(): a Learn article is a real post
+ * with its own organically-translated slug once translated (not a
+ * flat "$slug-$lang" pattern), so asking Polylang for the actual
+ * permalink is the only reliable way to get it right. Falls back to
+ * the English permalink if no translation exists yet.
+ */
+function globalfxhub_learn_article_url( $slug, $english_post = null ) {
+    if ( ! $english_post ) {
+        $english_post = get_page_by_path( $slug, OBJECT, 'post' );
+    }
+    if ( ! $english_post ) {
+        return home_url( '/learn/' . $slug . '/' );
+    }
+
+    $lang = function_exists( 'globalfxhub_track_b_current_lang' ) ? globalfxhub_track_b_current_lang() : null;
+    if ( ! $lang || ! function_exists( 'pll_get_post' )
+        || ( function_exists( 'pll_default_language' ) && $lang === pll_default_language() )
+    ) {
+        return get_permalink( $english_post->ID );
+    }
+
+    $translated_id = pll_get_post( $english_post->ID, $lang );
+    if ( ! $translated_id ) {
+        return get_permalink( $english_post->ID );
+    }
+
+    return get_permalink( $translated_id );
+}
