@@ -1600,7 +1600,7 @@ function globalfxhub_breadcrumb_schema() {
         foreach ( $flat_pages as $template => $meta ) {
             if ( is_page_template( $template ) ) {
                 list( $page_slug, $label ) = $meta;
-                $trail = array( array( 'name' => $label, 'item' => home_url( '/' . $page_slug . '/' ) ) );
+                $trail = array( array( 'name' => $label, 'item' => globalfxhub_templated_page_url( $page_slug ) ) );
                 break;
             }
         }
@@ -1612,10 +1612,10 @@ function globalfxhub_breadcrumb_schema() {
         $cats = get_the_category();
         $cat_slug = ! empty( $cats ) ? $cats[0]->slug : '';
         $section_map = array(
-            'learn'          => array( 'Learn', globalfxhub_templated_page_url( 'learn' ) ),
+            'learn'          => array( globalfxhub_t( 'nav_learn' ), globalfxhub_templated_page_url( 'learn' ) ),
             'fx-market-news' => array( globalfxhub_t( 'footer_fx_market_news' ), globalfxhub_news_child_page_url( 'markets' ) ),
         );
-        list( $section_label, $section_url ) = $section_map[ $cat_slug ] ?? array( 'Learn', globalfxhub_templated_page_url( 'learn' ) );
+        list( $section_label, $section_url ) = $section_map[ $cat_slug ] ?? array( globalfxhub_t( 'nav_learn' ), globalfxhub_templated_page_url( 'learn' ) );
         $trail = array(
             array( 'name' => $section_label, 'item' => $section_url ),
             array( 'name' => get_the_title(), 'item' => get_permalink() ),

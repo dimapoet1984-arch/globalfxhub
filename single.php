@@ -14,13 +14,13 @@
      * archive every post used to share.
      */
     $section_map = array(
-        'learn'          => array( 'Learn', globalfxhub_templated_page_url( 'learn' ) ),
+        'learn'          => array( globalfxhub_t( 'nav_learn' ), globalfxhub_templated_page_url( 'learn' ) ),
         'fx-market-news' => array( globalfxhub_t( 'footer_fx_market_news' ), globalfxhub_news_child_page_url( 'markets' ) ),
     );
     if ( isset( $section_map[ $cat_slug ] ) ) {
         list( $section_label, $section_url ) = $section_map[ $cat_slug ];
     } else {
-        $section_label = 'Learn';
+        $section_label = globalfxhub_t( 'nav_learn' );
         $section_url   = globalfxhub_templated_page_url( 'learn' );
     }
 ?>
