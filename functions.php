@@ -987,7 +987,7 @@ function globalfxhub_review_seo_title( $title_parts ) {
         if ( $broker ) {
             $title_parts['title'] = $broker['name'] . ' Review ' . date( 'Y' ) . ': Regulation & Fees';
         }
-    } elseif ( is_page( 'reviews' ) && ! get_query_var( 'broker_alts' ) && ! get_query_var( 'broker_research' ) ) {
+    } elseif ( is_page_template( 'page-reviews.php' ) && ! get_query_var( 'broker_alts' ) && ! get_query_var( 'broker_research' ) ) {
         $title_parts['title'] = 'Forex Broker Reviews ' . date( 'Y' ) . ': All CySEC-Regulated Brokers Rated';
     }
     return $title_parts;
@@ -1009,7 +1009,7 @@ add_filter( 'get_canonical_url', 'globalfxhub_review_canonical' );
 function globalfxhub_review_seo_head() {
     $slug = get_query_var( 'broker' );
     if ( ! $slug ) {
-        if ( is_page( 'reviews' ) && ! get_query_var( 'broker_alts' ) && ! get_query_var( 'broker_research' ) ) {
+        if ( is_page_template( 'page-reviews.php' ) && ! get_query_var( 'broker_alts' ) && ! get_query_var( 'broker_research' ) ) {
             echo '<meta name="description" content="' . esc_attr( 'In-depth, individually scored reviews of every broker in our rankings -- CySEC-, FCA-, or Seychelles FSA-licensed, or more than one -- covering regulation, cost, platforms, and track record, built from a disclosed methodology.' ) . '">' . "\n";
         }
         return;
@@ -1095,7 +1095,7 @@ function globalfxhub_best_seo_title( $title_parts ) {
         if ( isset( $lists[ $slug ] ) ) {
             $title_parts['title'] = $lists[ $slug ]['title'] . ' ' . date( 'Y' );
         }
-    } elseif ( is_page( 'best' ) ) {
+    } elseif ( is_page_template( 'page-best.php' ) ) {
         $title_parts['title'] = 'Best Forex & CFD Brokers ' . date( 'Y' ) . ': Ranked by Category';
     }
     return $title_parts;
@@ -1129,21 +1129,21 @@ add_filter( 'get_canonical_url', 'globalfxhub_best_canonical' );
  */
 function globalfxhub_plain_tool_page_seo_title( $title_parts ) {
     $plain_pages = array(
-        'broker-finder'      => 'ptitle_broker_finder',
-        'cost-calculator'    => 'ptitle_cost_calculator',
-        'regulation-checker' => 'ptitle_regulation_checker',
-        'broker-changelog'   => 'ptitle_broker_changelog',
-        'learn'              => 'ptitle_learn',
-        'data'               => 'ptitle_data',
-        'corrections'        => 'ptitle_corrections',
+        'page-broker-finder.php'      => 'ptitle_broker_finder',
+        'page-cost-calculator.php'    => 'ptitle_cost_calculator',
+        'page-regulation-checker.php' => 'ptitle_regulation_checker',
+        'page-broker-changelog.php'   => 'ptitle_broker_changelog',
+        'page-learn.php'              => 'ptitle_learn',
+        'page-data.php'               => 'ptitle_data',
+        'page-corrections.php'        => 'ptitle_corrections',
     );
-    foreach ( $plain_pages as $slug => $key ) {
-        if ( is_page( $slug ) ) {
+    foreach ( $plain_pages as $template => $key ) {
+        if ( is_page_template( $template ) ) {
             $title_parts['title'] = globalfxhub_t( $key );
             return $title_parts;
         }
     }
-    if ( is_page( 'compare' ) && ! globalfxhub_vs_pair( get_query_var( 'vs_a' ), get_query_var( 'vs_b' ) ) ) {
+    if ( is_page_template( 'page-compare.php' ) && ! globalfxhub_vs_pair( get_query_var( 'vs_a' ), get_query_var( 'vs_b' ) ) ) {
         $title_parts['title'] = globalfxhub_t( 'ptitle_compare' );
     }
     return $title_parts;
@@ -1183,30 +1183,42 @@ function globalfxhub_extended_seo_head() {
         }
         return;
     }
-    if ( is_page( 'best' ) ) {
+    if ( is_page_template( 'page-best.php' ) ) {
         echo '<meta name="description" content="' . esc_attr( 'Eight curated rankings of our full researched broker set -- overall, beginners, low-cost, ECN/STP, CySEC-regulated, FCA-regulated, multi-asset, and MT4/MT5 -- each built from the same disclosed nine-category methodology.' ) . '">' . "\n";
         return;
     }
 
     // Tool pages -- real distinct pages, so only the description was missing.
     $tool_descriptions = array(
-        'broker-finder'      => "Answer six questions and filter our full researched broker set down to the ones that actually match -- built from the same disclosed data and scores as every ranking on this site.",
-        'cost-calculator'    => 'Estimate your annual EUR/USD spread cost at every researched broker with a confirmed spread, based on your own account size, trade frequency, and trade size.',
-        'regulation-checker' => 'Search any researched broker for its full regulation dossier: legal entity, FCA/CySEC numbers, named Tier-1 regulators, offshore entities, which regulator covers which geography, and direct register links.',
-        'broker-changelog'   => "Search any researched broker for a dated log of when our published data about it actually changed -- a spread update, a new licence number, a platform added or dropped.",
-        'compare'            => 'Pick any two researched brokers to compare regulation, cost, platforms, and score, generated instantly from the same data behind our rankings.',
-        'data'               => 'An overview of the research behind this site: how many brokers, regulators, and confirmed licences we track, and every report, comparison, and tool built from that same dataset -- with live counts, not numbers frozen at publish time.',
+        'page-broker-finder.php'      => "Answer six questions and filter our full researched broker set down to the ones that actually match -- built from the same disclosed data and scores as every ranking on this site.",
+        'page-cost-calculator.php'    => 'Estimate your annual EUR/USD spread cost at every researched broker with a confirmed spread, based on your own account size, trade frequency, and trade size.',
+        'page-regulation-checker.php' => 'Search any researched broker for its full regulation dossier: legal entity, FCA/CySEC numbers, named Tier-1 regulators, offshore entities, which regulator covers which geography, and direct register links.',
+        'page-broker-changelog.php'   => "Search any researched broker for a dated log of when our published data about it actually changed -- a spread update, a new licence number, a platform added or dropped.",
+        'page-compare.php'            => 'Pick any two researched brokers to compare regulation, cost, platforms, and score, generated instantly from the same data behind our rankings.',
+        'page-data.php'               => 'An overview of the research behind this site: how many brokers, regulators, and confirmed licences we track, and every report, comparison, and tool built from that same dataset -- with live counts, not numbers frozen at publish time.',
     );
-    foreach ( $tool_descriptions as $page_slug => $description ) {
-        if ( is_page( $page_slug ) ) {
+    foreach ( $tool_descriptions as $template => $description ) {
+        if ( is_page_template( $template ) ) {
             echo '<meta name="description" content="' . esc_attr( $description ) . '">' . "\n";
             return;
         }
     }
 
-    // News hub pages -- real distinct pages, so only the description was missing.
+    // News hub page -- a real distinct page, so only the description was
+    // missing; matched by template rather than slug since it carries the
+    // same per-language "-{lang}" slug suffix as every other self-healed
+    // templated page (see globalfxhub_do_sync_templated_pages_across_languages()).
+    if ( is_page_template( 'page-news.php' ) ) {
+        echo '<meta name="description" content="' . esc_attr( 'Two separate feeds: short, factual broker-specific bulletins, and original FX market analysis -- never merged into one generic blog.' ) . '">' . "\n";
+        return;
+    }
+
+    // The two News hub CHILD pages (news/markets, news/brokers) --
+    // created via globalfxhub_ensure_child_page(), a different, English-
+    // only mechanism with no per-language "-{lang}" slug variant, so a
+    // plain is_page() slug check is correct here (unlike the templated
+    // pages above).
     $news_descriptions = array(
-        'news'    => 'Two separate feeds: short, factual broker-specific bulletins, and original FX market analysis -- never merged into one generic blog.',
         'markets' => 'Original analysis of genuinely market-moving FX developments, each with a "why this matters" angle for the relevant pair or asset. Published only when a story clears a real significance bar.',
         'brokers' => "Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, and product launches, curated from our own broker research -- not pulled from a news wire.",
     );
@@ -1273,7 +1285,7 @@ function globalfxhub_breadcrumb_schema() {
                 array( 'name' => $broker['name'], 'item' => home_url( '/reviews/' . $broker['slug'] . '/' ) ),
             );
         }
-    } elseif ( is_page( 'reviews' ) ) {
+    } elseif ( is_page_template( 'page-reviews.php' ) ) {
         $trail = array( array( 'name' => 'Reviews', 'item' => home_url( '/reviews/' ) ) );
     }
 
@@ -1330,7 +1342,7 @@ function globalfxhub_breadcrumb_schema() {
                     array( 'name' => $lists[ $bestlist_slug ]['title'], 'item' => home_url( '/best/' . $bestlist_slug . '/' ) ),
                 );
             }
-        } elseif ( is_page( 'best' ) ) {
+        } elseif ( is_page_template( 'page-best.php' ) ) {
             $trail = array( array( 'name' => 'Best Brokers', 'item' => home_url( '/best/' ) ) );
         }
     }
@@ -1345,7 +1357,7 @@ function globalfxhub_breadcrumb_schema() {
                     array( 'name' => $countries[ $country_slug ]['name'], 'item' => home_url( '/countries/' . $country_slug . '/' ) ),
                 );
             }
-        } elseif ( is_page( 'countries' ) ) {
+        } elseif ( is_page_template( 'page-countries.php' ) ) {
             $trail = array( array( 'name' => 'Countries', 'item' => home_url( '/countries/' ) ) );
         }
     }
@@ -1366,7 +1378,7 @@ function globalfxhub_breadcrumb_schema() {
                     array( 'name' => $reg_pages[ $regpage_slug ]['title'], 'item' => home_url( '/regulation/' . $regpage_slug . '/' ) ),
                 );
             }
-        } elseif ( is_page( 'regulation' ) ) {
+        } elseif ( is_page_template( 'page-regulation.php' ) ) {
             $trail = array( array( 'name' => 'Regulation', 'item' => home_url( '/regulation/' ) ) );
         }
     }
@@ -1381,7 +1393,7 @@ function globalfxhub_breadcrumb_schema() {
                     array( 'name' => $entities[ $regulator_slug ]['name'], 'item' => home_url( '/regulators/' . $regulator_slug . '/' ) ),
                 );
             }
-        } elseif ( is_page( 'regulators' ) ) {
+        } elseif ( is_page_template( 'page-regulators.php' ) ) {
             $trail = array( array( 'name' => 'Regulators', 'item' => home_url( '/regulators/' ) ) );
         }
     }
@@ -1396,7 +1408,7 @@ function globalfxhub_breadcrumb_schema() {
                     array( 'name' => $report['title'], 'item' => home_url( '/research/' . $report_slug . '/' ) ),
                 );
             }
-        } elseif ( is_page( 'research' ) ) {
+        } elseif ( is_page_template( 'page-research.php' ) ) {
             $trail = array( array( 'name' => 'Research', 'item' => home_url( '/research/' ) ) );
         }
     }
@@ -1422,23 +1434,24 @@ function globalfxhub_breadcrumb_schema() {
                 array( 'name' => 'News', 'item' => home_url( '/news/' ) ),
                 array( 'name' => 'Broker News', 'item' => home_url( '/news/brokers/' ) ),
             );
-        } elseif ( is_page( 'news' ) ) {
+        } elseif ( is_page_template( 'page-news.php' ) ) {
             $trail = array( array( 'name' => 'News', 'item' => home_url( '/news/' ) ) );
         }
     }
 
     if ( null === $trail ) {
         $flat_pages = array(
-            'broker-finder'      => 'Broker Finder',
-            'compare'            => 'Compare Brokers',
-            'cost-calculator'    => 'Forex Spread Cost Calculator',
-            'regulation-checker' => 'Broker Regulation Checker',
-            'broker-changelog'   => 'Broker Change Log',
-            'data'               => 'GlobalFXHub Data',
-            'learn'              => 'Learn',
+            'page-broker-finder.php'      => array( 'broker-finder', 'Broker Finder' ),
+            'page-compare.php'            => array( 'compare', 'Compare Brokers' ),
+            'page-cost-calculator.php'    => array( 'cost-calculator', 'Forex Spread Cost Calculator' ),
+            'page-regulation-checker.php' => array( 'regulation-checker', 'Broker Regulation Checker' ),
+            'page-broker-changelog.php'   => array( 'broker-changelog', 'Broker Change Log' ),
+            'page-data.php'               => array( 'data', 'GlobalFXHub Data' ),
+            'page-learn.php'              => array( 'learn', 'Learn' ),
         );
-        foreach ( $flat_pages as $page_slug => $label ) {
-            if ( is_page( $page_slug ) ) {
+        foreach ( $flat_pages as $template => $meta ) {
+            if ( is_page_template( $template ) ) {
+                list( $page_slug, $label ) = $meta;
                 $trail = array( array( 'name' => $label, 'item' => home_url( '/' . $page_slug . '/' ) ) );
                 break;
             }

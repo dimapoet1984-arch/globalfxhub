@@ -770,7 +770,7 @@ function globalfxhub_country_seo_title( $title_parts ) {
         if ( $country ) {
             $title_parts['title'] = 'Best Forex & CFD Brokers in ' . $country['name'] . ' ' . date( 'Y' );
         }
-    } elseif ( is_page( 'countries' ) ) {
+    } elseif ( is_page_template( 'page-countries.php' ) ) {
         $title_parts['title'] = 'Best Forex & CFD Brokers by Country ' . date( 'Y' );
     }
     return $title_parts;
@@ -792,7 +792,7 @@ add_filter( 'get_canonical_url', 'globalfxhub_country_canonical' );
 function globalfxhub_country_seo_head() {
     $slug = get_query_var( 'country' );
     if ( ! $slug ) {
-        if ( is_page( 'countries' ) ) {
+        if ( is_page_template( 'page-countries.php' ) ) {
             echo '<meta name="description" content="' . esc_attr( 'Top-ranked, confirmed-licensed forex and CFD brokers for every EU member state plus Australia, South Africa, the UAE, and Singapore, with what\'s actually different -- regulator, currency, and local broker presence -- about trading in each one.' ) . '">' . "\n";
         }
         return;

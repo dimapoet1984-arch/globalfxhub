@@ -327,7 +327,7 @@ function globalfxhub_regulator_entity_seo_title( $title_parts ) {
         if ( isset( $entities[ $slug ] ) ) {
             $title_parts['title'] = $entities[ $slug ]['name'] . ' Regulated Brokers & Licence Register | GlobalFXHub';
         }
-    } elseif ( is_page( 'regulators' ) ) {
+    } elseif ( is_page_template( 'page-regulators.php' ) ) {
         $title_parts['title'] = 'Regulators: Licensed Broker Rosters by Regulator';
     }
     return $title_parts;
@@ -357,7 +357,7 @@ function globalfxhub_regulator_entity_seo_head() {
         }
         return;
     }
-    if ( is_page( 'regulators' ) ) {
+    if ( is_page_template( 'page-regulators.php' ) ) {
         $all_entities = globalfxhub_get_regulator_entities();
         $names = implode( ', ', array_column( $all_entities, 'name' ) );
         $desc = 'Which of our 139 researched forex/CFD brokers currently hold a licence from each of these ' . count( $all_entities ) . ' regulators -- ' . $names . ' -- with jurisdiction, compensation cover, and the official register for each.';

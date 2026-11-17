@@ -360,7 +360,7 @@ function globalfxhub_research_reports_seo_title( $title_parts ) {
         if ( $entry ) {
             $title_parts['title'] = $entry['meta_title'];
         }
-    } elseif ( is_page( 'research' ) ) {
+    } elseif ( is_page_template( 'page-research.php' ) ) {
         $title_parts['title'] = 'Original Forex Broker Research ' . date( 'Y' ) . ': Data Studies and Reports';
     }
     return $title_parts;
@@ -379,7 +379,7 @@ add_filter( 'get_canonical_url', 'globalfxhub_research_reports_canonical' );
 function globalfxhub_research_reports_seo_head() {
     $slug = get_query_var( 'report' );
     if ( ! $slug ) {
-        if ( is_page( 'research' ) ) {
+        if ( is_page_template( 'page-research.php' ) ) {
             echo '<meta name="description" content="' . esc_attr( 'Original data studies and reports built directly from our own 139-broker research set -- platform adoption, regulation, fees, and more, computed from the same dataset behind every review and ranking on this site.' ) . '">' . "\n";
         }
         return;

@@ -60,7 +60,7 @@ function globalfxhub_regulation_seo_title( $title_parts ) {
         if ( isset( $reg_pages[ $slug ] ) ) {
             $title_parts['title'] = $reg_pages[ $slug ]['title'];
         }
-    } elseif ( is_page( 'regulation' ) ) {
+    } elseif ( is_page_template( 'page-regulation.php' ) ) {
         $title_parts['title'] = 'Forex Broker Regulation Explained: CySEC, FCA & More';
     }
     return $title_parts;
@@ -88,7 +88,7 @@ function globalfxhub_regulation_seo_head() {
         }
         return;
     }
-    if ( is_page( 'regulation' ) ) {
+    if ( is_page_template( 'page-regulation.php' ) ) {
         echo '<meta name="description" content="' . esc_attr( 'What each regulator a broker on this site holds actually requires, what its investor-compensation scheme covers (if it has one), and how to verify a licence yourself against the regulator\'s own public register.' ) . '">' . "\n";
     }
 }
