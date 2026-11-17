@@ -1426,7 +1426,7 @@ function globalfxhub_breadcrumb_schema() {
     }
 
     if ( $trail ) {
-        $items = array( array( '@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => home_url( '/' ) ) );
+        $items = array( array( '@type' => 'ListItem', 'position' => 1, 'name' => globalfxhub_t( 'tb_home' ), 'item' => home_url( '/' ) ) );
         $position = 2;
         foreach ( $trail as $crumb ) {
             $items[] = array( '@type' => 'ListItem', 'position' => $position++, 'name' => $crumb['name'], 'item' => $crumb['item'] );
