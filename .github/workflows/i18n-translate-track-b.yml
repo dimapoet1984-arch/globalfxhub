@@ -4,13 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "dry-run (counts only, no API calls) or translate"
+        description: "dry-run (counts only, no API calls), translate, or clear (writes '' for matching rows so a later translate run redoes them -- no API calls)"
         required: true
         default: "dry-run"
         type: choice
         options:
           - dry-run
           - translate
+          - clear
       content_types:
         description: "Comma-separated (broker,country,best_list,regulation,broker_news), or 'all'"
         required: true
@@ -21,6 +22,10 @@ on:
         default: "all"
       items:
         description: "Comma-separated content_ids (within each selected content_type), or 'all'"
+        required: true
+        default: "all"
+      fields:
+        description: "mode=clear only: comma-separated field names to clear, or 'all'"
         required: true
         default: "all"
       reviewer:
@@ -53,4 +58,5 @@ jobs:
             --content-types ${{ inputs.content_types }} \
             --languages ${{ inputs.languages }} \
             --items ${{ inputs.items }} \
+            --fields ${{ inputs.fields }} \
             --reviewer ${{ inputs.reviewer }}

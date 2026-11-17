@@ -21,17 +21,32 @@ i18n/track_b_fields.py:
     sample run this session showed strong first-pass Haiku quality
     with zero retries needed; reconsider if real Track B output shows
     otherwise).
-  - HTML fields (only best_list.intro and regulation.content today --
-    confirmed against the real data in i18n/track_b_fields.py's own
-    comments): routed through the exact same splitter/markup-check/
-    retry/review pipeline Track A uses (i18n/splitter.py,
-    i18n/markup_check.py), since a broken <a href> here is exactly as
-    real a markup bug as one in a blog post.
+  - HTML fields (only regulation.content today -- confirmed against
+    the real data in i18n/track_b_fields.py's own comments): routed
+    through the exact same splitter/markup-check/retry/review pipeline
+    Track A uses (i18n/splitter.py, i18n/markup_check.py), since a
+    broken <a href> here is exactly as real a markup bug as one in a
+    blog post. This path assumes the field is wrapped in block-level
+    leaf tags (<p>/<h2>/...) the way a real post body is -- it is NOT
+    for bare inline text that merely happens to contain an <a>, which
+    is what best_list.intro turned out to be (see track_b_fields.py's
+    comment on that entry for the bug this caused: every intro field,
+    in every language, silently "translated" back to its own untouched
+    English source).
+
+A third mode, clear, writes '' for matching rows instead of calling
+the API at all -- the supported way to force specific fields to be
+retranslated by a later --mode translate run, since a non-empty
+(even if wrong) row otherwise reads as "already done" forever. Needed
+once, right after the best_list.intro fix above, for every existing
+intro row (written by the splitter-mismatch bug as an unchanged copy
+of the English source, so it already counted as "done").
 
 Usage:
     python3 translate_track_b.py --mode dry-run --content-types broker
     python3 translate_track_b.py --mode translate --content-types broker --languages es --items ig,xtb
     python3 translate_track_b.py --mode translate --content-types all --languages all
+    python3 translate_track_b.py --mode clear --content-types best_list --fields intro --languages all
 """
 import argparse
 import json
@@ -127,10 +142,21 @@ def resolve_item_fields(content_type, item_fields):
 
 def translate_plain_fields(client, system, item_description, fields, lang):
     """fields: [(name, english_value), ...]. One structured request,
-    returns {name: translated_text}."""
+    returns {name: translated_text}.
+
+    Plain fields are never run through the leaf-tag HTML splitter
+    (splitter.py's split_html(), which assumes block-level <p>/<h2>/...
+    wrapping), so a field marked is_html=False here can still legitimately
+    contain a short inline tag (e.g. best_list.intro's <a href>) -- the
+    instruction below asks the model to preserve any such tag exactly
+    while translating the surrounding text, rather than claiming there's
+    never any HTML (the previous wording), which most plain fields
+    genuinely have none of, so this is a no-op for them either way."""
     user_content = (
         f"Target language: {lang}\n\nItem: {item_description}\n\n"
-        f"Fields to translate (JSON array, translate each by id, plain text -- no HTML):\n"
+        f"Fields to translate (JSON array, translate each by id, plain text -- "
+        f"if a field contains an inline HTML tag such as <a href=\"...\">, preserve "
+        f"that tag and its attributes exactly, translating only the surrounding text):\n"
         + json.dumps([{"id": name, "text": value} for name, value in fields], ensure_ascii=False)
     )
     parsed, _ = tc.structured_request(client, tc.HAIKU_MODEL, system, user_content, PLAIN_FIELDS_SCHEMA, tc.TRANSLATE_EFFORT)
@@ -212,16 +238,25 @@ def translate_html_field(client, translate_system, review_system, item_descripti
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["dry-run", "translate"], required=True)
+    parser.add_argument("--mode", choices=["dry-run", "translate", "clear"], required=True,
+                         help="clear: write '' for matching rows so a later --mode translate "
+                              "redoes them for real -- see globalfxhub_tf_set()'s docblock "
+                              "(inc/i18n-track-b-translations.php) for why '' is the supported "
+                              "way to revert one field. Needed once after the best_list.intro "
+                              "fix below: every existing intro row was written by the splitter "
+                              "bug as an untouched (non-empty) copy of the English source, so "
+                              "--mode translate alone would never touch it again.")
     parser.add_argument("--content-types", default="all", help="Comma-separated (broker,country,best_list,regulation,broker_news), or 'all'.")
     parser.add_argument("--languages", default="all")
     parser.add_argument("--items", default="all", help="Comma-separated content_ids (within each selected content_type), or 'all'.")
+    parser.add_argument("--fields", default="all", help="--mode clear only: comma-separated field names to clear (within each selected item), or 'all'.")
     parser.add_argument("--reviewer", choices=["haiku", "sonnet"], default="haiku")
     args = parser.parse_args()
 
     content_types = list(FIELDS.keys()) if args.content_types == "all" else args.content_types.split(",")
     languages = LANGUAGES if args.languages == "all" else args.languages.split(",")
     item_filter = None if args.items == "all" else set(args.items.split(","))
+    field_filter = None if args.fields == "all" else set(args.fields.split(","))
     reviewer_model = tc.SONNET_MODEL if args.reviewer == "sonnet" else tc.HAIKU_MODEL
 
     username = os.environ.get("WP_USERNAME")
@@ -230,6 +265,22 @@ def main():
         print("WP_USERNAME and WP_APP_PASSWORD must both be set", file=sys.stderr)
         sys.exit(1)
     auth = (username, app_password)
+
+    if args.mode == "clear":
+        for content_type in content_types:
+            print(f"\n=== {content_type} ===")
+            source_items = fetch_source_items(auth, content_type)
+            if item_filter is not None:
+                source_items = [item for item in source_items if item["id"] in item_filter]
+            for lang in languages:
+                for item in source_items:
+                    resolved = resolve_item_fields(content_type, item["fields"])
+                    for name, _value, _is_html in resolved:
+                        if field_filter is not None and name not in field_filter:
+                            continue
+                        write_translation(auth, content_type, item["id"], name, lang, "")
+                        print(f"  CLEARED {content_type} \"{item['id']}\" field={name} -> {lang}")
+        return
 
     client = None if args.mode == "dry-run" else tc.get_client()
     counts = {}
