@@ -1761,48 +1761,48 @@ function globalfxhub_broker_pros_cons( $broker ) {
 
     if ( null !== $broker['scores']['regulation'] && $broker['scores']['regulation'] >= 4.0 ) {
         if ( $has_cysec ) {
-            $base = ( '—' === $broker['cysec'] ) ? 'EU regulation (MiFID passporting)' : 'CySEC';
+            $base = ( '—' === $broker['cysec'] ) ? globalfxhub_t( 'rev_pc_base_eu_mifid' ) : globalfxhub_t( 'rev_pc_base_cysec' );
             if ( $has_fca ) {
-                $base .= ' and FCA';
+                $base = ( '—' === $broker['cysec'] ) ? globalfxhub_t( 'rev_pc_base_eu_mifid_fca' ) : globalfxhub_t( 'rev_pc_base_cysec_fca' );
             }
         } elseif ( $has_fca ) {
-            $base = 'FCA';
+            $base = globalfxhub_t( 'rev_pc_base_fca' );
         } else {
-            $base = 'FSA Seychelles licensing';
+            $base = globalfxhub_t( 'rev_pc_base_seychelles' );
         }
-        $pros[] = 'Wide regulatory footprint -- ' . $base . ' plus ' . $broker['other_reg_count'] . ' other regulator(s), including ' . implode( ', ', array_slice( $broker['other_reg'], 0, 2 ) );
+        $pros[] = sprintf( globalfxhub_t( 'rev_pc_reg_wide' ), $base, $broker['other_reg_count'], implode( ', ', array_slice( $broker['other_reg'], 0, 2 ) ) );
     } elseif ( null !== $broker['scores']['regulation'] ) {
-        $cons[] = 'Thinner regulatory footprint than most peers on this list';
+        $cons[] = globalfxhub_t( 'rev_pc_reg_thin' );
     }
 
     if ( ! $has_eu_or_uk_reg ) {
-        $cons[] = 'No EU, UK, or Australian-tier regulator -- its primary licence is offshore (Seychelles FSA), which offers materially less retail investor protection than an EU/MiFID licence.';
+        $cons[] = globalfxhub_t( 'rev_pc_no_tier1' );
     }
 
     if ( null === $broker['scores']['cost'] ) {
-        $cons[] = 'Minimum deposit and/or EUR/USD spread could not be independently confirmed -- check current terms directly with the broker.';
+        $cons[] = globalfxhub_t( 'rev_pc_cost_unconfirmed' );
     } elseif ( $broker['scores']['cost'] >= 4.0 ) {
-        $pros[] = 'Low cost to start: ' . $broker['min_deposit_display'] . ' minimum deposit, ' . $broker['spread_eurusd'] . ' pip average EUR/USD spread';
+        $pros[] = sprintf( globalfxhub_t( 'rev_pc_cost_low' ), $broker['min_deposit_display'], $broker['spread_eurusd'] );
     } elseif ( $broker['scores']['cost'] <= 2.5 ) {
-        $cons[] = 'Higher cost than most peers on this list (spread and/or minimum deposit)';
+        $cons[] = globalfxhub_t( 'rev_pc_cost_high' );
     }
 
     if ( count( $broker['platforms'] ) >= 3 ) {
-        $pros[] = 'Broad platform choice: ' . implode( ', ', $broker['platforms'] );
+        $pros[] = sprintf( globalfxhub_t( 'rev_pc_platforms_broad' ), globalfxhub_render_platforms_list( $broker['platforms'] ) );
     } elseif ( ! $has_mt ) {
-        $cons[] = 'No MetaTrader (MT4/MT5) support -- proprietary platform only';
+        $cons[] = globalfxhub_t( 'rev_pc_no_metatrader' );
     }
 
     if ( null === $broker['scores']['track_record'] ) {
-        $cons[] = 'Founding year could not be independently confirmed, so operating history could not be scored.';
+        $cons[] = globalfxhub_t( 'rev_pc_track_unconfirmed' );
     } elseif ( $broker['scores']['track_record'] >= 4.0 ) {
-        $pros[] = 'Long operating history, trading since ' . $broker['founded'];
+        $pros[] = sprintf( globalfxhub_t( 'rev_pc_track_long' ), $broker['founded'] );
     } elseif ( $broker['scores']['track_record'] <= 2.0 ) {
-        $cons[] = 'Shorter operating history than most peers, trading since ' . $broker['founded'];
+        $cons[] = sprintf( globalfxhub_t( 'rev_pc_track_short' ), $broker['founded'] );
     }
 
     if ( empty( $cons ) ) {
-        $cons[] = 'No standout weaknesses versus peers in our researched criteria -- still confirm current terms directly with the broker.';
+        $cons[] = globalfxhub_t( 'rev_pc_no_weaknesses' );
     }
 
     return array( 'pros' => $pros, 'cons' => $cons );
@@ -1822,20 +1822,20 @@ function globalfxhub_broker_investor_protection( $broker ) {
     $has_seychelles = ! empty( $broker['seychelles'] ) || ! empty( $broker['seychelles_note'] );
 
     if ( $has_fca ) {
-        $parts[] = "Via its FCA-regulated UK entity, eligible clients are covered by the UK's Financial Services Compensation Scheme (FSCS) up to £85,000 per person if the firm fails.";
+        $parts[] = globalfxhub_t( 'rev_ip_fca' );
     }
     if ( $has_cysec ) {
         if ( '—' === $broker['cysec'] ) {
-            $parts[] = "Via its EU-regulated entity (MiFID passporting), eligible clients are covered by that entity's home EU member state's investor compensation scheme -- typically up to €20,000, though the exact scheme and cap depend on which country licenses the entity.";
+            $parts[] = globalfxhub_t( 'rev_ip_eu_mifid' );
         } else {
-            $parts[] = "Via its CySEC-regulated Cyprus entity, eligible clients are covered by Cyprus's Investor Compensation Fund (ICF) up to €20,000 per person if the firm fails.";
+            $parts[] = globalfxhub_t( 'rev_ip_cysec' );
         }
     }
     if ( $has_seychelles ) {
-        $parts[] = 'Via its Seychelles FSA-licensed entity, there is no statutory investor compensation scheme -- if that entity fails, there is no guaranteed fund to recover client money from.';
+        $parts[] = globalfxhub_t( 'rev_ip_seychelles' );
     }
     if ( empty( $parts ) ) {
-        return 'No confirmed Tier-1 or Seychelles FSA licence was found for this broker in our research, so no investor compensation scheme can be stated with confidence -- verify directly with the broker which entity you would be contracting with and what protection, if any, applies.';
+        return globalfxhub_t( 'rev_ip_none_found' );
     }
     return implode( ' ', $parts );
 }
