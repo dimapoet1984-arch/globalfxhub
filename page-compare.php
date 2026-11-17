@@ -241,6 +241,9 @@ const T = <?php echo wp_json_encode( array(
     'fca_unconfirmed' => globalfxhub_t( 'cmp_reg_fca_unconfirmed' ),
     'seychelles_unconfirmed' => globalfxhub_t( 'cmp_reg_seychelles_unconfirmed' ),
     'reg_not_confirmed' => globalfxhub_t( 'cmp_reg_not_confirmed' ),
+    'cysec_no' => globalfxhub_t( 'rev_reglabel_cysec_no' ),
+    'fca_no' => globalfxhub_t( 'rev_reglabel_fca_no' ),
+    'seychelles_no' => globalfxhub_t( 'rev_reglabel_seychelles_no' ),
     'overall_score' => globalfxhub_t( 'cmp_row_overall_score' ),
     'regulation' => globalfxhub_t( 'nav_regulation' ),
     'entity' => globalfxhub_t( 'rev_regulated_entity' ),
@@ -310,11 +313,11 @@ const T = <?php echo wp_json_encode( array(
 
     const regulationLabel = (x) => {
       const parts = [];
-      if (x.cysec && x.cysec !== '—') parts.push(`CySEC No. ${x.cysec}`);
+      if (x.cysec && x.cysec !== '—') parts.push(T.cysec_no.replace('%s', x.cysec));
       else if (x.cysec === '—') parts.push(T.eu_mifid);
-      if (x.fca) parts.push(`FCA No. ${x.fca}`);
+      if (x.fca) parts.push(T.fca_no.replace('%s', x.fca));
       else if (x.fca_note && x.fca === null) parts.push(T.fca_unconfirmed);
-      if (x.seychelles) parts.push(`FSA Seychelles No. ${x.seychelles}`);
+      if (x.seychelles) parts.push(T.seychelles_no.replace('%s', x.seychelles));
       else if (x.seychelles_note && x.seychelles === null) parts.push(T.seychelles_unconfirmed);
       return parts.length ? parts.join(' + ') : T.reg_not_confirmed;
     };

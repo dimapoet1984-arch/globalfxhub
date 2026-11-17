@@ -138,6 +138,12 @@ function globalfxhub_translatable_strings() {
         'cmp_js_choose_different', 'cmp_js_choose_two',
         'cmp_reg_eu_mifid', 'cmp_reg_fca_unconfirmed',
         'cmp_reg_seychelles_unconfirmed', 'cmp_reg_not_confirmed',
+        // --- the two number-interpolated pieces of
+        // globalfxhub_broker_regulation_label() (functions.php) that
+        // the cmp_reg_* keys above don't cover -- used both server-
+        // side (sprintf()) and in page-compare.php's JS results table
+        // (T.key.replace('%s', ...), same pattern as page-broker-finder.php) ---
+        'rev_reglabel_cysec_no', 'rev_reglabel_fca_no', 'rev_reglabel_seychelles_no',
 
         // --- page-broker-finder.php (template + its JS results/filter
         // rendering, which already used globalfxhub_t() for the results
@@ -570,6 +576,9 @@ function globalfxhub_string_text( $key ) {
         'cmp_reg_fca_unconfirmed' => 'FCA-licensed (FRN unconfirmed)',
         'cmp_reg_seychelles_unconfirmed' => 'FSA Seychelles-licensed (licence number unconfirmed)',
         'cmp_reg_not_confirmed' => 'Regulatory status not independently confirmed',
+        'rev_reglabel_cysec_no' => 'CySEC No. %s',
+        'rev_reglabel_fca_no' => 'FCA No. %s',
+        'rev_reglabel_seychelles_no' => 'FSA Seychelles No. %s',
 
         'finder_eyebrow' => 'BROKER FINDER',
         'finder_intro' => 'Answer six questions and we\'ll filter our full researched broker set down to the ones that actually match -- built from the same disclosed data and scores as every ranking on this site, not a separate commercial shortlist.',
@@ -1080,6 +1089,9 @@ function globalfxhub_live_string_translations() {
             'cmp_reg_fca_unconfirmed' => 'Con licencia de la FCA (FRN no confirmado)',
             'cmp_reg_seychelles_unconfirmed' => 'Con licencia de la FSA de Seychelles (número de licencia no confirmado)',
             'cmp_reg_not_confirmed' => 'Estado regulatorio no confirmado de forma independiente',
+            'rev_reglabel_cysec_no' => 'CySEC N.º %s',
+            'rev_reglabel_fca_no' => 'FCA N.º %s',
+            'rev_reglabel_seychelles_no' => 'FSA Seychelles N.º %s',
 
             'finder_eyebrow' => 'BUSCADOR DE BRÓKERS',
             'finder_intro' => 'Responde seis preguntas y filtraremos nuestro conjunto completo de brókers investigados hasta los que realmente coinciden -- construido con los mismos datos y puntuaciones divulgados que cualquier clasificación de este sitio, no una lista comercial separada.',
@@ -1552,6 +1564,9 @@ function globalfxhub_live_string_translations() {
             'cmp_reg_fca_unconfirmed' => 'FCA-lizenziert (FRN unbestätigt)',
             'cmp_reg_seychelles_unconfirmed' => 'FSA-Seychellen-lizenziert (Lizenznummer unbestätigt)',
             'cmp_reg_not_confirmed' => 'Regulierungsstatus nicht unabhängig bestätigt',
+            'rev_reglabel_cysec_no' => 'CySEC Nr. %s',
+            'rev_reglabel_fca_no' => 'FCA Nr. %s',
+            'rev_reglabel_seychelles_no' => 'FSA Seychellen Nr. %s',
 
             'finder_eyebrow' => 'BROKER-FINDER',
             'finder_intro' => 'Beantworten Sie sechs Fragen, und wir filtern unseren vollständigen, untersuchten Broker-Bestand auf die Broker herunter, die tatsächlich passen -- erstellt aus denselben offengelegten Daten und Bewertungen wie jede Rangliste auf dieser Website, keine separate kommerzielle Auswahl.',
@@ -2024,6 +2039,9 @@ function globalfxhub_live_string_translations() {
             'cmp_reg_fca_unconfirmed' => 'مرخَّص من FCA (رقم FRN غير مؤكد)',
             'cmp_reg_seychelles_unconfirmed' => 'مرخَّص من FSA سيشل (رقم الترخيص غير مؤكد)',
             'cmp_reg_not_confirmed' => 'الحالة التنظيمية غير مؤكدة بشكل مستقل',
+            'rev_reglabel_cysec_no' => 'CySEC رقم %s',
+            'rev_reglabel_fca_no' => 'FCA رقم %s',
+            'rev_reglabel_seychelles_no' => 'FSA سيشيل رقم %s',
 
             'finder_eyebrow' => 'أداة البحث عن وسيط',
             'finder_intro' => 'أجب عن ستة أسئلة، وسنُصفّي مجموعة الوسطاء الكاملة التي بحثناها لتصل إلى الوسطاء الذين يطابقون احتياجاتك فعليًا -- مبنية على نفس البيانات والتقييمات المُعلَنة المستخدمة في كل تصنيف على هذا الموقع، وليست قائمة تجارية منفصلة.',
@@ -2496,6 +2514,9 @@ function globalfxhub_live_string_translations() {
             'cmp_reg_fca_unconfirmed' => 'Agréé par la FCA (FRN non confirmé)',
             'cmp_reg_seychelles_unconfirmed' => 'Agréé par la FSA des Seychelles (numéro de licence non confirmé)',
             'cmp_reg_not_confirmed' => 'Statut réglementaire non confirmé de manière indépendante',
+            'rev_reglabel_cysec_no' => 'CySEC n° %s',
+            'rev_reglabel_fca_no' => 'FCA n° %s',
+            'rev_reglabel_seychelles_no' => 'FSA Seychelles n° %s',
 
             'finder_eyebrow' => 'TROUVEUR DE COURTIER',
             'finder_intro' => "Répondez à six questions et nous filtrerons notre ensemble complet de courtiers étudiés jusqu'à ceux qui correspondent réellement -- construit à partir des mêmes données et notes divulguées que tout classement de ce site, et non une liste commerciale distincte.",
@@ -2968,6 +2989,9 @@ function globalfxhub_live_string_translations() {
             'cmp_reg_fca_unconfirmed' => 'Licencjonowany przez FCA (FRN niepotwierdzony)',
             'cmp_reg_seychelles_unconfirmed' => 'Licencjonowany przez FSA Seszeli (numer licencji niepotwierdzony)',
             'cmp_reg_not_confirmed' => 'Status regulacyjny niepotwierdzony niezależnie',
+            'rev_reglabel_cysec_no' => 'CySEC nr %s',
+            'rev_reglabel_fca_no' => 'FCA nr %s',
+            'rev_reglabel_seychelles_no' => 'FSA Seszele nr %s',
 
             'finder_eyebrow' => 'WYSZUKIWARKA BROKERÓW',
             'finder_intro' => 'Odpowiedz na sześć pytań, a my przefiltrujemy nasz pełny, zbadany zestaw brokerów do tych, które naprawdę pasują -- zbudowane z tych samych jawnych danych i ocen co każdy ranking na tej stronie, a nie z osobnej listy komercyjnej.',
@@ -3440,6 +3464,9 @@ function globalfxhub_live_string_translations() {
             'cmp_reg_fca_unconfirmed' => 'Autorizzato dalla FCA (FRN non confermato)',
             'cmp_reg_seychelles_unconfirmed' => 'Autorizzato dalla FSA delle Seychelles (numero di licenza non confermato)',
             'cmp_reg_not_confirmed' => 'Stato regolamentare non confermato in modo indipendente',
+            'rev_reglabel_cysec_no' => 'CySEC n. %s',
+            'rev_reglabel_fca_no' => 'FCA n. %s',
+            'rev_reglabel_seychelles_no' => 'FSA Seychelles n. %s',
 
             'finder_eyebrow' => 'TROVA BROKER',
             'finder_intro' => 'Rispondi a sei domande e filtreremo il nostro set completo di broker analizzati fino a quelli che corrispondono realmente -- costruito con i medesimi dati e punteggi divulgati di ogni classifica su questo sito, non un elenco commerciale separato.',
@@ -3912,6 +3939,9 @@ function globalfxhub_live_string_translations() {
             'cmp_reg_fca_unconfirmed' => 'Licenciada pela FCA (FRN não confirmado)',
             'cmp_reg_seychelles_unconfirmed' => 'Licenciada pela FSA das Seicheles (número de licença não confirmado)',
             'cmp_reg_not_confirmed' => 'Status regulatório não confirmado de forma independente',
+            'rev_reglabel_cysec_no' => 'CySEC n.º %s',
+            'rev_reglabel_fca_no' => 'FCA n.º %s',
+            'rev_reglabel_seychelles_no' => 'FSA Seicheles n.º %s',
 
             'finder_eyebrow' => 'LOCALIZADOR DE CORRETORAS',
             'finder_intro' => 'Responda seis perguntas e filtraremos nosso conjunto completo de corretoras pesquisadas até as que realmente correspondem -- construído com os mesmos dados e pontuações divulgados que qualquer ranking neste site, não uma lista comercial separada.',

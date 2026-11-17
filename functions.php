@@ -1706,22 +1706,22 @@ function globalfxhub_top_ranked_broker_slugs( $limit = 40 ) {
 function globalfxhub_broker_regulation_label( $broker ) {
     $parts = array();
     if ( ! empty( $broker['cysec'] ) && '—' !== $broker['cysec'] ) {
-        $parts[] = 'CySEC No. ' . $broker['cysec'];
+        $parts[] = sprintf( globalfxhub_t( 'rev_reglabel_cysec_no' ), $broker['cysec'] );
     } elseif ( '—' === $broker['cysec'] ) {
-        $parts[] = 'EU-regulated (MiFID passporting)';
+        $parts[] = globalfxhub_t( 'cmp_reg_eu_mifid' );
     }
     if ( ! empty( $broker['fca'] ) ) {
-        $parts[] = 'FCA No. ' . $broker['fca'];
+        $parts[] = sprintf( globalfxhub_t( 'rev_reglabel_fca_no' ), $broker['fca'] );
     } elseif ( ! empty( $broker['fca_note'] ) && array_key_exists( 'fca', $broker ) && null === $broker['fca'] ) {
-        $parts[] = 'FCA-licensed (FRN unconfirmed)';
+        $parts[] = globalfxhub_t( 'cmp_reg_fca_unconfirmed' );
     }
     if ( ! empty( $broker['seychelles'] ) ) {
-        $parts[] = 'FSA Seychelles No. ' . $broker['seychelles'];
+        $parts[] = sprintf( globalfxhub_t( 'rev_reglabel_seychelles_no' ), $broker['seychelles'] );
     } elseif ( ! empty( $broker['seychelles_note'] ) && array_key_exists( 'seychelles', $broker ) && null === $broker['seychelles'] ) {
-        $parts[] = 'FSA Seychelles-licensed (licence number unconfirmed)';
+        $parts[] = globalfxhub_t( 'cmp_reg_seychelles_unconfirmed' );
     }
     if ( empty( $parts ) ) {
-        return 'Regulatory status not independently confirmed';
+        return globalfxhub_t( 'cmp_reg_not_confirmed' );
     }
     return implode( ' + ', $parts );
 }
