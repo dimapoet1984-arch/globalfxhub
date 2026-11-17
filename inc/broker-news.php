@@ -300,7 +300,13 @@ function globalfxhub_broker_news_seo_title( $title_parts ) {
     if ( $slug ) {
         $item = globalfxhub_get_broker_news_item_by_slug( $slug );
         if ( $item ) {
-            $title_parts['title'] = $item['headline'] . ' | Broker News';
+            // $item['headline'] itself is still English -- real,
+            // per-item broker-news content, same deferred-translation
+            // bucket as the broker dataset's own free-text fields,
+            // not a <title>-tag routing gap. Only the " | Broker News"
+            // suffix is fixed here, reusing the already-translated
+            // footer_broker_news key.
+            $title_parts['title'] = $item['headline'] . ' | ' . globalfxhub_t( 'footer_broker_news' );
         }
     }
     return $title_parts;
