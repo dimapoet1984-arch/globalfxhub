@@ -766,12 +766,21 @@ add_filter( 'query_vars', 'globalfxhub_country_query_vars' );
 function globalfxhub_country_seo_title( $title_parts ) {
     $slug = get_query_var( 'country' );
     if ( $slug ) {
+        // One dedicated, fully-translated SEO title per country slug
+        // (seo_country_title_{slug} in inc/translatable-strings.php) --
+        // not a shared template + $country['name'], since a bare
+        // locative translation of the country name needs a different
+        // preposition/article per language (e.g. French "aux Pays-Bas"
+        // vs "en Autriche"). $country['name'] itself stays English --
+        // it also feeds the on-page H1 in page-countries.php, out of
+        // scope here, same as best-list titles/best.php.
         $country = globalfxhub_get_country_by_slug( $slug );
         if ( $country ) {
-            $title_parts['title'] = 'Best Forex & CFD Brokers in ' . $country['name'] . ' ' . date( 'Y' );
+            $key = 'seo_country_title_' . $slug;
+            $title_parts['title'] = sprintf( globalfxhub_t( $key ), date( 'Y' ) );
         }
     } elseif ( is_page_template( 'page-countries.php' ) ) {
-        $title_parts['title'] = 'Best Forex & CFD Brokers by Country ' . date( 'Y' );
+        $title_parts['title'] = sprintf( globalfxhub_t( 'seo_countries_hub_title' ), date( 'Y' ) );
     }
     return $title_parts;
 }

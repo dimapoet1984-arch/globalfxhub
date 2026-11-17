@@ -56,12 +56,22 @@ function globalfxhub_get_regulation_pages() {
 function globalfxhub_regulation_seo_title( $title_parts ) {
     $slug = get_query_var( 'regpage' );
     if ( $slug ) {
-        $reg_pages = globalfxhub_get_regulation_pages();
-        if ( isset( $reg_pages[ $slug ] ) ) {
-            $title_parts['title'] = $reg_pages[ $slug ]['title'];
+        // Dedicated translated key per regpage slug (seo_regpage_* in
+        // inc/translatable-strings.php), not $reg_pages[$slug]['title']
+        // directly -- that field is still English and also feeds the
+        // on-page H1 in page-regulation.php, out of scope here.
+        $seo_title_keys = array(
+            'cysec'                                   => 'seo_regpage_cysec',
+            'fca'                                      => 'seo_regpage_fca',
+            'seychelles-fsa'                           => 'seo_regpage_seychelles_fsa',
+            'investor-compensation-schemes-explained'  => 'seo_regpage_investor_compensation',
+            'how-to-verify-a-broker-license'           => 'seo_regpage_how_to_verify',
+        );
+        if ( isset( $seo_title_keys[ $slug ] ) ) {
+            $title_parts['title'] = globalfxhub_t( $seo_title_keys[ $slug ] );
         }
     } elseif ( is_page_template( 'page-regulation.php' ) ) {
-        $title_parts['title'] = 'Forex Broker Regulation Explained: CySEC, FCA & More';
+        $title_parts['title'] = globalfxhub_t( 'seo_regulation_hub_title' );
     }
     return $title_parts;
 }
