@@ -36,8 +36,8 @@ if ( $regulator_slug && ! $entity ) {
     ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulators' ) ); ?>">Regulators</a> /
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulators' ) ); ?>"><?php globalfxhub_te( 'nav_regulators' ); ?></a> /
   <?php echo esc_html( $entity['name'] ); ?>
 </div>
 
