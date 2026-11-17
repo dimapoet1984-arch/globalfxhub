@@ -133,7 +133,7 @@ if ( $vs_editorial ) :
         $pos_b = array_search( $preset_b, $vs_ranked_slugs, true );
         list( $url_first, $url_second ) = ( $pos_a < $pos_b ) ? array( $preset_a, $preset_b ) : array( $preset_b, $preset_a );
         ?>
-        <a class="preset" href="<?php echo esc_url( home_url( '/compare/' . $url_first . '-vs-' . $url_second . '/' ) ); ?>"><?php echo esc_html( $preset_pair['a']['name'] . ' vs ' . $preset_pair['b']['name'] ); ?></a>
+        <a class="preset" href="<?php echo esc_url( globalfxhub_track_b_url( 'compare/' . $url_first . '-vs-' . $url_second . '/' ) ); ?>"><?php echo esc_html( $preset_pair['a']['name'] . ' vs ' . $preset_pair['b']['name'] ); ?></a>
         <?php
     }
     ?>
@@ -166,9 +166,9 @@ if ( $vs_editorial ) :
     </table>
     <?php if ( $vs_pair ) : ?>
     <p style="font-size:13.5px;margin:16px 0;">
-      <a href="<?php echo esc_url( home_url( '/reviews/' . $vs_a['slug'] . '/' ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'cmp_full_review_link' ), $vs_a['name'] ) ); ?></a>
+      <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $vs_a['slug'] . '/' ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'cmp_full_review_link' ), $vs_a['name'] ) ); ?></a>
       &middot;
-      <a href="<?php echo esc_url( home_url( '/reviews/' . $vs_b['slug'] . '/' ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'cmp_full_review_link' ), $vs_b['name'] ) ); ?></a>
+      <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $vs_b['slug'] . '/' ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'cmp_full_review_link' ), $vs_b['name'] ) ); ?></a>
       &middot;
       <a href="<?php echo esc_url( home_url( '/compare/' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'cmp_different_brokers_link' ); ?></a>
     </p>

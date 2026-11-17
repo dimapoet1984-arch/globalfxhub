@@ -299,7 +299,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
           if ( ! $globalfxhub_bn_broker ) { continue; }
           $globalfxhub_bn_cat = isset( $globalfxhub_broker_news_categories[ $globalfxhub_bn_item['category'] ] ) ? $globalfxhub_broker_news_categories[ $globalfxhub_bn_item['category'] ] : 'Update';
       ?>
-      <a href="<?php echo esc_url( home_url( '/news/brokers/' . globalfxhub_broker_news_item_slug( $globalfxhub_bn_item ) . '/' ) ); ?>" class="news-item">
+      <a href="<?php echo esc_url( globalfxhub_track_b_url( 'news/brokers/' . globalfxhub_broker_news_item_slug( $globalfxhub_bn_item ) . '/' ) ); ?>" class="news-item">
         <div class="tag"><?php echo esc_html( strtoupper( $globalfxhub_bn_cat ) ); ?></div>
         <h4><?php echo esc_html( $globalfxhub_bn_item['headline'] ); ?></h4>
         <p><?php echo esc_html( globalfxhub_trim_excerpt( $globalfxhub_bn_item['body'], 20 ) ); ?></p>
@@ -360,7 +360,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
         <span class="rank-detail col-plat"><?php echo esc_html( $fp_b['platforms'] ? globalfxhub_render_platforms_list( $fp_b['platforms'] ) : globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
         <span class="rank-score"><?php echo esc_html( $fp_b['scores']['overall'] ); ?> / 5</span>
         <span class="rank-ctas">
-          <a href="<?php echo esc_url( home_url( '/reviews/' . $fp_b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+          <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $fp_b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
           <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . $fp_b['slug'] ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
@@ -448,7 +448,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
     $fp_best_lists = globalfxhub_get_best_lists();
     $fp_best_links = array();
     foreach ( $fp_best_lists as $fp_best_slug => $fp_best_list ) {
-        $fp_best_links[] = '<a href="' . esc_url( home_url( '/best/' . $fp_best_slug . '/' ) ) . '" style="color:var(--teal);">' . esc_html( $fp_best_list['title'] ) . '</a>';
+        $fp_best_links[] = '<a href="' . esc_url( globalfxhub_track_b_url( 'best/' . $fp_best_slug . '/' ) ) . '" style="color:var(--teal);">' . esc_html( $fp_best_list['title'] ) . '</a>';
     }
     echo implode( ' &middot; ', $fp_best_links );
     ?> &middot; <a href="<?php echo esc_url( home_url( '/regulation/' ) ); ?>" style="color:var(--teal);">Regulation knowledge base</a></p>
@@ -529,7 +529,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
       foreach ( $fp_countries as $fp_country_slug => $fp_country ) :
           $fp_flag = globalfxhub_country_flag_emoji( $fp_country['iso'] );
           ?>
-        <a href="<?php echo esc_url( home_url( '/countries/' . $fp_country_slug . '/' ) ); ?>" class="country-pill"><?php echo esc_html( $fp_flag ? $fp_flag . ' ' : '' ); ?><?php echo esc_html( $fp_country['name'] ); ?></a>
+        <a href="<?php echo esc_url( globalfxhub_track_b_url( 'countries/' . $fp_country_slug . '/' ) ); ?>" class="country-pill"><?php echo esc_html( $fp_flag ? $fp_flag . ' ' : '' ); ?><?php echo esc_html( $fp_country['name'] ); ?></a>
       <?php endforeach; ?>
       <a href="<?php echo esc_url( home_url( '/countries/' ) ); ?>" class="country-pill">All countries &rarr;</a>
     </div>

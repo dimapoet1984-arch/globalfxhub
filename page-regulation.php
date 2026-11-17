@@ -95,13 +95,13 @@ $reg_comparison = $regpage_slug ? globalfxhub_get_localized_regulation_compariso
 <div class="wrap" style="padding-bottom:60px;">
   <div class="guides__grid">
     <?php foreach ( $reg_pages as $slug => $page_data ) : ?>
-    <a href="<?php echo esc_url( home_url( '/regulation/' . $slug . '/' ) ); ?>" class="guide">
+    <a href="<?php echo esc_url( globalfxhub_track_b_url( 'regulation/' . $slug . '/' ) ); ?>" class="guide">
       <h3><?php echo esc_html( $page_data['title'] ); ?></h3>
       <p><?php echo esc_html( $page_data['summary'] ); ?></p>
     </a>
     <?php endforeach; ?>
     <?php foreach ( globalfxhub_get_regulation_comparisons() as $cmp_slug => $cmp_data ) : ?>
-    <a href="<?php echo esc_url( home_url( '/regulation/' . $cmp_slug . '/' ) ); ?>" class="guide">
+    <a href="<?php echo esc_url( globalfxhub_track_b_url( 'regulation/' . $cmp_slug . '/' ) ); ?>" class="guide">
       <h3><?php echo esc_html( $cmp_data['title'] ); ?></h3>
       <p><?php echo esc_html( $cmp_data['meta_description'] ); ?></p>
     </a>

@@ -48,7 +48,7 @@ if ( $research_slug && $research_kind && ! $research_entry ) {
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
   <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>"><?php globalfxhub_te( 'nav_reviews' ); ?></a> /
-  <a href="<?php echo esc_url( home_url( '/reviews/' . $rb['slug'] . '/' ) ); ?>"><?php echo esc_html( $rb['name'] ); ?></a> /
+  <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $rb['slug'] . '/' ) ); ?>"><?php echo esc_html( $rb['name'] ); ?></a> /
   <?php echo esc_html( $research_entry['title'] ); ?>
 </div>
 
@@ -83,7 +83,7 @@ if ( $research_slug && $research_kind && ! $research_entry ) {
     </div>
     <?php endforeach; ?>
   </div>
-  <p style="margin-top:4px;"><a href="<?php echo esc_url( home_url( '/reviews/' . $rb['slug'] . '/' ) ); ?>" style="color:var(--teal);">&larr; <?php echo esc_html( sprintf( globalfxhub_t( 'rev_back_to_full_review' ), $rb['name'] ) ); ?></a></p>
+  <p style="margin-top:4px;"><a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $rb['slug'] . '/' ) ); ?>" style="color:var(--teal);">&larr; <?php echo esc_html( sprintf( globalfxhub_t( 'rev_back_to_full_review' ), $rb['name'] ) ); ?></a></p>
 </div>
 
     <?php endif;
@@ -105,7 +105,7 @@ elseif ( $alts_slug ) :
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
   <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>"><?php globalfxhub_te( 'nav_reviews' ); ?></a> /
-  <a href="<?php echo esc_url( home_url( '/reviews/' . $ref['slug'] . '/' ) ); ?>"><?php echo esc_html( $ref['name'] ); ?></a> /
+  <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $ref['slug'] . '/' ) ); ?>"><?php echo esc_html( $ref['name'] ); ?></a> /
   <?php globalfxhub_te( 'rev_breadcrumb_alternatives' ); ?>
 </div>
 
@@ -143,16 +143,16 @@ elseif ( $alts_slug ) :
       <?php endif; ?>
       <p class="alt-card__meta"><?php echo esc_html( $alt['min_deposit_display'] ? sprintf( globalfxhub_t( 'rev_alt_min_deposit' ), $alt['min_deposit_display'] ) : globalfxhub_t( 'rev_alt_min_deposit_not_confirmed' ) ); ?> &middot; <?php echo esc_html( $alt['platforms'] ? globalfxhub_render_platforms_list( $alt['platforms'] ) : globalfxhub_t( 'rev_alt_platforms_not_confirmed' ) ); ?></p>
       <div class="alt-card__ctas">
-        <a href="<?php echo esc_url( home_url( '/reviews/' . $alt['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+        <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $alt['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
         <?php if ( $vs_pair_check ) : ?>
-        <a href="<?php echo esc_url( home_url( '/compare/' . $ref['slug'] . '-vs-' . $alt['slug'] . '/' ) ); ?>" class="rank-cta"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_compare_vs' ), $ref['name'] ) ); ?></a>
+        <a href="<?php echo esc_url( globalfxhub_track_b_url( 'compare/' . $ref['slug'] . '-vs-' . $alt['slug'] . '/' ) ); ?>" class="rank-cta"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_compare_vs' ), $ref['name'] ) ); ?></a>
         <?php endif; ?>
       </div>
     </div>
     <?php endforeach; ?>
   </div>
   <?php endif; ?>
-  <p style="margin-top:20px;"><a href="<?php echo esc_url( home_url( '/reviews/' . $ref['slug'] . '/' ) ); ?>" style="color:var(--teal);">&larr; <?php echo esc_html( sprintf( globalfxhub_t( 'rev_back_to_full_review' ), $ref['name'] ) ); ?></a></p>
+  <p style="margin-top:20px;"><a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $ref['slug'] . '/' ) ); ?>" style="color:var(--teal);">&larr; <?php echo esc_html( sprintf( globalfxhub_t( 'rev_back_to_full_review' ), $ref['name'] ) ); ?></a></p>
 </div>
 
     <?php endif;
@@ -234,7 +234,7 @@ elseif ( $broker ) :
     <?php endforeach; ?>
     <a href="<?php echo esc_url( home_url( '/broker-finder/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php globalfxhub_te( 'rev_find_similar' ); ?></a>
     <?php if ( globalfxhub_broker_alternatives( $broker['slug'] ) ) : ?>
-    <a href="<?php echo esc_url( home_url( '/reviews/' . $broker['slug'] . '/alternatives/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php globalfxhub_te( 'rev_see_alternatives' ); ?></a>
+    <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $broker['slug'] . '/alternatives/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php globalfxhub_te( 'rev_see_alternatives' ); ?></a>
     <?php endif; ?>
     <?php foreach ( $verify_links as $link ) : ?>
     <a href="<?php echo esc_url( $link['url'] ); ?>" target="_blank" rel="noopener" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $link['label'] ); ?></a>
@@ -420,7 +420,7 @@ $others = array_slice( $others, 0, 3 );
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 20px;"><?php globalfxhub_te( 'rev_other_reviewed_h2' ); ?></h2>
   <div class="guides__grid">
     <?php foreach ( $others as $other ) : ?>
-    <a href="<?php echo esc_url( home_url( '/reviews/' . $other['slug'] . '/' ) ); ?>" class="guide">
+    <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $other['slug'] . '/' ) ); ?>" class="guide">
       <div class="guide__time">#<?php echo esc_html( $other['rank'] ); ?> &middot; <?php echo esc_html( $other['scores']['overall'] ); ?> / 5</div>
       <h3><?php echo esc_html( $other['name'] ); ?></h3>
       <p><?php echo esc_html( $other['blurb'] ); ?></p>
@@ -473,7 +473,7 @@ $others = array_slice( $others, 0, 3 );
       <span class="rank-detail col-plat"><?php echo esc_html( $b['platforms'] ? globalfxhub_render_platforms_list( $b['platforms'] ) : globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
       <span class="rank-score"><?php echo esc_html( $b['scores']['overall'] ); ?> / 5</span>
       <span class="rank-ctas">
-        <a href="<?php echo esc_url( home_url( '/reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+        <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
         <a href="#" class="rank-cta rank-cta--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;"><?php globalfxhub_te( 'tb_visit_broker' ); ?></a>
       </span>
     </div>

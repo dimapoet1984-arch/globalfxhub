@@ -211,7 +211,7 @@ function globalfxhub_news_inject_internal_links( $html, $max_links = 2 ) {
         }
         $pattern = '/\b(' . preg_quote( $broker['name'], '/' ) . ')\b/i';
         if ( preg_match( $pattern, $html ) ) {
-            $url = home_url( '/reviews/' . $broker['slug'] . '/' );
+            $url = globalfxhub_track_b_url( 'reviews/' . $broker['slug'] . '/' );
             $html = preg_replace( $pattern, '<a href="' . esc_url( $url ) . '">$1</a>', $html, 1 );
             $links_added++;
         }

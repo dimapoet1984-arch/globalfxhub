@@ -82,7 +82,7 @@ function globalfxhub_regulation_canonical( $canonical_url ) {
     if ( $slug ) {
         $reg_pages = globalfxhub_get_regulation_pages();
         if ( isset( $reg_pages[ $slug ] ) ) {
-            return home_url( '/regulation/' . $slug . '/' );
+            return globalfxhub_track_b_url( 'regulation/' . $slug . '/' );
         }
     }
     return $canonical_url;

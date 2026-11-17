@@ -159,7 +159,7 @@ function globalfxhub_broker_changelog_sync() {
                 $changelog[ $slug ][] = $entry;
                 $run_entries_for_notification[] = array(
                     'broker_name' => $broker['name'],
-                    'review_url'  => home_url( '/reviews/' . $slug . '/' ),
+                    'review_url'  => globalfxhub_track_b_url( 'reviews/' . $slug . '/' ),
                     'summary'     => $entry['summary'],
                 );
             }
@@ -196,7 +196,7 @@ function globalfxhub_broker_changelog_payload() {
             'slug'       => $b['slug'],
             'name'       => $b['name'],
             'entries'    => globalfxhub_get_broker_changelog( $b['slug'] ),
-            'review_url' => home_url( '/reviews/' . $b['slug'] . '/' ),
+            'review_url' => globalfxhub_track_b_url( 'reviews/' . $b['slug'] . '/' ),
         );
     }
     return $out;

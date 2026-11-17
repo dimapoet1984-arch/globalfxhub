@@ -178,7 +178,7 @@ add_filter( 'document_title_parts', 'globalfxhub_alternatives_seo_title' );
 function globalfxhub_alternatives_canonical( $canonical_url ) {
     $slug = get_query_var( 'broker_alts' );
     if ( $slug && globalfxhub_broker_alternatives( $slug ) ) {
-        return home_url( '/reviews/' . $slug . '/alternatives/' );
+        return globalfxhub_track_b_url( 'reviews/' . $slug . '/alternatives/' );
     }
     return $canonical_url;
 }

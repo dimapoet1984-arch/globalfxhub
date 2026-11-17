@@ -999,7 +999,7 @@ function globalfxhub_review_canonical( $canonical_url ) {
     if ( $slug ) {
         $broker = globalfxhub_get_broker_by_slug( $slug );
         if ( $broker ) {
-            return home_url( '/reviews/' . $broker['slug'] . '/' );
+            return globalfxhub_track_b_url( 'reviews/' . $broker['slug'] . '/' );
         }
     }
     return $canonical_url;
@@ -1123,7 +1123,7 @@ function globalfxhub_best_canonical( $canonical_url ) {
     if ( $slug ) {
         $lists = globalfxhub_get_best_lists();
         if ( isset( $lists[ $slug ] ) ) {
-            return home_url( '/best/' . $slug . '/' );
+            return globalfxhub_track_b_url( 'best/' . $slug . '/' );
         }
     }
     return $canonical_url;
@@ -1216,7 +1216,7 @@ function globalfxhub_extended_seo_head() {
                 $items[] = array(
                     '@type'    => 'ListItem',
                     'position' => $position++,
-                    'url'      => home_url( '/reviews/' . $b['slug'] . '/' ),
+                    'url'      => globalfxhub_track_b_url( 'reviews/' . $b['slug'] . '/' ),
                     'name'     => $b['name'],
                 );
             }
@@ -1331,7 +1331,7 @@ function globalfxhub_breadcrumb_schema() {
         if ( $broker ) {
             $trail = array(
                 array( 'name' => 'Reviews', 'item' => home_url( '/reviews/' ) ),
-                array( 'name' => $broker['name'], 'item' => home_url( '/reviews/' . $broker['slug'] . '/' ) ),
+                array( 'name' => $broker['name'], 'item' => globalfxhub_track_b_url( 'reviews/' . $broker['slug'] . '/' ) ),
             );
         }
     } elseif ( is_page_template( 'page-reviews.php' ) ) {
@@ -1345,8 +1345,8 @@ function globalfxhub_breadcrumb_schema() {
             if ( $alts_data ) {
                 $trail = array(
                     array( 'name' => 'Reviews', 'item' => home_url( '/reviews/' ) ),
-                    array( 'name' => $alts_data['broker']['name'], 'item' => home_url( '/reviews/' . $alts_data['broker']['slug'] . '/' ) ),
-                    array( 'name' => 'Alternatives', 'item' => home_url( '/reviews/' . $alts_data['broker']['slug'] . '/alternatives/' ) ),
+                    array( 'name' => $alts_data['broker']['name'], 'item' => globalfxhub_track_b_url( 'reviews/' . $alts_data['broker']['slug'] . '/' ) ),
+                    array( 'name' => 'Alternatives', 'item' => globalfxhub_track_b_url( 'reviews/' . $alts_data['broker']['slug'] . '/alternatives/' ) ),
                 );
             }
         }
@@ -1360,8 +1360,8 @@ function globalfxhub_breadcrumb_schema() {
             if ( $research_data ) {
                 $trail = array(
                     array( 'name' => 'Reviews', 'item' => home_url( '/reviews/' ) ),
-                    array( 'name' => $research_data['broker']['name'], 'item' => home_url( '/reviews/' . $research_data['broker_slug'] . '/' ) ),
-                    array( 'name' => $research_data['title'], 'item' => home_url( '/reviews/' . $research_data['broker_slug'] . '/' . $research_data['kind'] . '/' ) ),
+                    array( 'name' => $research_data['broker']['name'], 'item' => globalfxhub_track_b_url( 'reviews/' . $research_data['broker_slug'] . '/' ) ),
+                    array( 'name' => $research_data['title'], 'item' => globalfxhub_track_b_url( 'reviews/' . $research_data['broker_slug'] . '/' . $research_data['kind'] . '/' ) ),
                 );
             }
         }
@@ -1375,7 +1375,7 @@ function globalfxhub_breadcrumb_schema() {
             if ( $vs_pair ) {
                 $trail = array(
                     array( 'name' => 'Compare Brokers', 'item' => home_url( '/compare/' ) ),
-                    array( 'name' => $vs_pair['a']['name'] . ' vs ' . $vs_pair['b']['name'], 'item' => home_url( '/compare/' . $vs_a_slug . '-vs-' . $vs_b_slug . '/' ) ),
+                    array( 'name' => $vs_pair['a']['name'] . ' vs ' . $vs_pair['b']['name'], 'item' => globalfxhub_track_b_url( 'compare/' . $vs_a_slug . '-vs-' . $vs_b_slug . '/' ) ),
                 );
             }
         }
@@ -1388,7 +1388,7 @@ function globalfxhub_breadcrumb_schema() {
             if ( isset( $lists[ $bestlist_slug ] ) ) {
                 $trail = array(
                     array( 'name' => 'Best Brokers', 'item' => home_url( '/best/' ) ),
-                    array( 'name' => $lists[ $bestlist_slug ]['title'], 'item' => home_url( '/best/' . $bestlist_slug . '/' ) ),
+                    array( 'name' => $lists[ $bestlist_slug ]['title'], 'item' => globalfxhub_track_b_url( 'best/' . $bestlist_slug . '/' ) ),
                 );
             }
         } elseif ( is_page_template( 'page-best.php' ) ) {
@@ -1403,7 +1403,7 @@ function globalfxhub_breadcrumb_schema() {
             if ( isset( $countries[ $country_slug ] ) ) {
                 $trail = array(
                     array( 'name' => 'Countries', 'item' => home_url( '/countries/' ) ),
-                    array( 'name' => $countries[ $country_slug ]['name'], 'item' => home_url( '/countries/' . $country_slug . '/' ) ),
+                    array( 'name' => $countries[ $country_slug ]['name'], 'item' => globalfxhub_track_b_url( 'countries/' . $country_slug . '/' ) ),
                 );
             }
         } elseif ( is_page_template( 'page-countries.php' ) ) {
@@ -1419,12 +1419,12 @@ function globalfxhub_breadcrumb_schema() {
             if ( $reg_comparison ) {
                 $trail = array(
                     array( 'name' => 'Regulation', 'item' => home_url( '/regulation/' ) ),
-                    array( 'name' => $reg_comparison['title'], 'item' => home_url( '/regulation/' . $regpage_slug . '/' ) ),
+                    array( 'name' => $reg_comparison['title'], 'item' => globalfxhub_track_b_url( 'regulation/' . $regpage_slug . '/' ) ),
                 );
             } elseif ( isset( $reg_pages[ $regpage_slug ] ) ) {
                 $trail = array(
                     array( 'name' => 'Regulation', 'item' => home_url( '/regulation/' ) ),
-                    array( 'name' => $reg_pages[ $regpage_slug ]['title'], 'item' => home_url( '/regulation/' . $regpage_slug . '/' ) ),
+                    array( 'name' => $reg_pages[ $regpage_slug ]['title'], 'item' => globalfxhub_track_b_url( 'regulation/' . $regpage_slug . '/' ) ),
                 );
             }
         } elseif ( is_page_template( 'page-regulation.php' ) ) {
@@ -1439,7 +1439,7 @@ function globalfxhub_breadcrumb_schema() {
             if ( isset( $entities[ $regulator_slug ] ) ) {
                 $trail = array(
                     array( 'name' => 'Regulators', 'item' => home_url( '/regulators/' ) ),
-                    array( 'name' => $entities[ $regulator_slug ]['name'], 'item' => home_url( '/regulators/' . $regulator_slug . '/' ) ),
+                    array( 'name' => $entities[ $regulator_slug ]['name'], 'item' => globalfxhub_track_b_url( 'regulators/' . $regulator_slug . '/' ) ),
                 );
             }
         } elseif ( is_page_template( 'page-regulators.php' ) ) {
@@ -1454,7 +1454,7 @@ function globalfxhub_breadcrumb_schema() {
             if ( $report ) {
                 $trail = array(
                     array( 'name' => 'Research', 'item' => home_url( '/research/' ) ),
-                    array( 'name' => $report['title'], 'item' => home_url( '/research/' . $report_slug . '/' ) ),
+                    array( 'name' => $report['title'], 'item' => globalfxhub_track_b_url( 'research/' . $report_slug . '/' ) ),
                 );
             }
         } elseif ( is_page_template( 'page-research.php' ) ) {
@@ -1470,7 +1470,7 @@ function globalfxhub_breadcrumb_schema() {
                 $trail = array(
                     array( 'name' => 'News', 'item' => home_url( '/news/' ) ),
                     array( 'name' => 'Broker News', 'item' => home_url( '/news/brokers/' ) ),
-                    array( 'name' => $news_item['headline'], 'item' => home_url( '/news/brokers/' . $news_item_slug . '/' ) ),
+                    array( 'name' => $news_item['headline'], 'item' => globalfxhub_track_b_url( 'news/brokers/' . $news_item_slug . '/' ) ),
                 );
             }
         } elseif ( is_page( 'markets' ) ) {

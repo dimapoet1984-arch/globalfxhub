@@ -292,7 +292,7 @@ function globalfxhub_regulator_entity_brokers( $regulator_slug ) {
             'name'            => $broker['name'],
             'licence_number'  => globalfxhub_broker_regulator_licence_number( $broker, $regulator_slug ),
             'entity'          => ( $show_entity && ! empty( $broker['entity'] ) ) ? $broker['entity'] : null,
-            'review_url'      => home_url( '/reviews/' . $broker['slug'] . '/' ),
+            'review_url'      => globalfxhub_track_b_url( 'reviews/' . $broker['slug'] . '/' ),
             'rank'            => $broker['rank'],
         );
     }
@@ -343,7 +343,7 @@ function globalfxhub_regulator_entity_canonical( $canonical_url ) {
     if ( $slug ) {
         $entities = globalfxhub_get_regulator_entities();
         if ( isset( $entities[ $slug ] ) ) {
-            return home_url( '/regulators/' . $slug . '/' );
+            return globalfxhub_track_b_url( 'regulators/' . $slug . '/' );
         }
     }
     return $canonical_url;

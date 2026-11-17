@@ -310,7 +310,7 @@ add_filter( 'document_title_parts', 'globalfxhub_broker_news_seo_title' );
 function globalfxhub_broker_news_canonical( $canonical_url ) {
     $slug = get_query_var( 'broker_news_item' );
     if ( $slug && globalfxhub_get_broker_news_item_by_slug( $slug ) ) {
-        return home_url( '/news/brokers/' . $slug . '/' );
+        return globalfxhub_track_b_url( 'news/brokers/' . $slug . '/' );
     }
     return $canonical_url;
 }

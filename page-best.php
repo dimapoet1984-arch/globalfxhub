@@ -51,7 +51,7 @@ $best_lists = globalfxhub_get_best_lists();
       <span class="rank-detail col-plat"><?php echo esc_html( $b['platforms'] ? globalfxhub_render_platforms_list( $b['platforms'] ) : globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
       <span class="rank-score"><?php echo esc_html( round( call_user_func( $list['sort_key'], $b ), 2 ) ); ?> / 5</span>
       <span class="rank-ctas">
-        <a href="<?php echo esc_url( home_url( '/reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+        <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
         <a href="#" class="rank-cta rank-cta--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;"><?php globalfxhub_te( 'tb_visit_broker' ); ?></a>
       </span>
     </div>
@@ -84,7 +84,7 @@ $best_lists = globalfxhub_get_best_lists();
 <div class="wrap" style="padding-bottom:60px;">
   <div class="guides__grid">
     <?php foreach ( $best_lists as $slug => $list ) : ?>
-    <a href="<?php echo esc_url( home_url( '/best/' . $slug . '/' ) ); ?>" class="guide">
+    <a href="<?php echo esc_url( globalfxhub_track_b_url( 'best/' . $slug . '/' ) ); ?>" class="guide">
       <div class="guide__time"><?php globalfxhub_te( 'best_top15_label' ); ?> &middot; <?php echo esc_html( $list['sort_label'] ); ?></div>
       <h3><?php echo esc_html( $list['title'] ); ?></h3>
       <p><?php echo esc_html( globalfxhub_trim_excerpt( wp_strip_all_tags( $list['intro'] ), 22 ) ); ?></p>

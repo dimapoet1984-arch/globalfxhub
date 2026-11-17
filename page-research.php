@@ -107,7 +107,7 @@ if ( $report_slug && ! $report ) {
 <div class="wrap" style="padding-bottom:60px;">
   <div class="guides__grid">
     <?php foreach ( globalfxhub_get_research_reports() as $slug => $report_data ) : ?>
-    <a href="<?php echo esc_url( home_url( '/research/' . $slug . '/' ) ); ?>" class="guide">
+    <a href="<?php echo esc_url( globalfxhub_track_b_url( 'research/' . $slug . '/' ) ); ?>" class="guide">
       <h3><?php echo esc_html( $report_data['title'] ); ?></h3>
       <p><?php echo esc_html( $report_data['meta_description'] ); ?></p>
     </a>

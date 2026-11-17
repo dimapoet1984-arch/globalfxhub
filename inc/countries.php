@@ -791,7 +791,7 @@ function globalfxhub_country_canonical( $canonical_url ) {
     if ( $slug ) {
         $country = globalfxhub_get_country_by_slug( $slug );
         if ( $country ) {
-            return home_url( '/countries/' . $slug . '/' );
+            return globalfxhub_track_b_url( 'countries/' . $slug . '/' );
         }
     }
     return $canonical_url;

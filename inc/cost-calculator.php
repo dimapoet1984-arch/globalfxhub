@@ -105,7 +105,7 @@ function globalfxhub_cost_calculator_payload() {
             'rank'             => $b['rank'],
             'spread_eurusd'    => $b['spread_eurusd'],
             'regulation_label' => globalfxhub_broker_regulation_label( $b ),
-            'review_url'       => home_url( '/reviews/' . $b['slug'] . '/' ),
+            'review_url'       => globalfxhub_track_b_url( 'reviews/' . $b['slug'] . '/' ),
         );
     }
 

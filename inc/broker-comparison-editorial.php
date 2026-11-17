@@ -412,7 +412,7 @@ function globalfxhub_editorial_comparisons_for_broker( $slug ) {
             continue;
         }
         $matches[] = array(
-            'url'   => home_url( '/compare/' . $entry['a_slug'] . '-vs-' . $entry['b_slug'] . '/' ),
+            'url'   => globalfxhub_track_b_url( 'compare/' . $entry['a_slug'] . '-vs-' . $entry['b_slug'] . '/' ),
             'other' => $other,
         );
     }

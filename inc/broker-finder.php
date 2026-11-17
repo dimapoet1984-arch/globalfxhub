@@ -341,7 +341,7 @@ function globalfxhub_finder_broker_payload() {
             'meets_tier1'       => globalfxhub_broker_meets_regulation_option( $b, 'tier1' ),
             'overall'           => $b['scores']['overall'] ?? null,
             'style_scores'      => $style_scores,
-            'review_url'        => home_url( '/reviews/' . $b['slug'] . '/' ),
+            'review_url'        => globalfxhub_track_b_url( 'reviews/' . $b['slug'] . '/' ),
         );
     }, $brokers );
 }

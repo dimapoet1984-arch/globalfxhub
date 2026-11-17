@@ -159,7 +159,7 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
       <span class="rank-detail col-plat"><?php echo esc_html( $b['platforms'] ? globalfxhub_render_platforms_list( $b['platforms'] ) : globalfxhub_t( 'tb_not_confirmed' ) ); ?></span>
       <span class="rank-score"><?php echo esc_html( $b['scores']['overall'] ); ?> / 5</span>
       <span class="rank-ctas">
-        <a href="<?php echo esc_url( home_url( '/reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
+        <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
         <a href="#" class="rank-cta rank-cta--visit" target="_blank" rel="nofollow sponsored noopener" onclick="return false;"><?php globalfxhub_te( 'tb_visit_broker' ); ?></a>
       </span>
     </div>
@@ -221,7 +221,7 @@ $cc_not_researched = 'Not yet independently researched for this country -- see o
 <div class="wrap" style="padding-bottom:60px;">
   <div class="guides__grid">
     <?php foreach ( $countries as $slug => $c ) : ?>
-    <a href="<?php echo esc_url( home_url( '/countries/' . $slug . '/' ) ); ?>" class="guide country-card">
+    <a href="<?php echo esc_url( globalfxhub_track_b_url( 'countries/' . $slug . '/' ) ); ?>" class="guide country-card">
       <div class="guide__time"><?php echo esc_html( $c['currency'] ); ?> &middot; <?php echo esc_html( globalfxhub_country_index_badge( $c ) ); ?></div>
       <h3><span class="country-flag" aria-hidden="true"><?php echo esc_html( globalfxhub_country_flag_emoji( $c['iso'] ) ); ?></span> Best Broker in <?php echo esc_html( $c['name'] ); ?></h3>
       <p><?php echo esc_html( $c['regulator'] ); ?></p>

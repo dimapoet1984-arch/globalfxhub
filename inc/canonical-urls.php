@@ -30,7 +30,7 @@ function globalfxhub_canonical_for_query_param_routes( $canonical ) {
         if ( ! empty( $_GET['broker'] ) ) {
             $broker = globalfxhub_get_broker_by_slug( sanitize_title( wp_unslash( $_GET['broker'] ) ) );
             if ( $broker ) {
-                return home_url( '/reviews/' . $broker['slug'] . '/' );
+                return globalfxhub_track_b_url( 'reviews/' . $broker['slug'] . '/' );
             }
         }
         if ( isset( $_GET['search'] ) && '' !== $_GET['search'] ) {
@@ -41,7 +41,7 @@ function globalfxhub_canonical_for_query_param_routes( $canonical ) {
     if ( is_page_template( 'page-countries.php' ) && ! empty( $_GET['country'] ) ) {
         $country = globalfxhub_get_country_by_slug( sanitize_title( wp_unslash( $_GET['country'] ) ) );
         if ( $country ) {
-            return home_url( '/countries/' . $country['slug'] . '/' );
+            return globalfxhub_track_b_url( 'countries/' . $country['slug'] . '/' );
         }
     }
 
@@ -49,7 +49,7 @@ function globalfxhub_canonical_for_query_param_routes( $canonical ) {
         $a = sanitize_title( wp_unslash( $_GET['a'] ) );
         $b = sanitize_title( wp_unslash( $_GET['b'] ) );
         if ( function_exists( 'globalfxhub_vs_pair' ) && globalfxhub_vs_pair( $a, $b ) ) {
-            return home_url( '/compare/' . $a . '-vs-' . $b . '/' );
+            return globalfxhub_track_b_url( 'compare/' . $a . '-vs-' . $b . '/' );
         }
         return home_url( '/compare/' );
     }

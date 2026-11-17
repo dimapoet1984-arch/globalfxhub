@@ -102,7 +102,7 @@ function globalfxhub_broker_vs_related_pairs( $slug, $exclude_slug = null, $coun
         list( $first, $second ) = ( $pos < $cand_pos ) ? array( $slug, $cand ) : array( $cand, $slug );
         $pairs[] = array(
             'broker' => $broker,
-            'url'    => home_url( '/compare/' . $first . '-vs-' . $second . '/' ),
+            'url'    => globalfxhub_track_b_url( 'compare/' . $first . '-vs-' . $second . '/' ),
         );
     }
     return $pairs;
@@ -160,7 +160,7 @@ function globalfxhub_vs_canonical( $canonical_url ) {
     $a_slug = get_query_var( 'vs_a' );
     $b_slug = get_query_var( 'vs_b' );
     if ( globalfxhub_vs_pair( $a_slug, $b_slug ) ) {
-        return home_url( '/compare/' . $a_slug . '-vs-' . $b_slug . '/' );
+        return globalfxhub_track_b_url( 'compare/' . $a_slug . '-vs-' . $b_slug . '/' );
     }
     return $canonical_url;
 }

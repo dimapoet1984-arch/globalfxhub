@@ -69,7 +69,7 @@ if ( $news_item_slug && ! $news_item ) {
 
     <?php if ( $broker ) : ?>
     <div class="methodology-note" style="margin:24px 0 0;">
-      This story is about <strong><?php echo esc_html( $broker['name'] ); ?></strong>, ranked #<?php echo esc_html( $broker['rank'] ); ?> in our rankings (<?php echo esc_html( $broker['scores']['overall'] ); ?> / 5 overall). <a href="<?php echo esc_url( home_url( '/reviews/' . $broker['slug'] . '/' ) ); ?>" style="color:var(--teal);">Read the full <?php echo esc_html( $broker['name'] ); ?> review &rarr;</a>
+      This story is about <strong><?php echo esc_html( $broker['name'] ); ?></strong>, ranked #<?php echo esc_html( $broker['rank'] ); ?> in our rankings (<?php echo esc_html( $broker['scores']['overall'] ); ?> / 5 overall). <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $broker['slug'] . '/' ) ); ?>" style="color:var(--teal);">Read the full <?php echo esc_html( $broker['name'] ); ?> review &rarr;</a>
     </div>
     <?php endif; ?>
 
@@ -118,7 +118,7 @@ if ( $news_item_slug && ! $news_item ) {
           $cat_label = isset( $broker_news_categories[ $item['category'] ] ) ? $broker_news_categories[ $item['category'] ] : 'Update';
           $item_slug = globalfxhub_broker_news_item_slug( $item );
       ?>
-      <a href="<?php echo esc_url( home_url( '/news/brokers/' . $item_slug . '/' ) ); ?>" class="news-item">
+      <a href="<?php echo esc_url( globalfxhub_track_b_url( 'news/brokers/' . $item_slug . '/' ) ); ?>" class="news-item">
         <div class="tag"><?php echo esc_html( strtoupper( $cat_label ) ); ?></div>
         <h4><?php echo esc_html( $item['headline'] ); ?></h4>
         <p><?php echo esc_html( globalfxhub_trim_excerpt( $item['body'], 24 ) ); ?></p>

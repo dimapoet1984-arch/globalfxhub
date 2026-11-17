@@ -250,3 +250,69 @@ function globalfxhub_suppress_track_b_canonical_redirect( $redirect_url, $langua
     return $redirect_url;
 }
 add_filter( 'pll_check_canonical_url', 'globalfxhub_suppress_track_b_canonical_redirect', 20, 2 );
+
+/**
+ * The correct current-request language for building a link to a Track
+ * B route, or for deciding how to build one FROM a Track B route.
+ *
+ * Every other part of the theme resolves "what language is this
+ * request" via globalfxhub_current_content_lang() (inc/i18n-content-language.php),
+ * which is pll_current_language() with a safe default-language
+ * fallback -- but globalfxhub_resolve_track_b_container_language()
+ * above documents, and confirmed live, that pll_current_language()
+ * itself returns the WRONG language on every Track B route: Polylang's
+ * own curlang detection never recognizes these custom rewrite-rule
+ * URLs as language-bearing at all. That function already records the
+ * language the URL actually asked for in
+ * $GLOBALS['globalfxhub_track_b_request_lang'] for exactly this
+ * reason (originally just to fix the <html lang> attribute) -- this
+ * reads that same global first, and only falls through to the normal
+ * sitewide resolution for a request that ISN'T itself a Track B route
+ * (e.g. rendering a review-page link from the Reviews hub, or from an
+ * unrelated post/page).
+ */
+function globalfxhub_track_b_current_lang() {
+    if ( ! empty( $GLOBALS['globalfxhub_track_b_request_lang'] ) ) {
+        return $GLOBALS['globalfxhub_track_b_request_lang'];
+    }
+    return function_exists( 'globalfxhub_current_content_lang' ) ? globalfxhub_current_content_lang() : null;
+}
+
+/**
+ * Builds a language-correct URL to one of the Track B dynamic routes
+ * this file registers rewrite rules for above (reviews/{slug},
+ * reviews/{slug}/alternatives, reviews/{slug}/fees,
+ * reviews/{slug}/regulation, best/{slug}, regulation/{slug},
+ * regulators/{slug}, countries/{slug}, compare/{a}-vs-{b},
+ * news/brokers/{item}, research/{slug}).
+ *
+ * $path is the route's path with NO leading slash and no language
+ * prefix (e.g. 'reviews/avatrade/', 'best/cysec-regulated/'), i.e.
+ * exactly what every call site already builds today, minus the
+ * leading slash home_url() takes care of.
+ *
+ * Confirmed live: every one of these links was previously built with
+ * a plain home_url( '/reviews/' . $slug . '/' ) (etc.), which always
+ * produces the bare English URL regardless of the current page's own
+ * language -- 139/139 broker-review links on both /es/reviews-es/ and
+ * /de/reviews-de/ pointed at the English review, dropping a non-
+ * English visitor back into English on every click-through. The
+ * rewrite rules above only ever register a SECOND rule for each route
+ * with a language prefix ("/es/reviews/avatrade/") -- the default
+ * language keeps the existing bare, unprefixed path -- so this mirrors
+ * that exactly rather than prefixing every language including the
+ * default one.
+ *
+ * Deliberately NOT used by inc/sitemap.php's own URL listing, which
+ * lists one canonical (English) entry per item for crawling, not a
+ * link for a specific visitor's current-language page -- a separate,
+ * different gap (these routes having no per-language sitemap entry at
+ * all) that this fix does not address.
+ */
+function globalfxhub_track_b_url( $path ) {
+    $lang = globalfxhub_track_b_current_lang();
+    if ( ! $lang || ( function_exists( 'pll_default_language' ) && $lang === pll_default_language() ) ) {
+        return home_url( '/' . $path );
+    }
+    return home_url( '/' . $lang . '/' . $path );
+}

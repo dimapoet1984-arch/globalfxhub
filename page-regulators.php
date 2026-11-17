@@ -61,12 +61,12 @@ if ( $regulator_slug && ! $entity ) {
   </table>
   <p style="color:var(--ink-soft);font-size:13.5px;margin:0 0 20px;">
     <?php if ( $entity['related_regulation_slug'] && isset( $reg_pages[ $entity['related_regulation_slug'] ] ) ) : ?>
-    See our <a href="<?php echo esc_url( home_url( '/regulation/' . $entity['related_regulation_slug'] . '/' ) ); ?>" style="color:var(--teal);">full <?php echo esc_html( $entity['name'] ); ?> explainer</a> for what this licence does and doesn't guarantee.
+    See our <a href="<?php echo esc_url( globalfxhub_track_b_url( 'regulation/' . $entity['related_regulation_slug'] . '/' ) ); ?>" style="color:var(--teal);">full <?php echo esc_html( $entity['name'] ); ?> explainer</a> for what this licence does and doesn't guarantee.
     <?php elseif ( ! empty( $entity['related_learn_slug'] ) ) : ?>
     See our <a href="<?php echo esc_url( home_url( '/learn/' . $entity['related_learn_slug'] . '/' ) ); ?>" style="color:var(--teal);">full <?php echo esc_html( $entity['name'] ); ?> regulation guide</a> for what this licence does and doesn't guarantee.
     <?php endif; ?>
     <?php if ( $entity['related_best_slug'] ) : ?>
-    See our ranked <a href="<?php echo esc_url( home_url( '/best/' . $entity['related_best_slug'] . '/' ) ); ?>" style="color:var(--teal);">best <?php echo esc_html( $entity['name'] ); ?>-regulated brokers</a> list.
+    See our ranked <a href="<?php echo esc_url( globalfxhub_track_b_url( 'best/' . $entity['related_best_slug'] . '/' ) ); ?>" style="color:var(--teal);">best <?php echo esc_html( $entity['name'] ); ?>-regulated brokers</a> list.
     <?php endif; ?>
   </p>
 </div>
@@ -126,7 +126,7 @@ if ( $regulator_slug && ! $entity ) {
     <?php foreach ( $entities as $slug => $entity_data ) :
         $entity_stats = globalfxhub_regulator_entity_stats( $slug );
     ?>
-    <a href="<?php echo esc_url( home_url( '/regulators/' . $slug . '/' ) ); ?>" class="guide">
+    <a href="<?php echo esc_url( globalfxhub_track_b_url( 'regulators/' . $slug . '/' ) ); ?>" class="guide">
       <h3><?php echo esc_html( $entity_data['name'] ); ?></h3>
       <p><?php echo esc_html( $entity_data['full_name'] ); ?> &mdash; <?php echo esc_html( $entity_stats['held'] ); ?> of <?php echo esc_html( $entity_stats['total'] ); ?> researched brokers hold this licence.</p>
     </a>

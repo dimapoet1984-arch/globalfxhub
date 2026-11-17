@@ -357,7 +357,7 @@ function globalfxhub_broker_research_articles_for_broker( $slug ) {
             $matches[] = array(
                 'kind'  => $entry['kind'],
                 'title' => $entry['title'],
-                'url'   => home_url( '/reviews/' . $slug . '/' . $entry['kind'] . '/' ),
+                'url'   => globalfxhub_track_b_url( 'reviews/' . $slug . '/' . $entry['kind'] . '/' ),
             );
         }
     }
@@ -381,7 +381,7 @@ function globalfxhub_research_canonical( $canonical_url ) {
     $slug = get_query_var( 'broker_research' );
     $kind = get_query_var( 'broker_research_kind' );
     if ( $slug && $kind && globalfxhub_get_broker_research_article( $slug, $kind ) ) {
-        return home_url( '/reviews/' . $slug . '/' . $kind . '/' );
+        return globalfxhub_track_b_url( 'reviews/' . $slug . '/' . $kind . '/' );
     }
     return $canonical_url;
 }

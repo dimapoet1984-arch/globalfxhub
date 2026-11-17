@@ -52,7 +52,7 @@ foreach ( globalfxhub_get_brokers() as $b ) {
             $cat_label = isset( $broker_news_categories[ $item['category'] ] ) ? $broker_news_categories[ $item['category'] ] : 'Update';
             $item_slug = globalfxhub_broker_news_item_slug( $item );
         ?>
-        <a href="<?php echo esc_url( home_url( '/news/brokers/' . $item_slug . '/' ) ); ?>" class="news-item">
+        <a href="<?php echo esc_url( globalfxhub_track_b_url( 'news/brokers/' . $item_slug . '/' ) ); ?>" class="news-item">
           <div class="tag"><?php echo esc_html( strtoupper( $cat_label ) ); ?></div>
           <h4><?php echo esc_html( $item['headline'] ); ?></h4>
           <p><?php echo esc_html( globalfxhub_trim_excerpt( $item['body'], 24 ) ); ?></p>

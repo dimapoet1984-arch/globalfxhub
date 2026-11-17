@@ -177,7 +177,7 @@ function globalfxhub_broker_regulation_dossier( $broker ) {
         'other_regulators' => $other_regulators,
         'regulation_label' => globalfxhub_broker_regulation_label( $broker ),
         'review_dates'     => globalfxhub_broker_review_dates( $broker ),
-        'review_url'       => home_url( '/reviews/' . $broker['slug'] . '/' ),
+        'review_url'       => globalfxhub_track_b_url( 'reviews/' . $broker['slug'] . '/' ),
     );
 }
 

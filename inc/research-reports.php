@@ -373,7 +373,7 @@ add_filter( 'document_title_parts', 'globalfxhub_research_reports_seo_title' );
 function globalfxhub_research_reports_canonical( $canonical_url ) {
     $slug = get_query_var( 'report' );
     if ( $slug && globalfxhub_get_research_report( $slug ) ) {
-        return home_url( '/research/' . $slug . '/' );
+        return globalfxhub_track_b_url( 'research/' . $slug . '/' );
     }
     return $canonical_url;
 }
