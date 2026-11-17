@@ -43,7 +43,7 @@ if ( $news_item_slug && ! $news_item ) {
 
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( home_url( '/news/' ) ); ?>">News</a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'news' ) ); ?>">News</a> /
   <a href="<?php echo esc_url( home_url( '/news/brokers/' ) ); ?>">Broker News</a> /
   <?php echo esc_html( $broker ? $broker['name'] : $news_item['broker_slug'] ); ?>
 </div>
@@ -97,7 +97,7 @@ if ( $news_item_slug && ! $news_item ) {
 
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( home_url( '/news/' ) ); ?>">News</a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'news' ) ); ?>">News</a> /
   <?php the_title(); ?>
 </div>
 

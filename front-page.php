@@ -291,7 +291,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
         <h2><?php globalfxhub_te( 'sec_news_h2' ); ?></h2>
         <p><?php globalfxhub_te( 'sec_news_p' ); ?></p>
       </div>
-      <a href="<?php echo esc_url( home_url( '/news/' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_all_news' ); ?></a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'news' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_all_news' ); ?></a>
     </div>
     <div class="news__grid">
       <?php foreach ( $globalfxhub_broker_news_preview as $globalfxhub_bn_item ) :
@@ -361,7 +361,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
         <span class="rank-score"><?php echo esc_html( $fp_b['scores']['overall'] ); ?> / 5</span>
         <span class="rank-ctas">
           <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $fp_b['slug'] . '/' ) ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
-          <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . $fp_b['slug'] ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
+          <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) . '?a=' . $fp_b['slug'] ); ?>" class="rank-cta"><?php globalfxhub_te( 'nav_compare' ); ?></a>
         </span>
       </div>
       <?php endforeach; ?>
@@ -451,7 +451,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
         $fp_best_links[] = '<a href="' . esc_url( globalfxhub_track_b_url( 'best/' . $fp_best_slug . '/' ) ) . '" style="color:var(--teal);">' . esc_html( $fp_best_list['title'] ) . '</a>';
     }
     echo implode( ' &middot; ', $fp_best_links );
-    ?> &middot; <a href="<?php echo esc_url( home_url( '/regulation/' ) ); ?>" style="color:var(--teal);">Regulation knowledge base</a></p>
+    ?> &middot; <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>" style="color:var(--teal);">Regulation knowledge base</a></p>
   </div>
 </section>
 
@@ -463,7 +463,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
         <h2><?php globalfxhub_te( 'sec_guides_h2' ); ?></h2>
         <p><?php globalfxhub_te( 'sec_guides_p' ); ?></p>
       </div>
-      <a href="<?php echo esc_url( home_url( '/learn/' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_all_guides' ); ?></a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'learn' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_all_guides' ); ?></a>
     </div>
     <div class="guides__grid">
       <?php
@@ -501,16 +501,16 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
         <h2><?php globalfxhub_te( 'sec_compare_h2' ); ?></h2>
         <p><?php globalfxhub_te( 'sec_compare_p' ); ?></p>
       </div>
-      <a href="<?php echo esc_url( home_url( '/compare/' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_open_compare' ); ?></a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) ); ?>" class="section__link"><?php globalfxhub_te( 'link_open_compare' ); ?></a>
     </div>
     <div class="countries__row">
-      <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ig&b=xtb' ); ?>" class="country-pill">IG vs XTB</a>
-      <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=etoro&b=plus500' ); ?>" class="country-pill">eToro vs Plus500</a>
-      <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=xm&b=pepperstone' ); ?>" class="country-pill">XM vs Pepperstone</a>
-      <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=ic-markets&b=fxpro' ); ?>" class="country-pill">IC Markets vs FxPro</a>
-      <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=fxcm&b=capital-com' ); ?>" class="country-pill">FXCM vs Capital.com</a>
-      <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=avatrade&b=tickmill' ); ?>" class="country-pill">AvaTrade vs Tickmill</a>
-      <a href="<?php echo esc_url( home_url( '/compare/' ) ); ?>" class="country-pill">Pick your own →</a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) . '?a=ig&b=xtb' ); ?>" class="country-pill">IG vs XTB</a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) . '?a=etoro&b=plus500' ); ?>" class="country-pill">eToro vs Plus500</a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) . '?a=xm&b=pepperstone' ); ?>" class="country-pill">XM vs Pepperstone</a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) . '?a=ic-markets&b=fxpro' ); ?>" class="country-pill">IC Markets vs FxPro</a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) . '?a=fxcm&b=capital-com' ); ?>" class="country-pill">FXCM vs Capital.com</a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) . '?a=avatrade&b=tickmill' ); ?>" class="country-pill">AvaTrade vs Tickmill</a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) ); ?>" class="country-pill">Pick your own →</a>
     </div>
   </div>
 </section>
@@ -531,7 +531,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
           ?>
         <a href="<?php echo esc_url( globalfxhub_track_b_url( 'countries/' . $fp_country_slug . '/' ) ); ?>" class="country-pill"><?php echo esc_html( $fp_flag ? $fp_flag . ' ' : '' ); ?><?php echo esc_html( $fp_country['name'] ); ?></a>
       <?php endforeach; ?>
-      <a href="<?php echo esc_url( home_url( '/countries/' ) ); ?>" class="country-pill">All countries &rarr;</a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'countries' ) ); ?>" class="country-pill">All countries &rarr;</a>
     </div>
   </div>
 </section>

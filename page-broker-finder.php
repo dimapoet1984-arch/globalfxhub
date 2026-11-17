@@ -106,7 +106,7 @@ $finder_styles      = globalfxhub_finder_trading_styles();
 
   <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;">
     <?php
-    $finder_country_link_html = '<a href="' . esc_url( home_url( '/countries/' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'finder_country_page_link' ) ) . '</a>';
+    $finder_country_link_html = '<a href="' . esc_url( globalfxhub_templated_page_url( 'countries' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'finder_country_page_link' ) ) . '</a>';
     echo sprintf( esc_html( globalfxhub_t( 'finder_disclaimer_p1' ) ), $finder_country_link_html );
     ?>
     <?php globalfxhub_te( 'finder_disclaimer_p2' ); ?> <?php globalfxhub_te( 'finder_disclaimer_p3' ); ?>
@@ -123,7 +123,7 @@ const FINDER_BROKERS = <?php echo wp_json_encode( globalfxhub_finder_broker_payl
 const FINDER_REG_NOTES = <?php echo wp_json_encode( array_map( function( $o ) { return $o['note']; }, $finder_regulations ) ); ?>;
 const FINDER_STYLE_NOTES = <?php echo wp_json_encode( array_map( function( $s ) { return $s['note']; }, $finder_styles ) ); ?>;
 const FINDER_COUNTRY_LABELS = <?php echo wp_json_encode( $finder_countries ); ?>;
-const FINDER_COUNTRIES_URL = <?php echo wp_json_encode( home_url( '/countries/' ) ); ?>;
+const FINDER_COUNTRIES_URL = <?php echo wp_json_encode( globalfxhub_templated_page_url( 'countries' ) ); ?>;
 // Translated strings for the two JS-built messages below (the
 // per-selection "see local detail" link and the country-eligibility
 // warning), which interpolate a country name that's only known once

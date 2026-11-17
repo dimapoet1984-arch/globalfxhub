@@ -220,7 +220,7 @@ function globalfxhub_news_inject_internal_links( $html, $max_links = 2 ) {
     $guide_map = array(
         'leverage'                                => home_url( '/learn/understanding-leverage-in-forex-trading/' ),
         'candlestick(?:s|\spatterns?)?'            => home_url( '/learn/how-to-read-candlestick-patterns/' ),
-        '(?:compare brokers|broker comparison)'    => home_url( '/compare/' ),
+        '(?:compare brokers|broker comparison)'    => globalfxhub_templated_page_url( 'compare' ),
         '(?:start trading|trading forex|forex trading)' => home_url( '/learn/how-to-start-trading-forex/' ),
     );
     foreach ( $guide_map as $pattern_words => $url ) {

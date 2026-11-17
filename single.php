@@ -14,14 +14,14 @@
      * archive every post used to share.
      */
     $section_map = array(
-        'learn'          => array( 'Learn', home_url( '/learn/' ) ),
+        'learn'          => array( 'Learn', globalfxhub_templated_page_url( 'learn' ) ),
         'fx-market-news' => array( 'FX Market News', home_url( '/news/markets/' ) ),
     );
     if ( isset( $section_map[ $cat_slug ] ) ) {
         list( $section_label, $section_url ) = $section_map[ $cat_slug ];
     } else {
         $section_label = 'Learn';
-        $section_url   = home_url( '/learn/' );
+        $section_url   = globalfxhub_templated_page_url( 'learn' );
     }
 ?>
 

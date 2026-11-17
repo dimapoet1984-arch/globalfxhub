@@ -29,7 +29,7 @@ if ( $vs_pair ) {
 <div class="wrap page-head">
   <div class="eyebrow"><?php globalfxhub_te( 'cmp_eyebrow' ); ?></div>
   <h1><?php globalfxhub_te( 'cmp_not_available_h1' ); ?></h1>
-  <p><?php globalfxhub_te( 'cmp_not_available_body' ); ?> <a href="<?php echo esc_url( home_url( '/compare/' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'cmp_use_full_tool_link' ); ?></a> <?php globalfxhub_te( 'cmp_use_full_tool_suffix' ); ?></p>
+  <p><?php globalfxhub_te( 'cmp_not_available_body' ); ?> <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'cmp_use_full_tool_link' ); ?></a> <?php globalfxhub_te( 'cmp_use_full_tool_suffix' ); ?></p>
 </div>
 
 <?php else : ?>
@@ -170,7 +170,7 @@ if ( $vs_editorial ) :
       &middot;
       <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $vs_b['slug'] . '/' ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'cmp_full_review_link' ), $vs_b['name'] ) ); ?></a>
       &middot;
-      <a href="<?php echo esc_url( home_url( '/compare/' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'cmp_different_brokers_link' ); ?></a>
+      <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'cmp_different_brokers_link' ); ?></a>
     </p>
     <?php
     $vs_related = array();

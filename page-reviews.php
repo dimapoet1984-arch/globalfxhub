@@ -36,7 +36,7 @@ if ( $research_slug && $research_kind && ! $research_entry ) {
   <div class="eyebrow"><?php globalfxhub_te( 'rev_research_eyebrow' ); ?></div>
   <h1><?php globalfxhub_te( 'rev_research_not_available_h1' ); ?></h1>
   <p><?php
-  $see_all_link = '<a href="' . esc_url( home_url( '/reviews/' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'rev_see_all_reviews_link' ) ) . '</a>';
+  $see_all_link = '<a href="' . esc_url( globalfxhub_templated_page_url( 'reviews' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'rev_see_all_reviews_link' ) ) . '</a>';
   echo sprintf( esc_html( globalfxhub_t( 'rev_research_not_available_body' ) ), $see_all_link );
   ?></p>
 </div>
@@ -47,7 +47,7 @@ if ( $research_slug && $research_kind && ! $research_entry ) {
 
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
-  <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>"><?php globalfxhub_te( 'nav_reviews' ); ?></a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'reviews' ) ); ?>"><?php globalfxhub_te( 'nav_reviews' ); ?></a> /
   <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $rb['slug'] . '/' ) ); ?>"><?php echo esc_html( $rb['name'] ); ?></a> /
   <?php echo esc_html( $research_entry['title'] ); ?>
 </div>
@@ -65,7 +65,7 @@ if ( $research_slug && $research_kind && ! $research_entry ) {
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:28px 0 10px;"><?php echo esc_html( $section['heading'] ); ?></h2>
   <p style="color:var(--ink-soft);line-height:1.7;"><?php echo esc_html( $section['body'] ); ?></p>
   <?php if ( 0 === $i ) : ?>
-  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) . '?broker=' . rawurlencode( $rb['slug'] ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_research_try_calculator_link' ); ?></a></p>
+  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( globalfxhub_templated_page_url( 'cost-calculator' ) . '?broker=' . rawurlencode( $rb['slug'] ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_research_try_calculator_link' ); ?></a></p>
   <?php endif; ?>
   <?php if ( 'fees' === $research_entry['kind'] && 4 === $i ) : ?>
   <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/research/forex-trading-platform-adoption-report/' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_research_full_report_link' ); ?></a></p>
@@ -94,7 +94,7 @@ elseif ( $alts_slug ) :
 <div class="wrap page-head">
   <div class="eyebrow"><?php globalfxhub_te( 'rev_alt_eyebrow' ); ?></div>
   <h1><?php globalfxhub_te( 'rev_alt_not_available_h1' ); ?></h1>
-  <p><?php echo esc_html( globalfxhub_t( 'rev_alt_not_available_body' ) ); ?> <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_see_all_reviews_link' ); ?></a>.</p>
+  <p><?php echo esc_html( globalfxhub_t( 'rev_alt_not_available_body' ) ); ?> <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'reviews' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_see_all_reviews_link' ); ?></a>.</p>
 </div>
 
     <?php else :
@@ -104,7 +104,7 @@ elseif ( $alts_slug ) :
 
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
-  <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>"><?php globalfxhub_te( 'nav_reviews' ); ?></a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'reviews' ) ); ?>"><?php globalfxhub_te( 'nav_reviews' ); ?></a> /
   <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $ref['slug'] . '/' ) ); ?>"><?php echo esc_html( $ref['name'] ); ?></a> /
   <?php globalfxhub_te( 'rev_breadcrumb_alternatives' ); ?>
 </div>
@@ -193,7 +193,7 @@ elseif ( $broker ) :
 
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
-  <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>"><?php globalfxhub_te( 'nav_reviews' ); ?></a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'reviews' ) ); ?>"><?php globalfxhub_te( 'nav_reviews' ); ?></a> /
   <?php echo esc_html( $broker['name'] ); ?>
 </div>
 
@@ -225,14 +225,14 @@ elseif ( $broker ) :
   <div class="review-notice"><strong><?php globalfxhub_te( 'rev_worth_knowing' ); ?></strong> <?php echo esc_html( implode( ' ', $notice_parts ) ); ?></div>
   <?php endif; ?>
   <div class="hero__actions" style="margin-top:22px;">
-    <a href="<?php echo esc_url( home_url( '/compare/' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold"><?php globalfxhub_te( 'rev_compare_vs_another' ); ?></a>
+    <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold"><?php globalfxhub_te( 'rev_compare_vs_another' ); ?></a>
     <?php foreach ( globalfxhub_editorial_comparisons_for_broker( $broker['slug'] ) as $editorial_vs ) : ?>
     <a href="<?php echo esc_url( $editorial_vs['url'] ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $broker['name'] . ' vs ' . $editorial_vs['other']['name'] ); ?>: <?php globalfxhub_te( 'rev_vs_our_verdict' ); ?></a>
     <?php endforeach; ?>
     <?php foreach ( globalfxhub_broker_research_articles_for_broker( $broker['slug'] ) as $research_link ) : ?>
     <a href="<?php echo esc_url( $research_link['url'] ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $research_link['title'] ); ?></a>
     <?php endforeach; ?>
-    <a href="<?php echo esc_url( home_url( '/broker-finder/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php globalfxhub_te( 'rev_find_similar' ); ?></a>
+    <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'broker-finder' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php globalfxhub_te( 'rev_find_similar' ); ?></a>
     <?php if ( globalfxhub_broker_alternatives( $broker['slug'] ) ) : ?>
     <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $broker['slug'] . '/alternatives/' ) ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php globalfxhub_te( 'rev_see_alternatives' ); ?></a>
     <?php endif; ?>
@@ -259,7 +259,7 @@ elseif ( $broker ) :
         <tr><th><?php globalfxhub_te( 'rev_instruments' ); ?></th><td><?php echo esc_html( $broker['instruments'] ? $broker['instruments'] : $not_confirmed ); ?></td></tr>
       </tbody>
     </table>
-    <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/regulation-checker/' ) . '?broker=' . rawurlencode( $broker['slug'] ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_see_full_dossier' ), $broker['name'] ) ); ?></a><?php if ( $section_learn_links['regulation'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['regulation']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['regulation']['label'] ); ?></a><?php endif; ?></p>
+    <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation-checker' ) . '?broker=' . rawurlencode( $broker['slug'] ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_see_full_dossier' ), $broker['name'] ) ); ?></a><?php if ( $section_learn_links['regulation'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['regulation']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['regulation']['label'] ); ?></a><?php endif; ?></p>
 
     <div class="review-proscons">
       <div class="review-proscons__col review-proscons__pros">
@@ -331,7 +331,7 @@ elseif ( $broker ) :
       <?php endforeach; ?>
     </tbody>
   </table>
-  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( home_url( '/cost-calculator/' ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_see_cost_compare' ), $broker['name'] ) ); ?></a><?php if ( $section_learn_links['fees'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['fees']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['fees']['label'] ); ?></a><?php endif; ?></p>
+  <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( globalfxhub_templated_page_url( 'cost-calculator' ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_see_cost_compare' ), $broker['name'] ) ); ?></a><?php if ( $section_learn_links['fees'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['fees']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['fees']['label'] ); ?></a><?php endif; ?></p>
 </div>
 
 <div class="wrap" style="padding-bottom:40px;">
@@ -391,7 +391,7 @@ $changelog_entries = array_slice( $changelog_entries, 0, 5 );
 <div class="wrap" style="padding-bottom:40px;">
   <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;"><?php globalfxhub_te( 'rev_recent_changes_h2' ); ?></h2>
   <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;"><?php globalfxhub_te( 'rev_recent_changes_intro' ); ?> <?php
-  $changelog_link = '<a href="' . esc_url( home_url( '/broker-changelog/' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'rev_change_log_tool_link' ) ) . '</a>';
+  $changelog_link = '<a href="' . esc_url( globalfxhub_templated_page_url( 'broker-changelog' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'rev_change_log_tool_link' ) ) . '</a>';
   echo sprintf( esc_html( globalfxhub_t( 'rev_recent_changes_cta' ) ), $changelog_link );
   ?></p>
   <?php if ( ! empty( $changelog_entries ) ) : ?>
@@ -448,7 +448,7 @@ $others = array_slice( $others, 0, 3 );
   <div class="eyebrow"><?php globalfxhub_te( 'rev_index_eyebrow' ); ?></div>
   <h1><?php globalfxhub_te( 'rev_index_h1' ); ?></h1>
   <?php if ( $search_query ) : ?>
-  <p><?php echo esc_html( sprintf( globalfxhub_t( 'rev_showing_results_for' ), $search_query ) ); ?> &middot; <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_clear_search' ); ?></a></p>
+  <p><?php echo esc_html( sprintf( globalfxhub_t( 'rev_showing_results_for' ), $search_query ) ); ?> &middot; <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'reviews' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_clear_search' ); ?></a></p>
   <?php else : ?>
   <p><?php globalfxhub_te( 'rev_index_intro' ); ?></p>
   <?php endif; ?>
@@ -456,7 +456,7 @@ $others = array_slice( $others, 0, 3 );
 
 <div class="wrap" style="padding-bottom:60px;">
   <?php if ( $search_query && empty( $brokers ) ) : ?>
-  <p style="padding:24px;color:var(--ink-soft);"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_no_brokers_matched' ), $search_query ) ); ?> <a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_view_all_reviews' ); ?></a></p>
+  <p style="padding:24px;color:var(--ink-soft);"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_no_brokers_matched' ), $search_query ) ); ?> <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'reviews' ) ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'rev_view_all_reviews' ); ?></a></p>
   <?php else : ?>
   <div class="rankings">
     <div class="rank-row head">

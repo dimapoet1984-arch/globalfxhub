@@ -20,13 +20,13 @@ $corrections = globalfxhub_get_corrections();
 <div class="wrap page-head">
   <div class="eyebrow">CORRECTIONS</div>
   <h1><?php globalfxhub_te( 'ptitle_corrections' ); ?></h1>
-  <p>A public record of material corrections to our published content -- not a log of typo fixes or rewording, but of cases where something we published was actually wrong and we're saying so, what it said before, what it says now, and why. See our <a href="<?php echo esc_url( home_url( '/editorial-policy/' ) ); ?>" style="color:var(--teal);">editorial policy</a> for how corrections fit into our broader research process, or the automated <a href="<?php echo esc_url( home_url( '/broker-changelog/' ) ); ?>" style="color:var(--teal);">broker change log</a> for when a tracked fact (pricing, platforms, licence numbers) simply changed in the real world.</p>
+  <p>A public record of material corrections to our published content -- not a log of typo fixes or rewording, but of cases where something we published was actually wrong and we're saying so, what it said before, what it says now, and why. See our <a href="<?php echo esc_url( home_url( '/editorial-policy/' ) ); ?>" style="color:var(--teal);">editorial policy</a> for how corrections fit into our broader research process, or the automated <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'broker-changelog' ) ); ?>" style="color:var(--teal);">broker change log</a> for when a tracked fact (pricing, platforms, licence numbers) simply changed in the real world.</p>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
   <?php if ( empty( $corrections ) ) : ?>
   <div class="methodology-note">
-    No material corrections have been logged yet. This isn't a claim that nothing on this site has ever needed a fix -- see the <a href="<?php echo esc_url( home_url( '/broker-changelog/' ) ); ?>" style="color:var(--teal);">broker change log</a> for routine field updates -- it means no correction has risen to "something we published was actually wrong" since this log began. If you believe something here should be corrected, <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" style="color:var(--teal);">let us know</a>.
+    No material corrections have been logged yet. This isn't a claim that nothing on this site has ever needed a fix -- see the <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'broker-changelog' ) ); ?>" style="color:var(--teal);">broker change log</a> for routine field updates -- it means no correction has risen to "something we published was actually wrong" since this log began. If you believe something here should be corrected, <a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" style="color:var(--teal);">let us know</a>.
   </div>
   <?php else : ?>
   <div class="rankings">

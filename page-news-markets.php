@@ -20,7 +20,7 @@ $fx_market_news_query = new WP_Query( array(
 
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( home_url( '/news/' ) ); ?>">News</a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'news' ) ); ?>">News</a> /
   <?php the_title(); ?>
 </div>
 

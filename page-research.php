@@ -23,14 +23,14 @@ if ( $report_slug && ! $report ) {
 <div class="wrap page-head">
   <div class="eyebrow">RESEARCH</div>
   <h1>Report not available</h1>
-  <p>We don't have that report yet. <a href="<?php echo esc_url( home_url( '/research/' ) ); ?>" style="color:var(--teal);">See all research reports</a>.</p>
+  <p>We don't have that report yet. <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'research' ) ); ?>" style="color:var(--teal);">See all research reports</a>.</p>
 </div>
 
     <?php else : ?>
 
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( home_url( '/research/' ) ); ?>">Research</a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'research' ) ); ?>">Research</a> /
   <?php echo esc_html( $report['title'] ); ?>
 </div>
 
@@ -85,7 +85,7 @@ if ( $report_slug && ! $report ) {
     </div>
     <?php endforeach; ?>
   </div>
-  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:4px;">See <a href="<?php echo esc_url( home_url( '/research/' ) ); ?>" style="color:var(--teal);">all research reports</a>, or the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full scoring methodology</a> this data feeds into.</p>
+  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:4px;">See <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'research' ) ); ?>" style="color:var(--teal);">all research reports</a>, or the <a href="<?php echo esc_url( home_url( '/#method' ) ); ?>" style="color:var(--teal);">full scoring methodology</a> this data feeds into.</p>
 </div>
 
     <?php endif; ?>
@@ -101,7 +101,7 @@ if ( $report_slug && ! $report ) {
 <div class="wrap page-head">
   <div class="eyebrow">RESEARCH</div>
   <h1><?php the_title(); ?></h1>
-  <p>Original data studies built directly from our own 139-broker research set -- platform adoption, regulation, fees, and more, computed from the same dataset behind every review and ranking on this site, not a separate survey or a third-party source. See <a href="<?php echo esc_url( home_url( '/data/' ) ); ?>" style="color:var(--teal);">GlobalFXHub Data</a> for the full research operation this is one part of.</p>
+  <p>Original data studies built directly from our own 139-broker research set -- platform adoption, regulation, fees, and more, computed from the same dataset behind every review and ranking on this site, not a separate survey or a third-party source. See <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'data' ) ); ?>" style="color:var(--teal);">GlobalFXHub Data</a> for the full research operation this is one part of.</p>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">

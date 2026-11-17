@@ -19,7 +19,7 @@ $reg_comparison = $regpage_slug ? globalfxhub_get_localized_regulation_compariso
 
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( home_url( '/regulation/' ) ); ?>">Regulation</a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>">Regulation</a> /
   <?php echo esc_html( $reg_comparison['title'] ); ?>
 </div>
 
@@ -48,7 +48,7 @@ $reg_comparison = $regpage_slug ? globalfxhub_get_localized_regulation_compariso
     </div>
     <?php endforeach; ?>
   </div>
-  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:4px;">See <a href="<?php echo esc_url( home_url( '/regulation/' ) ); ?>" style="color:var(--teal);">all regulation pages</a>.</p>
+  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:4px;">See <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>" style="color:var(--teal);">all regulation pages</a>.</p>
 </div>
 
 <?php elseif ( $regpage_slug && isset( $reg_pages[ $regpage_slug ] ) ) :
@@ -57,7 +57,7 @@ $reg_comparison = $regpage_slug ? globalfxhub_get_localized_regulation_compariso
 
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( home_url( '/regulation/' ) ); ?>">Regulation</a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>">Regulation</a> /
   <?php echo esc_html( $page_data['title'] ); ?>
 </div>
 
@@ -75,7 +75,7 @@ $reg_comparison = $regpage_slug ? globalfxhub_get_localized_regulation_compariso
       'a' => array( 'href' => array(), 'target' => array(), 'rel' => array() ),
       'ul' => array(), 'li' => array(),
   ) ); ?>
-  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:24px;">See <a href="<?php echo esc_url( home_url( '/regulation/' ) ); ?>" style="color:var(--teal);">all regulation pages</a>, or every broker holding this type of licence under <a href="<?php echo esc_url( home_url( '/best/' ) ); ?>" style="color:var(--teal);">Best Brokers</a>.</p>
+  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:24px;">See <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>" style="color:var(--teal);">all regulation pages</a>, or every broker holding this type of licence under <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'best' ) ); ?>" style="color:var(--teal);">Best Brokers</a>.</p>
 </div>
 
 <?php else : ?>

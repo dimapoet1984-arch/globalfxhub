@@ -20,7 +20,7 @@ $best_lists = globalfxhub_get_best_lists();
 
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
-  <a href="<?php echo esc_url( home_url( '/best/' ) ); ?>"><?php globalfxhub_te( 'nav_best' ); ?></a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'best' ) ); ?>"><?php globalfxhub_te( 'nav_best' ); ?></a> /
   <?php echo esc_html( $list['title'] ); ?>
 </div>
 
@@ -61,7 +61,7 @@ $best_lists = globalfxhub_get_best_lists();
   <p style="color:var(--ink-soft);font-size:13.5px;margin-top:18px;">
     <?php
     $methodology_link = '<a href="' . esc_url( home_url( '/#method' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'best_methodology_link' ) ) . '</a>';
-    $all_lists_link = '<a href="' . esc_url( home_url( '/best/' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'best_all_lists_link' ) ) . '</a>';
+    $all_lists_link = '<a href="' . esc_url( globalfxhub_templated_page_url( 'best' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'best_all_lists_link' ) ) . '</a>';
     echo sprintf( esc_html( globalfxhub_t( 'best_built_from_note' ) ), $methodology_link, $all_lists_link );
     ?>
   </p>

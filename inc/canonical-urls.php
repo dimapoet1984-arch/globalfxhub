@@ -34,7 +34,7 @@ function globalfxhub_canonical_for_query_param_routes( $canonical ) {
             }
         }
         if ( isset( $_GET['search'] ) && '' !== $_GET['search'] ) {
-            return home_url( '/reviews/' );
+            return globalfxhub_templated_page_url( 'reviews' );
         }
     }
 
@@ -51,7 +51,7 @@ function globalfxhub_canonical_for_query_param_routes( $canonical ) {
         if ( function_exists( 'globalfxhub_vs_pair' ) && globalfxhub_vs_pair( $a, $b ) ) {
             return globalfxhub_track_b_url( 'compare/' . $a . '-vs-' . $b . '/' );
         }
-        return home_url( '/compare/' );
+        return globalfxhub_templated_page_url( 'compare' );
     }
 
     return $canonical;

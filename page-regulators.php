@@ -26,7 +26,7 @@ if ( $regulator_slug && ! $entity ) {
 <div class="wrap page-head">
   <div class="eyebrow">REGULATORS</div>
   <h1>Regulator not available</h1>
-  <p>We don't cover that regulator as a structured entity page yet. <a href="<?php echo esc_url( home_url( '/regulators/' ) ); ?>" style="color:var(--teal);">See all regulators</a>.</p>
+  <p>We don't cover that regulator as a structured entity page yet. <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulators' ) ); ?>" style="color:var(--teal);">See all regulators</a>.</p>
 </div>
 
     <?php else :
@@ -37,7 +37,7 @@ if ( $regulator_slug && ! $entity ) {
 
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( home_url( '/regulators/' ) ); ?>">Regulators</a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulators' ) ); ?>">Regulators</a> /
   <?php echo esc_html( $entity['name'] ); ?>
 </div>
 
@@ -118,7 +118,7 @@ if ( $regulator_slug && ! $entity ) {
 <div class="wrap page-head">
   <div class="eyebrow">REGULATORS</div>
   <h1><?php the_title(); ?></h1>
-  <p>Which of our 139 researched brokers currently hold a licence from each regulator, with jurisdiction, compensation cover, and the official register for each -- the structured data companion to our <a href="<?php echo esc_url( home_url( '/regulation/' ) ); ?>">regulation explainers</a>. See <a href="<?php echo esc_url( home_url( '/data/' ) ); ?>">GlobalFXHub Data</a> for how this fits into the rest of our research.</p>
+  <p>Which of our 139 researched brokers currently hold a licence from each regulator, with jurisdiction, compensation cover, and the official register for each -- the structured data companion to our <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>">regulation explainers</a>. See <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'data' ) ); ?>">GlobalFXHub Data</a> for how this fits into the rest of our research.</p>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
