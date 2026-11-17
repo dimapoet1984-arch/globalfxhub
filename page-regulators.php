@@ -110,15 +110,19 @@ if ( $regulator_slug && ! $entity ) {
 <?php else : ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> / <?php globalfxhub_te( 'nav_regulators' ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">REGULATORS</div>
-  <h1><?php the_title(); ?></h1>
-  <p>Which of our 139 researched brokers currently hold a licence from each regulator, with jurisdiction, compensation cover, and the official register for each -- the structured data companion to our <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>">regulation explainers</a>. See <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'data' ) ); ?>">GlobalFXHub Data</a> for how this fits into the rest of our research.</p>
+  <div class="eyebrow"><?php globalfxhub_te( 'regulators_eyebrow' ); ?></div>
+  <h1><?php globalfxhub_te( 'nav_regulators' ); ?></h1>
+  <p><?php
+  $regulators_index_regulation_link = '<a href="' . esc_url( globalfxhub_templated_page_url( 'regulation' ) ) . '">' . esc_html( globalfxhub_t( 'regulators_index_link_regulation' ) ) . '</a>';
+  $regulators_index_data_link = '<a href="' . esc_url( globalfxhub_templated_page_url( 'data' ) ) . '">' . esc_html( globalfxhub_t( 'ptitle_data' ) ) . '</a>';
+  echo sprintf( esc_html( globalfxhub_t( 'regulators_index_intro' ) ), count( globalfxhub_get_brokers() ), $regulators_index_regulation_link, $regulators_index_data_link );
+  ?></p>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
@@ -128,7 +132,7 @@ if ( $regulator_slug && ! $entity ) {
     ?>
     <a href="<?php echo esc_url( globalfxhub_track_b_url( 'regulators/' . $slug . '/' ) ); ?>" class="guide">
       <h3><?php echo esc_html( $entity_data['name'] ); ?></h3>
-      <p><?php echo esc_html( $entity_data['full_name'] ); ?> &mdash; <?php echo esc_html( $entity_stats['held'] ); ?> of <?php echo esc_html( $entity_stats['total'] ); ?> researched brokers hold this licence.</p>
+      <p><?php echo esc_html( $entity_data['full_name'] ); ?> &mdash; <?php echo esc_html( sprintf( globalfxhub_t( 'regulators_card_stat' ), $entity_stats['held'], $entity_stats['total'] ) ); ?></p>
     </a>
     <?php endforeach; ?>
   </div>
