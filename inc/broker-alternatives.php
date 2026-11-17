@@ -168,7 +168,7 @@ function globalfxhub_alternatives_seo_title( $title_parts ) {
     if ( $slug ) {
         $data = globalfxhub_broker_alternatives( $slug );
         if ( $data ) {
-            $title_parts['title'] = 'Best ' . $data['broker']['name'] . ' Alternatives ' . date( 'Y' );
+            $title_parts['title'] = sprintf( globalfxhub_t( 'seo_broker_alternatives_title' ), $data['broker']['name'], date( 'Y' ) );
         }
     }
     return $title_parts;

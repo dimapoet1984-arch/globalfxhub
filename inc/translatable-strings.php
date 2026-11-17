@@ -241,6 +241,7 @@ function globalfxhub_translatable_strings() {
         'seo_regpage_cysec', 'seo_regpage_fca', 'seo_regpage_seychelles_fsa', 'seo_regpage_investor_compensation', 'seo_regpage_how_to_verify',
         'seo_research_hub_title', 'seo_regulators_hub_title', 'seo_regulator_entity_title',
         'seo_vs_pair_fallback_title',
+        'seo_broker_alternatives_title',
 
         // --- page-best.php ---
         'best_eyebrow', 'best_no_brokers_match', 'best_built_from_note',
@@ -711,6 +712,7 @@ function globalfxhub_string_text( $key ) {
         'seo_regulators_hub_title' => 'Regulators: Licensed Broker Rosters by Regulator',
         'seo_regulator_entity_title' => '%s Regulated Brokers & Licence Register | GlobalFXHub',
         'seo_vs_pair_fallback_title' => '%1$s vs %2$s %3$s Compared',
+        'seo_broker_alternatives_title' => 'Best %1$s Alternatives %2$s',
 
         'best_eyebrow' => 'BEST BROKERS',
         'best_no_brokers_match' => 'No brokers in our researched set currently meet this list\'s criteria.',
@@ -1170,6 +1172,7 @@ function globalfxhub_live_string_translations() {
             'seo_regulators_hub_title' => 'Reguladores: Listados de Brókers Licenciados por Regulador',
             'seo_regulator_entity_title' => 'Brókers Regulados por %s y Registro de Licencias | GlobalFXHub',
             'seo_vs_pair_fallback_title' => '%1$s vs %2$s %3$s: Comparativa',
+            'seo_broker_alternatives_title' => 'Mejores Alternativas a %1$s %2$s',
 
             'best_eyebrow' => 'MEJORES BRÓKERS',
             'best_no_brokers_match' => 'Ningún bróker de nuestro conjunto investigado cumple actualmente los criterios de esta lista.',
@@ -1591,6 +1594,7 @@ function globalfxhub_live_string_translations() {
             'seo_regulators_hub_title' => 'Regulierungsbehörden: Lizenzierte Broker-Listen nach Regulierungsbehörde',
             'seo_regulator_entity_title' => 'Von %s Regulierte Broker & Lizenzregister | GlobalFXHub',
             'seo_vs_pair_fallback_title' => '%1$s vs %2$s %3$s im Vergleich',
+            'seo_broker_alternatives_title' => 'Beste %1$s-Alternativen %2$s',
 
             'best_eyebrow' => 'BESTE BROKER',
             'best_no_brokers_match' => 'Derzeit erfüllt kein Broker aus unserem recherchierten Datensatz die Kriterien dieser Liste.',
@@ -2012,6 +2016,7 @@ function globalfxhub_live_string_translations() {
             'seo_regulators_hub_title' => 'الجهات التنظيمية: قوائم الوسطاء المرخصين حسب الجهة المنظمة',
             'seo_regulator_entity_title' => 'الوسطاء المنظمون من %s وسجل التراخيص | GlobalFXHub',
             'seo_vs_pair_fallback_title' => '%1$s مقابل %2$s %3$s: مقارنة',
+            'seo_broker_alternatives_title' => 'أفضل بدائل %1$s %2$s',
 
             'best_eyebrow' => 'أفضل الوسطاء',
             'best_no_brokers_match' => 'لا يوجد حاليًا وسيط في مجموعتنا المدروسة يستوفي معايير هذه القائمة.',
@@ -2433,6 +2438,7 @@ function globalfxhub_live_string_translations() {
             'seo_regulators_hub_title' => 'Régulateurs : listes de courtiers agréés par régulateur',
             'seo_regulator_entity_title' => 'Courtiers régulés par %s et registre des licences | GlobalFXHub',
             'seo_vs_pair_fallback_title' => '%1$s vs %2$s %3$s : Comparatif',
+            'seo_broker_alternatives_title' => 'Meilleures alternatives à %1$s %2$s',
 
             'best_eyebrow' => 'MEILLEURS COURTIERS',
             'best_no_brokers_match' => 'Aucun courtier de notre ensemble étudié ne répond actuellement aux critères de cette liste.',
@@ -2854,6 +2860,7 @@ function globalfxhub_live_string_translations() {
             'seo_regulators_hub_title' => 'Regulatorzy: Listy Licencjonowanych Brokerów według Regulatora',
             'seo_regulator_entity_title' => 'Brokerzy Regulowani przez %s i Rejestr Licencji | GlobalFXHub',
             'seo_vs_pair_fallback_title' => '%1$s vs %2$s %3$s: Porównanie',
+            'seo_broker_alternatives_title' => 'Najlepsze Alternatywy dla %1$s %2$s',
 
             'best_eyebrow' => 'NAJLEPSI BROKERZY',
             'best_no_brokers_match' => 'Żaden broker w naszym zbadanym zestawie nie spełnia obecnie kryteriów tej listy.',
@@ -3275,6 +3282,7 @@ function globalfxhub_live_string_translations() {
             'seo_regulators_hub_title' => 'Regolatori: Elenchi di Broker Autorizzati per Regolatore',
             'seo_regulator_entity_title' => 'Broker Regolamentati da %s e Registro delle Licenze | GlobalFXHub',
             'seo_vs_pair_fallback_title' => '%1$s vs %2$s %3$s a Confronto',
+            'seo_broker_alternatives_title' => 'Migliori Alternative a %1$s %2$s',
 
             'best_eyebrow' => 'MIGLIORI BROKER',
             'best_no_brokers_match' => 'Nessun broker nel nostro gruppo analizzato soddisfa attualmente i criteri di questa lista.',
@@ -3696,6 +3704,7 @@ function globalfxhub_live_string_translations() {
             'seo_regulators_hub_title' => 'Reguladores: Listas de Corretoras Licenciadas por Regulador',
             'seo_regulator_entity_title' => 'Corretoras Reguladas por %s e Registro de Licenças | GlobalFXHub',
             'seo_vs_pair_fallback_title' => '%1$s vs %2$s %3$s: Comparativo',
+            'seo_broker_alternatives_title' => 'Melhores Alternativas a %1$s %2$s',
 
             'best_eyebrow' => 'MELHORES CORRETORAS',
             'best_no_brokers_match' => 'Nenhuma corretora em nosso grupo pesquisado atende atualmente aos critérios desta lista.',
