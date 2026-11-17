@@ -409,7 +409,7 @@ function globalfxhub_ia_redirects() {
         $slug = ! empty( $cat->slug ) ? $cat->slug : '';
         $category_destinations = array(
             'learn'                 => globalfxhub_templated_page_url( 'learn' ),
-            'fx-market-news'        => home_url( '/news/markets/' ),
+            'fx-market-news'        => globalfxhub_news_child_page_url( 'markets' ),
             'candlestick-patterns'  => home_url( '/learn/how-to-read-candlestick-patterns/' ),
         );
         wp_safe_redirect( $category_destinations[ $slug ] ?? globalfxhub_templated_page_url( 'learn' ), 301 );
@@ -632,6 +632,95 @@ function globalfxhub_do_sync_templated_pages_across_languages() {
                     'ID'          => $translated_id,
                     'post_status' => 'publish',
                     'post_name'   => $canonical_slug,
+                ) );
+                $changed = true;
+            }
+
+            if ( $template && $template !== get_post_meta( $translated_id, '_wp_page_template', true ) ) {
+                update_post_meta( $translated_id, '_wp_page_template', $template );
+                $changed = true;
+            }
+        }
+
+        $translations[ $default_lang ] = $page_id;
+        if ( function_exists( 'pll_save_post_translations' ) ) {
+            pll_save_post_translations( $translations );
+        }
+    }
+
+    /*
+     * The News hub's two CHILD pages (markets, brokers -- created via
+     * globalfxhub_ensure_child_page(), not the loop above) get the
+     * same per-language treatment, parented under that language's own
+     * "news-$lang" page rather than the English "news" page. This runs
+     * AFTER the loop above so every language's "news-$lang" (the
+     * parent they need) is guaranteed to already exist.
+     */
+    $child_pages = array(
+        'markets' => array( 'news', 'FX Market News', 'page-news-markets.php' ),
+        'brokers' => array( 'news', 'Broker News', 'page-news-brokers.php' ),
+    );
+
+    foreach ( $child_pages as $slug => $meta ) {
+        list( $parent_slug, $title, $template ) = $meta;
+
+        $page = get_page_by_path( $parent_slug . '/' . $slug );
+        if ( ! $page ) {
+            continue;
+        }
+        $page_id = $page->ID;
+
+        if ( function_exists( 'pll_get_post_language' ) && ! pll_get_post_language( $page_id ) ) {
+            pll_set_post_language( $page_id, $default_lang );
+        }
+
+        $translations = pll_get_post_translations( $page_id );
+
+        foreach ( $languages as $lang ) {
+            if ( $lang === $default_lang ) {
+                continue;
+            }
+
+            // The parent's own per-language copy must already exist --
+            // if Polylang's language list just changed this request,
+            // this is empty; skip and catch up on the next run rather
+            // than erroring, same tolerance as everywhere else here.
+            $parent_translation = get_page_by_path( $parent_slug . '-' . $lang );
+            if ( ! $parent_translation ) {
+                continue;
+            }
+
+            $canonical_slug = $slug . '-' . $lang;
+
+            $translated_id   = ! empty( $translations[ $lang ] ) ? (int) $translations[ $lang ] : 0;
+            $translated_post = $translated_id ? get_post( $translated_id ) : null;
+
+            if ( ! $translated_post ) {
+                $translated_id = wp_insert_post( array(
+                    'post_title'  => $title,
+                    'post_name'   => $canonical_slug,
+                    'post_parent' => $parent_translation->ID,
+                    'post_status' => 'publish',
+                    'post_type'   => 'page',
+                ) );
+                if ( ! $translated_id || is_wp_error( $translated_id ) ) {
+                    continue;
+                }
+                pll_set_post_language( $translated_id, $lang );
+                $translations[ $lang ] = $translated_id;
+                $translated_post = get_post( $translated_id );
+                $changed = true;
+            }
+
+            if ( 'trash' === $translated_post->post_status
+                || $canonical_slug !== $translated_post->post_name
+                || (int) $translated_post->post_parent !== (int) $parent_translation->ID
+            ) {
+                wp_update_post( array(
+                    'ID'          => $translated_id,
+                    'post_status' => 'publish',
+                    'post_name'   => $canonical_slug,
+                    'post_parent' => $parent_translation->ID,
                 ) );
                 $changed = true;
             }
@@ -1153,6 +1242,7 @@ function globalfxhub_plain_tool_page_seo_title( $title_parts ) {
         'page-learn.php'              => 'ptitle_learn',
         'page-data.php'               => 'ptitle_data',
         'page-corrections.php'        => 'ptitle_corrections',
+        'page-news-markets.php'       => 'footer_fx_market_news',
     );
     foreach ( $plain_pages as $template => $key ) {
         if ( is_page_template( $template ) ) {
@@ -1162,6 +1252,14 @@ function globalfxhub_plain_tool_page_seo_title( $title_parts ) {
     }
     if ( is_page_template( 'page-compare.php' ) && ! globalfxhub_vs_pair( get_query_var( 'vs_a' ), get_query_var( 'vs_b' ) ) ) {
         $title_parts['title'] = globalfxhub_t( 'ptitle_compare' );
+    }
+    // page-news-brokers.php also serves an individual broker-news item
+    // (globalfxhub_broker_news_seo_title() in inc/broker-news.php
+    // already titles that case) -- only set this page's OWN title for
+    // the bare hub listing, or it would overwrite that more specific
+    // title every time, since this filter runs after that one.
+    if ( is_page_template( 'page-news-brokers.php' ) && ! get_query_var( 'broker_news_item' ) ) {
+        $title_parts['title'] = globalfxhub_t( 'footer_broker_news' );
     }
     return $title_parts;
 }
@@ -1263,17 +1361,17 @@ function globalfxhub_extended_seo_head() {
         return;
     }
 
-    // The two News hub CHILD pages (news/markets, news/brokers) --
-    // created via globalfxhub_ensure_child_page(), a different, English-
-    // only mechanism with no per-language "-{lang}" slug variant, so a
-    // plain is_page() slug check is correct here (unlike the templated
-    // pages above).
+    // The two News hub CHILD pages (news/markets, news/brokers) now
+    // get the same per-language sync as the templated pages above
+    // (globalfxhub_do_sync_templated_pages_across_languages()'s
+    // $child_pages loop) -- so, like those, is_page_template() is the
+    // correct check here, not a plain is_page() slug match.
     $news_descriptions = array(
-        'markets' => 'Original analysis of genuinely market-moving FX developments, each with a "why this matters" angle for the relevant pair or asset. Published only when a story clears a real significance bar.',
-        'brokers' => "Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, and product launches, curated from our own broker research -- not pulled from a news wire.",
+        'page-news-markets.php' => 'Original analysis of genuinely market-moving FX developments, each with a "why this matters" angle for the relevant pair or asset. Published only when a story clears a real significance bar.',
+        'page-news-brokers.php' => "Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, and product launches, curated from our own broker research -- not pulled from a news wire.",
     );
-    foreach ( $news_descriptions as $page_slug => $description ) {
-        if ( is_page( $page_slug ) ) {
+    foreach ( $news_descriptions as $news_template => $description ) {
+        if ( is_page_template( $news_template ) ) {
             echo '<meta name="description" content="' . esc_attr( $description ) . '">' . "\n";
             return;
         }
@@ -1470,19 +1568,19 @@ function globalfxhub_breadcrumb_schema() {
             if ( $news_item ) {
                 $trail = array(
                     array( 'name' => 'News', 'item' => globalfxhub_templated_page_url( 'news' ) ),
-                    array( 'name' => 'Broker News', 'item' => home_url( '/news/brokers/' ) ),
+                    array( 'name' => 'Broker News', 'item' => globalfxhub_news_child_page_url( 'brokers' ) ),
                     array( 'name' => $news_item['headline'], 'item' => globalfxhub_track_b_url( 'news/brokers/' . $news_item_slug . '/' ) ),
                 );
             }
-        } elseif ( is_page( 'markets' ) ) {
+        } elseif ( is_page_template( 'page-news-markets.php' ) ) {
             $trail = array(
                 array( 'name' => 'News', 'item' => globalfxhub_templated_page_url( 'news' ) ),
-                array( 'name' => 'FX Market News', 'item' => home_url( '/news/markets/' ) ),
+                array( 'name' => 'FX Market News', 'item' => globalfxhub_news_child_page_url( 'markets' ) ),
             );
-        } elseif ( is_page( 'brokers' ) ) {
+        } elseif ( is_page_template( 'page-news-brokers.php' ) && ! $news_item_slug ) {
             $trail = array(
                 array( 'name' => 'News', 'item' => globalfxhub_templated_page_url( 'news' ) ),
-                array( 'name' => 'Broker News', 'item' => home_url( '/news/brokers/' ) ),
+                array( 'name' => 'Broker News', 'item' => globalfxhub_news_child_page_url( 'brokers' ) ),
             );
         } elseif ( is_page_template( 'page-news.php' ) ) {
             $trail = array( array( 'name' => 'News', 'item' => globalfxhub_templated_page_url( 'news' ) ) );
@@ -1515,7 +1613,7 @@ function globalfxhub_breadcrumb_schema() {
         $cat_slug = ! empty( $cats ) ? $cats[0]->slug : '';
         $section_map = array(
             'learn'          => array( 'Learn', globalfxhub_templated_page_url( 'learn' ) ),
-            'fx-market-news' => array( 'FX Market News', home_url( '/news/markets/' ) ),
+            'fx-market-news' => array( globalfxhub_t( 'footer_fx_market_news' ), globalfxhub_news_child_page_url( 'markets' ) ),
         );
         list( $section_label, $section_url ) = $section_map[ $cat_slug ] ?? array( 'Learn', globalfxhub_templated_page_url( 'learn' ) );
         $trail = array(

@@ -66,3 +66,43 @@ function globalfxhub_templated_page_url( $slug ) {
     }
     return home_url( '/' . $lang . '/' . $slug . '-' . $lang . '/' );
 }
+
+/**
+ * Builds a language-correct URL to one of the News hub's "markets"/
+ * "brokers" CHILD pages -- see
+ * globalfxhub_do_sync_templated_pages_across_languages()'s
+ * $child_pages loop (functions.php) for how each language's copy is
+ * created (parented under that language's own "news-$lang" page) and
+ * kept in sync.
+ *
+ * Unlike globalfxhub_templated_page_url() above, this resolves the
+ * actual translated post via Polylang's own pll_get_post() +
+ * get_permalink() rather than hand-building the URL string: these are
+ * nested (child-of-"news-$lang") pages, so asking WordPress/Polylang
+ * for the real permalink is safer than assuming its exact shape.
+ *
+ * $child_slug is 'markets' or 'brokers'. Falls back to the English
+ * child page's own permalink if no translation exists yet for the
+ * current language, or if Polylang isn't active -- same fallback
+ * philosophy as globalfxhub_resolve_track_b_container_language().
+ */
+function globalfxhub_news_child_page_url( $child_slug ) {
+    $english_page = get_page_by_path( 'news/' . $child_slug );
+    if ( ! $english_page ) {
+        return home_url( '/news/' . $child_slug . '/' );
+    }
+
+    $lang = function_exists( 'globalfxhub_track_b_current_lang' ) ? globalfxhub_track_b_current_lang() : null;
+    if ( ! $lang || ! function_exists( 'pll_get_post' )
+        || ( function_exists( 'pll_default_language' ) && $lang === pll_default_language() )
+    ) {
+        return get_permalink( $english_page->ID );
+    }
+
+    $translated_id = pll_get_post( $english_page->ID, $lang );
+    if ( ! $translated_id ) {
+        return get_permalink( $english_page->ID );
+    }
+
+    return get_permalink( $translated_id );
+}

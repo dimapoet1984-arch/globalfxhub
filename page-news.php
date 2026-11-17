@@ -41,7 +41,7 @@ foreach ( globalfxhub_get_brokers() as $b ) {
     <div style="padding-bottom:20px;">
       <div class="section__head">
         <div>
-          <h2><a href="<?php echo esc_url( home_url( '/news/brokers/' ) ); ?>" style="color:inherit;">Broker News &rarr;</a></h2>
+          <h2><a href="<?php echo esc_url( globalfxhub_news_child_page_url( 'brokers' ) ); ?>" style="color:inherit;"><?php globalfxhub_te( 'footer_broker_news' ); ?> &rarr;</a></h2>
           <p style="color:var(--ink-soft);font-size:14px;">Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, product launches, and operational issues -- curated from our own broker research, not pulled from any news wire.</p>
         </div>
       </div>
@@ -65,7 +65,7 @@ foreach ( globalfxhub_get_brokers() as $b ) {
     <div>
       <div class="section__head">
         <div>
-          <h2><a href="<?php echo esc_url( home_url( '/news/markets/' ) ); ?>" style="color:inherit;">FX Market News &rarr;</a></h2>
+          <h2><a href="<?php echo esc_url( globalfxhub_news_child_page_url( 'markets' ) ); ?>" style="color:inherit;"><?php globalfxhub_te( 'footer_fx_market_news' ); ?> &rarr;</a></h2>
           <p style="color:var(--ink-soft);font-size:14px;">Original 300-700 word analysis of genuinely market-moving developments, each with a "why this matters" angle. Published only when a story clears a real significance bar -- a handful of pieces a week, not a daily digest.</p>
         </div>
       </div>

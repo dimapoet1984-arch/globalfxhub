@@ -19,17 +19,17 @@ $fx_market_news_query = new WP_Query( array(
 ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
   <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'news' ) ); ?>">News</a> /
-  <?php the_title(); ?>
+  <?php globalfxhub_te( 'footer_fx_market_news' ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
   <div class="eyebrow">FX MARKET NEWS</div>
-  <h1><?php the_title(); ?></h1>
-  <p>Original 300-700 word analysis of genuinely market-moving developments, each with a "why this matters" angle for the relevant pair or asset and a link back to the source story. Published only when a story clears a real significance bar -- a handful of pieces a week, not a daily digest. Looking for broker-specific news instead? See <a href="<?php echo esc_url( home_url( '/news/brokers/' ) ); ?>">Broker News</a>.</p>
+  <h1><?php globalfxhub_te( 'footer_fx_market_news' ); ?></h1>
+  <p>Original 300-700 word analysis of genuinely market-moving developments, each with a "why this matters" angle for the relevant pair or asset and a link back to the source story. Published only when a story clears a real significance bar -- a handful of pieces a week, not a daily digest. Looking for broker-specific news instead? See <a href="<?php echo esc_url( globalfxhub_news_child_page_url( 'brokers' ) ); ?>">Broker News</a>.</p>
 </div>
 
 <div class="wrap content-with-sidebar" style="padding-bottom:60px;">

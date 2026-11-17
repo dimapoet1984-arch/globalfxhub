@@ -33,7 +33,7 @@ if ( $news_item_slug && ! $news_item ) {
 <div class="wrap page-head">
   <div class="eyebrow">BROKER NEWS</div>
   <h1>Story not found</h1>
-  <p>We don't have a Broker News item at that address. <a href="<?php echo esc_url( home_url( '/news/brokers/' ) ); ?>" style="color:var(--teal);">See the full Broker News feed</a>.</p>
+  <p>We don't have a Broker News item at that address. <a href="<?php echo esc_url( globalfxhub_news_child_page_url( 'brokers' ) ); ?>" style="color:var(--teal);">See the full Broker News feed</a>.</p>
 </div>
 
 <?php else :
@@ -44,7 +44,7 @@ if ( $news_item_slug && ! $news_item ) {
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
   <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'news' ) ); ?>">News</a> /
-  <a href="<?php echo esc_url( home_url( '/news/brokers/' ) ); ?>">Broker News</a> /
+  <a href="<?php echo esc_url( globalfxhub_news_child_page_url( 'brokers' ) ); ?>">Broker News</a> /
   <?php echo esc_html( $broker ? $broker['name'] : $news_item['broker_slug'] ); ?>
 </div>
 
@@ -84,7 +84,7 @@ if ( $news_item_slug && ! $news_item ) {
     </div>
     <?php endif; ?>
 
-    <p style="margin-top:28px;"><a href="<?php echo esc_url( home_url( '/news/brokers/' ) ); ?>" style="color:var(--teal);">&larr; Back to all Broker News</a></p>
+    <p style="margin-top:28px;"><a href="<?php echo esc_url( globalfxhub_news_child_page_url( 'brokers' ) ); ?>" style="color:var(--teal);">&larr; Back to all Broker News</a></p>
   </div>
   <?php globalfxhub_ad_sidebar(); ?>
 </div>
@@ -96,17 +96,17 @@ if ( $news_item_slug && ! $news_item ) {
 ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
   <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'news' ) ); ?>">News</a> /
-  <?php the_title(); ?>
+  <?php globalfxhub_te( 'footer_broker_news' ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
   <div class="eyebrow">BROKER NEWS</div>
-  <h1><?php the_title(); ?></h1>
-  <p>Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, product launches, and operational issues -- curated from our own broker research. Each story is its own page here, in turn linking to the full, sourced detail on the relevant broker's own review page. Not pulled from any news wire. Looking for market-wide analysis instead? See <a href="<?php echo esc_url( home_url( '/news/markets/' ) ); ?>">FX Market News</a>.</p>
+  <h1><?php globalfxhub_te( 'footer_broker_news' ); ?></h1>
+  <p>Acquisitions, licences, licence withdrawals, fines, enforcement, new platforms, executive moves, product launches, and operational issues -- curated from our own broker research. Each story is its own page here, in turn linking to the full, sourced detail on the relevant broker's own review page. Not pulled from any news wire. Looking for market-wide analysis instead? See <a href="<?php echo esc_url( globalfxhub_news_child_page_url( 'markets' ) ); ?>">FX Market News</a>.</p>
 </div>
 
 <div class="wrap content-with-sidebar" style="padding-bottom:60px;">
