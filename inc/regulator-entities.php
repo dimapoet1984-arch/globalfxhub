@@ -325,10 +325,14 @@ function globalfxhub_regulator_entity_seo_title( $title_parts ) {
     if ( $slug ) {
         $entities = globalfxhub_get_regulator_entities();
         if ( isset( $entities[ $slug ] ) ) {
-            $title_parts['title'] = $entities[ $slug ]['name'] . ' Regulated Brokers & Licence Register | GlobalFXHub';
+            // The entity's own short name (CySEC, FCA, ASIC, ...) stays
+            // as-is -- an official regulator acronym, not translated,
+            // matching the same convention already used for the
+            // regulation-page titles (inc/regulation.php).
+            $title_parts['title'] = sprintf( globalfxhub_t( 'seo_regulator_entity_title' ), $entities[ $slug ]['name'] );
         }
     } elseif ( is_page_template( 'page-regulators.php' ) ) {
-        $title_parts['title'] = 'Regulators: Licensed Broker Rosters by Regulator';
+        $title_parts['title'] = globalfxhub_t( 'seo_regulators_hub_title' );
     }
     return $title_parts;
 }

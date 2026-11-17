@@ -361,7 +361,10 @@ function globalfxhub_research_reports_seo_title( $title_parts ) {
             $title_parts['title'] = $entry['meta_title'];
         }
     } elseif ( is_page_template( 'page-research.php' ) ) {
-        $title_parts['title'] = 'Original Forex Broker Research ' . date( 'Y' ) . ': Data Studies and Reports';
+        // The per-report $entry['meta_title'] above is already translated
+        // via globalfxhub_get_localized_research_report() -> only the hub
+        // title (no report slug) was still hardcoded English.
+        $title_parts['title'] = sprintf( globalfxhub_t( 'seo_research_hub_title' ), date( 'Y' ) );
     }
     return $title_parts;
 }
