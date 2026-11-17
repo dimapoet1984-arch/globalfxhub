@@ -24,9 +24,12 @@ if ( $regulator_slug && ! $entity ) {
 ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">REGULATORS</div>
-  <h1>Regulator not available</h1>
-  <p>We don't cover that regulator as a structured entity page yet. <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulators' ) ); ?>" style="color:var(--teal);">See all regulators</a>.</p>
+  <div class="eyebrow"><?php globalfxhub_te( 'regulators_eyebrow' ); ?></div>
+  <h1><?php globalfxhub_te( 'regulator_not_available_h1' ); ?></h1>
+  <p><?php
+  $regulator_see_all_link = '<a href="' . esc_url( globalfxhub_templated_page_url( 'regulators' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'regulator_see_all_link' ) ) . '</a>';
+  echo sprintf( esc_html( globalfxhub_t( 'regulator_not_available_body' ) ), $regulator_see_all_link );
+  ?></p>
 </div>
 
     <?php else :
@@ -44,46 +47,49 @@ if ( $regulator_slug && ! $entity ) {
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">REGULATOR</div>
-  <h1><?php echo esc_html( $entity['name'] ); ?> &mdash; Regulated Brokers &amp; Licence Register</h1>
-  <p><?php echo esc_html( $entity['full_name'] ); ?>. <?php echo esc_html( $stats['held'] ); ?> of the <?php echo esc_html( $stats['total'] ); ?> brokers in our researched set (<?php echo esc_html( $stats['percent'] ); ?>%) currently hold a licence from this regulator, computed live from the same dataset behind every review and ranking on this site.</p>
+  <div class="eyebrow"><?php globalfxhub_te( 'regulator_entity_eyebrow' ); ?></div>
+  <h1><?php echo sprintf( globalfxhub_t( 'regulator_entity_h1' ), esc_html( $entity['name'] ) ); ?></h1>
+  <p><?php echo esc_html( sprintf( globalfxhub_t( 'regulator_entity_stats_para' ), $entity['full_name'], $stats['held'], $stats['total'], $stats['percent'] ) ); ?></p>
 </div>
 
 <div class="wrap art-body" style="padding-bottom:10px;">
   <table class="compare-table review-facts">
     <tbody>
-      <tr><th>Jurisdiction</th><td><?php echo esc_html( $entity['jurisdiction'] ); ?></td></tr>
-      <tr><th>Leverage rules</th><td><?php echo esc_html( $entity['leverage_note'] ); ?></td></tr>
-      <tr><th>Investor compensation</th><td><?php echo $entity['compensation_scheme'] ? esc_html( $entity['compensation_scheme'] ) . ': ' . wp_kses( $entity['compensation_cap'], array() ) : esc_html( 'No statutory compensation scheme.' ); ?></td></tr>
-      <tr><th>Complaint process</th><td><?php echo esc_html( $entity['complaint_process'] ); ?></td></tr>
-      <tr><th>Official register</th><td><a href="<?php echo esc_url( $entity['register_url'] ); ?>" target="_blank" rel="noopener" style="color:var(--teal);">Search <?php echo esc_html( $entity['register_label'] ); ?> &rarr;</a></td></tr>
+      <tr><th><?php globalfxhub_te( 'regulator_th_jurisdiction' ); ?></th><td><?php echo esc_html( $entity['jurisdiction'] ); ?></td></tr>
+      <tr><th><?php globalfxhub_te( 'regulator_th_leverage' ); ?></th><td><?php echo esc_html( $entity['leverage_note'] ); ?></td></tr>
+      <tr><th><?php globalfxhub_te( 'regulator_th_compensation' ); ?></th><td><?php echo $entity['compensation_scheme'] ? esc_html( $entity['compensation_scheme'] ) . ': ' . wp_kses( $entity['compensation_cap'], array() ) : esc_html( globalfxhub_t( 'regulator_no_compensation_scheme' ) ); ?></td></tr>
+      <tr><th><?php globalfxhub_te( 'regulator_th_complaint_process' ); ?></th><td><?php echo esc_html( $entity['complaint_process'] ); ?></td></tr>
+      <tr><th><?php globalfxhub_te( 'regulator_th_official_register' ); ?></th><td><a href="<?php echo esc_url( $entity['register_url'] ); ?>" target="_blank" rel="noopener" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'regulator_search_register_link' ), $entity['register_label'] ) ); ?> &rarr;</a></td></tr>
     </tbody>
   </table>
   <p style="color:var(--ink-soft);font-size:13.5px;margin:0 0 20px;">
-    <?php if ( $entity['related_regulation_slug'] && isset( $reg_pages[ $entity['related_regulation_slug'] ] ) ) : ?>
-    See our <a href="<?php echo esc_url( globalfxhub_track_b_url( 'regulation/' . $entity['related_regulation_slug'] . '/' ) ); ?>" style="color:var(--teal);">full <?php echo esc_html( $entity['name'] ); ?> explainer</a> for what this licence does and doesn't guarantee.
-    <?php elseif ( ! empty( $entity['related_learn_slug'] ) ) : ?>
-    See our <a href="<?php echo esc_url( globalfxhub_learn_article_url( $entity['related_learn_slug'] ) ); ?>" style="color:var(--teal);">full <?php echo esc_html( $entity['name'] ); ?> regulation guide</a> for what this licence does and doesn't guarantee.
-    <?php endif; ?>
-    <?php if ( $entity['related_best_slug'] ) : ?>
-    See our ranked <a href="<?php echo esc_url( globalfxhub_track_b_url( 'best/' . $entity['related_best_slug'] . '/' ) ); ?>" style="color:var(--teal);">best <?php echo esc_html( $entity['name'] ); ?>-regulated brokers</a> list.
-    <?php endif; ?>
+    <?php if ( $entity['related_regulation_slug'] && isset( $reg_pages[ $entity['related_regulation_slug'] ] ) ) :
+        $regulator_related_link = '<a href="' . esc_url( globalfxhub_track_b_url( 'regulation/' . $entity['related_regulation_slug'] . '/' ) ) . '" style="color:var(--teal);">' . esc_html( sprintf( globalfxhub_t( 'regulator_link_text_explainer' ), $entity['name'] ) ) . '</a>';
+        echo sprintf( esc_html( globalfxhub_t( 'regulator_see_explainer' ) ), $regulator_related_link );
+    elseif ( ! empty( $entity['related_learn_slug'] ) ) :
+        $regulator_related_link = '<a href="' . esc_url( globalfxhub_learn_article_url( $entity['related_learn_slug'] ) ) . '" style="color:var(--teal);">' . esc_html( sprintf( globalfxhub_t( 'regulator_link_text_guide' ), $entity['name'] ) ) . '</a>';
+        echo sprintf( esc_html( globalfxhub_t( 'regulator_see_explainer' ) ), $regulator_related_link );
+    endif; ?>
+    <?php if ( $entity['related_best_slug'] ) :
+        $regulator_best_link = '<a href="' . esc_url( globalfxhub_track_b_url( 'best/' . $entity['related_best_slug'] . '/' ) ) . '" style="color:var(--teal);">' . esc_html( sprintf( globalfxhub_t( 'regulator_link_text_best' ), $entity['name'] ) ) . '</a>';
+        echo sprintf( esc_html( globalfxhub_t( 'regulator_see_best_list' ) ), $regulator_best_link );
+    endif; ?>
   </p>
 </div>
 
 <div class="wrap" style="padding-bottom:40px;">
-  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;"><?php echo esc_html( $entity['name'] ); ?>-licensed brokers in our research set</h2>
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 6px;"><?php echo esc_html( sprintf( globalfxhub_t( 'regulator_roster_h2' ), $entity['name'] ) ); ?></h2>
   <?php if ( $entity['tracks_licence_numbers'] ) : ?>
-  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">Legal entity is shown only where this broker holds exactly this one of the regulators we track per-entity (CySEC, FCA, Seychelles FSA) -- a broker holding two of these has one disclosed entity name that reliably belongs to only one of them, so we don't guess which. See the broker's own review for its full multi-entity breakdown where it holds more than one.</p>
+  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;"><?php globalfxhub_te( 'regulator_entity_disclosure_tracked' ); ?></p>
   <?php else : ?>
-  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;">We track that each broker below discloses a <?php echo esc_html( $entity['name'] ); ?> licence, but not the specific licence number or which legal entity holds it -- that detail isn't consistently available in our research for this regulator. See the broker's own review for whatever entity/licence detail it discloses directly.</p>
+  <p style="color:var(--ink-soft);font-size:14.5px;margin:0 0 20px;"><?php echo esc_html( sprintf( globalfxhub_t( 'regulator_entity_disclosure_untracked' ), $entity['name'] ) ); ?></p>
   <?php endif; ?>
   <?php if ( empty( $brokers ) ) : ?>
-  <p>No broker in our researched set currently holds this licence.</p>
+  <p><?php globalfxhub_te( 'regulator_no_brokers_hold_licence' ); ?></p>
   <?php else : ?>
   <div class="rankings regulator-roster">
     <div class="rank-row head">
-      <span></span><span>Broker</span><span class="col-fees"><?php echo esc_html( $entity['tracks_licence_numbers'] ? 'Licence number' : 'Status' ); ?></span><span></span>
+      <span></span><span><?php globalfxhub_te( 'table_broker' ); ?></span><span class="col-fees"><?php echo esc_html( $entity['tracks_licence_numbers'] ? globalfxhub_t( 'regulator_th_licence_number' ) : globalfxhub_t( 'regulator_th_status' ) ); ?></span><span></span>
     </div>
     <?php foreach ( $brokers as $i => $row ) : ?>
     <div class="rank-row">
@@ -91,13 +97,13 @@ if ( $regulator_slug && ! $entity ) {
       <span class="rank-broker"><span class="rank-broker__name"><?php echo esc_html( $row['name'] ); ?></span><?php if ( $row['entity'] ) : ?><span class="rank-broker__tag"><?php echo esc_html( $row['entity'] ); ?></span><?php endif; ?></span>
       <span class="rank-detail col-fees"><?php
         if ( $entity['tracks_licence_numbers'] ) {
-            echo esc_html( $row['licence_number'] ? $row['licence_number'] : 'Not independently confirmed' );
+            echo esc_html( $row['licence_number'] ? $row['licence_number'] : globalfxhub_t( 'tb_not_independently_confirmed' ) );
         } else {
-            echo esc_html( 'Licence held (number not tracked)' );
+            echo esc_html( globalfxhub_t( 'regulator_licence_held_untracked' ) );
         }
       ?></span>
       <span class="rank-ctas">
-        <a href="<?php echo esc_url( $row['review_url'] ); ?>" class="rank-cta">Read review</a>
+        <a href="<?php echo esc_url( $row['review_url'] ); ?>" class="rank-cta"><?php globalfxhub_te( 'btn_read_review' ); ?></a>
       </span>
     </div>
     <?php endforeach; ?>
