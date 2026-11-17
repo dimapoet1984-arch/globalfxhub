@@ -448,7 +448,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
     $fp_best_lists = globalfxhub_get_best_lists();
     $fp_best_links = array();
     foreach ( $fp_best_lists as $fp_best_slug => $fp_best_list ) {
-        $fp_best_links[] = '<a href="' . esc_url( globalfxhub_track_b_url( 'best/' . $fp_best_slug . '/' ) ) . '" style="color:var(--teal);">' . esc_html( $fp_best_list['title'] ) . '</a>';
+        $fp_best_links[] = '<a href="' . esc_url( globalfxhub_track_b_url( 'best/' . $fp_best_slug . '/' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_tf( 'best_list', $fp_best_slug, 'title', $fp_best_list['title'] ) ) . '</a>';
     }
     echo implode( ' &middot; ', $fp_best_links );
     ?> &middot; <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>" style="color:var(--teal);">Regulation knowledge base</a></p>

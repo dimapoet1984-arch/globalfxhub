@@ -1307,7 +1307,7 @@ function globalfxhub_extended_seo_head() {
     if ( $bestlist_slug ) {
         $lists = globalfxhub_get_best_lists();
         if ( isset( $lists[ $bestlist_slug ] ) ) {
-            echo '<meta name="description" content="' . esc_attr( wp_strip_all_tags( $lists[ $bestlist_slug ]['intro'] ) ) . '">' . "\n";
+            echo '<meta name="description" content="' . esc_attr( wp_strip_all_tags( globalfxhub_tf( 'best_list', $bestlist_slug, 'intro', $lists[ $bestlist_slug ]['intro'] ) ) ) . '">' . "\n";
 
             $items = array();
             $position = 1;
@@ -1487,7 +1487,7 @@ function globalfxhub_breadcrumb_schema() {
             if ( isset( $lists[ $bestlist_slug ] ) ) {
                 $trail = array(
                     array( 'name' => 'Best Brokers', 'item' => globalfxhub_templated_page_url( 'best' ) ),
-                    array( 'name' => $lists[ $bestlist_slug ]['title'], 'item' => globalfxhub_track_b_url( 'best/' . $bestlist_slug . '/' ) ),
+                    array( 'name' => globalfxhub_tf( 'best_list', $bestlist_slug, 'title', $lists[ $bestlist_slug ]['title'] ), 'item' => globalfxhub_track_b_url( 'best/' . $bestlist_slug . '/' ) ),
                 );
             }
         } elseif ( is_page_template( 'page-best.php' ) ) {

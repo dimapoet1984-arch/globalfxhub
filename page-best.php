@@ -21,15 +21,15 @@ $best_lists = globalfxhub_get_best_lists();
 <div class="wrap crumb">
   <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
   <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'best' ) ); ?>"><?php globalfxhub_te( 'nav_best' ); ?></a> /
-  <?php echo esc_html( $list['title'] ); ?>
+  <?php echo esc_html( globalfxhub_tf( 'best_list', $bestlist_slug, 'title', $list['title'] ) ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
   <div class="eyebrow"><?php globalfxhub_te( 'best_eyebrow' ); ?></div>
-  <h1><?php echo esc_html( $list['title'] ); ?></h1>
-  <p><?php echo wp_kses( $list['intro'], array( 'a' => array( 'href' => array() ) ) ); ?></p>
+  <h1><?php echo esc_html( globalfxhub_tf( 'best_list', $bestlist_slug, 'title', $list['title'] ) ); ?></h1>
+  <p><?php echo wp_kses( globalfxhub_tf( 'best_list', $bestlist_slug, 'intro', $list['intro'] ), array( 'a' => array( 'href' => array() ) ) ); ?></p>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
@@ -38,7 +38,7 @@ $best_lists = globalfxhub_get_best_lists();
   <?php else : ?>
   <div class="rankings">
     <div class="rank-row head">
-      <span></span><span><?php globalfxhub_te( 'table_broker' ); ?></span><span class="col-fees"><?php globalfxhub_te( 'table_spread' ); ?></span><span class="col-plat"><?php globalfxhub_te( 'table_platforms' ); ?></span><span><?php echo esc_html( $list['sort_label'] ); ?></span><span></span>
+      <span></span><span><?php globalfxhub_te( 'table_broker' ); ?></span><span class="col-fees"><?php globalfxhub_te( 'table_spread' ); ?></span><span class="col-plat"><?php globalfxhub_te( 'table_platforms' ); ?></span><span><?php echo esc_html( globalfxhub_tf( 'best_list', $bestlist_slug, 'sort_label', $list['sort_label'] ) ); ?></span><span></span>
     </div>
     <?php foreach ( $brokers as $i => $b ) : ?>
     <div class="rank-row">
@@ -85,9 +85,9 @@ $best_lists = globalfxhub_get_best_lists();
   <div class="guides__grid">
     <?php foreach ( $best_lists as $slug => $list ) : ?>
     <a href="<?php echo esc_url( globalfxhub_track_b_url( 'best/' . $slug . '/' ) ); ?>" class="guide">
-      <div class="guide__time"><?php globalfxhub_te( 'best_top15_label' ); ?> &middot; <?php echo esc_html( $list['sort_label'] ); ?></div>
-      <h3><?php echo esc_html( $list['title'] ); ?></h3>
-      <p><?php echo esc_html( globalfxhub_trim_excerpt( wp_strip_all_tags( $list['intro'] ), 22 ) ); ?></p>
+      <div class="guide__time"><?php globalfxhub_te( 'best_top15_label' ); ?> &middot; <?php echo esc_html( globalfxhub_tf( 'best_list', $slug, 'sort_label', $list['sort_label'] ) ); ?></div>
+      <h3><?php echo esc_html( globalfxhub_tf( 'best_list', $slug, 'title', $list['title'] ) ); ?></h3>
+      <p><?php echo esc_html( globalfxhub_trim_excerpt( wp_strip_all_tags( globalfxhub_tf( 'best_list', $slug, 'intro', $list['intro'] ) ), 22 ) ); ?></p>
     </a>
     <?php endforeach; ?>
   </div>

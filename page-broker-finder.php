@@ -18,7 +18,7 @@ $finder_styles      = globalfxhub_finder_trading_styles();
 ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> / <?php the_title(); ?>
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> / <?php globalfxhub_te( 'ptitle_broker_finder' ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
