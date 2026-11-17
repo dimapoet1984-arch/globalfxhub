@@ -202,7 +202,7 @@ elseif ( $broker ) :
 <div class="wrap page-head review-head">
   <div class="eyebrow"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_eyebrow_rank' ), str_pad( (string) $broker['rank'], 2, '0', STR_PAD_LEFT ), count( globalfxhub_get_brokers() ) ) ); ?></div>
   <h1><?php echo esc_html( sprintf( globalfxhub_t( 'rev_title_review' ), $broker['name'] ) ); ?></h1>
-  <p><?php echo esc_html( $broker['blurb'] ); ?></p>
+  <p><?php globalfxhub_tfe( 'broker', $broker['slug'], 'blurb', $broker['blurb'] ); ?></p>
   <div class="review-head__meta">
     <span class="review-head__score"><span class="score-num"><?php echo esc_html( $broker['scores']['overall'] ); ?></span> / 5 <?php globalfxhub_te( 'rev_score_overall' ); ?></span>
     <span class="review-head__tag"><?php echo esc_html( $reg_label ); ?><?php echo $broker['founded'] ? ' &middot; ' . esc_html( sprintf( globalfxhub_t( 'rev_founded_inline' ), $broker['founded'] ) ) : ''; ?></span>
@@ -256,7 +256,7 @@ elseif ( $broker ) :
         <tr><th><?php globalfxhub_te( 'rev_minimum_deposit' ); ?></th><td><?php echo esc_html( $broker['min_deposit_display'] ? $broker['min_deposit_display'] : $not_confirmed ); ?></td></tr>
         <tr><th><?php globalfxhub_te( 'rev_avg_spread_eurusd' ); ?></th><td><?php echo null !== $broker['spread_eurusd'] ? esc_html( $broker['spread_eurusd'] ) . ' pips' : esc_html( $not_confirmed ); ?><?php echo globalfxhub_data_confidence_badge_html( $broker, 'spread_eurusd' ); ?></td></tr>
         <tr><th><?php globalfxhub_te( 'table_platforms' ); ?></th><td><?php echo esc_html( $broker['platforms'] ? globalfxhub_render_platforms_list( $broker['platforms'] ) : $not_confirmed ); ?></td></tr>
-        <tr><th><?php globalfxhub_te( 'rev_instruments' ); ?></th><td><?php echo esc_html( $broker['instruments'] ? $broker['instruments'] : $not_confirmed ); ?></td></tr>
+        <tr><th><?php globalfxhub_te( 'rev_instruments' ); ?></th><td><?php echo esc_html( $broker['instruments'] ? globalfxhub_tf( 'broker', $broker['slug'], 'instruments', $broker['instruments'] ) : $not_confirmed ); ?></td></tr>
       </tbody>
     </table>
     <p style="margin:10px 0 0;font-size:13.5px;"><a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation-checker' ) . '?broker=' . rawurlencode( $broker['slug'] ) ); ?>" style="color:var(--teal);"><?php echo esc_html( sprintf( globalfxhub_t( 'rev_see_full_dossier' ), $broker['name'] ) ); ?></a><?php if ( $section_learn_links['regulation'] ) : ?> &middot; <a href="<?php echo esc_url( $section_learn_links['regulation']['url'] ); ?>" style="color:var(--teal);"><?php echo esc_html( $section_learn_links['regulation']['label'] ); ?></a><?php endif; ?></p>
@@ -327,7 +327,7 @@ elseif ( $broker ) :
   <table class="compare-table review-facts">
     <tbody>
       <?php foreach ( $deep_dive_fields as $field_key => $field_label ) : ?>
-      <tr><th><?php echo esc_html( $field_label ); ?></th><td><?php echo esc_html( ! empty( $broker[ $field_key ] ) ? $broker[ $field_key ] : $deep_dive_na ); ?><?php echo globalfxhub_data_confidence_badge_html( $broker, $field_key ); ?></td></tr>
+      <tr><th><?php echo esc_html( $field_label ); ?></th><td><?php echo esc_html( ! empty( $broker[ $field_key ] ) ? globalfxhub_tf( 'broker', $broker['slug'], $field_key, $broker[ $field_key ] ) : $deep_dive_na ); ?><?php echo globalfxhub_data_confidence_badge_html( $broker, $field_key ); ?></td></tr>
       <?php endforeach; ?>
     </tbody>
   </table>
@@ -423,7 +423,7 @@ $others = array_slice( $others, 0, 3 );
     <a href="<?php echo esc_url( globalfxhub_track_b_url( 'reviews/' . $other['slug'] . '/' ) ); ?>" class="guide">
       <div class="guide__time">#<?php echo esc_html( $other['rank'] ); ?> &middot; <?php echo esc_html( $other['scores']['overall'] ); ?> / 5</div>
       <h3><?php echo esc_html( $other['name'] ); ?></h3>
-      <p><?php echo esc_html( $other['blurb'] ); ?></p>
+      <p><?php globalfxhub_tfe( 'broker', $other['slug'], 'blurb', $other['blurb'] ); ?></p>
     </a>
     <?php endforeach; ?>
   </div>

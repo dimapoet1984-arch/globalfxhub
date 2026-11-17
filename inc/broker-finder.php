@@ -335,7 +335,7 @@ function globalfxhub_finder_broker_payload() {
             'platforms'         => array_map( 'globalfxhub_render_platform_name', $b['platforms'] ),
             'platform_tags'     => globalfxhub_broker_platform_tags( $b ),
             'instrument_tags'   => globalfxhub_broker_instrument_tags( $b ),
-            'instruments_text'  => $b['instruments'],
+            'instruments_text'  => $b['instruments'] ? globalfxhub_tf( 'broker', $b['slug'], 'instruments', $b['instruments'] ) : $b['instruments'],
             'regulation_label'  => globalfxhub_broker_regulation_label( $b ),
             'eu_eligible'       => null !== $b['cysec'],
             'meets_tier1'       => globalfxhub_broker_meets_regulation_option( $b, 'tier1' ),

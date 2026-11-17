@@ -211,7 +211,20 @@ if ( $vs_editorial ) :
 <?php endif; ?>
 
 <script>
-const BROKERS = <?php echo wp_json_encode( globalfxhub_get_brokers() ); ?>;
+<?php
+// Only 'instruments' is shown by the JS table below (T.instruments) --
+// localized here, server-side, before the dump, same as
+// globalfxhub_vs_comparison_rows() does for the static /compare/{a}-vs-{b}/
+// pages. Every other field BROKERS carries (scores, platforms, etc.)
+// is either numeric/language-neutral already or unused by this script.
+$brokers_for_js = array_map( function( $b ) {
+    if ( ! empty( $b['instruments'] ) ) {
+        $b['instruments'] = globalfxhub_tf( 'broker', $b['slug'], 'instruments', $b['instruments'] );
+    }
+    return $b;
+}, globalfxhub_get_brokers() );
+?>
+const BROKERS = <?php echo wp_json_encode( $brokers_for_js ); ?>;
 const PRESET_A = <?php echo wp_json_encode( $a_param ); ?>;
 const PRESET_B = <?php echo wp_json_encode( $b_param ); ?>;
 // Translated strings for the JS-rendered results table below, which

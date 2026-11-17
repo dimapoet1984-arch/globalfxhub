@@ -140,7 +140,7 @@ function globalfxhub_vs_comparison_rows( $a, $b ) {
         array( 'label' => globalfxhub_t( 'rev_avg_spread_eurusd' ), 'a' => $or_na( $a['spread_eurusd'] ?? null, ' pips' ), 'b' => $or_na( $b['spread_eurusd'] ?? null, ' pips' ) ),
         array( 'label' => globalfxhub_t( 'table_platforms' ), 'a' => $platforms_or_na( $a['platforms'] ), 'b' => $platforms_or_na( $b['platforms'] ) ),
         array( 'label' => globalfxhub_t( 'rev_other_tier1' ), 'a' => $a['other_reg'] ? implode( ', ', $a['other_reg'] ) : globalfxhub_t( 'tb_none_confirmed' ), 'b' => $b['other_reg'] ? implode( ', ', $b['other_reg'] ) : globalfxhub_t( 'tb_none_confirmed' ) ),
-        array( 'label' => globalfxhub_t( 'rev_instruments' ), 'a' => $or_na( $a['instruments'] ?? null ), 'b' => $or_na( $b['instruments'] ?? null ) ),
+        array( 'label' => globalfxhub_t( 'rev_instruments' ), 'a' => $or_na( empty( $a['instruments'] ) ? null : globalfxhub_tf( 'broker', $a['slug'], 'instruments', $a['instruments'] ) ), 'b' => $or_na( empty( $b['instruments'] ) ? null : globalfxhub_tf( 'broker', $b['slug'], 'instruments', $b['instruments'] ) ) ),
     );
 }
 
