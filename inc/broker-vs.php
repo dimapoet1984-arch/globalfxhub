@@ -150,7 +150,7 @@ function globalfxhub_vs_seo_title( $title_parts ) {
         $editorial = globalfxhub_get_localized_editorial_comparison( $pair['a']['slug'] . '-' . $pair['b']['slug'] );
         $title_parts['title'] = ! empty( $editorial['meta_title'] )
             ? $editorial['meta_title']
-            : $pair['a']['name'] . ' vs ' . $pair['b']['name'] . ' ' . date( 'Y' ) . ' Compared';
+            : sprintf( globalfxhub_t( 'seo_vs_pair_fallback_title' ), $pair['a']['name'], $pair['b']['name'], date( 'Y' ) );
     }
     return $title_parts;
 }
