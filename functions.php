@@ -1150,6 +1150,39 @@ function globalfxhub_plain_tool_page_seo_title( $title_parts ) {
 }
 add_filter( 'document_title_parts', 'globalfxhub_plain_tool_page_seo_title' );
 
+/**
+ * Yoast SEO hooks WordPress core's 'pre_get_document_title' filter to
+ * return its own fully-built title string, which short-circuits
+ * wp_get_document_title() before 'document_title_parts' ever runs --
+ * so with Yoast active (confirmed live via yoast-schema-graph/WPSEO_VERSION
+ * elsewhere in this codebase), none of the 12 'document_title_parts'
+ * filters above and in inc/*.php have ever actually reached the
+ * rendered <title> tag, in any language, including English (their
+ * values happened to coincide with Yoast's own page-title-based
+ * default often enough to go unnoticed). Confirmed via a live diff:
+ * /data/'s <h1> (set directly in the template, unaffected by Yoast)
+ * correctly showed the French ptitle_data translation, but its
+ * <title> tag still showed the raw English post_title.
+ *
+ * Fix: re-run the exact same 'document_title_parts' filter chain
+ * ourselves (every function above and in inc/*.php stays unchanged --
+ * they only ever read/write the 'title' key) and, if any of them set
+ * a title, splice it into Yoast's own 'wpseo_title' filter, which
+ * does reach the final <title> tag. Yoast's current title template
+ * renders as "{title} - {sitename}" (verified live), so that format
+ * is reproduced here with get_bloginfo( 'name' ) rather than a
+ * hardcoded site name. Pages none of those functions touch pass
+ * Yoast's own $title straight through, unchanged.
+ */
+function globalfxhub_sync_wpseo_title_with_document_title_parts( $title ) {
+    $parts = apply_filters( 'document_title_parts', array( 'title' => '' ) );
+    if ( empty( $parts['title'] ) ) {
+        return $title;
+    }
+    return $parts['title'] . ' - ' . get_bloginfo( 'name' );
+}
+add_filter( 'wpseo_title', 'globalfxhub_sync_wpseo_title_with_document_title_parts' );
+
 function globalfxhub_extended_seo_head() {
     // /best/{slug}/ -- shares one page object across every list, same
     // problem as /reviews/{slug}/, plus an ItemList of that list's own
