@@ -1858,45 +1858,45 @@ function globalfxhub_broker_who_for( $broker ) {
 
     if ( null !== $broker['min_deposit_usd'] ) {
         if ( $broker['min_deposit_usd'] <= 50 ) {
-            $for[] = 'Beginners or smaller accounts -- the confirmed minimum deposit (' . $broker['min_deposit_display'] . ') is low enough to start with limited capital.';
+            $for[] = sprintf( globalfxhub_t( 'rev_wf_beginners_low_deposit' ), $broker['min_deposit_display'] );
         } elseif ( $broker['min_deposit_usd'] >= 1000 ) {
-            $for[] = 'Well-capitalized or professional-style traders -- the confirmed minimum deposit (' . $broker['min_deposit_display'] . ') is higher than most retail-focused brokers in our researched set.';
-            $against[] = 'Beginners or small accounts, given a higher minimum deposit (' . $broker['min_deposit_display'] . ') than most peers.';
+            $for[] = sprintf( globalfxhub_t( 'rev_wf_well_capitalized' ), $broker['min_deposit_display'] );
+            $against[] = sprintf( globalfxhub_t( 'rev_wf_not_beginners_high_deposit' ), $broker['min_deposit_display'] );
         }
     }
 
     $platform_count = count( $broker['platforms'] );
     $has_mt = in_array( 'MT4', $broker['platforms'], true ) || in_array( 'MT5', $broker['platforms'], true );
     if ( $platform_count >= 3 ) {
-        $for[] = 'Traders who want platform choice -- ' . $platform_count . ' platforms are confirmed, including ' . implode( ', ', array_slice( $broker['platforms'], 0, 2 ) ) . '.';
+        $for[] = sprintf( globalfxhub_t( 'rev_wf_platform_choice' ), $platform_count, globalfxhub_render_platforms_list( array_slice( $broker['platforms'], 0, 2 ) ) );
     } elseif ( $platform_count > 0 && ! $has_mt ) {
-        $against[] = 'Traders specifically wanting MetaTrader (MT4/MT5) -- not among the platforms confirmed for this broker.';
+        $against[] = globalfxhub_t( 'rev_wf_wants_metatrader' );
     }
 
     if ( ! $has_eu_or_uk_reg && $has_seychelles ) {
-        $against[] = 'Traders who need EU- or UK-level regulatory protection and investor compensation -- this broker\'s only confirmed licence is the Seychelles FSA, which carries materially lighter oversight and no compensation scheme (see Investor protection below).';
-        $for[] = 'Traders outside the EU/UK who have already done their own due diligence on the offshore entity and are comfortable with that risk profile.';
+        $against[] = globalfxhub_t( 'rev_wf_needs_eu_uk_protection' );
+        $for[] = globalfxhub_t( 'rev_wf_offshore_comfortable' );
     } elseif ( $has_eu_or_uk_reg ) {
-        $for[] = 'EU- and/or UK-based traders who want the regulatory protections and investor compensation scheme that come with a CySEC and/or FCA licence (see Investor protection below).';
+        $for[] = globalfxhub_t( 'rev_wf_eu_uk_protection_wanted' );
     }
 
     if ( null !== $broker['scores']['regulation'] && $broker['scores']['regulation'] >= 4.0 ) {
-        $for[] = 'Traders who prioritize regulatory breadth -- this broker holds one of the wider confirmed Tier-1 regulatory footprints in our researched set.';
+        $for[] = globalfxhub_t( 'rev_wf_reg_breadth' );
     }
 
     if ( null !== $broker['scores']['cost'] ) {
         if ( $broker['scores']['cost'] >= 4.0 ) {
-            $for[] = 'Cost-sensitive traders -- this broker scores well on our cost factor (low spread and/or low minimum deposit relative to peers).';
+            $for[] = globalfxhub_t( 'rev_wf_cost_sensitive_good' );
         } elseif ( $broker['scores']['cost'] <= 2.5 ) {
-            $against[] = 'Cost-sensitive traders -- this broker scores below most peers on our cost factor (higher spread and/or minimum deposit relative to the set).';
+            $against[] = globalfxhub_t( 'rev_wf_cost_sensitive_bad' );
         }
     }
 
     if ( empty( $for ) ) {
-        $for[] = 'Not enough independently confirmed data on this broker to characterize who it specifically suits -- verify current terms directly before choosing it.';
+        $for[] = globalfxhub_t( 'rev_wf_not_enough_data' );
     }
     if ( empty( $against ) ) {
-        $against[] = 'No specific "not for" signal in our researched criteria -- still confirm current terms directly with the broker.';
+        $against[] = globalfxhub_t( 'rev_wf_no_against_signal' );
     }
 
     return array( 'for' => $for, 'against' => $against );
