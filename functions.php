@@ -985,10 +985,10 @@ function globalfxhub_review_seo_title( $title_parts ) {
     if ( $slug ) {
         $broker = globalfxhub_get_broker_by_slug( $slug );
         if ( $broker ) {
-            $title_parts['title'] = $broker['name'] . ' Review ' . date( 'Y' ) . ': Regulation & Fees';
+            $title_parts['title'] = sprintf( globalfxhub_t( 'seo_broker_review_title' ), $broker['name'], date( 'Y' ) );
         }
     } elseif ( is_page_template( 'page-reviews.php' ) && ! get_query_var( 'broker_alts' ) && ! get_query_var( 'broker_research' ) ) {
-        $title_parts['title'] = 'Forex Broker Reviews ' . date( 'Y' ) . ': All CySEC-Regulated Brokers Rated';
+        $title_parts['title'] = sprintf( globalfxhub_t( 'seo_reviews_hub_title' ), date( 'Y' ) );
     }
     return $title_parts;
 }
@@ -1091,12 +1091,28 @@ add_action( 'wp_head', 'globalfxhub_review_seo_head', 5 );
 function globalfxhub_best_seo_title( $title_parts ) {
     $slug = get_query_var( 'bestlist' );
     if ( $slug ) {
-        $lists = globalfxhub_get_best_lists();
-        if ( isset( $lists[ $slug ] ) ) {
-            $title_parts['title'] = $lists[ $slug ]['title'] . ' ' . date( 'Y' );
+        // Keyed by the same slugs as globalfxhub_get_best_lists(), but
+        // deliberately a separate translated string, not that array's
+        // 'title' field -- the latter is still English (it also feeds
+        // the on-page H1 in page-best.php, out of scope here; see
+        // seo_best_list_* in inc/translatable-strings.php).
+        $seo_title_keys = array(
+            'overall'          => 'seo_best_list_overall',
+            'beginners'        => 'seo_best_list_beginners',
+            'low-cost'         => 'seo_best_list_lowcost',
+            'ecn-brokers'      => 'seo_best_list_ecn',
+            'cysec-regulated'  => 'seo_best_list_cysec',
+            'fca-regulated'    => 'seo_best_list_fca',
+            'asic-regulated'   => 'seo_best_list_asic',
+            'fsca-regulated'   => 'seo_best_list_fsca',
+            'multi-asset'      => 'seo_best_list_multiasset',
+            'mt4-mt5'          => 'seo_best_list_mt4mt5',
+        );
+        if ( isset( $seo_title_keys[ $slug ] ) ) {
+            $title_parts['title'] = globalfxhub_t( $seo_title_keys[ $slug ] ) . ' ' . date( 'Y' );
         }
     } elseif ( is_page_template( 'page-best.php' ) ) {
-        $title_parts['title'] = 'Best Forex & CFD Brokers ' . date( 'Y' ) . ': Ranked by Category';
+        $title_parts['title'] = sprintf( globalfxhub_t( 'seo_best_hub_title' ), date( 'Y' ) );
     }
     return $title_parts;
 }
