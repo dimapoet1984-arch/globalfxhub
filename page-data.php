@@ -40,7 +40,7 @@ $data_plural = function( $count, $singular, $plural = null ) {
 
 <div class="wrap page-head">
   <div class="eyebrow">DATA</div>
-  <h1><?php the_title(); ?></h1>
+  <h1><?php globalfxhub_te( 'ptitle_data' ); ?></h1>
   <p>GlobalFXHub is a research operation that happens to publish a website. Every broker review, ranking, comparison, and tool on this site is a different view of the same underlying dataset -- this page is where that dataset itself is the subject. Every figure below is computed live when this page loads, from the same functions every other page on this site calls, not a number written once and left to go stale.</p>
 </div>
 

@@ -1114,6 +1114,42 @@ function globalfxhub_best_canonical( $canonical_url ) {
 }
 add_filter( 'get_canonical_url', 'globalfxhub_best_canonical' );
 
+/**
+ * A handful of real, distinct WP pages (the interactive tool pages,
+ * Learn, Data, Corrections) never had a document_title_parts filter
+ * at all, unlike /reviews/, /best/, /countries/, etc. -- so their
+ * <title> tag fell through to WordPress's own default, which is
+ * always the page's raw (English) post_title regardless of the
+ * visitor's language, same root cause as the <h1> on each of those
+ * pages (which read the_title() directly until this fix). Compare is
+ * handled separately: /compare/{a}-vs-{b}/ already has its own,
+ * more specific SEO title from globalfxhub_vs_seo_title() in
+ * inc/broker-vs.php, which must keep winning whenever a real pair is
+ * present -- this only fills in the plain /compare/ tool page itself.
+ */
+function globalfxhub_plain_tool_page_seo_title( $title_parts ) {
+    $plain_pages = array(
+        'broker-finder'      => 'ptitle_broker_finder',
+        'cost-calculator'    => 'ptitle_cost_calculator',
+        'regulation-checker' => 'ptitle_regulation_checker',
+        'broker-changelog'   => 'ptitle_broker_changelog',
+        'learn'              => 'ptitle_learn',
+        'data'               => 'ptitle_data',
+        'corrections'        => 'ptitle_corrections',
+    );
+    foreach ( $plain_pages as $slug => $key ) {
+        if ( is_page( $slug ) ) {
+            $title_parts['title'] = globalfxhub_t( $key );
+            return $title_parts;
+        }
+    }
+    if ( is_page( 'compare' ) && ! globalfxhub_vs_pair( get_query_var( 'vs_a' ), get_query_var( 'vs_b' ) ) ) {
+        $title_parts['title'] = globalfxhub_t( 'ptitle_compare' );
+    }
+    return $title_parts;
+}
+add_filter( 'document_title_parts', 'globalfxhub_plain_tool_page_seo_title' );
+
 function globalfxhub_extended_seo_head() {
     // /best/{slug}/ -- shares one page object across every list, same
     // problem as /reviews/{slug}/, plus an ItemList of that list's own

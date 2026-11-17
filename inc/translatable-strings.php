@@ -198,6 +198,17 @@ function globalfxhub_translatable_strings() {
         'cl_notify_button', 'cl_empty_state', 'cl_no_history',
         'cl_col_date', 'cl_col_what_changed', 'cl_changelog_suffix',
 
+        // --- page titles for pages with no document_title_parts filter
+        // at all (unlike reviews/best/countries/etc., whose SEO-crafted
+        // title filters already exist but are a separate, deferred
+        // decision -- see functions.php's globalfxhub_*_seo_title()
+        // functions). Used for both the <title> tag and the visible
+        // <h1>, which read the_title() identically and share the same
+        // underlying gap. ---
+        'ptitle_compare', 'ptitle_broker_finder', 'ptitle_cost_calculator',
+        'ptitle_regulation_checker', 'ptitle_broker_changelog',
+        'ptitle_learn', 'ptitle_data', 'ptitle_corrections',
+
         // --- page-best.php ---
         'best_eyebrow', 'best_no_brokers_match', 'best_built_from_note',
         'best_methodology_link', 'best_all_lists_link', 'best_index_h1', 'best_index_intro', 'best_top15_label',
@@ -602,6 +613,15 @@ function globalfxhub_string_text( $key ) {
         'cl_col_what_changed' => 'What changed',
         'cl_changelog_suffix' => '-- change log',
 
+        'ptitle_compare' => 'Compare Brokers',
+        'ptitle_broker_finder' => 'Broker Finder',
+        'ptitle_cost_calculator' => 'Forex Spread Cost Calculator',
+        'ptitle_regulation_checker' => 'Broker Regulation Checker',
+        'ptitle_broker_changelog' => 'Broker Change Log',
+        'ptitle_learn' => 'Learn',
+        'ptitle_data' => 'GlobalFXHub Data',
+        'ptitle_corrections' => 'Corrections Log',
+
         'best_eyebrow' => 'BEST BROKERS',
         'best_no_brokers_match' => 'No brokers in our researched set currently meet this list\'s criteria.',
         'best_built_from_note' => 'Built from our %1$s -- the same absolute rubric and the same scores shown on every individual review, filtered and sorted for this specific list rather than scored differently for it. See %2$s.',
@@ -995,6 +1015,15 @@ function globalfxhub_live_string_translations() {
             'cl_col_what_changed' => 'Qué cambió',
             'cl_changelog_suffix' => '-- registro de cambios',
 
+            'ptitle_compare' => 'Comparar Brókers',
+            'ptitle_broker_finder' => 'Buscador de Brókers',
+            'ptitle_cost_calculator' => 'Calculadora de Costo de Spread Forex',
+            'ptitle_regulation_checker' => 'Verificador de Regulación de Brókers',
+            'ptitle_broker_changelog' => 'Registro de Cambios de Brókers',
+            'ptitle_learn' => 'Aprende',
+            'ptitle_data' => 'Datos de GlobalFXHub',
+            'ptitle_corrections' => 'Registro de Correcciones',
+
             'best_eyebrow' => 'MEJORES BRÓKERS',
             'best_no_brokers_match' => 'Ningún bróker de nuestro conjunto investigado cumple actualmente los criterios de esta lista.',
             'best_built_from_note' => 'Construido a partir de nuestra %1$s -- la misma rúbrica absoluta y las mismas puntuaciones que aparecen en cada reseña individual, filtradas y ordenadas para esta lista específica en lugar de puntuarse de forma distinta para ella. Ver %2$s.',
@@ -1349,6 +1378,15 @@ function globalfxhub_live_string_translations() {
             'cl_col_date' => 'Datum',
             'cl_col_what_changed' => 'Was sich geändert hat',
             'cl_changelog_suffix' => '-- Änderungsprotokoll',
+
+            'ptitle_compare' => 'Broker vergleichen',
+            'ptitle_broker_finder' => 'Broker-Finder',
+            'ptitle_cost_calculator' => 'Forex-Spread-Kostenrechner',
+            'ptitle_regulation_checker' => 'Broker-Regulierungsprüfer',
+            'ptitle_broker_changelog' => 'Broker-Änderungsprotokoll',
+            'ptitle_learn' => 'Lernen',
+            'ptitle_data' => 'GlobalFXHub-Daten',
+            'ptitle_corrections' => 'Korrekturprotokoll',
 
             'best_eyebrow' => 'BESTE BROKER',
             'best_no_brokers_match' => 'Derzeit erfüllt kein Broker aus unserem recherchierten Datensatz die Kriterien dieser Liste.',
@@ -1705,6 +1743,15 @@ function globalfxhub_live_string_translations() {
             'cl_col_what_changed' => 'ما الذي تغيَّر',
             'cl_changelog_suffix' => '-- سجل التغييرات',
 
+            'ptitle_compare' => 'مقارنة الوسطاء',
+            'ptitle_broker_finder' => 'أداة البحث عن وسيط',
+            'ptitle_cost_calculator' => 'حاسبة تكلفة سبريد الفوركس',
+            'ptitle_regulation_checker' => 'فاحص تنظيم الوسيط',
+            'ptitle_broker_changelog' => 'سجل تغييرات الوسيط',
+            'ptitle_learn' => 'تعلّم',
+            'ptitle_data' => 'بيانات GlobalFXHub',
+            'ptitle_corrections' => 'سجل التصحيحات',
+
             'best_eyebrow' => 'أفضل الوسطاء',
             'best_no_brokers_match' => 'لا يوجد حاليًا وسيط في مجموعتنا المدروسة يستوفي معايير هذه القائمة.',
             'best_built_from_note' => 'مبنية على %1$s الخاصة بنا -- نفس المعيار المطلق ونفس التقييمات الظاهرة في كل مراجعة فردية، مُصفّاة ومرتّبة لهذه القائمة المحددة فقط دون تقييم مختلف لها. راجع %2$s.',
@@ -2059,6 +2106,15 @@ function globalfxhub_live_string_translations() {
             'cl_col_date' => 'Date',
             'cl_col_what_changed' => 'Ce qui a changé',
             'cl_changelog_suffix' => '-- journal des modifications',
+
+            'ptitle_compare' => 'Comparer les courtiers',
+            'ptitle_broker_finder' => 'Trouveur de courtier',
+            'ptitle_cost_calculator' => 'Calculateur de coût de spread Forex',
+            'ptitle_regulation_checker' => 'Vérificateur de réglementation de courtier',
+            'ptitle_broker_changelog' => 'Journal des modifications du courtier',
+            'ptitle_learn' => 'Apprendre',
+            'ptitle_data' => 'Données GlobalFXHub',
+            'ptitle_corrections' => 'Journal des corrections',
 
             'best_eyebrow' => 'MEILLEURS COURTIERS',
             'best_no_brokers_match' => 'Aucun courtier de notre ensemble étudié ne répond actuellement aux critères de cette liste.',
@@ -2415,6 +2471,15 @@ function globalfxhub_live_string_translations() {
             'cl_col_what_changed' => 'Co się zmieniło',
             'cl_changelog_suffix' => '-- rejestr zmian',
 
+            'ptitle_compare' => 'Porównaj brokerów',
+            'ptitle_broker_finder' => 'Wyszukiwarka brokerów',
+            'ptitle_cost_calculator' => 'Kalkulator kosztu spreadu Forex',
+            'ptitle_regulation_checker' => 'Sprawdzanie regulacji brokera',
+            'ptitle_broker_changelog' => 'Rejestr zmian brokera',
+            'ptitle_learn' => 'Nauka',
+            'ptitle_data' => 'Dane GlobalFXHub',
+            'ptitle_corrections' => 'Rejestr poprawek',
+
             'best_eyebrow' => 'NAJLEPSI BROKERZY',
             'best_no_brokers_match' => 'Żaden broker w naszym zbadanym zestawie nie spełnia obecnie kryteriów tej listy.',
             'best_built_from_note' => 'Zbudowane na podstawie naszej %1$s -- tej samej absolutnej skali i tych samych ocen widocznych w każdej indywidualnej recenzji, przefiltrowanych i uporządkowanych dla tej konkretnej listy, a nie ocenianych inaczej na jej potrzeby. Zobacz %2$s.',
@@ -2770,6 +2835,15 @@ function globalfxhub_live_string_translations() {
             'cl_col_what_changed' => 'Cosa è cambiato',
             'cl_changelog_suffix' => '-- registro modifiche',
 
+            'ptitle_compare' => 'Confronta i broker',
+            'ptitle_broker_finder' => 'Trova broker',
+            'ptitle_cost_calculator' => 'Calcolatore di costo dello spread Forex',
+            'ptitle_regulation_checker' => 'Verificatore di regolamentazione broker',
+            'ptitle_broker_changelog' => 'Registro modifiche broker',
+            'ptitle_learn' => 'Impara',
+            'ptitle_data' => 'Dati GlobalFXHub',
+            'ptitle_corrections' => 'Registro correzioni',
+
             'best_eyebrow' => 'MIGLIORI BROKER',
             'best_no_brokers_match' => 'Nessun broker nel nostro gruppo analizzato soddisfa attualmente i criteri di questa lista.',
             'best_built_from_note' => 'Costruito a partire dalla nostra %1$s -- la stessa griglia assoluta e gli stessi punteggi mostrati su ogni recensione individuale, filtrati e ordinati per questa lista specifica piuttosto che valutati diversamente per essa. Vedi %2$s.',
@@ -3124,6 +3198,15 @@ function globalfxhub_live_string_translations() {
             'cl_col_date' => 'Data',
             'cl_col_what_changed' => 'O que mudou',
             'cl_changelog_suffix' => '-- registro de alterações',
+
+            'ptitle_compare' => 'Comparar corretoras',
+            'ptitle_broker_finder' => 'Localizador de corretoras',
+            'ptitle_cost_calculator' => 'Calculadora de custo de spread Forex',
+            'ptitle_regulation_checker' => 'Verificador de regulação de corretora',
+            'ptitle_broker_changelog' => 'Registro de alterações da corretora',
+            'ptitle_learn' => 'Aprenda',
+            'ptitle_data' => 'Dados GlobalFXHub',
+            'ptitle_corrections' => 'Registro de correções',
 
             'best_eyebrow' => 'MELHORES CORRETORAS',
             'best_no_brokers_match' => 'Nenhuma corretora em nosso grupo pesquisado atende atualmente aos critérios desta lista.',

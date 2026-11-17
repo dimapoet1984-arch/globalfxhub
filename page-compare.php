@@ -42,7 +42,7 @@ if ( $vs_pair ) {
   <h1><?php echo esc_html( $vs_pair['a']['name'] . ' vs ' . $vs_pair['b']['name'] ); ?></h1>
   <p><?php globalfxhub_te( 'cmp_pair_intro' ); ?></p>
   <?php else : ?>
-  <h1><?php the_title(); ?></h1>
+  <h1><?php globalfxhub_te( 'ptitle_compare' ); ?></h1>
   <p><?php globalfxhub_te( 'cmp_tool_intro' ); ?></p>
   <?php endif; ?>
   <?php $tool_learn_link = globalfxhub_resolve_learn_link( globalfxhub_tool_learn_links()['compare'] ); if ( $tool_learn_link ) : ?>

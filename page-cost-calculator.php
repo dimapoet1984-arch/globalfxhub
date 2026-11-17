@@ -21,7 +21,7 @@ $cc_pip_value = globalfxhub_cost_calculator_pip_value_per_lot();
 
 <div class="wrap page-head">
   <div class="eyebrow"><?php globalfxhub_te( 'cc_eyebrow' ); ?></div>
-  <h1><?php the_title(); ?></h1>
+  <h1><?php globalfxhub_te( 'ptitle_cost_calculator' ); ?></h1>
   <p><?php globalfxhub_te( 'cc_intro' ); ?></p>
   <?php $tool_learn_link = globalfxhub_resolve_learn_link( globalfxhub_tool_learn_links()['cost-calculator'] ); if ( $tool_learn_link ) : ?>
   <p style="font-size:13.5px;margin-top:8px;"><a href="<?php echo esc_url( $tool_learn_link['url'] ); ?>" style="color:var(--teal);"><?php globalfxhub_te( 'cmp_new_to_this' ); ?> <?php echo esc_html( $tool_learn_link['label'] ); ?> &rarr;</a></p>

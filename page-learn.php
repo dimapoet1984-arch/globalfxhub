@@ -42,7 +42,7 @@ if ( $learn_query->have_posts() ) {
 
 <div class="wrap page-head">
   <div class="eyebrow">EDUCATION</div>
-  <h1><?php the_title(); ?></h1>
+  <h1><?php globalfxhub_te( 'ptitle_learn' ); ?></h1>
   <p>Plain-English guides to how forex trading actually works -- built as topical clusters (fundamentals, risk, choosing a broker, regulation, fees, platforms, execution, analysis, trading concepts, and due diligence), not a pile of unrelated posts. No jargon, no sales pitch, no news mixed in.</p>
 </div>
 
