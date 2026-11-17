@@ -1914,44 +1914,44 @@ function globalfxhub_broker_who_for( $broker ) {
  * this file, never a guess.
  */
 function globalfxhub_broker_faqs( $broker ) {
-    $not_confirmed = 'Not independently confirmed in our research -- verify directly with the broker.';
+    $not_confirmed = globalfxhub_t( 'rev_faq_not_confirmed' );
     $reg_label = globalfxhub_broker_regulation_label( $broker );
 
     $faqs = array();
 
     $faqs[] = array(
-        'q' => 'Is ' . $broker['name'] . ' regulated?',
-        'a' => 'Yes -- ' . $reg_label . '. See the regulation dossier on this page for the underlying licence numbers.',
+        'q' => sprintf( globalfxhub_t( 'rev_faq_q_regulated' ), $broker['name'] ),
+        'a' => sprintf( globalfxhub_t( 'rev_faq_a_regulated' ), $reg_label ),
     );
 
     $faqs[] = array(
-        'q' => 'Is my money protected if ' . $broker['name'] . ' fails?',
+        'q' => sprintf( globalfxhub_t( 'rev_faq_q_money_protected' ), $broker['name'] ),
         'a' => globalfxhub_broker_investor_protection( $broker ),
     );
 
     $faqs[] = array(
-        'q' => 'What is the minimum deposit at ' . $broker['name'] . '?',
-        'a' => $broker['min_deposit_display'] ? 'Our research confirms a minimum deposit of ' . $broker['min_deposit_display'] . '.' : $not_confirmed,
+        'q' => sprintf( globalfxhub_t( 'rev_faq_q_min_deposit' ), $broker['name'] ),
+        'a' => $broker['min_deposit_display'] ? sprintf( globalfxhub_t( 'rev_faq_a_min_deposit' ), $broker['min_deposit_display'] ) : $not_confirmed,
     );
 
     $faqs[] = array(
-        'q' => 'What trading platforms does ' . $broker['name'] . ' offer?',
-        'a' => $broker['platforms'] ? $broker['name'] . ' offers ' . implode( ', ', $broker['platforms'] ) . '.' : $not_confirmed,
+        'q' => sprintf( globalfxhub_t( 'rev_faq_q_platforms' ), $broker['name'] ),
+        'a' => $broker['platforms'] ? sprintf( globalfxhub_t( 'rev_faq_a_platforms' ), $broker['name'], globalfxhub_render_platforms_list( $broker['platforms'] ) ) : $not_confirmed,
     );
 
     $faqs[] = array(
-        'q' => 'What is ' . $broker['name'] . "'s average spread on EUR/USD?",
-        'a' => null !== $broker['spread_eurusd'] ? 'Our research confirms an average EUR/USD spread of ' . $broker['spread_eurusd'] . ' pips. See our cost calculator to compare this across every broker we\'ve reviewed.' : $not_confirmed,
+        'q' => sprintf( globalfxhub_t( 'rev_faq_q_spread' ), $broker['name'] ),
+        'a' => null !== $broker['spread_eurusd'] ? sprintf( globalfxhub_t( 'rev_faq_a_spread' ), $broker['spread_eurusd'] ) : $not_confirmed,
     );
 
     $faqs[] = array(
-        'q' => 'When was ' . $broker['name'] . ' founded?',
-        'a' => $broker['founded'] ? $broker['name'] . ' was founded in ' . $broker['founded'] . '.' : $not_confirmed,
+        'q' => sprintf( globalfxhub_t( 'rev_faq_q_founded' ), $broker['name'] ),
+        'a' => $broker['founded'] ? sprintf( globalfxhub_t( 'rev_faq_a_founded' ), $broker['name'], $broker['founded'] ) : $not_confirmed,
     );
 
     $faqs[] = array(
-        'q' => "How is " . $broker['name'] . "'s overall score calculated?",
-        'a' => $broker['name'] . ' currently scores ' . $broker['scores']['overall'] . '/5 overall under our disclosed nine-category methodology -- regulation & client protection 30%, trading costs 20%, non-trading fees 10%, platforms & tools 10%, execution/trading conditions 10%, product range 5%, deposits/withdrawals 5%, transparency 5%, track record 5%. It is not a comparison to other brokers and not based on hands-on testing.',
+        'q' => sprintf( globalfxhub_t( 'rev_faq_q_score_calc' ), $broker['name'] ),
+        'a' => sprintf( globalfxhub_t( 'rev_faq_a_score_calc' ), $broker['name'], $broker['scores']['overall'] ),
     );
 
     return $faqs;
