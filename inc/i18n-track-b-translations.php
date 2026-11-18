@@ -258,8 +258,16 @@ function globalfxhub_rest_get_track_b_source( WP_REST_Request $request ) {
             return array( 'items' => $items );
 
         case 'country':
+            // globalfxhub_get_countries() only returns the 27 EU member
+            // states -- globalfxhub_get_all_countries() also includes the
+            // 4 non-EU pages (Australia, South Africa, UAE, Singapore),
+            // which page-countries.php reads translated fields for just
+            // the same way. Using the EU-only list here silently made
+            // those 4 countries unreachable by this whole pipeline, for
+            // every field, in every language -- confirmed via a dry-run
+            // that reported exactly 27 items for all 7 live languages.
             $items = array();
-            foreach ( globalfxhub_get_countries() as $key => $country ) {
+            foreach ( globalfxhub_get_all_countries() as $key => $country ) {
                 $items[] = array( 'id' => $key, 'fields' => $country );
             }
             return array( 'items' => $items );
