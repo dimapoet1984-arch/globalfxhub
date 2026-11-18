@@ -73,6 +73,9 @@ FIELDS = {
         ("faqs[].q", False),
         ("faqs[].a", False),
         ("paragraphs[]", False),
+        ("framework_overview", False),  # non-EU countries only (EU ones use the generated *_html() prose instead)
+        ("leverage_overview", False),  # non-EU countries only
+        ("compensation_overview", False),  # non-EU countries only
         # 'regulator' (e.g. "FMA (Finanzmarktaufsicht)") is a proper
         # noun + its own translated expansion in parens already --
         # left untranslated, same reasoning as broker entity names.

@@ -547,23 +547,27 @@ function globalfxhub_get_country_by_slug( $slug ) {
  * a locally-headquartered entity) rather than being pure copy-paste.
  */
 function globalfxhub_country_eu_framework_html( $country ) {
-    $html = '<p>Any broker serving ' . esc_html( $country['name'] ) . ' retail clients operates under MiFID II, the EU-wide framework covering investment firms, plus the retail-facing product intervention rules ESMA introduced in 2018 (leverage caps, standardized risk warnings, negative balance protection, and a ban on bonus incentives). A CySEC (or other EU member-state) licence is the precondition for legally offering these services anywhere in the EU/EEA, but the firm must also complete a MiFID passporting notification for ' . esc_html( $country['name'] ) . ' specifically -- it is not automatic just because the firm is licensed somewhere in the EU.</p>';
+    $name = esc_html( globalfxhub_tf( 'country', $country['slug'], 'name', $country['name'] ) );
+    $html = '<p>' . sprintf( globalfxhub_t( 'country_eu_framework_p1' ), $name ) . '</p>';
     if ( ! empty( $country['additional_eu_note'] ) ) {
-        $html .= '<p>' . esc_html( $country['additional_eu_note'] ) . '</p>';
+        $html .= '<p>' . esc_html( globalfxhub_tf( 'country', $country['slug'], 'additional_eu_note', $country['additional_eu_note'] ) ) . '</p>';
     }
     return $html;
 }
 
 function globalfxhub_country_leverage_rules_html( $country ) {
-    return '<p>Retail leverage is capped under the same ESMA-derived limits across every EU member state, ' . esc_html( $country['name'] ) . ' included: 30:1 on major currency pairs, 20:1 on non-major pairs/gold/major indices, 10:1 on other commodities and non-major indices, 5:1 on individual equities, and 2:1 on crypto-asset CFDs. Clients who qualify as "professional" under MiFID II\'s elective-professional criteria (meeting at least two of: a sufficiently large portfolio, relevant trading frequency/experience, or relevant industry employment) can apply for higher leverage, but lose the retail-specific protections -- including, notably, negative balance protection -- that come with those caps.</p>';
+    $name = esc_html( globalfxhub_tf( 'country', $country['slug'], 'name', $country['name'] ) );
+    return '<p>' . sprintf( globalfxhub_t( 'country_leverage_rules_p1' ), $name ) . '</p>';
 }
 
 function globalfxhub_country_investor_compensation_html( $country ) {
-    $html = '<p>This is the detail most broker-comparison content glosses over: investor compensation for a <em>passported</em> broker (the large majority of brokers on this site, relative to ' . esc_html( $country['name'] ) . ') comes from the broker\'s <strong>home</strong>-country scheme, not a ' . esc_html( $country['name'] ) . '-specific one. For a CySEC-licensed entity, that means Cyprus\'s Investor Compensation Fund (ICF), covering eligible retail clients up to &euro;20,000 per person if the firm fails -- the same cover regardless of which EU country the client lives in. A UK FCA entity instead carries the UK\'s FSCS cover, up to &pound;85,000 per person, via a separate licence that doesn\'t passport from the EU side at all post-Brexit.</p>';
+    $name = esc_html( globalfxhub_tf( 'country', $country['slug'], 'name', $country['name'] ) );
+    $html = '<p>' . sprintf( globalfxhub_t( 'country_investor_compensation_p1' ), $name ) . '</p>';
     if ( ! empty( $country['local_entity_note'] ) ) {
-        $html .= '<p>' . esc_html( $country['local_entity_note'] ) . '</p>';
+        $html .= '<p>' . esc_html( globalfxhub_tf( 'country', $country['slug'], 'local_entity_note', $country['local_entity_note'] ) ) . '</p>';
     } else {
-        $html .= '<p>No broker in our researched set is confirmed to hold a ' . esc_html( $country['name'] ) . '-licensed entity specifically (as opposed to a passported CySEC or other EU entity), so no ' . esc_html( $country['name'] ) . '-specific compensation scheme applies to any broker reviewed here -- it\'s the home regulator\'s scheme in every case. See our <a href="' . home_url( '/regulation/investor-compensation-schemes-explained/' ) . '">investor compensation schemes</a> page for the general mechanics.</p>';
+        $compensation_link = '<a href="' . home_url( '/regulation/investor-compensation-schemes-explained/' ) . '">' . esc_html( globalfxhub_t( 'country_link_text_investor_compensation' ) ) . '</a>';
+        $html .= '<p>' . sprintf( globalfxhub_t( 'country_investor_compensation_no_local' ), $name, $compensation_link ) . '</p>';
     }
     return $html;
 }
@@ -727,9 +731,9 @@ function globalfxhub_country_broker_ranking_other_reg( $country, $limit = 10 ) {
  */
 function globalfxhub_country_index_badge( $country ) {
     if ( ! empty( $country['eu_since'] ) ) {
-        return 'EU since ' . $country['eu_since'];
+        return sprintf( globalfxhub_t( 'country_badge_eu_since' ), $country['eu_since'] );
     }
-    return ! empty( $country['regulator_short'] ) ? $country['regulator_short'] . '-regulated' : 'Non-EU';
+    return ! empty( $country['regulator_short'] ) ? sprintf( globalfxhub_t( 'country_badge_regulated' ), $country['regulator_short'] ) : globalfxhub_t( 'country_badge_non_eu' );
 }
 
 /**

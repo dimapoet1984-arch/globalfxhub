@@ -1502,7 +1502,7 @@ function globalfxhub_breadcrumb_schema() {
             if ( isset( $countries[ $country_slug ] ) ) {
                 $trail = array(
                     array( 'name' => globalfxhub_t( 'nav_countries' ), 'item' => globalfxhub_templated_page_url( 'countries' ) ),
-                    array( 'name' => $countries[ $country_slug ]['name'], 'item' => globalfxhub_track_b_url( 'countries/' . $country_slug . '/' ) ),
+                    array( 'name' => globalfxhub_tf( 'country', $country_slug, 'name', $countries[ $country_slug ]['name'] ), 'item' => globalfxhub_track_b_url( 'countries/' . $country_slug . '/' ) ),
                 );
             }
         } elseif ( is_page_template( 'page-countries.php' ) ) {
