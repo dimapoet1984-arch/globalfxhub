@@ -48,44 +48,44 @@ define( 'GLOBALFXHUB_LEARN_PER_DAY', 3 );
 function globalfxhub_learn_clusters() {
     return array(
         'forex-fundamentals' => array(
-            'title' => 'Forex Fundamentals',
-            'description' => 'The vocabulary and market mechanics every other cluster builds on -- pips, lots, spreads, liquidity, and how the market actually operates.',
+            'title' => globalfxhub_t( 'learn_cluster_forex_fundamentals_title' ),
+            'description' => globalfxhub_t( 'learn_cluster_forex_fundamentals_desc' ),
         ),
         'leverage-margin-risk' => array(
-            'title' => 'Leverage, Margin and Risk',
-            'description' => 'What leverage and margin actually do to your account, and the position-sizing and risk math that keeps a small mistake from becoming a large one.',
+            'title' => globalfxhub_t( 'learn_cluster_leverage_margin_risk_title' ),
+            'description' => globalfxhub_t( 'learn_cluster_leverage_margin_risk_desc' ),
         ),
         'choosing-a-broker' => array(
-            'title' => 'Choosing a Broker',
-            'description' => 'How brokers differ in practice -- execution model, business model, and the red flags worth checking before you deposit.',
+            'title' => globalfxhub_t( 'learn_cluster_choosing_a_broker_title' ),
+            'description' => globalfxhub_t( 'learn_cluster_choosing_a_broker_desc' ),
         ),
         'broker-regulation' => array(
-            'title' => 'Broker Regulation',
-            'description' => 'What each major regulator (FCA, CySEC, ASIC, DFSA, FSCA, Seychelles FSA, CFTC/NFA) actually does and doesn\'t cover, and what "Tier-1" really means.',
+            'title' => globalfxhub_t( 'learn_cluster_broker_regulation_title' ),
+            'description' => globalfxhub_t( 'learn_cluster_broker_regulation_desc' ),
         ),
         'fees-and-costs' => array(
-            'title' => 'Fees and Costs',
-            'description' => 'Every way a broker can charge you -- spread, commission, swap, inactivity, conversion -- and how to compare the real cost of two brokers.',
+            'title' => globalfxhub_t( 'learn_cluster_fees_and_costs_title' ),
+            'description' => globalfxhub_t( 'learn_cluster_fees_and_costs_desc' ),
         ),
         'trading-platforms' => array(
-            'title' => 'Trading Platforms',
-            'description' => 'MT4, MT5, cTrader, TradingView and the rest -- what each one actually offers and how to pick between them.',
+            'title' => globalfxhub_t( 'learn_cluster_trading_platforms_title' ),
+            'description' => globalfxhub_t( 'learn_cluster_trading_platforms_desc' ),
         ),
         'orders-and-execution' => array(
-            'title' => 'Orders and Execution',
-            'description' => 'Order types, how brokers actually fill them, and what slippage and requotes really are.',
+            'title' => globalfxhub_t( 'learn_cluster_orders_and_execution_title' ),
+            'description' => globalfxhub_t( 'learn_cluster_orders_and_execution_desc' ),
         ),
         'analysis-and-economics' => array(
-            'title' => 'Analysis and Economics',
-            'description' => 'How interest rates, inflation, central banks, and major economic releases actually move currency prices.',
+            'title' => globalfxhub_t( 'learn_cluster_analysis_and_economics_title' ),
+            'description' => globalfxhub_t( 'learn_cluster_analysis_and_economics_desc' ),
         ),
         'trading-concepts' => array(
-            'title' => 'Trading Concepts',
-            'description' => 'The chart-reading vocabulary -- support/resistance, trends, the most common indicators -- explained plainly, without strategy hype.',
+            'title' => globalfxhub_t( 'learn_cluster_trading_concepts_title' ),
+            'description' => globalfxhub_t( 'learn_cluster_trading_concepts_desc' ),
         ),
         'safety-and-due-diligence' => array(
-            'title' => 'Safety, Due Diligence and Broker Research',
-            'description' => 'How to actually verify a broker before depositing: licence checks, fund segregation, compensation schemes, and what to do if something goes wrong.',
+            'title' => globalfxhub_t( 'learn_cluster_safety_and_due_diligence_title' ),
+            'description' => globalfxhub_t( 'learn_cluster_safety_and_due_diligence_desc' ),
         ),
     );
 }
@@ -423,14 +423,16 @@ function globalfxhub_learn_cluster_footer_filter( $content ) {
     foreach ( $siblings as $sibling ) {
         $sibling_post = get_page_by_path( $sibling['slug'], OBJECT, 'post' );
         if ( $sibling_post && 'publish' === $sibling_post->post_status ) {
-            $links[] = '<li><a href="' . esc_url( globalfxhub_learn_article_url( $sibling['slug'], $sibling_post ) ) . '">' . esc_html( $sibling['title'] ) . '</a></li>';
+            $sibling_title = globalfxhub_learn_article_title( $sibling['slug'], $sibling_post, $sibling['title'] );
+            $links[] = '<li><a href="' . esc_url( globalfxhub_learn_article_url( $sibling['slug'], $sibling_post ) ) . '">' . esc_html( $sibling_title ) . '</a></li>';
         }
     }
     if ( empty( $links ) ) {
         return $content;
     }
 
-    $footer = "\n" . '<div class="learn-cluster-related"><h2>More in ' . esc_html( $clusters[ $cluster_slug ]['title'] ) . '</h2><ul>' . implode( '', $links ) . '</ul></div>';
+    $footer_h2 = sprintf( esc_html( globalfxhub_t( 'learn_more_in_cluster' ) ), esc_html( $clusters[ $cluster_slug ]['title'] ) );
+    $footer = "\n" . '<div class="learn-cluster-related"><h2>' . $footer_h2 . '</h2><ul>' . implode( '', $links ) . '</ul></div>';
     return $content . $footer;
 }
 add_filter( 'the_content', 'globalfxhub_learn_cluster_footer_filter' );
@@ -478,6 +480,6 @@ function globalfxhub_resolve_learn_link( $entry ) {
     }
     return array(
         'url'   => globalfxhub_learn_article_url( $entry['slug'], $post ),
-        'label' => $entry['label'],
+        'label' => globalfxhub_learn_article_title( $entry['slug'], $post, $entry['label'] ),
     );
 }

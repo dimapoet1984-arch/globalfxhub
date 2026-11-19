@@ -257,7 +257,7 @@ GlobalFXHubBrokerSearch.init(
           while ( $recent->have_posts() ) : $recent->the_post();
       ?>
       <a href="<?php the_permalink(); ?>" class="guide">
-        <div class="guide__time"><?php echo esc_html( globalfxhub_reading_time( get_the_content() ) ); ?> MIN READ</div>
+        <div class="guide__time"><?php echo esc_html( sprintf( globalfxhub_t( 'guide_min_read' ), globalfxhub_reading_time( get_the_content() ) ) ); ?></div>
         <h3><?php the_title(); ?></h3>
         <p><?php echo esc_html( globalfxhub_trim_excerpt( get_the_excerpt() ? get_the_excerpt() : get_the_content(), 18 ) ); ?></p>
       </a>
@@ -482,7 +482,7 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
           while ( $home_guides->have_posts() ) : $home_guides->the_post();
       ?>
       <a href="<?php the_permalink(); ?>" class="guide">
-        <div class="guide__time"><?php echo esc_html( globalfxhub_reading_time( get_the_content() ) ); ?> MIN READ</div>
+        <div class="guide__time"><?php echo esc_html( sprintf( globalfxhub_t( 'guide_min_read' ), globalfxhub_reading_time( get_the_content() ) ) ); ?></div>
         <h3><?php the_title(); ?></h3>
         <p><?php echo esc_html( globalfxhub_trim_excerpt( get_the_excerpt() ? get_the_excerpt() : get_the_content(), 20 ) ); ?></p>
       </a>

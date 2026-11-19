@@ -12,7 +12,7 @@
         $cat_name = ! empty( $cats ) ? strtoupper( $cats[0]->name ) : 'ARTICLE';
     ?>
     <a href="<?php the_permalink(); ?>" class="guide">
-      <div class="guide__time"><?php echo esc_html( $cat_name ); ?> · <?php echo esc_html( globalfxhub_reading_time( get_the_content() ) ); ?> MIN READ</div>
+      <div class="guide__time"><?php echo esc_html( $cat_name ); ?> · <?php echo esc_html( sprintf( globalfxhub_t( 'guide_min_read' ), globalfxhub_reading_time( get_the_content() ) ) ); ?></div>
       <h3><?php the_title(); ?></h3>
       <p><?php echo esc_html( globalfxhub_trim_excerpt( get_the_excerpt() ? get_the_excerpt() : get_the_content(), 20 ) ); ?></p>
     </a>

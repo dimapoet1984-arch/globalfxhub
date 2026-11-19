@@ -133,25 +133,54 @@ function globalfxhub_news_child_page_url( $child_slug ) {
  * permalink is the only reliable way to get it right. Falls back to
  * the English permalink if no translation exists yet.
  */
-function globalfxhub_learn_article_url( $slug, $english_post = null ) {
+/**
+ * Resolves $slug (the article's stable English post_name) to whichever
+ * post ID should actually be shown to the current viewer: the real
+ * Polylang translation if one exists and the viewer isn't on the
+ * default language, else the English post itself (or null if $slug
+ * doesn't match a real post at all). Shared by
+ * globalfxhub_learn_article_url() (permalink) and
+ * globalfxhub_learn_article_title() (post_title) below, so a caller
+ * that needs both isn't tempted to build one from the real resolved
+ * post and the other from a static English lookup-table label.
+ */
+function globalfxhub_learn_article_resolved_id( $slug, $english_post = null ) {
     if ( ! $english_post ) {
         $english_post = get_page_by_path( $slug, OBJECT, 'post' );
     }
     if ( ! $english_post ) {
-        return home_url( '/learn/' . $slug . '/' );
+        return null;
     }
 
     $lang = function_exists( 'globalfxhub_track_b_current_lang' ) ? globalfxhub_track_b_current_lang() : null;
     if ( ! $lang || ! function_exists( 'pll_get_post' )
         || ( function_exists( 'pll_default_language' ) && $lang === pll_default_language() )
     ) {
-        return get_permalink( $english_post->ID );
+        return $english_post->ID;
     }
 
     $translated_id = pll_get_post( $english_post->ID, $lang );
-    if ( ! $translated_id ) {
-        return get_permalink( $english_post->ID );
-    }
+    return $translated_id ? $translated_id : $english_post->ID;
+}
 
-    return get_permalink( $translated_id );
+function globalfxhub_learn_article_url( $slug, $english_post = null ) {
+    $resolved_id = globalfxhub_learn_article_resolved_id( $slug, $english_post );
+    if ( ! $resolved_id ) {
+        return home_url( '/learn/' . $slug . '/' );
+    }
+    return get_permalink( $resolved_id );
+}
+
+/**
+ * The real, translated post_title for $slug in the current viewer's
+ * language -- NOT a static lookup-table 'title'/'label' a caller might
+ * also have on hand (e.g. globalfxhub_get_learn_articles()'s roster,
+ * globalfxhub_tool_learn_links()'s entries), which is always the
+ * original English wording and would otherwise show up as English
+ * link text even on an already-translated page. $fallback_label is
+ * used only if the post itself can't be resolved at all.
+ */
+function globalfxhub_learn_article_title( $slug, $english_post = null, $fallback_label = '' ) {
+    $resolved_id = globalfxhub_learn_article_resolved_id( $slug, $english_post );
+    return $resolved_id ? get_the_title( $resolved_id ) : $fallback_label;
 }

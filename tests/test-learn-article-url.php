@@ -64,6 +64,14 @@ function get_permalink( $post ) {
     );
     return $permalinks[ $post_id ] ?? false;
 }
+function get_the_title( $post_id ) {
+    $titles = array(
+        701 => 'How to Choose a Forex Broker',
+        702 => 'Forex Broker Fees Explained',
+        801 => 'Cómo elegir un bróker de forex',
+    );
+    return $titles[ $post_id ] ?? '';
+}
 
 require __DIR__ . '/../inc/i18n-content-language.php';
 require __DIR__ . '/../inc/i18n-track-b-routing.php';
@@ -113,6 +121,58 @@ assert_equal(
     'https://globalfxhub.net/es/como-elegir-un-broker-de-forex/',
     globalfxhub_learn_article_url( 'how-to-choose-a-forex-broker' ),
     'linking from a Track B route uses the recorded request language'
+);
+
+// --- globalfxhub_learn_article_title(): the real, translated
+// post_title for a Learn article -- not a static lookup-table label
+// (the bug fixed in inc/learn-articles.php's cluster-sibling footer
+// and globalfxhub_resolve_learn_link(), both of which previously used
+// their own English 'title'/'label' text regardless of the viewer's
+// language, even though the link's HREF was already correctly
+// translated). ---
+unset( $GLOBALS['globalfxhub_track_b_request_lang'] );
+
+// --- Case 6: a translation exists -- the TRANSLATED post's own title,
+// not the English fallback label passed in. ---
+$GLOBALS['__test_pll_current_language'] = 'es';
+assert_equal(
+    'Cómo elegir un bróker de forex',
+    globalfxhub_learn_article_title( 'how-to-choose-a-forex-broker', null, 'How to choose a forex broker (fallback)' ),
+    'a translated article resolves to its own translated title, not the fallback label'
+);
+
+// --- Case 7: default language -- the English post's own title. ---
+$GLOBALS['__test_pll_current_language'] = 'en';
+assert_equal(
+    'How to Choose a Forex Broker',
+    globalfxhub_learn_article_title( 'how-to-choose-a-forex-broker', null, 'fallback' ),
+    'default language resolves to the English post\'s own title'
+);
+
+// --- Case 8: no translation yet -- falls back to the English post's
+// own real title (NOT the $fallback_label param, which is reserved for
+// when the post can't be resolved at all). ---
+$GLOBALS['__test_pll_current_language'] = 'es';
+assert_equal(
+    'Forex Broker Fees Explained',
+    globalfxhub_learn_article_title( 'forex-broker-fees-explained', null, 'fallback should not be used' ),
+    'no translation yet falls back to the English post\'s own real title, not the static fallback label'
+);
+
+// --- Case 9: the slug doesn't resolve to any real post at all -- only
+// now does $fallback_label get used. ---
+assert_equal(
+    'fallback label',
+    globalfxhub_learn_article_title( 'this-slug-does-not-exist', null, 'fallback label' ),
+    'an unresolvable slug uses the fallback label'
+);
+
+// --- Case 10: an already-fetched post object is used directly, same
+// as globalfxhub_learn_article_url(). ---
+assert_equal(
+    'Cómo elegir un bróker de forex',
+    globalfxhub_learn_article_title( 'how-to-choose-a-forex-broker', (object) array( 'ID' => 701 ), 'fallback' ),
+    'an already-fetched post object is used directly'
 );
 
 assert_test_summary_and_exit();

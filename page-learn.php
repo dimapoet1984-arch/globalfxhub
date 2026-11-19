@@ -35,20 +35,20 @@ if ( $learn_query->have_posts() ) {
 ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> / <?php globalfxhub_te( 'ptitle_learn' ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">EDUCATION</div>
+  <div class="eyebrow"><?php globalfxhub_te( 'learn_eyebrow' ); ?></div>
   <h1><?php globalfxhub_te( 'ptitle_learn' ); ?></h1>
-  <p>Plain-English guides to how forex trading actually works -- built as topical clusters (fundamentals, risk, choosing a broker, regulation, fees, platforms, execution, analysis, trading concepts, and due diligence), not a pile of unrelated posts. No jargon, no sales pitch, no news mixed in.</p>
+  <p><?php globalfxhub_te( 'learn_index_intro' ); ?></p>
 </div>
 
 <div class="wrap" style="padding-bottom:20px;">
   <?php if ( empty( $grouped ) && empty( $ungrouped ) ) : ?>
-  <p style="padding:24px;color:var(--ink-soft);">No guides published yet.</p>
+  <p style="padding:24px;color:var(--ink-soft);"><?php globalfxhub_te( 'learn_no_guides_yet' ); ?></p>
   <?php endif; ?>
 
   <?php foreach ( $clusters as $cluster_slug => $cluster ) :
@@ -60,7 +60,7 @@ if ( $learn_query->have_posts() ) {
     <div class="guides__grid">
       <?php foreach ( $grouped[ $cluster_slug ] as $cluster_post ) : ?>
       <a href="<?php echo esc_url( get_permalink( $cluster_post ) ); ?>" class="guide">
-        <div class="guide__time"><?php echo esc_html( globalfxhub_reading_time( $cluster_post->post_content ) ); ?> MIN READ</div>
+        <div class="guide__time"><?php echo esc_html( sprintf( globalfxhub_t( 'guide_min_read' ), globalfxhub_reading_time( $cluster_post->post_content ) ) ); ?></div>
         <h3><?php echo esc_html( $cluster_post->post_title ); ?></h3>
         <p><?php echo esc_html( globalfxhub_trim_excerpt( $cluster_post->post_excerpt ? $cluster_post->post_excerpt : $cluster_post->post_content, 20 ) ); ?></p>
       </a>
@@ -71,11 +71,11 @@ if ( $learn_query->have_posts() ) {
 
   <?php if ( ! empty( $ungrouped ) ) : ?>
   <div style="margin-bottom:48px;">
-    <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:0 0 6px;">General guides</h2>
+    <h2 style="font-family:var(--font-display);font-weight:500;font-size:22px;margin:0 0 6px;"><?php globalfxhub_te( 'learn_general_guides_h2' ); ?></h2>
     <div class="guides__grid">
       <?php foreach ( $ungrouped as $other_post ) : ?>
       <a href="<?php echo esc_url( get_permalink( $other_post ) ); ?>" class="guide">
-        <div class="guide__time"><?php echo esc_html( globalfxhub_reading_time( $other_post->post_content ) ); ?> MIN READ</div>
+        <div class="guide__time"><?php echo esc_html( sprintf( globalfxhub_t( 'guide_min_read' ), globalfxhub_reading_time( $other_post->post_content ) ) ); ?></div>
         <h3><?php echo esc_html( $other_post->post_title ); ?></h3>
         <p><?php echo esc_html( globalfxhub_trim_excerpt( $other_post->post_excerpt ? $other_post->post_excerpt : $other_post->post_content, 20 ) ); ?></p>
       </a>
