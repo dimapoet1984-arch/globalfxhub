@@ -32,6 +32,9 @@ define( 'ABSPATH', __DIR__ . '/' );
 
 require __DIR__ . '/test-helpers.php';
 
+$GLOBALS['__test_pll_lang'] = null;
+function pll_current_language() { return $GLOBALS['__test_pll_lang']; }
+
 function globalfxhub_get_broker_by_slug( $slug ) {
     $brokers = array(
         'avatrade'    => array( 'slug' => 'avatrade', 'name' => 'AvaTrade' ),
@@ -127,10 +130,37 @@ foreach ( $NEW_COMPARISONS as $key => $expect ) {
         "'$key': page-compare.php's \$vs_preset_pairs includes array( '{$expect['a_slug']}', '{$expect['b_slug']}' ) -- the 3rd inbound link"
     );
 
-    // English fallback (no translation run yet).
+    // English fallback when no language is resolved at all (e.g. Polylang inactive).
+    $GLOBALS['__test_pll_lang'] = null;
     $localized = globalfxhub_get_localized_editorial_comparison( $key );
-    assert_equal( $entry['meta_title'], $localized['meta_title'], "'$key': with no translation on file, the localized getter returns the English entry unchanged" );
+    assert_equal( $entry['meta_title'], $localized['meta_title'], "'$key': with no resolved language, the localized getter returns the English entry unchanged" );
     assert_equal( $entry['verdict'], $localized['verdict'], "'$key': verdict is unchanged (English fallback)" );
+
+    // Real translations: each of the 7 live languages now has actual
+    // translated content (the "i18n translate comparison editorial"
+    // workflow has run for this key) -- every field resolves, differs
+    // from the English source, and every FAQ/point count matches.
+    foreach ( array( 'es', 'de', 'ar', 'fr', 'pl', 'it', 'pt' ) as $lang ) {
+        $GLOBALS['__test_pll_lang'] = $lang;
+        $loc = globalfxhub_get_localized_editorial_comparison( $key );
+        assert_equal( true, '' !== trim( $loc['meta_title'] ), "'$key'/'$lang': localized meta_title is non-empty" );
+        assert_equal( true, $loc['meta_title'] !== $entry['meta_title'], "'$key'/'$lang': localized meta_title actually differs from English (real translation, not a silent fallback)" );
+        assert_equal( true, $loc['verdict'] !== $entry['verdict'], "'$key'/'$lang': localized verdict differs from English" );
+        assert_equal( count( $entry['choose_a_points'] ), count( $loc['choose_a_points'] ), "'$key'/'$lang': choose_a_points count matches the English structure" );
+        assert_equal( count( $entry['choose_b_points'] ), count( $loc['choose_b_points'] ), "'$key'/'$lang': choose_b_points count matches the English structure" );
+        assert_equal( count( $entry['faqs'] ), count( $loc['faqs'] ), "'$key'/'$lang': faqs count matches the English structure" );
+        foreach ( $loc['choose_a_points'] as $i => $point ) {
+            assert_equal( true, '' !== trim( $point ), "'$key'/'$lang': choose_a_points[$i] is non-empty" );
+        }
+        foreach ( $loc['faqs'] as $i => $faq ) {
+            assert_equal( true, '' !== trim( $faq['q'] ) && '' !== trim( $faq['a'] ), "'$key'/'$lang': faqs[$i] is fully non-empty" );
+        }
+        // a_slug/b_slug never get translated (no 'a_slug'/'b_slug' key in
+        // the translation map), so the overlay must leave them as-is.
+        assert_equal( $entry['a_slug'], $loc['a_slug'], "'$key'/'$lang': a_slug is untouched by the translation overlay" );
+        assert_equal( $entry['b_slug'], $loc['b_slug'], "'$key'/'$lang': b_slug is untouched by the translation overlay" );
+    }
+    $GLOBALS['__test_pll_lang'] = null;
 
     // Parity check against the Python translation script's mirror.
     $python_json = shell_exec( 'cd ' . escapeshellarg( __DIR__ . '/..' ) . " && python3 -c \"import sys, json; sys.path.insert(0, 'i18n'); import translate_comparison_editorial as m; print(json.dumps(m.COMPARISONS.get('$key')))\" 2>&1" );
