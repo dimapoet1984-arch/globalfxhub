@@ -94,12 +94,13 @@ function globalfxhub_regulation_seo_head() {
     if ( $slug ) {
         $reg_pages = globalfxhub_get_regulation_pages();
         if ( isset( $reg_pages[ $slug ] ) ) {
-            echo '<meta name="description" content="' . esc_attr( $reg_pages[ $slug ]['summary'] ) . '">' . "\n";
+            $summary = globalfxhub_tf( 'regulation', $slug, 'summary', $reg_pages[ $slug ]['summary'] );
+            echo '<meta name="description" content="' . esc_attr( $summary ) . '">' . "\n";
         }
         return;
     }
     if ( is_page_template( 'page-regulation.php' ) ) {
-        echo '<meta name="description" content="' . esc_attr( 'What each regulator a broker on this site holds actually requires, what its investor-compensation scheme covers (if it has one), and how to verify a licence yourself against the regulator\'s own public register.' ) . '">' . "\n";
+        echo '<meta name="description" content="' . esc_attr( globalfxhub_t( 'regulation_meta_desc_hub' ) ) . '">' . "\n";
     }
 }
 add_action( 'wp_head', 'globalfxhub_regulation_seo_head', 5 );

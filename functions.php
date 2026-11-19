@@ -1513,7 +1513,7 @@ function globalfxhub_breadcrumb_schema() {
     if ( null === $trail ) {
         $regpage_slug = get_query_var( 'regpage' );
         if ( $regpage_slug ) {
-            $reg_comparison = globalfxhub_get_regulation_comparison( $regpage_slug );
+            $reg_comparison = globalfxhub_get_localized_regulation_comparison( $regpage_slug );
             $reg_pages = globalfxhub_get_regulation_pages();
             if ( $reg_comparison ) {
                 $trail = array(
@@ -1523,7 +1523,7 @@ function globalfxhub_breadcrumb_schema() {
             } elseif ( isset( $reg_pages[ $regpage_slug ] ) ) {
                 $trail = array(
                     array( 'name' => globalfxhub_t( 'nav_regulation' ), 'item' => globalfxhub_templated_page_url( 'regulation' ) ),
-                    array( 'name' => $reg_pages[ $regpage_slug ]['title'], 'item' => globalfxhub_track_b_url( 'regulation/' . $regpage_slug . '/' ) ),
+                    array( 'name' => globalfxhub_tf( 'regulation', $regpage_slug, 'title', $reg_pages[ $regpage_slug ]['title'] ), 'item' => globalfxhub_track_b_url( 'regulation/' . $regpage_slug . '/' ) ),
                 );
             }
         } elseif ( is_page_template( 'page-regulation.php' ) ) {

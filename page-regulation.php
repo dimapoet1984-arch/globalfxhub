@@ -18,15 +18,15 @@ $reg_comparison = $regpage_slug ? globalfxhub_get_localized_regulation_compariso
 <?php if ( $reg_comparison ) : ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>">Regulation</a> /
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>"><?php globalfxhub_te( 'nav_regulation' ); ?></a> /
   <?php echo esc_html( $reg_comparison['title'] ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">REGULATION</div>
+  <div class="eyebrow"><?php globalfxhub_te( 'regulation_eyebrow' ); ?></div>
   <h1><?php echo esc_html( $reg_comparison['title'] ); ?></h1>
   <p><?php echo esc_html( $reg_comparison['intro'] ); ?></p>
 </div>
@@ -39,7 +39,7 @@ $reg_comparison = $regpage_slug ? globalfxhub_get_localized_regulation_compariso
 </div>
 
 <div class="wrap" style="padding-bottom:40px;">
-  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 12px;">Frequently asked questions</h2>
+  <h2 style="font-family:var(--font-display);font-weight:500;font-size:23px;margin:0 0 12px;"><?php globalfxhub_te( 'rev_faq_h2' ); ?></h2>
   <div>
     <?php foreach ( $reg_comparison['faqs'] as $faq ) : ?>
     <div style="margin-bottom:18px;">
@@ -48,62 +48,72 @@ $reg_comparison = $regpage_slug ? globalfxhub_get_localized_regulation_compariso
     </div>
     <?php endforeach; ?>
   </div>
-  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:4px;">See <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>" style="color:var(--teal);">all regulation pages</a>.</p>
+  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:4px;"><?php
+  $regulation_all_pages_link = '<a href="' . esc_url( globalfxhub_templated_page_url( 'regulation' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'regulation_link_text_all_pages' ) ) . '</a>';
+  echo sprintf( esc_html( globalfxhub_t( 'regulation_see_all_pages_simple' ) ), $regulation_all_pages_link );
+  ?></p>
 </div>
 
 <?php elseif ( $regpage_slug && isset( $reg_pages[ $regpage_slug ] ) ) :
     $page_data = $reg_pages[ $regpage_slug ];
+    $reg_title = globalfxhub_tf( 'regulation', $regpage_slug, 'title', $page_data['title'] );
 ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> /
-  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>">Regulation</a> /
-  <?php echo esc_html( $page_data['title'] ); ?>
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> /
+  <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>"><?php globalfxhub_te( 'nav_regulation' ); ?></a> /
+  <?php echo esc_html( $reg_title ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">REGULATION</div>
-  <h1><?php echo esc_html( $page_data['title'] ); ?></h1>
-  <p><?php echo esc_html( $page_data['summary'] ); ?></p>
+  <div class="eyebrow"><?php globalfxhub_te( 'regulation_eyebrow' ); ?></div>
+  <h1><?php echo esc_html( $reg_title ); ?></h1>
+  <p><?php echo esc_html( globalfxhub_tf( 'regulation', $regpage_slug, 'summary', $page_data['summary'] ) ); ?></p>
 </div>
 
 <div class="wrap art-body" style="padding-bottom:60px;">
-  <?php echo wp_kses( $page_data['content'], array(
+  <?php echo wp_kses( globalfxhub_tf( 'regulation', $regpage_slug, 'content', $page_data['content'] ), array(
       'p' => array(), 'h2' => array(), 'h3' => array(), 'strong' => array(), 'em' => array(),
       'a' => array( 'href' => array(), 'target' => array(), 'rel' => array() ),
       'ul' => array(), 'li' => array(),
   ) ); ?>
-  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:24px;">See <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'regulation' ) ); ?>" style="color:var(--teal);">all regulation pages</a>, or every broker holding this type of licence under <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'best' ) ); ?>" style="color:var(--teal);">Best Brokers</a>.</p>
+  <p style="color:var(--ink-soft);font-size:13.5px;margin-top:24px;"><?php
+  $regulation_all_pages_link = '<a href="' . esc_url( globalfxhub_templated_page_url( 'regulation' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'regulation_link_text_all_pages' ) ) . '</a>';
+  $regulation_best_link = '<a href="' . esc_url( globalfxhub_templated_page_url( 'best' ) ) . '" style="color:var(--teal);">' . esc_html( globalfxhub_t( 'nav_best' ) ) . '</a>';
+  echo sprintf( esc_html( globalfxhub_t( 'regulation_see_all_pages_and_best' ) ), $regulation_all_pages_link, $regulation_best_link );
+  ?></p>
 </div>
 
 <?php else : ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> / <?php the_title(); ?>
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> / <?php globalfxhub_te( 'nav_regulation' ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
 
 <div class="wrap page-head">
-  <div class="eyebrow">REGULATION</div>
-  <h1><?php the_title(); ?></h1>
-  <p>What each regulator a broker on this site holds actually requires, what its investor-compensation scheme actually covers (if it has one), and how to verify a licence yourself directly against the regulator's own public register.</p>
+  <div class="eyebrow"><?php globalfxhub_te( 'regulation_eyebrow' ); ?></div>
+  <h1><?php globalfxhub_te( 'nav_regulation' ); ?></h1>
+  <p><?php globalfxhub_te( 'regulation_index_intro' ); ?></p>
 </div>
 
 <div class="wrap" style="padding-bottom:60px;">
   <div class="guides__grid">
     <?php foreach ( $reg_pages as $slug => $page_data ) : ?>
     <a href="<?php echo esc_url( globalfxhub_track_b_url( 'regulation/' . $slug . '/' ) ); ?>" class="guide">
-      <h3><?php echo esc_html( $page_data['title'] ); ?></h3>
-      <p><?php echo esc_html( $page_data['summary'] ); ?></p>
+      <h3><?php echo esc_html( globalfxhub_tf( 'regulation', $slug, 'title', $page_data['title'] ) ); ?></h3>
+      <p><?php echo esc_html( globalfxhub_tf( 'regulation', $slug, 'summary', $page_data['summary'] ) ); ?></p>
     </a>
     <?php endforeach; ?>
-    <?php foreach ( globalfxhub_get_regulation_comparisons() as $cmp_slug => $cmp_data ) : ?>
+    <?php foreach ( globalfxhub_get_regulation_comparisons() as $cmp_slug => $cmp_data ) :
+        $cmp_localized = globalfxhub_get_localized_regulation_comparison( $cmp_slug );
+    ?>
     <a href="<?php echo esc_url( globalfxhub_track_b_url( 'regulation/' . $cmp_slug . '/' ) ); ?>" class="guide">
-      <h3><?php echo esc_html( $cmp_data['title'] ); ?></h3>
-      <p><?php echo esc_html( $cmp_data['meta_description'] ); ?></p>
+      <h3><?php echo esc_html( $cmp_localized['title'] ); ?></h3>
+      <p><?php echo esc_html( $cmp_localized['meta_description'] ); ?></p>
     </a>
     <?php endforeach; ?>
   </div>
