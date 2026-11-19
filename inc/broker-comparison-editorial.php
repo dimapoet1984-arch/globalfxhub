@@ -520,5 +520,38 @@ function globalfxhub_get_editorial_comparisons() {
                 ),
             ),
         ),
+        'fp-markets-ic-markets' => array(
+            'a_slug'           => 'fp-markets',
+            'b_slug'           => 'ic-markets',
+            'meta_title'       => 'FP Markets vs IC Markets (2026): Which Broker Should You Choose?',
+            'meta_description' => 'FP Markets vs IC Markets compared on regulation, cost, platforms, and execution model -- using our disclosed methodology, not marketing claims. See which fits your trading style.',
+            'intro' => 'FP Markets and IC Markets are both Sydney-founded, ECN-style brokers built around the same pitch: raw spreads and direct market access for active and algorithmic traders, the same positioning that makes a broker like Pepperstone a frequent third comparison point. That shared "built for serious traders" framing is exactly why the two get compared so often -- but under our disclosed methodology, FP Markets actually comes out ahead on nearly every category except the one most traders check first.',
+            'verdict' => 'Under our disclosed methodology, FP Markets scores 3.49/5 overall against IC Markets\' 3.07/5 -- driven mainly by regulation (2.6/5 against 1.8/5, since FP Markets adds South Africa\'s FSCA alongside CySEC and ASIC, where IC Markets holds only CySEC and ASIC) and platform breadth (4.2/5 against 3.4/5, since FP Markets supports TradingView alongside MT4, MT5, and cTrader, where IC Markets supports only the first three). IC Markets wins on the one figure most traders check first: its on-file EUR/USD spread of 0.8 pips is tighter than FP Markets\' 1.0 pips, giving it a marginally higher cost score (4.64/5 against 4.58/5). FP Markets also has the lower minimum deposit ($100 against IC Markets\' $200) and a slightly longer operating history (founded 2005 against 2007).',
+            'choose_a_heading' => 'Choose FP Markets if...',
+            'choose_a_points' => array(
+                'You want the broader regulatory footprint -- FP Markets adds South Africa\'s FSCA alongside CySEC and ASIC, where IC Markets holds only CySEC and ASIC.',
+                'You want platform choice -- FP Markets supports TradingView alongside MT4, MT5, and cTrader; IC Markets does not support TradingView.',
+                'You\'re starting with a smaller account -- FP Markets\' $100 minimum deposit is half of IC Markets\' $200.',
+                'An explicit no-inactivity-fee policy matters to you -- FP Markets charges none on standard accounts, where IC Markets\' own published Inactivity Fees Policy conflicts with third-party reports that no fee is actually charged.',
+            ),
+            'choose_b_heading' => 'Choose IC Markets if...',
+            'choose_b_points' => array(
+                'Raw headline spread is your priority -- IC Markets\' on-file EUR/USD spread of 0.8 pips is tighter than FP Markets\' 1.0 pips.',
+                'You don\'t need TradingView -- IC Markets supports MT4, MT5, and cTrader, and that\'s enough for your setup.',
+                'You\'re comfortable with the higher $200 minimum deposit, against FP Markets\' $100.',
+            ),
+            'worth_knowing_heading' => 'Worth knowing before you decide',
+            'worth_knowing' => 'IC Markets\' EU entity publishes a formal Inactivity Fees Policy (an account is defined as inactive after 6 continuous months with no executed trade), but multiple independent comparison sites report that no fee is actually charged in practice -- a genuine, unresolved conflict between the broker\'s own published policy and third-party reporting that we could not resolve in our research, the same conflict already noted on our Pepperstone vs IC Markets comparison. FP Markets\' execution model is described by independent comparison sites as ECN/STP ("A-book"); IC Markets markets itself as "True ECN" but one source notes it doesn\'t always offset every position directly with liquidity providers, implying a possible partial B-book element alongside its ECN model -- worth confirming directly if execution model matters to your strategy. Both brokers\' mobile app ratings are inconsistent across sources (IC Markets\' main app sits around 4.2 on Android against a notably lower 3.1 on iOS; FP Markets\' single-digit App Store review count makes its 3.3/5 too small a sample to be meaningful), so check current ratings yourself rather than relying on either figure here.',
+            'faqs' => array(
+                array(
+                    'q' => 'Is FP Markets or IC Markets better for beginners?',
+                    'a' => 'FP Markets\' $100 minimum deposit is half of IC Markets\' $200, and its broader regulatory footprint (adding South Africa\'s FSCA) gives a beginner more regulatory coverage to fall back on. Neither broker\'s account structure is explicitly designed for beginners over active traders, though -- both are positioned around ECN-style pricing for more experienced traders.',
+                ),
+                array(
+                    'q' => 'Which has the lower trading cost, FP Markets or IC Markets?',
+                    'a' => 'On our on-file headline EUR/USD spread, IC Markets is tighter at 0.8 pips against FP Markets\' 1.0 pips, and scores marginally higher on cost under our methodology (4.64/5 against 4.58/5). Both brokers also offer a separate raw-spread-plus-commission tier -- check each broker\'s current fee schedule for your specific account type before relying on either headline figure.',
+                ),
+            ),
+        ),
     );
 }
