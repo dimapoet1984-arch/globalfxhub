@@ -297,12 +297,15 @@ $globalfxhub_broker_news_categories = globalfxhub_broker_news_categories();
       <?php foreach ( $globalfxhub_broker_news_preview as $globalfxhub_bn_item ) :
           $globalfxhub_bn_broker = globalfxhub_get_broker_by_slug( $globalfxhub_bn_item['broker_slug'] );
           if ( ! $globalfxhub_bn_broker ) { continue; }
-          $globalfxhub_bn_cat = isset( $globalfxhub_broker_news_categories[ $globalfxhub_bn_item['category'] ] ) ? $globalfxhub_broker_news_categories[ $globalfxhub_bn_item['category'] ] : 'Update';
+          $globalfxhub_bn_cat = isset( $globalfxhub_broker_news_categories[ $globalfxhub_bn_item['category'] ] ) ? $globalfxhub_broker_news_categories[ $globalfxhub_bn_item['category'] ] : globalfxhub_t( 'bn_cat_fallback' );
+          $globalfxhub_bn_slug = globalfxhub_broker_news_item_slug( $globalfxhub_bn_item );
+          $globalfxhub_bn_headline = globalfxhub_tf( 'broker_news', $globalfxhub_bn_slug, 'headline', $globalfxhub_bn_item['headline'] );
+          $globalfxhub_bn_body = globalfxhub_tf( 'broker_news', $globalfxhub_bn_slug, 'body', $globalfxhub_bn_item['body'] );
       ?>
-      <a href="<?php echo esc_url( globalfxhub_track_b_url( 'news/brokers/' . globalfxhub_broker_news_item_slug( $globalfxhub_bn_item ) . '/' ) ); ?>" class="news-item">
-        <div class="tag"><?php echo esc_html( strtoupper( $globalfxhub_bn_cat ) ); ?></div>
-        <h4><?php echo esc_html( $globalfxhub_bn_item['headline'] ); ?></h4>
-        <p><?php echo esc_html( globalfxhub_trim_excerpt( $globalfxhub_bn_item['body'], 20 ) ); ?></p>
+      <a href="<?php echo esc_url( globalfxhub_track_b_url( 'news/brokers/' . $globalfxhub_bn_slug . '/' ) ); ?>" class="news-item">
+        <div class="tag"><?php echo esc_html( mb_strtoupper( $globalfxhub_bn_cat, 'UTF-8' ) ); ?></div>
+        <h4><?php echo esc_html( $globalfxhub_bn_headline ); ?></h4>
+        <p><?php echo esc_html( globalfxhub_trim_excerpt( $globalfxhub_bn_body, 20 ) ); ?></p>
         <time><?php echo esc_html( date_i18n( 'j M Y', strtotime( $globalfxhub_bn_item['date'] ) ) ); ?></time>
       </a>
       <?php endforeach; ?>

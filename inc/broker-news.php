@@ -31,15 +31,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function globalfxhub_broker_news_categories() {
     return array(
-        'acquisition'         => 'Acquisition',
-        'license'             => 'New licence',
-        'license_withdrawal'  => 'Licence withdrawal',
-        'fine'                => 'Fine',
-        'enforcement'         => 'Enforcement',
-        'platform'            => 'New platform',
-        'executive'           => 'Executive move',
-        'product'             => 'Product launch',
-        'outage'              => 'Outage',
+        'acquisition'         => globalfxhub_t( 'bn_cat_acquisition' ),
+        'license'             => globalfxhub_t( 'bn_cat_license' ),
+        'license_withdrawal'  => globalfxhub_t( 'bn_cat_license_withdrawal' ),
+        'fine'                => globalfxhub_t( 'bn_cat_fine' ),
+        'enforcement'         => globalfxhub_t( 'bn_cat_enforcement' ),
+        'platform'            => globalfxhub_t( 'bn_cat_platform' ),
+        'executive'           => globalfxhub_t( 'bn_cat_executive' ),
+        'product'             => globalfxhub_t( 'bn_cat_product' ),
+        'outage'              => globalfxhub_t( 'bn_cat_outage' ),
     );
 }
 
@@ -300,13 +300,8 @@ function globalfxhub_broker_news_seo_title( $title_parts ) {
     if ( $slug ) {
         $item = globalfxhub_get_broker_news_item_by_slug( $slug );
         if ( $item ) {
-            // $item['headline'] itself is still English -- real,
-            // per-item broker-news content, same deferred-translation
-            // bucket as the broker dataset's own free-text fields,
-            // not a <title>-tag routing gap. Only the " | Broker News"
-            // suffix is fixed here, reusing the already-translated
-            // footer_broker_news key.
-            $title_parts['title'] = $item['headline'] . ' | ' . globalfxhub_t( 'footer_broker_news' );
+            $headline = globalfxhub_tf( 'broker_news', $slug, 'headline', $item['headline'] );
+            $title_parts['title'] = $headline . ' | ' . globalfxhub_t( 'footer_broker_news' );
         }
     }
     return $title_parts;
@@ -331,6 +326,7 @@ function globalfxhub_broker_news_seo_head() {
     if ( ! $item ) {
         return;
     }
-    echo '<meta name="description" content="' . esc_attr( globalfxhub_trim_excerpt( $item['body'], 34 ) ) . '">' . "\n";
+    $body = globalfxhub_tf( 'broker_news', $slug, 'body', $item['body'] );
+    echo '<meta name="description" content="' . esc_attr( globalfxhub_trim_excerpt( $body, 34 ) ) . '">' . "\n";
 }
 add_action( 'wp_head', 'globalfxhub_broker_news_seo_head', 5 );

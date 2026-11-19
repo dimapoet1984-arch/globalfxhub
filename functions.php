@@ -1569,7 +1569,7 @@ function globalfxhub_breadcrumb_schema() {
                 $trail = array(
                     array( 'name' => globalfxhub_t( 'nav_news' ), 'item' => globalfxhub_templated_page_url( 'news' ) ),
                     array( 'name' => globalfxhub_t( 'footer_broker_news' ), 'item' => globalfxhub_news_child_page_url( 'brokers' ) ),
-                    array( 'name' => $news_item['headline'], 'item' => globalfxhub_track_b_url( 'news/brokers/' . $news_item_slug . '/' ) ),
+                    array( 'name' => globalfxhub_tf( 'broker_news', $news_item_slug, 'headline', $news_item['headline'] ), 'item' => globalfxhub_track_b_url( 'news/brokers/' . $news_item_slug . '/' ) ),
                 );
             }
         } elseif ( is_page_template( 'page-news-markets.php' ) ) {

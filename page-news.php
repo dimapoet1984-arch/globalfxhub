@@ -49,13 +49,15 @@ foreach ( globalfxhub_get_brokers() as $b ) {
         <?php foreach ( $broker_news_preview as $item ) :
             $broker = isset( $all_brokers_by_slug[ $item['broker_slug'] ] ) ? $all_brokers_by_slug[ $item['broker_slug'] ] : null;
             if ( ! $broker ) { continue; }
-            $cat_label = isset( $broker_news_categories[ $item['category'] ] ) ? $broker_news_categories[ $item['category'] ] : 'Update';
+            $cat_label = isset( $broker_news_categories[ $item['category'] ] ) ? $broker_news_categories[ $item['category'] ] : globalfxhub_t( 'bn_cat_fallback' );
             $item_slug = globalfxhub_broker_news_item_slug( $item );
+            $item_headline = globalfxhub_tf( 'broker_news', $item_slug, 'headline', $item['headline'] );
+            $item_body = globalfxhub_tf( 'broker_news', $item_slug, 'body', $item['body'] );
         ?>
         <a href="<?php echo esc_url( globalfxhub_track_b_url( 'news/brokers/' . $item_slug . '/' ) ); ?>" class="news-item">
-          <div class="tag"><?php echo esc_html( strtoupper( $cat_label ) ); ?></div>
-          <h4><?php echo esc_html( $item['headline'] ); ?></h4>
-          <p><?php echo esc_html( globalfxhub_trim_excerpt( $item['body'], 24 ) ); ?></p>
+          <div class="tag"><?php echo esc_html( mb_strtoupper( $cat_label, 'UTF-8' ) ); ?></div>
+          <h4><?php echo esc_html( $item_headline ); ?></h4>
+          <p><?php echo esc_html( globalfxhub_trim_excerpt( $item_body, 24 ) ); ?></p>
           <time><?php echo esc_html( date_i18n( 'j M Y', strtotime( $item['date'] ) ) ); ?> &middot; <?php echo esc_html( $broker['name'] ); ?> &rarr;</time>
         </a>
         <?php endforeach; ?>
