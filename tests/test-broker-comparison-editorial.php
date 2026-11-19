@@ -38,6 +38,8 @@ function globalfxhub_get_broker_by_slug( $slug ) {
         'pepperstone' => array( 'slug' => 'pepperstone', 'name' => 'Pepperstone' ),
         'fp-markets'  => array( 'slug' => 'fp-markets', 'name' => 'FP Markets' ),
         'ic-markets'  => array( 'slug' => 'ic-markets', 'name' => 'IC Markets' ),
+        'oanda'       => array( 'slug' => 'oanda', 'name' => 'OANDA' ),
+        'ig'          => array( 'slug' => 'ig', 'name' => 'IG' ),
     );
     return $brokers[ $slug ] ?? null;
 }
@@ -58,6 +60,11 @@ $NEW_COMPARISONS = array(
         'a_slug' => 'fp-markets', 'a_name' => 'FP Markets',
         'b_slug' => 'ic-markets', 'b_name' => 'IC Markets',
         'verdict_must_contain' => array( '3.49', '3.07', '0.8', '1.0' ),
+    ),
+    'oanda-ig' => array(
+        'a_slug' => 'oanda', 'a_name' => 'OANDA',
+        'b_slug' => 'ig', 'b_name' => 'IG',
+        'verdict_must_contain' => array( '4.13', '4.03', '0.6', '5.0', '3.4' ),
     ),
 );
 
@@ -160,5 +167,11 @@ foreach ( $NEW_COMPARISONS as $key => $expect ) {
 }
 
 assert_equal( null, globalfxhub_get_localized_editorial_comparison( 'no-such-pair' ), 'an unknown key returns null, not a fatal error' );
+
+echo "\n--- oanda-ig: honesty check -- OANDA's real cost score is null (unconfirmed spread), so the entry must say so rather than fabricate a cost figure for it ---\n";
+$oanda_ig = $all['oanda-ig'];
+$oanda_ig_full_text = $oanda_ig['verdict'] . ' ' . implode( ' ', $oanda_ig['choose_b_points'] ) . ' ' . $oanda_ig['worth_knowing'];
+assert_equal( true, false !== strpos( $oanda_ig_full_text, "isn't confirmed" ) || false !== strpos( $oanda_ig_full_text, 'unconfirmed' ), "oanda-ig entry explicitly flags OANDA's spread as unconfirmed somewhere (verdict, choose points, or worth-knowing), rather than inventing a cost score for it" );
+assert_equal( false, (bool) preg_match( '/OANDA[^.]*cost score of \d/', $oanda_ig['verdict'] ), 'the verdict never attributes a specific numeric cost score to OANDA (it has none on file)' );
 
 assert_test_summary_and_exit();
