@@ -227,7 +227,7 @@ elseif ( $broker ) :
   <div class="hero__actions" style="margin-top:22px;">
     <a href="<?php echo esc_url( globalfxhub_templated_page_url( 'compare' ) . '?a=' . rawurlencode( $broker['slug'] ) ); ?>" class="btn btn--gold"><?php globalfxhub_te( 'rev_compare_vs_another' ); ?></a>
     <?php foreach ( globalfxhub_editorial_comparisons_for_broker( $broker['slug'] ) as $editorial_vs ) : ?>
-    <a href="<?php echo esc_url( $editorial_vs['url'] ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $broker['name'] . ' vs ' . $editorial_vs['other']['name'] ); ?>: <?php globalfxhub_te( 'rev_vs_our_verdict' ); ?></a>
+    <a href="<?php echo esc_url( $editorial_vs['url'] ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $broker['name'] . ' ' . globalfxhub_t( 'cmp_vs_label' ) . ' ' . $editorial_vs['other']['name'] ); ?>: <?php globalfxhub_te( 'rev_vs_our_verdict' ); ?></a>
     <?php endforeach; ?>
     <?php foreach ( globalfxhub_broker_research_articles_for_broker( $broker['slug'] ) as $research_link ) : ?>
     <a href="<?php echo esc_url( $research_link['url'] ); ?>" class="btn btn--ghost" style="color:var(--navy);border-color:var(--rule);"><?php echo esc_html( $research_link['title'] ); ?></a>

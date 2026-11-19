@@ -354,9 +354,17 @@ function globalfxhub_broker_research_articles_for_broker( $slug ) {
     $matches = array();
     foreach ( globalfxhub_get_broker_research_articles() as $key => $entry ) {
         if ( $entry['broker_slug'] === $slug ) {
+            // The title must come from the SAME localized lookup the
+            // article's own page uses (globalfxhub_get_localized_broker_research_article()),
+            // not the raw English $entry['title'] -- otherwise this
+            // link's visible text stays English forever while its href
+            // (already language-aware via globalfxhub_track_b_url())
+            // correctly lands on a translated article page, the same
+            // bug class fixed earlier for Learn article cross-links.
+            $localized = globalfxhub_get_localized_broker_research_article( $slug, $entry['kind'] );
             $matches[] = array(
                 'kind'  => $entry['kind'],
-                'title' => $entry['title'],
+                'title' => $localized ? $localized['title'] : $entry['title'],
                 'url'   => globalfxhub_track_b_url( 'reviews/' . $slug . '/' . $entry['kind'] . '/' ),
             );
         }

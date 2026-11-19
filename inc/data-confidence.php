@@ -121,7 +121,7 @@ function globalfxhub_classify_text_confidence( $text ) {
             return array(
                 'confidence'  => 'LOW',
                 'source_type' => 'unconfirmed',
-                'source'      => 'Third-party reporting with an explicit, unresolved gap or conflict in our research.',
+                'source'      => globalfxhub_t( 'data_confidence_source_low' ),
             );
         }
     }
@@ -131,7 +131,7 @@ function globalfxhub_classify_text_confidence( $text ) {
             return array(
                 'confidence'  => 'HIGH',
                 'source_type' => 'broker_official',
-                'source'      => "Confirmed directly against the broker's own published disclosure.",
+                'source'      => globalfxhub_t( 'data_confidence_source_high' ),
             );
         }
     }
@@ -141,7 +141,7 @@ function globalfxhub_classify_text_confidence( $text ) {
             return array(
                 'confidence'  => 'MEDIUM',
                 'source_type' => 'third_party_multi',
-                'source'      => 'Corroborated across multiple independent third-party sources.',
+                'source'      => globalfxhub_t( 'data_confidence_source_medium' ),
             );
         }
     }
@@ -178,7 +178,7 @@ function globalfxhub_broker_field_confidence( $broker, $field ) {
         return array(
             'confidence'    => 'MEDIUM',
             'source_type'   => 'aggregated_third_party',
-            'source'        => "Cross-referenced from publicly available broker fee schedules and third-party comparison data -- not individually re-verified against this broker's current live pricing page.",
+            'source'        => globalfxhub_t( 'data_confidence_source_numeric' ),
             'last_verified' => $dates['pricing_checked'],
             'verified_by'   => 'GlobalFXHub Research Team',
         );
@@ -223,13 +223,13 @@ function globalfxhub_data_confidence_badge_html( $broker, $field ) {
         return '';
     }
     $labels = array(
-        'HIGH'   => 'High confidence',
-        'MEDIUM' => 'Medium confidence',
-        'LOW'    => 'Low confidence',
+        'HIGH'   => globalfxhub_t( 'data_confidence_high_label' ),
+        'MEDIUM' => globalfxhub_t( 'data_confidence_medium_label' ),
+        'LOW'    => globalfxhub_t( 'data_confidence_low_label' ),
     );
     $title = $rating['source'];
     if ( ! empty( $rating['last_verified'] ) ) {
-        $title .= ' Last verified: ' . $rating['last_verified'] . '.';
+        $title .= ' ' . sprintf( globalfxhub_t( 'data_confidence_last_verified' ), $rating['last_verified'] );
     }
     return sprintf(
         ' <span class="confidence-badge confidence-badge--%s" title="%s">%s</span>',

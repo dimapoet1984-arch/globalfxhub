@@ -1735,13 +1735,13 @@ function globalfxhub_broker_regulation_label( $broker ) {
 function globalfxhub_broker_verify_links( $broker ) {
     $links = array();
     if ( ! empty( $broker['cysec'] ) && '—' !== $broker['cysec'] ) {
-        $links[] = array( 'label' => 'Verify on CySEC register', 'url' => 'https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/' );
+        $links[] = array( 'label' => globalfxhub_t( 'rev_verify_cysec' ), 'url' => 'https://www.cysec.gov.cy/en-GB/entities/investment-firms/cypriot/' );
     }
     if ( ! empty( $broker['fca'] ) || ! empty( $broker['fca_note'] ) ) {
-        $links[] = array( 'label' => 'Verify on FCA register', 'url' => 'https://register.fca.org.uk/s/' );
+        $links[] = array( 'label' => globalfxhub_t( 'rev_verify_fca' ), 'url' => 'https://register.fca.org.uk/s/' );
     }
     if ( ! empty( $broker['seychelles'] ) || ! empty( $broker['seychelles_note'] ) ) {
-        $links[] = array( 'label' => 'Verify on FSA Seychelles register', 'url' => 'https://fsaseychelles.sc/' );
+        $links[] = array( 'label' => globalfxhub_t( 'rev_verify_seychelles' ), 'url' => 'https://fsaseychelles.sc/' );
     }
     return $links;
 }
@@ -1976,11 +1976,28 @@ function globalfxhub_broker_faqs( $broker ) {
  * carry it yet.
  */
 function globalfxhub_broker_review_dates( $broker ) {
+    $data_reviewed       = $broker['data_reviewed_override'] ?? '8 October 2026';
+    $regulation_reviewed = $broker['regulation_reviewed_override'] ?? '8 October 2026';
+    $pricing_checked     = $broker['pricing_checked_override'] ?? 'March 2026';
+    $next_review         = $broker['next_review_override'] ?? 'January 2027';
+
+    // These overrides/fallbacks are stored as plain English date strings
+    // (never as a timestamp or Y-m-d value), same raw-data shape as
+    // every other hand-entered date on this site -- so they're parsed
+    // here and re-rendered via date_i18n() at display time, the same
+    // pattern used by globalfxhub_broker_changelog_localized_summary()
+    // and every other date shown on the site, rather than echoing the
+    // stored English text directly on every language's review page.
+    // 'j F Y' preserves day-level dates as-is; 'F Y' preserves the
+    // month-year-only granularity of the pricing/next-review fallbacks
+    // (parsing "March 2026" via strtotime() defaults to day 1, so
+    // formatting with a day component would introduce a day that was
+    // never actually there).
     return array(
-        'data_reviewed'       => $broker['data_reviewed_override'] ?? '8 October 2026',
-        'regulation_reviewed' => $broker['regulation_reviewed_override'] ?? '8 October 2026',
-        'pricing_checked'     => $broker['pricing_checked_override'] ?? 'March 2026',
-        'next_review'         => $broker['next_review_override'] ?? 'January 2027',
+        'data_reviewed'       => date_i18n( 'j F Y', strtotime( $data_reviewed ) ),
+        'regulation_reviewed' => date_i18n( 'j F Y', strtotime( $regulation_reviewed ) ),
+        'pricing_checked'     => date_i18n( 'F Y', strtotime( $pricing_checked ) ),
+        'next_review'         => date_i18n( 'F Y', strtotime( $next_review ) ),
     );
 }
 
@@ -2010,91 +2027,91 @@ function globalfxhub_get_external_reviews() {
 
     $data = array(
         'ig' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'ig', 'rating' => 99, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'ig', 'rating' => 99, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'ig-review', 'rating' => 4.4, 'scale' => 5 ),
-            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '109/ig-forex-brokers', 'rating' => 1.77, 'scale' => 5, 'note' => 'Single unverified search snippet, not independently page-confirmed.' ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '109/ig-forex-brokers', 'rating' => 1.77, 'scale' => 5, 'note' => globalfxhub_t( 'rev_ext_note_unverified_snippet' ) ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'ig-markets-review', 'rating' => null, 'scale' => 5 ),
         ),
         'forex-com' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'forex-com', 'rating' => 99, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'forex-com', 'rating' => 99, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'forex.com-review', 'rating' => 4.4, 'scale' => 5 ),
             array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '66/forex-com-reviews', 'rating' => null, 'scale' => 5 ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'forex-review', 'rating' => null, 'scale' => 5 ),
         ),
         'avatrade' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'avatrade', 'rating' => 96, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
-            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'avatrade-review', 'rating' => 4.2, 'scale' => 5, 'note' => 'Low-confidence figure -- may reflect a sub-score rather than the page\'s headline rating.' ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'avatrade', 'rating' => 96, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'avatrade-review', 'rating' => 4.2, 'scale' => 5, 'note' => globalfxhub_t( 'rev_ext_note_avatrade_subscore' ) ),
             array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '539/avatrade-review', 'rating' => null, 'scale' => 5 ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'avatrade-review', 'rating' => null, 'scale' => 5 ),
         ),
         'fxcm' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'fxcm', 'rating' => 95, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'fxcm', 'rating' => 95, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'fxcm-review', 'rating' => 4.2, 'scale' => 5 ),
             array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '78/fxcm-forex-broker', 'rating' => null, 'scale' => 5 ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'fxcm-review', 'rating' => null, 'scale' => 5 ),
         ),
         'xtb' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'xtb', 'rating' => 96, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true, 'note' => 'Also carries a separately stated 5/5 "Overall" star rating on this page.' ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'xtb', 'rating' => 96, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true, 'note' => globalfxhub_t( 'rev_ext_note_xtb_overall_rating' ) ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'xtb-review', 'rating' => 4.9, 'scale' => 5 ),
             array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '3597/xtb-review', 'rating' => null, 'scale' => 5 ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'xtb-review', 'rating' => null, 'scale' => 5 ),
         ),
         'capital-com' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'capital-com', 'rating' => 89, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'capital-com', 'rating' => 89, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'capitalcom-review', 'rating' => 4.8, 'scale' => 5 ),
             array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '14357/capital-com-review', 'rating' => null, 'scale' => 5 ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'capital-review', 'rating' => null, 'scale' => 5 ),
         ),
         'pepperstone' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'pepperstone', 'rating' => 94, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
-            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'pepperstone-review', 'rating' => 4.4, 'scale' => 5, 'note' => 'Low-confidence figure -- could not be cross-confirmed as the page\'s headline rating.' ),
-            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '7523/pepperstone-review', 'rating' => 3.48, 'scale' => 5, 'note' => 'Single unverified search snippet, not independently page-confirmed.' ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'pepperstone', 'rating' => 94, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'pepperstone-review', 'rating' => 4.4, 'scale' => 5, 'note' => globalfxhub_t( 'rev_ext_note_pepperstone_bc' ) ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '7523/pepperstone-review', 'rating' => 3.48, 'scale' => 5, 'note' => globalfxhub_t( 'rev_ext_note_unverified_snippet' ) ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'pepperstone-review', 'rating' => null, 'scale' => 5 ),
         ),
         'eightcap' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'eightcap', 'rating' => 87, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'eightcap', 'rating' => 87, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'eightcap-review', 'rating' => 4.4, 'scale' => 5 ),
             array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '12091/eightcap-forex-brokers', 'rating' => null, 'scale' => 5 ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'eightcap-review', 'rating' => null, 'scale' => 5 ),
         ),
         'etoro' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'etoro', 'rating' => 97, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'etoro', 'rating' => 97, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'etoro-review', 'rating' => 4.8, 'scale' => 5 ),
             array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '3731/etoro-review', 'rating' => null, 'scale' => 5 ),
-            array( 'source' => 'DailyForex', 'url' => $df_base . 'etoro-review', 'rating' => null, 'scale' => 5, 'note' => 'A 4.5/5 figure appears in an old (2018) review and is not shown as current.' ),
+            array( 'source' => 'DailyForex', 'url' => $df_base . 'etoro-review', 'rating' => null, 'scale' => 5, 'note' => globalfxhub_t( 'rev_ext_note_etoro_old_rating' ) ),
         ),
         'fxpro' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'fxpro', 'rating' => 93, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'fxpro', 'rating' => 93, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'fxpro-review', 'rating' => 4.1, 'scale' => 5 ),
-            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '3947/fxpro-review', 'rating' => 2.5, 'scale' => 5, 'note' => 'Single unverified search snippet, not independently page-confirmed.' ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '3947/fxpro-review', 'rating' => 2.5, 'scale' => 5, 'note' => globalfxhub_t( 'rev_ext_note_unverified_snippet' ) ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'fxpro-review', 'rating' => null, 'scale' => 5 ),
         ),
         'xm' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'xm', 'rating' => 93, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'xm', 'rating' => 93, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'xm-review', 'rating' => 4.3, 'scale' => 5 ),
             array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '7214/xm-review', 'rating' => null, 'scale' => 5 ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'xm-review', 'rating' => null, 'scale' => 5 ),
         ),
         'plus500' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'plus500', 'rating' => 99, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
-            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'plus500-review', 'rating' => 4.5, 'scale' => 5, 'note' => 'Rating shown is for the "Plus500 CFD" listing specifically; BrokerChooser reviews Plus500\'s CFD, Invest, and Futures products separately.' ),
-            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '5374/plus500-review', 'rating' => 1.5, 'scale' => 5, 'note' => 'Single unverified search snippet, not independently page-confirmed.' ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'plus500', 'rating' => 99, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
+            array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'plus500-review', 'rating' => 4.5, 'scale' => 5, 'note' => globalfxhub_t( 'rev_ext_note_plus500_listing' ) ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '5374/plus500-review', 'rating' => 1.5, 'scale' => 5, 'note' => globalfxhub_t( 'rev_ext_note_unverified_snippet' ) ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'plus500-review', 'rating' => null, 'scale' => 5 ),
         ),
         'ic-markets' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'ic-markets', 'rating' => 83, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'ic-markets', 'rating' => 83, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'ic-markets-review', 'rating' => 4.4, 'scale' => 5 ),
             array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '8264/ic-markets-forex-brokers', 'rating' => null, 'scale' => 5 ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'ic-markets-review', 'rating' => null, 'scale' => 5 ),
         ),
         'trading-212' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'trading-212', 'rating' => 82, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'trading-212', 'rating' => 82, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'trading-212-review', 'rating' => 4.5, 'scale' => 5 ),
-            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '8416/trading212-review', 'rating' => 2.5, 'scale' => 5, 'note' => 'Single unverified search snippet, not independently page-confirmed.' ),
+            array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '8416/trading212-review', 'rating' => 2.5, 'scale' => 5, 'note' => globalfxhub_t( 'rev_ext_note_unverified_snippet' ) ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'trading-212-review', 'rating' => null, 'scale' => 5 ),
         ),
         'tickmill' => array(
-            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'tickmill', 'rating' => 85, 'scale' => 99, 'label' => 'Trust Score', 'exclude_from_average' => true ),
+            array( 'source' => 'ForexBrokers.com', 'url' => $fb_base . 'tickmill', 'rating' => 85, 'scale' => 99, 'label' => globalfxhub_t( 'rev_ext_trust_score_label' ), 'exclude_from_average' => true ),
             array( 'source' => 'BrokerChooser', 'url' => $bc_base . 'tickmill-review', 'rating' => 4.4, 'scale' => 5 ),
             array( 'source' => 'ForexPeaceArmy', 'url' => $fpa_base . '8718/tickmill-forex-brokers', 'rating' => null, 'scale' => 5 ),
             array( 'source' => 'DailyForex', 'url' => $df_base . 'tickmill-review', 'rating' => null, 'scale' => 5 ),
