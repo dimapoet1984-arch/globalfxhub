@@ -93,6 +93,28 @@ COMPARISONS = {
         "faq_2_q": "Does Exness or XM charge an inactivity fee?",
         "faq_2_a": "XM does: a $15 one-off fee after 90 days of inactivity, followed by an ongoing $5/month charge if the account stays dormant. Multiple independent sources confirm Exness charges no inactivity fee at all.",
     },
+    "avatrade-pepperstone": {
+        "meta_title": "AvaTrade vs Pepperstone (2026): Which Broker Should You Choose?",
+        "meta_description": "AvaTrade vs Pepperstone compared on regulation, cost, platforms, and execution model -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
+        "intro": "AvaTrade and Pepperstone sit at opposite ends of a real design choice: AvaTrade is a market-maker aimed at a broad retail audience with social and copy-trading options built in, while Pepperstone markets itself specifically around no-dealing-desk execution for active and algorithmic traders. Both are well-established and multi-regulated, but that different starting point shapes almost everything else about how each broker actually operates.",
+        "verdict": "Under our disclosed methodology, AvaTrade scores 4.12/5 overall against Pepperstone's 3.64/5, driven mainly by regulation (4.2/5 against 3.4/5) and platform breadth (5/5 against 4.2/5). AvaTrade's on-file EUR/USD spread is also marginally tighter (0.93 pips against Pepperstone's 1.1), though both are close enough that neither broker is meaningfully \"the cheap one\" here. Pepperstone's real advantages sit outside the headline score: a $10 minimum deposit against AvaTrade's $100, a direct FCA licence AvaTrade doesn't currently hold, and a no-dealing-desk execution model (Standard runs STP-style, Razor runs ECN-style) against AvaTrade's market-maker setup. AvaTrade counters with a longer operating history (founded 2006 against Pepperstone's 2010) and regulatory reach across more individual jurisdictions -- ASIC, Japan's JFSA, Canada's CIRO, and Ireland's central bank, alongside EU coverage via MiFID passporting and a single-source Seychelles licence -- though more jurisdictions isn't the same as deeper Tier-1 coverage, since Pepperstone holds both a direct FCA licence and a direct CySEC licence that AvaTrade's MiFID-passporting setup doesn't.",
+        "choose_a_heading": "Choose AvaTrade if...",
+        "choose_a_point_1": "You want the slightly tighter headline spread -- AvaTrade's on-file EUR/USD spread of 0.93 pips is marginally lower than Pepperstone's 1.1 pips.",
+        "choose_a_point_2": "You want copy-trading built in -- AvaTrade supports DupliTrade and ZuluTrade directly, alongside its own proprietary AvaTradeGO app; Pepperstone offers neither.",
+        "choose_a_point_3": "A longer operating history matters to you -- AvaTrade has operated since 2006, four years longer than Pepperstone.",
+        "choose_a_point_4": "You want regulatory reach across more individual jurisdictions -- AvaTrade adds ASIC, Japan's JFSA, Canada's CIRO, and Ireland's central bank to its EU and Seychelles coverage.",
+        "choose_b_heading": "Choose Pepperstone if...",
+        "choose_b_point_1": "You're starting with a small account -- Pepperstone's $10 minimum deposit is a fraction of AvaTrade's $100.",
+        "choose_b_point_2": "You want no-dealing-desk execution -- Pepperstone markets Standard as STP-style and Razor as ECN-style, against AvaTrade's market-maker model.",
+        "choose_b_point_3": "Direct FCA regulation matters to you -- Pepperstone holds a direct FCA licence (684312) and a direct CySEC licence (388/20); AvaTrade's EU coverage runs via MiFID passporting rather than a direct CySEC CIF licence, and it doesn't currently hold an FCA licence at all.",
+        "choose_b_point_4": "You trade on cTrader or TradingView -- Pepperstone supports both directly; AvaTrade supports neither.",
+        "worth_knowing_heading": "Worth knowing before you decide",
+        "worth_knowing": "AvaTrade's Seychelles licence (SD033) is single-source in our research and worth an independent spot-check before relying on it. Its EU clients are typically served under Central Bank of Ireland / MiFID passporting rather than a direct CySEC CIF licence, so confirm which entity you'd actually be onboarded under. Pepperstone's own Seychelles coverage runs through a separate related entity (Pepperstone International Markets Limited) with no independently confirmed licence number, and multiple independent sources report it charges no inactivity fee -- though that wasn't independently verified against the EU entity's own client agreement. Both brokers' account structures differ enough -- AvaTrade's single retail tier against Pepperstone's Standard/Razor split -- that your actual cost depends more on which specific account you'd open than on the headline spread above.",
+        "faq_1_q": "Is AvaTrade or Pepperstone better for beginners?",
+        "faq_1_a": "AvaTrade's broader platform lineup and built-in copy-trading (DupliTrade, ZuluTrade) suit a trader who wants guidance built in, while Pepperstone's $10 minimum deposit is far more accessible to start with than AvaTrade's $100. Neither broker's account structure is explicitly designed for beginners over active traders.",
+        "faq_2_q": "Which has the lower trading cost, AvaTrade or Pepperstone?",
+        "faq_2_a": "On our on-file headline EUR/USD spread, AvaTrade is marginally tighter at 0.93 pips against Pepperstone's 1.1 pips, and scores slightly higher on cost under our methodology (4.61/5 against 4.56/5) -- close enough that account type and trading style matter more than this one figure.",
+    },
 }
 
 BATCH_SCHEMA = {
