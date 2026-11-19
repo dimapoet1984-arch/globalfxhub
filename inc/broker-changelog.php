@@ -88,6 +88,69 @@ function globalfxhub_changelog_diff_summary( $label, $old_value, $new_value ) {
 }
 
 /**
+ * Maps each tracked field to its translatable-string key (in
+ * inc/translatable-strings.php), used only to render an entry's
+ * summary in the current viewer's language -- globalfxhub_changelog_
+ * tracked_fields()'s own English labels above stay as the write-time
+ * fallback baked into 'summary' for entries that predate 'old'/'new'
+ * being persisted (see globalfxhub_changelog_localized_summary()).
+ */
+function globalfxhub_changelog_field_translation_keys() {
+    return array(
+        'spread_eurusd'       => 'cl_field_spread_eurusd',
+        'min_deposit_display' => 'cl_field_min_deposit_display',
+        'platforms'           => 'cl_field_platforms',
+        'fca'                 => 'cl_field_fca',
+        'cysec'               => 'cl_field_cysec',
+        'seychelles'          => 'cl_field_seychelles',
+        'other_reg'           => 'cl_field_other_reg',
+        'entity'              => 'cl_field_entity',
+    );
+}
+
+/**
+ * Same job as globalfxhub_changelog_format_value() above, but for
+ * display: translates the "not on file"/"none on file" fallbacks.
+ * Platform names, regulator codes, licence numbers etc. are left as
+ * literal data either way -- same reasoning as leaving entity/regulator
+ * names untranslated elsewhere on this site.
+ */
+function globalfxhub_changelog_format_value_t( $value ) {
+    if ( null === $value || '' === $value ) {
+        return globalfxhub_t( 'cl_value_not_on_file' );
+    }
+    if ( is_array( $value ) ) {
+        return empty( $value ) ? globalfxhub_t( 'cl_value_none_on_file' ) : implode( ', ', $value );
+    }
+    return (string) $value;
+}
+
+/**
+ * Reconstructs an entry's summary in the current viewer's language from
+ * its stored 'field'/'old'/'new' rather than echoing the English
+ * sentence baked into 'summary' at write time. Falls back to that
+ * stored 'summary' for a baseline entry's unrecognized-field case, and
+ * for any entry written before 'old'/'new' were persisted (there's
+ * nothing to reconstruct from, so the honest fallback is the English
+ * text actually recorded, not a guess).
+ */
+function globalfxhub_changelog_localized_summary( $entry ) {
+    if ( null === ( $entry['field'] ?? null ) ) {
+        return globalfxhub_t( 'cl_baseline_summary' );
+    }
+    $field_keys = globalfxhub_changelog_field_translation_keys();
+    if ( ! array_key_exists( 'old', $entry ) || ! array_key_exists( 'new', $entry ) || ! isset( $field_keys[ $entry['field'] ] ) ) {
+        return $entry['summary'];
+    }
+    return sprintf(
+        globalfxhub_t( 'cl_diff_template' ),
+        globalfxhub_t( $field_keys[ $entry['field'] ] ),
+        globalfxhub_changelog_format_value_t( $entry['old'] ),
+        globalfxhub_changelog_format_value_t( $entry['new'] )
+    );
+}
+
+/**
  * Diffs the current dataset against the last stored snapshot and
  * records any real difference, per broker, per tracked field -- one
  * entry per field per run, dated today, never backdated. A broker seen
@@ -106,6 +169,14 @@ function globalfxhub_broker_changelog_sync() {
         $changelog = array();
     }
 
+    // Stored alongside the already-localized 'date' below purely as a
+    // write-time fallback: a language-neutral ISO date lets render time
+    // reformat the date in the CURRENT viewer's language/locale via
+    // date_i18n() -- the same pattern used everywhere else on this site
+    // (broker news, regulator pages, ...) -- rather than baking in
+    // whichever language happened to be active on the page load that
+    // first detected this change.
+    $today_raw = date( 'Y-m-d' );
     $today = function_exists( 'date_i18n' ) ? date_i18n( 'j F Y' ) : date( 'j F Y' );
     $labels = globalfxhub_changelog_tracked_fields();
     $changed_anything = false;
@@ -127,9 +198,10 @@ function globalfxhub_broker_changelog_sync() {
                 $changelog[ $slug ] = array();
             }
             $changelog[ $slug ][] = array(
-                'date'    => $today,
-                'field'   => null,
-                'summary' => 'Baseline recorded -- change tracking starts here. No prior change history is available for this broker.',
+                'date'     => $today,
+                'date_raw' => $today_raw,
+                'field'    => null,
+                'summary'  => 'Baseline recorded -- change tracking starts here. No prior change history is available for this broker.',
             );
             $snapshots[ $slug ] = $new_snapshot;
             $changed_anything = true;
@@ -145,9 +217,12 @@ function globalfxhub_broker_changelog_sync() {
                 continue;
             }
             $new_entries[] = array(
-                'date'    => $today,
-                'field'   => $field,
-                'summary' => globalfxhub_changelog_diff_summary( $label, $old_value, $new_value ),
+                'date'     => $today,
+                'date_raw' => $today_raw,
+                'field'    => $field,
+                'old'      => $old_value,
+                'new'      => $new_value,
+                'summary'  => globalfxhub_changelog_diff_summary( $label, $old_value, $new_value ),
             );
         }
 
@@ -185,8 +260,13 @@ add_action( 'after_setup_theme', 'globalfxhub_broker_changelog_sync' );
  */
 function globalfxhub_get_broker_changelog( $slug ) {
     $changelog = get_option( GLOBALFXHUB_BROKER_CHANGELOG_OPTION, array() );
-    $entries = $changelog[ $slug ] ?? array();
-    return array_reverse( $entries );
+    $entries = array_reverse( $changelog[ $slug ] ?? array() );
+    return array_map( function( $entry ) {
+        return array(
+            'date'    => ! empty( $entry['date_raw'] ) ? date_i18n( 'j F Y', strtotime( $entry['date_raw'] ) ) : $entry['date'],
+            'summary' => globalfxhub_changelog_localized_summary( $entry ),
+        );
+    }, $entries );
 }
 
 function globalfxhub_broker_changelog_payload() {

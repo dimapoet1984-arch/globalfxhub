@@ -26,7 +26,7 @@ $cl_subscribe_messages = array(
 ?>
 
 <div class="wrap crumb">
-  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> / <?php the_title(); ?>
+  <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php globalfxhub_te( 'tb_home' ); ?></a> / <?php globalfxhub_te( 'ptitle_broker_changelog' ); ?>
 </div>
 
 <?php globalfxhub_promo_banner(); ?>
@@ -85,10 +85,14 @@ $cl_subscribe_messages = array(
 
 <script>
 const CL_BROKERS = <?php echo wp_json_encode( $cl_payload ); ?>;
-// Translated strings for the JS-rendered change log below. Note: the
-// entries' own e.summary text is generated and persisted in wp_options
-// by inc/broker-changelog.php at write time, not translated here --
-// that's a separate, deferred architectural issue (see that file).
+// Translated strings for the JS-rendered change log below. e.summary
+// (and e.date) are already localized server-side in the current
+// viewer's language by globalfxhub_get_broker_changelog() (see
+// inc/broker-changelog.php) -- reconstructed from each entry's stored
+// field/old/new rather than echoing the English sentence baked in at
+// write time. An entry written before 'old'/'new' were persisted falls
+// back to that original English text, since there's nothing to
+// reconstruct a translation from.
 const T = <?php echo wp_json_encode( array(
     'changelog_suffix' => globalfxhub_t( 'cl_changelog_suffix' ),
     'no_history' => globalfxhub_t( 'cl_no_history' ),
