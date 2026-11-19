@@ -21,6 +21,17 @@
  * site's actual track record -- each time a material correction is
  * actually made. See docs on globalfxhub_correction_entry_shape() below
  * for exactly what to fill in.
+ *
+ * i18n note: page-corrections.php's own UI chrome (eyebrow, intro,
+ * table header, "Previously:"/"Corrected to:"/"Why:" labels, empty
+ * state) is fully translated via inc/translatable-strings.php. The
+ * per-entry 'previous'/'corrected'/'reason' free text below is NOT --
+ * there is no Track B wiring for it yet, since this log is still empty
+ * and has no natural per-entry slug to key translations by. Once the
+ * first real correction is added, give it the same globalfxhub_tf()
+ * treatment as every other Track B content type (a 'corrections'
+ * content_type, keyed by e.g. a slug derived from 'date' + the
+ * corrected page's own slug) rather than leaving it English-only.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
