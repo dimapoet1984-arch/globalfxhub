@@ -806,7 +806,7 @@ function globalfxhub_country_seo_head() {
     $slug = get_query_var( 'country' );
     if ( ! $slug ) {
         if ( is_page_template( 'page-countries.php' ) ) {
-            echo '<meta name="description" content="' . esc_attr( 'Top-ranked, confirmed-licensed forex and CFD brokers for every EU member state plus Australia, South Africa, the UAE, and Singapore, with what\'s actually different -- regulator, currency, and local broker presence -- about trading in each one.' ) . '">' . "\n";
+            echo '<meta name="description" content="' . esc_attr( globalfxhub_t( 'country_meta_desc_hub' ) ) . '">' . "\n";
         }
         return;
     }
@@ -814,19 +814,11 @@ function globalfxhub_country_seo_head() {
     if ( ! $country ) {
         return;
     }
+    $name          = globalfxhub_tf( 'country', $slug, 'name', $country['name'] );
     $is_eu_country = empty( $country['region_type'] ) || 'other' !== $country['region_type'];
     $description   = $is_eu_country
-        ? sprintf(
-            'The top CySEC-regulated forex and CFD brokers available to retail traders in %s, ranked by our disclosed methodology -- plus what\'s specific to %s: currency, regulator, and EU rules.',
-            $country['name'],
-            $country['name']
-        )
-        : sprintf(
-            'The top %s-regulated forex and CFD brokers available to retail traders in %s, ranked by our disclosed methodology -- plus what\'s specific to %s: regulator, leverage rules, and investor protection.',
-            $country['regulator_short'],
-            $country['name'],
-            $country['name']
-        );
+        ? sprintf( globalfxhub_t( 'country_meta_desc_eu' ), $name )
+        : sprintf( globalfxhub_t( 'country_meta_desc_other' ), $country['regulator_short'], $name );
     echo '<meta name="description" content="' . esc_attr( $description ) . '">' . "\n";
 }
 add_action( 'wp_head', 'globalfxhub_country_seo_head', 5 );

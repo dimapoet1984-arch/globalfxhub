@@ -7,7 +7,9 @@
  * globalfxhub_country_leverage_rules_html()): eyebrow/H1/intro for
  * both EU and non-EU country pages, section H2 headings, the
  * local-entity and ranking-methodology paragraphs, the regulatory-
- * sources block, and the index page's eyebrow/intro/card title.
+ * sources block, the index page's eyebrow/intro/card title, and the
+ * meta description globalfxhub_country_seo_head() builds for the hub
+ * page and each per-country page.
  *
  * Checks every new key is registered, has a real English source, has
  * a non-empty translation in all 7 live languages, and that every
@@ -43,6 +45,7 @@ $KEYS = array(
     'country_badge_eu_since', 'country_badge_regulated', 'country_badge_non_eu',
     'country_eu_framework_p1', 'country_leverage_rules_p1', 'country_investor_compensation_p1',
     'country_investor_compensation_no_local', 'country_link_text_investor_compensation',
+    'country_meta_desc_hub', 'country_meta_desc_eu', 'country_meta_desc_other',
 );
 
 // Keys taking a single %s/%d arg (vsprintf with one positional element).
@@ -53,6 +56,7 @@ $SINGLE_ARG = array(
     'country_badge_eu_since' => 1995, 'country_badge_regulated' => 'ASIC',
     'country_eu_framework_p1' => 'Germany', 'country_leverage_rules_p1' => 'Germany',
     'country_not_researched' => '<a href="x">y</a>',
+    'country_meta_desc_eu' => 'Germany',
 );
 // Keys taking a positional (%1$s..) arg list.
 $POSITIONAL = array(
@@ -65,6 +69,7 @@ $POSITIONAL = array(
     'country_methodology_shortlist_note' => array( 3, 'ASIC' ),
     'country_investor_compensation_p1' => array( 'Germany' ),
     'country_investor_compensation_no_local' => array( 'Germany', '<a>x</a>' ),
+    'country_meta_desc_other' => array( 'ASIC', 'Australia' ),
 );
 // Non-templated (plain) keys -- just need a non-empty translation.
 $PLAIN = array_values( array_diff( $KEYS, array_keys( $SINGLE_ARG ), array_keys( $POSITIONAL ) ) );
@@ -87,8 +92,8 @@ foreach ( $KEYS as $key ) {
     }
 }
 
-assert_equal( 50, count( $KEYS ), 'exactly 50 new countries-page keys are checked' );
-assert_equal( 50, count( $PLAIN ) + count( $SINGLE_ARG ) + count( $POSITIONAL ), 'every key is classified exactly once' );
+assert_equal( 53, count( $KEYS ), 'exactly 53 new countries-page keys are checked' );
+assert_equal( 53, count( $PLAIN ) + count( $SINGLE_ARG ) + count( $POSITIONAL ), 'every key is classified exactly once' );
 
 echo "\n--- sprintf render check (every templated key, every language) ---\n";
 foreach ( $ALL_LANGS as $lang ) {
