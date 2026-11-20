@@ -53,7 +53,7 @@ function globalfxhub_register_comparison_post_type() {
         'show_ui'      => true,
         'show_in_menu' => true,
         'menu_icon'    => 'dashicons-chart-bar',
-        'supports'     => array( 'title' ),
+        'supports'     => array( 'title', 'custom-fields' ),
         'show_in_rest' => true,
         'rest_base'    => 'gfh-comparisons',
         'capability_type' => 'post',
