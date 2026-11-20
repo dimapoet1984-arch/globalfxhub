@@ -30,6 +30,7 @@ require get_template_directory() . '/inc/regulation-comparisons.php';
 require get_template_directory() . '/inc/regulator-entities.php';
 require get_template_directory() . '/inc/research-reports.php';
 require get_template_directory() . '/inc/broker-finder.php';
+require get_template_directory() . '/inc/broker-comparison-cpt.php';
 require get_template_directory() . '/inc/broker-comparison-editorial.php';
 require get_template_directory() . '/inc/broker-vs.php';
 require get_template_directory() . '/inc/broker-alternatives.php';

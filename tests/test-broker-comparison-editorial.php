@@ -48,6 +48,50 @@ function globalfxhub_get_broker_by_slug( $slug ) {
 }
 function globalfxhub_track_b_url( $path ) { return 'https://globalfxhub.net/' . $path; }
 
+/**
+ * Stand-ins for get_posts()/get_post_meta(), simulating the live
+ * 'gfh_comparison' CPT (inc/broker-comparison-cpt.php) this standalone
+ * harness has no real WP/database to query. Fixture data is the exact
+ * JSON dump of what globalfxhub_get_editorial_comparisons() returned
+ * BEFORE this architecture change (extracted via a one-off `php -r`
+ * snapshot of the old hardcoded array) -- i.e. this harness simulates
+ * a WP install where all 5 pre-existing comparisons have already been
+ * migrated into real, published posts with byte-identical content.
+ */
+$GLOBALS['__test_wp_comparison_posts'] = json_decode(
+    file_get_contents( __DIR__ . '/fixtures/gfh-comparison-posts.json' ),
+    true
+);
+$GLOBALS['__test_wp_comparison_status'] = array();
+function get_posts( $args ) {
+    if ( 'gfh_comparison' !== ( $args['post_type'] ?? null ) ) {
+        return array();
+    }
+    $requested_status = $args['post_status'] ?? 'publish';
+    $posts = array();
+    $id = 1;
+    foreach ( $GLOBALS['__test_wp_comparison_posts'] as $slug => $data ) {
+        $actual_status = $GLOBALS['__test_wp_comparison_status'][ $slug ] ?? 'publish';
+        if ( $actual_status === $requested_status ) {
+            $posts[] = (object) array( 'ID' => $id, 'post_name' => $slug );
+        }
+        $id++;
+    }
+    return $posts;
+}
+function get_post_meta( $post_id, $key, $single = false ) {
+    if ( 'gfh_cmp_data' !== $key ) {
+        return '';
+    }
+    $slugs = array_keys( $GLOBALS['__test_wp_comparison_posts'] );
+    $slug = $slugs[ $post_id - 1 ] ?? null;
+    if ( null === $slug ) {
+        return '';
+    }
+    return wp_json_encode( $GLOBALS['__test_wp_comparison_posts'][ $slug ] );
+}
+function wp_json_encode( $data ) { return json_encode( $data ); }
+
 require __DIR__ . '/../inc/broker-comparison-editorial.php';
 
 // Per-comparison expectations: a/b slug+name (rank-ordered), and a
@@ -203,5 +247,13 @@ $oanda_ig = $all['oanda-ig'];
 $oanda_ig_full_text = $oanda_ig['verdict'] . ' ' . implode( ' ', $oanda_ig['choose_b_points'] ) . ' ' . $oanda_ig['worth_knowing'];
 assert_equal( true, false !== strpos( $oanda_ig_full_text, "isn't confirmed" ) || false !== strpos( $oanda_ig_full_text, 'unconfirmed' ), "oanda-ig entry explicitly flags OANDA's spread as unconfirmed somewhere (verdict, choose points, or worth-knowing), rather than inventing a cost score for it" );
 assert_equal( false, (bool) preg_match( '/OANDA[^.]*cost score of \d/', $oanda_ig['verdict'] ), 'the verdict never attributes a specific numeric cost score to OANDA (it has none on file)' );
+
+echo "\n--- CPT-querying behavior: globalfxhub_get_editorial_comparisons() asks for 'publish'-status posts only, and a draft is excluded ---\n";
+$GLOBALS['__test_wp_comparison_status']['avatrade-pepperstone'] = 'draft';
+$draft_excluded = globalfxhub_get_editorial_comparisons( true );
+assert_equal( false, isset( $draft_excluded['avatrade-pepperstone'] ), "a fixture post marked 'draft' is excluded from globalfxhub_get_editorial_comparisons()'s results" );
+assert_equal( true, isset( $draft_excluded['oanda-ig'] ), "a still-'publish' fixture post is unaffected by a sibling draft" );
+unset( $GLOBALS['__test_wp_comparison_status']['avatrade-pepperstone'] );
+globalfxhub_get_editorial_comparisons( true ); // restore the cache to all-published for anything that runs after
 
 assert_test_summary_and_exit();
