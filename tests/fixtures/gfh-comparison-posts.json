@@ -180,7 +180,7 @@
     }
   },
   "hf-markets-xm": {
-    "status": "draft",
+    "status": "publish",
     "data": {
       "a_slug": "hf-markets",
       "b_slug": "xm",
@@ -215,7 +215,7 @@
     }
   },
   "plus500-cmc-markets": {
-    "status": "draft",
+    "status": "publish",
     "data": {
       "a_slug": "plus500",
       "b_slug": "cmc-markets",

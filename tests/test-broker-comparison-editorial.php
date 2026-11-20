@@ -128,6 +128,16 @@ $NEW_COMPARISONS = array(
         'b_slug' => 'ig', 'b_name' => 'IG',
         'verdict_must_contain' => array( '4.13', '4.03', '0.6', '5.0', '3.4' ),
     ),
+    'hf-markets-xm' => array(
+        'a_slug' => 'hf-markets', 'a_name' => 'HF Markets',
+        'b_slug' => 'xm', 'b_name' => 'XM',
+        'verdict_must_contain' => array( '3.47', '3.34', '3.4', '1.1', '1.2' ),
+    ),
+    'plus500-cmc-markets' => array(
+        'a_slug' => 'plus500', 'a_name' => 'Plus500',
+        'b_slug' => 'cmc-markets', 'b_name' => 'CMC Markets',
+        'verdict_must_contain' => array( '3.65', '3.62', '5.0', '4.2', '1.3' ),
+    ),
 );
 
 $all = globalfxhub_get_editorial_comparisons();
@@ -282,18 +292,12 @@ globalfxhub_get_editorial_comparisons( true ); // restore the cache to all-publi
 // comparisons(), the review-page cross-links, the page-compare.php
 // preset list) are checked for ABSENCE, since a draft must not
 // surface through any of them yet. ---
-$DRAFT_COMPARISONS = array(
-    'hf-markets-xm' => array(
-        'a_slug' => 'hf-markets', 'a_name' => 'HF Markets',
-        'b_slug' => 'xm', 'b_name' => 'XM',
-        'verdict_must_contain' => array( '3.47', '3.34', '3.4', '1.1', '1.2' ),
-    ),
-    'plus500-cmc-markets' => array(
-        'a_slug' => 'plus500', 'a_name' => 'Plus500',
-        'b_slug' => 'cmc-markets', 'b_name' => 'CMC Markets',
-        'verdict_must_contain' => array( '3.65', '3.62', '5.0', '4.2', '1.3' ),
-    ),
-);
+// No comparisons are currently sitting in draft -- hf-markets-xm and
+// plus500-cmc-markets (the last two drafted) were reviewed in wp-admin
+// and published, so they moved up into $NEW_COMPARISONS above. This
+// loop stays in place, empty, as the harness for whatever's drafted
+// next.
+$DRAFT_COMPARISONS = array();
 
 foreach ( $DRAFT_COMPARISONS as $key => $expect ) {
     echo "\n=== $key (draft) ===\n";
