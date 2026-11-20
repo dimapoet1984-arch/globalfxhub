@@ -1,0 +1,25 @@
+name: create comparison posts
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_file:
+        description: "Path (in this repo) to the JSON file of {slug: {title, status, date?, data}} entries to create/update"
+        required: true
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install requests
+      - name: Create/update gfh_comparison posts via the WP REST API
+        env:
+          WP_USERNAME: ${{ secrets.WP_USERNAME }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: |
+          python3 i18n/create_comparison_posts.py "${{ github.event.inputs.input_file }}"
