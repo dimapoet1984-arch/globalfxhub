@@ -21,9 +21,17 @@
  *  - globalfxhub_get_localized_editorial_comparison() gracefully falls
  *    back to the English entry when no translation exists yet.
  *  - i18n/translate_comparison_editorial.py's COMPARISONS dict mirrors
- *    the PHP content EXACTLY, field for field -- the two are
- *    hand-kept-in-sync per that script's own header comment, and this
- *    is the drift check that would catch it if they ever disagree.
+ *    the content EXACTLY, field for field -- hand-kept-in-sync per
+ *    that script's own header comment, and this is the drift check
+ *    that would catch it if they ever disagree.
+ *
+ * Separately, $DRAFT_COMPARISONS below covers the two newest
+ * comparisons (hf-markets-xm, plus500-cmc-markets), which are
+ * genuinely in WordPress 'draft' status on the live site right now --
+ * same structural/parity checks, but asserting ABSENCE from every
+ * publish-only mechanism (globalfxhub_get_editorial_comparisons(),
+ * the review-page cross-links, the page-compare.php preset list)
+ * instead of presence.
  *
  * Run: php tests/test-broker-comparison-editorial.php
  */
@@ -43,6 +51,10 @@ function globalfxhub_get_broker_by_slug( $slug ) {
         'ic-markets'  => array( 'slug' => 'ic-markets', 'name' => 'IC Markets' ),
         'oanda'       => array( 'slug' => 'oanda', 'name' => 'OANDA' ),
         'ig'          => array( 'slug' => 'ig', 'name' => 'IG' ),
+        'hf-markets'  => array( 'slug' => 'hf-markets', 'name' => 'HF Markets' ),
+        'xm'          => array( 'slug' => 'xm', 'name' => 'XM' ),
+        'plus500'     => array( 'slug' => 'plus500', 'name' => 'Plus500' ),
+        'cmc-markets' => array( 'slug' => 'cmc-markets', 'name' => 'CMC Markets' ),
     );
     return $brokers[ $slug ] ?? null;
 }
@@ -51,12 +63,15 @@ function globalfxhub_track_b_url( $path ) { return 'https://globalfxhub.net/' . 
 /**
  * Stand-ins for get_posts()/get_post_meta(), simulating the live
  * 'gfh_comparison' CPT (inc/broker-comparison-cpt.php) this standalone
- * harness has no real WP/database to query. Fixture data is the exact
- * JSON dump of what globalfxhub_get_editorial_comparisons() returned
- * BEFORE this architecture change (extracted via a one-off `php -r`
- * snapshot of the old hardcoded array) -- i.e. this harness simulates
- * a WP install where all 5 pre-existing comparisons have already been
- * migrated into real, published posts with byte-identical content.
+ * harness has no real WP/database to query. Fixture shape is
+ * {slug: {status, data}} -- the 5 pre-existing comparisons (status
+ * 'publish', content snapshotted via a one-off `php -r` dump of the
+ * old hardcoded array before this architecture change) plus the 2
+ * newest drafts (status 'draft', content matching
+ * i18n/data/new-draft-comparisons.json, the actual input fed to
+ * i18n/create_comparison_posts.py when they were created live) --
+ * i.e. this harness simulates the REAL current state of the live site
+ * as of both changes.
  */
 $GLOBALS['__test_wp_comparison_posts'] = json_decode(
     file_get_contents( __DIR__ . '/fixtures/gfh-comparison-posts.json' ),
@@ -70,8 +85,8 @@ function get_posts( $args ) {
     $requested_status = $args['post_status'] ?? 'publish';
     $posts = array();
     $id = 1;
-    foreach ( $GLOBALS['__test_wp_comparison_posts'] as $slug => $data ) {
-        $actual_status = $GLOBALS['__test_wp_comparison_status'][ $slug ] ?? 'publish';
+    foreach ( $GLOBALS['__test_wp_comparison_posts'] as $slug => $entry ) {
+        $actual_status = $GLOBALS['__test_wp_comparison_status'][ $slug ] ?? $entry['status'];
         if ( $actual_status === $requested_status ) {
             $posts[] = (object) array( 'ID' => $id, 'post_name' => $slug );
         }
@@ -88,7 +103,7 @@ function get_post_meta( $post_id, $key, $single = false ) {
     if ( null === $slug ) {
         return '';
     }
-    return wp_json_encode( $GLOBALS['__test_wp_comparison_posts'][ $slug ] );
+    return wp_json_encode( $GLOBALS['__test_wp_comparison_posts'][ $slug ]['data'] );
 }
 function wp_json_encode( $data ) { return json_encode( $data ); }
 
@@ -255,5 +270,101 @@ assert_equal( false, isset( $draft_excluded['avatrade-pepperstone'] ), "a fixtur
 assert_equal( true, isset( $draft_excluded['oanda-ig'] ), "a still-'publish' fixture post is unaffected by a sibling draft" );
 unset( $GLOBALS['__test_wp_comparison_status']['avatrade-pepperstone'] );
 globalfxhub_get_editorial_comparisons( true ); // restore the cache to all-published for anything that runs after
+
+// --- The two newest comparisons (hf-markets-xm, plus500-cmc-markets)
+// are genuinely in 'draft' status on the live site right now -- per
+// the user's explicit instruction, new content goes into WordPress
+// drafts, not straight to publish. So these get a DIFFERENT set of
+// checks than $NEW_COMPARISONS above: structural completeness and the
+// Python translation-script mirror are still checked (both already
+// exist and need to be correct before a human publishes), but the
+// publish-only mechanisms (appearing in globalfxhub_get_editorial_
+// comparisons(), the review-page cross-links, the page-compare.php
+// preset list) are checked for ABSENCE, since a draft must not
+// surface through any of them yet. ---
+$DRAFT_COMPARISONS = array(
+    'hf-markets-xm' => array(
+        'a_slug' => 'hf-markets', 'a_name' => 'HF Markets',
+        'b_slug' => 'xm', 'b_name' => 'XM',
+        'verdict_must_contain' => array( '3.47', '3.34', '3.4', '1.1', '1.2' ),
+    ),
+    'plus500-cmc-markets' => array(
+        'a_slug' => 'plus500', 'a_name' => 'Plus500',
+        'b_slug' => 'cmc-markets', 'b_name' => 'CMC Markets',
+        'verdict_must_contain' => array( '3.65', '3.62', '5.0', '4.2', '1.3' ),
+    ),
+);
+
+foreach ( $DRAFT_COMPARISONS as $key => $expect ) {
+    echo "\n=== $key (draft) ===\n";
+
+    assert_equal( 'draft', $GLOBALS['__test_wp_comparison_posts'][ $key ]['status'] ?? null, "'$key' fixture is marked 'draft', matching its real status on the live site" );
+    assert_equal( false, isset( $all[ $key ] ), "'$key' does NOT appear in globalfxhub_get_editorial_comparisons()'s published results while draft" );
+
+    $from_a = globalfxhub_editorial_comparisons_for_broker( $expect['a_slug'] );
+    assert_equal( 0, count( $from_a ), "'$key': {$expect['a_slug']}'s review page does NOT yet link to this still-draft comparison" );
+    $from_b = globalfxhub_editorial_comparisons_for_broker( $expect['b_slug'] );
+    assert_equal( 0, count( $from_b ), "'$key': {$expect['b_slug']}'s review page does NOT yet link to this still-draft comparison" );
+
+    assert_equal( false, false !== strpos( $compare_source, "array( '" . $expect['a_slug'] . "', '" . $expect['b_slug'] . "' )" ), "'$key': page-compare.php's \$vs_preset_pairs does NOT yet include this still-draft pair" );
+
+    $entry = $GLOBALS['__test_wp_comparison_posts'][ $key ]['data'];
+    $required_scalar_fields = array(
+        'meta_title', 'meta_description', 'intro', 'verdict',
+        'choose_a_heading', 'choose_b_heading', 'worth_knowing_heading', 'worth_knowing',
+    );
+    foreach ( $required_scalar_fields as $field ) {
+        assert_equal( true, isset( $entry[ $field ] ) && '' !== trim( $entry[ $field ] ), "'$key': '$field' is present and non-empty" );
+    }
+    assert_equal( $expect['a_slug'], $entry['a_slug'], "'$key': a_slug is '{$expect['a_slug']}' (lower rank)" );
+    assert_equal( $expect['b_slug'], $entry['b_slug'], "'$key': b_slug is '{$expect['b_slug']}'" );
+    assert_equal( true, count( $entry['choose_a_points'] ) >= 2, "'$key': choose_a_points has at least 2 points" );
+    assert_equal( true, count( $entry['choose_b_points'] ) >= 2, "'$key': choose_b_points has at least 2 points" );
+    assert_equal( true, count( $entry['faqs'] ) >= 2, "'$key': at least 2 FAQs" );
+    foreach ( $entry['faqs'] as $i => $faq ) {
+        assert_equal( true, '' !== trim( $faq['q'] ) && '' !== trim( $faq['a'] ), "'$key': faqs[$i] is fully non-empty" );
+    }
+    foreach ( $expect['verdict_must_contain'] as $figure ) {
+        assert_equal( true, false !== strpos( $entry['verdict'], $figure ), "'$key': verdict cites real figure '$figure'" );
+    }
+
+    // Parity check: i18n/translate_comparison_editorial.py's
+    // COMPARISONS dict must mirror the exact content this draft was
+    // CREATED with (i18n/data/new-draft-comparisons.json, the actual
+    // input i18n/create_comparison_posts.py sent to the REST API) --
+    // there's no PHP array source anymore for new content, so this is
+    // the drift check's new anchor.
+    $python_json = shell_exec( 'cd ' . escapeshellarg( __DIR__ . '/..' ) . " && python3 -c \"import sys, json; sys.path.insert(0, 'i18n'); import translate_comparison_editorial as m; print(json.dumps(m.COMPARISONS.get('$key')))\" 2>&1" );
+    $python_entry = json_decode( trim( (string) $python_json ), true );
+    assert_equal( true, is_array( $python_entry ), "'$key': i18n/translate_comparison_editorial.py's COMPARISONS['$key'] exists and is valid JSON (raw: " . substr( (string) $python_json, 0, 150 ) . ')' );
+
+    if ( is_array( $python_entry ) ) {
+        $expected_flat = array(
+            'meta_title' => $entry['meta_title'],
+            'meta_description' => $entry['meta_description'],
+            'intro' => $entry['intro'],
+            'verdict' => $entry['verdict'],
+            'choose_a_heading' => $entry['choose_a_heading'],
+        );
+        foreach ( $entry['choose_a_points'] as $i => $point ) {
+            $expected_flat[ 'choose_a_point_' . ( $i + 1 ) ] = $point;
+        }
+        $expected_flat['choose_b_heading'] = $entry['choose_b_heading'];
+        foreach ( $entry['choose_b_points'] as $i => $point ) {
+            $expected_flat[ 'choose_b_point_' . ( $i + 1 ) ] = $point;
+        }
+        $expected_flat['worth_knowing_heading'] = $entry['worth_knowing_heading'];
+        $expected_flat['worth_knowing'] = $entry['worth_knowing'];
+        foreach ( $entry['faqs'] as $i => $faq ) {
+            $expected_flat[ 'faq_' . ( $i + 1 ) . '_q' ] = $faq['q'];
+            $expected_flat[ 'faq_' . ( $i + 1 ) . '_a' ] = $faq['a'];
+        }
+
+        assert_equal( array_keys( $expected_flat ), array_keys( $python_entry ), "'$key': Python dict has exactly the same flattened keys, in the same order, as the draft's authored content" );
+        foreach ( $expected_flat as $field_key => $expected_value ) {
+            assert_equal( $expected_value, $python_entry[ $field_key ] ?? null, "'$key': Python COMPARISONS['$field_key'] matches the draft's authored content exactly (no copy-paste drift)" );
+        }
+    }
+}
 
 assert_test_summary_and_exit();

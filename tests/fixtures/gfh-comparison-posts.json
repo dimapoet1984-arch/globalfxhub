@@ -1,167 +1,252 @@
 {
-    "pepperstone-ic-markets": {
-        "a_slug": "pepperstone",
-        "b_slug": "ic-markets",
-        "meta_title": "Pepperstone vs IC Markets (2026): Which Broker Should You Choose?",
-        "meta_description": "Pepperstone vs IC Markets compared on regulation, cost, platforms, and track record -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
-        "intro": "Pepperstone and IC Markets are both built around the same pitch: tight ECN-style pricing aimed at active and algorithmic traders, not a mass-market retail product. That similarity is exactly why they get compared so often -- but the two brokers actually differ in ways that matter more than their shared \"built for serious traders\" positioning suggests.",
-        "verdict": "Pepperstone holds the wider Tier-1 regulatory footprint (CySEC, FCA, ASIC, and DFSA, against IC Markets' CySEC and ASIC), a far lower minimum deposit ($10 vs $200), and one more supported platform (TradingView, alongside MT4/MT5/cTrader). IC Markets edges ahead on our on-file headline EUR/USD spread (0.8 pips against Pepperstone's 1.1), and has a longer operating history (founded 2007 vs 2010) -- though both brokers also offer a separate raw-spread-plus-commission tier not captured by that single headline figure, so check each broker's current account terms for your specific setup. Under our disclosed methodology, Pepperstone scores 3.75/5 overall against IC Markets' 3.46/5, driven mainly by the regulation category (30% of the total score, and Pepperstone's biggest advantage).",
-        "choose_a_heading": "Choose Pepperstone if...",
-        "choose_a_points": [
-            "You want the broader regulatory footprint -- Pepperstone holds CySEC, FCA, ASIC, and DFSA authorisation, against IC Markets' CySEC and ASIC.",
-            "You're starting with a small account -- Pepperstone's $10 minimum deposit is a fraction of IC Markets' $200.",
-            "You trade on TradingView -- Pepperstone supports it directly; IC Markets does not.",
-            "An explicit no-inactivity-fee policy matters to you -- multiple independent sources confirm Pepperstone charges none, with no unresolved conflict in our research."
-        ],
-        "choose_b_heading": "Choose IC Markets if...",
-        "choose_b_points": [
-            "Raw headline spread is your priority and you can meet the $200 minimum -- IC Markets' 0.8-pip EUR/USD spread is tighter than Pepperstone's 1.1 pips on the comparable tier.",
-            "A longer operating history matters to you -- IC Markets has operated since 2007, three years longer than Pepperstone.",
-            "You don't need DFSA coverage or TradingView, and ASIC plus CySEC is enough regulatory footprint for your needs."
-        ],
-        "worth_knowing_heading": "Worth knowing before you decide",
-        "worth_knowing": "IC Markets' EU entity publishes a formal Inactivity Fees Policy (an account is defined as inactive after 6 continuous months with no executed trade), but multiple independent comparison sites report that no fee is actually charged in practice -- a genuine, unresolved conflict between the broker's own published policy and third-party reporting that we could not resolve in our research. If dormancy risk matters to you, confirm the current position directly with IC Markets before relying on either source. Pepperstone's no-inactivity-fee claim, by contrast, is consistently corroborated across the sources we checked.",
-        "faqs": [
-            {
-                "q": "Is Pepperstone or IC Markets better for beginners?",
-                "a": "Pepperstone's $10 minimum deposit makes it far more accessible to start with than IC Markets' $200, and its wider regulatory footprint (adding FCA and DFSA alongside CySEC and ASIC) gives a beginner more regulatory coverage to fall back on. Neither broker's account structure is explicitly designed for beginners over active traders, though."
-            },
-            {
-                "q": "Which has the lower trading cost, Pepperstone or IC Markets?",
-                "a": "On our on-file headline EUR/USD spread, IC Markets is tighter at 0.8 pips against Pepperstone's 1.1 pips. Both also offer a separate raw-spread-plus-commission tier (Pepperstone's Razor, IC Markets' Raw Spread) with broadly similar commission levels -- check each broker's own current fee schedule for your specific account type before relying on either headline figure."
-            }
-        ]
-    },
-    "exness-xm": {
-        "a_slug": "exness",
-        "b_slug": "xm",
-        "meta_title": "Exness vs XM (2026): Which Broker Should You Choose?",
-        "meta_description": "Exness vs XM compared on spreads, fees, platforms, and regulation -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
-        "intro": "Exness and XM are both Cyprus-headquartered, CySEC-licensed brokers with a large international retail client base and a long operating history -- which is exactly why they get compared so often. But the two differ sharply on cost and platform breadth, in ways a shared \"established, well-known broker\" reputation doesn't capture.",
-        "verdict": "Exness holds a clear overall edge under our disclosed methodology, scoring 3.97/5 against XM's 3.42/5 -- driven mainly by cost (Exness's 0.2-pip on-file EUR/USD spread against XM's 1.1 pips) and platform breadth (Exness supports MT4, MT5, and its own proprietary Exness Terminal; XM supports MT4 and MT5 only). Both hold the same regulation score (4.2/5) despite different specific footprints: XM adds ASIC and DFSA alongside CySEC, while Exness adds South Africa's FSCA and Kenya's CMA -- neither broker's FCA status is independently confirmed as serving retail clients, and Exness's own disclosures state its FCA entity specifically does not. XM's $5 minimum deposit is the lower, single clearly-confirmed figure; Exness's typical $10 minimum is reported to go as low as $1 via some payment methods, though that specific claim wasn't independently confirmed.",
-        "choose_a_heading": "Choose Exness if...",
-        "choose_a_points": [
-            "Trading cost is your priority -- Exness's on-file EUR/USD spread of 0.2 pips is dramatically tighter than XM's 1.1 pips, reflected in a much higher cost score (4.74/5 against 3.57/5).",
-            "You want an explicit no-inactivity-fee policy -- multiple independent sources confirm Exness charges none, while XM charges a $15 one-off fee after 90 days of inactivity plus an ongoing $5/month afterward.",
-            "Platform choice matters to you -- Exness supports MT4, MT5, and its own proprietary Exness Terminal; XM supports MT4 and MT5 only."
-        ],
-        "choose_b_heading": "Choose XM if...",
-        "choose_b_points": [
-            "You're starting with a very small, clearly-confirmed minimum -- XM's $5 minimum deposit is a single reliable figure, where Exness's reported minimums conflict across sources (commonly $10, but cited as low as $1 on some payment methods and as high as $200 for its Pro account elsewhere).",
-            "You want a wider menu of account types for different trading styles -- XM offers five (Micro, Standard, Ultra Low, Zero, and a direct Shares account), against Exness's four (Standard, Pro, Raw Spread, and Zero).",
-            "You want ASIC and DFSA alongside CySEC specifically -- XM's additional regulators are both established Tier-1-style jurisdictions, where Exness's additional coverage (FSCA, CMA) sits outside that set."
-        ],
-        "worth_knowing_heading": "Worth knowing before you decide",
-        "worth_knowing": "Both brokers' execution models carry some ambiguity in independent sourcing. More recent coverage of XM describes it as operating a market-maker/dealing-desk model on most accounts, despite older material positioning it as no-dealing-desk -- the two accounts appear to reflect a shift over time rather than a live disagreement. Exness is different: current independent sources actively disagree, with some describing a market-maker/dealing-desk default and Exness's own marketing describing STP/no-dealing-desk execution -- a genuine, unresolved conflict we could not settle in our research. If execution model matters to your strategy, checking each broker's own order-execution policy directly is the only way to get a current, authoritative answer.",
-        "faqs": [
-            {
-                "q": "Which is cheaper, Exness or XM?",
-                "a": "Exness, by a wide margin on our on-file figures: its EUR/USD spread of 0.2 pips is far tighter than XM's 1.1 pips, and its cost score under our methodology (4.74/5) is correspondingly far ahead of XM's (3.57/5)."
-            },
-            {
-                "q": "Does Exness or XM charge an inactivity fee?",
-                "a": "XM does: a $15 one-off fee after 90 days of inactivity, followed by an ongoing $5/month charge if the account stays dormant. Multiple independent sources confirm Exness charges no inactivity fee at all."
-            }
-        ]
-    },
-    "avatrade-pepperstone": {
-        "a_slug": "avatrade",
-        "b_slug": "pepperstone",
-        "meta_title": "AvaTrade vs Pepperstone (2026): Which Broker Should You Choose?",
-        "meta_description": "AvaTrade vs Pepperstone compared on regulation, cost, platforms, and execution model -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
-        "intro": "AvaTrade and Pepperstone sit at opposite ends of a real design choice: AvaTrade is a market-maker aimed at a broad retail audience with social and copy-trading options built in, while Pepperstone markets itself specifically around no-dealing-desk execution for active and algorithmic traders. Both are well-established and multi-regulated, but that different starting point shapes almost everything else about how each broker actually operates.",
-        "verdict": "Under our disclosed methodology, AvaTrade scores 4.12/5 overall against Pepperstone's 3.64/5, driven mainly by regulation (4.2/5 against 3.4/5) and platform breadth (5/5 against 4.2/5). AvaTrade's on-file EUR/USD spread is also marginally tighter (0.93 pips against Pepperstone's 1.1), though both are close enough that neither broker is meaningfully \"the cheap one\" here. Pepperstone's real advantages sit outside the headline score: a $10 minimum deposit against AvaTrade's $100, a direct FCA licence AvaTrade doesn't currently hold, and a no-dealing-desk execution model (Standard runs STP-style, Razor runs ECN-style) against AvaTrade's market-maker setup. AvaTrade counters with a longer operating history (founded 2006 against Pepperstone's 2010) and regulatory reach across more individual jurisdictions -- ASIC, Japan's JFSA, Canada's CIRO, and Ireland's central bank, alongside EU coverage via MiFID passporting and a single-source Seychelles licence -- though more jurisdictions isn't the same as deeper Tier-1 coverage, since Pepperstone holds both a direct FCA licence and a direct CySEC licence that AvaTrade's MiFID-passporting setup doesn't.",
-        "choose_a_heading": "Choose AvaTrade if...",
-        "choose_a_points": [
-            "You want the slightly tighter headline spread -- AvaTrade's on-file EUR/USD spread of 0.93 pips is marginally lower than Pepperstone's 1.1 pips.",
-            "You want copy-trading built in -- AvaTrade supports DupliTrade and ZuluTrade directly, alongside its own proprietary AvaTradeGO app; Pepperstone offers neither.",
-            "A longer operating history matters to you -- AvaTrade has operated since 2006, four years longer than Pepperstone.",
-            "You want regulatory reach across more individual jurisdictions -- AvaTrade adds ASIC, Japan's JFSA, Canada's CIRO, and Ireland's central bank to its EU and Seychelles coverage."
-        ],
-        "choose_b_heading": "Choose Pepperstone if...",
-        "choose_b_points": [
-            "You're starting with a small account -- Pepperstone's $10 minimum deposit is a fraction of AvaTrade's $100.",
-            "You want no-dealing-desk execution -- Pepperstone markets Standard as STP-style and Razor as ECN-style, against AvaTrade's market-maker model.",
-            "Direct FCA regulation matters to you -- Pepperstone holds a direct FCA licence (684312) and a direct CySEC licence (388/20); AvaTrade's EU coverage runs via MiFID passporting rather than a direct CySEC CIF licence, and it doesn't currently hold an FCA licence at all.",
-            "You trade on cTrader or TradingView -- Pepperstone supports both directly; AvaTrade supports neither."
-        ],
-        "worth_knowing_heading": "Worth knowing before you decide",
-        "worth_knowing": "AvaTrade's Seychelles licence (SD033) is single-source in our research and worth an independent spot-check before relying on it. Its EU clients are typically served under Central Bank of Ireland / MiFID passporting rather than a direct CySEC CIF licence, so confirm which entity you'd actually be onboarded under. Pepperstone's own Seychelles coverage runs through a separate related entity (Pepperstone International Markets Limited) with no independently confirmed licence number, and multiple independent sources report it charges no inactivity fee -- though that wasn't independently verified against the EU entity's own client agreement. Both brokers' account structures differ enough -- AvaTrade's single retail tier against Pepperstone's Standard/Razor split -- that your actual cost depends more on which specific account you'd open than on the headline spread above.",
-        "faqs": [
-            {
-                "q": "Is AvaTrade or Pepperstone better for beginners?",
-                "a": "AvaTrade's broader platform lineup and built-in copy-trading (DupliTrade, ZuluTrade) suit a trader who wants guidance built in, while Pepperstone's $10 minimum deposit is far more accessible to start with than AvaTrade's $100. Neither broker's account structure is explicitly designed for beginners over active traders."
-            },
-            {
-                "q": "Which has the lower trading cost, AvaTrade or Pepperstone?",
-                "a": "On our on-file headline EUR/USD spread, AvaTrade is marginally tighter at 0.93 pips against Pepperstone's 1.1 pips, and scores slightly higher on cost under our methodology (4.61/5 against 4.56/5) -- close enough that account type and trading style matter more than this one figure."
-            }
-        ]
-    },
-    "fp-markets-ic-markets": {
-        "a_slug": "fp-markets",
-        "b_slug": "ic-markets",
-        "meta_title": "FP Markets vs IC Markets (2026): Which Broker Should You Choose?",
-        "meta_description": "FP Markets vs IC Markets compared on regulation, cost, platforms, and execution model -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
-        "intro": "FP Markets and IC Markets are both Sydney-founded, ECN-style brokers built around the same pitch: raw spreads and direct market access for active and algorithmic traders, the same positioning that makes a broker like Pepperstone a frequent third comparison point. That shared \"built for serious traders\" framing is exactly why the two get compared so often -- but under our disclosed methodology, FP Markets actually comes out ahead on nearly every category except the one most traders check first.",
-        "verdict": "Under our disclosed methodology, FP Markets scores 3.49/5 overall against IC Markets' 3.07/5 -- driven mainly by regulation (2.6/5 against 1.8/5, since FP Markets adds South Africa's FSCA alongside CySEC and ASIC, where IC Markets holds only CySEC and ASIC) and platform breadth (4.2/5 against 3.4/5, since FP Markets supports TradingView alongside MT4, MT5, and cTrader, where IC Markets supports only the first three). IC Markets wins on the one figure most traders check first: its on-file EUR/USD spread of 0.8 pips is tighter than FP Markets' 1.0 pips, giving it a marginally higher cost score (4.64/5 against 4.58/5). FP Markets also has the lower minimum deposit ($100 against IC Markets' $200) and a slightly longer operating history (founded 2005 against 2007).",
-        "choose_a_heading": "Choose FP Markets if...",
-        "choose_a_points": [
-            "You want the broader regulatory footprint -- FP Markets adds South Africa's FSCA alongside CySEC and ASIC, where IC Markets holds only CySEC and ASIC.",
-            "You want platform choice -- FP Markets supports TradingView alongside MT4, MT5, and cTrader; IC Markets does not support TradingView.",
-            "You're starting with a smaller account -- FP Markets' $100 minimum deposit is half of IC Markets' $200.",
-            "An explicit no-inactivity-fee policy matters to you -- FP Markets charges none on standard accounts, where IC Markets' own published Inactivity Fees Policy conflicts with third-party reports that no fee is actually charged."
-        ],
-        "choose_b_heading": "Choose IC Markets if...",
-        "choose_b_points": [
-            "Raw headline spread is your priority -- IC Markets' on-file EUR/USD spread of 0.8 pips is tighter than FP Markets' 1.0 pips.",
-            "You don't need TradingView -- IC Markets supports MT4, MT5, and cTrader, and that's enough for your setup.",
-            "You're comfortable with the higher $200 minimum deposit, against FP Markets' $100."
-        ],
-        "worth_knowing_heading": "Worth knowing before you decide",
-        "worth_knowing": "IC Markets' EU entity publishes a formal Inactivity Fees Policy (an account is defined as inactive after 6 continuous months with no executed trade), but multiple independent comparison sites report that no fee is actually charged in practice -- a genuine, unresolved conflict between the broker's own published policy and third-party reporting that we could not resolve in our research, the same conflict already noted on our Pepperstone vs IC Markets comparison. FP Markets' execution model is described by independent comparison sites as ECN/STP (\"A-book\"); IC Markets markets itself as \"True ECN\" but one source notes it doesn't always offset every position directly with liquidity providers, implying a possible partial B-book element alongside its ECN model -- worth confirming directly if execution model matters to your strategy. Both brokers' mobile app ratings are inconsistent across sources (IC Markets' main app sits around 4.2 on Android against a notably lower 3.1 on iOS; FP Markets' single-digit App Store review count makes its 3.3/5 too small a sample to be meaningful), so check current ratings yourself rather than relying on either figure here.",
-        "faqs": [
-            {
-                "q": "Is FP Markets or IC Markets better for beginners?",
-                "a": "FP Markets' $100 minimum deposit is half of IC Markets' $200, and its broader regulatory footprint (adding South Africa's FSCA) gives a beginner more regulatory coverage to fall back on. Neither broker's account structure is explicitly designed for beginners over active traders, though -- both are positioned around ECN-style pricing for more experienced traders."
-            },
-            {
-                "q": "Which has the lower trading cost, FP Markets or IC Markets?",
-                "a": "On our on-file headline EUR/USD spread, IC Markets is tighter at 0.8 pips against FP Markets' 1.0 pips, and scores marginally higher on cost under our methodology (4.64/5 against 4.58/5). Both brokers also offer a separate raw-spread-plus-commission tier -- check each broker's current fee schedule for your specific account type before relying on either headline figure."
-            }
-        ]
-    },
-    "oanda-ig": {
-        "a_slug": "oanda",
-        "b_slug": "ig",
-        "meta_title": "OANDA vs IG (2026): Which Broker Should You Choose?",
-        "meta_description": "OANDA vs IG compared on regulation, track record, cost, and platforms -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
-        "intro": "OANDA and IG are both long-established, multi-regulated brokers with a reputation built over decades rather than a recent entry into the market -- IG has operated since 1974, OANDA since 1996. That shared sense of institutional longevity is exactly why the two get compared so often, but they differ sharply in disclosure: IG publishes a confirmed headline spread and a documented near-zero minimum deposit, while OANDA's own on-file data leaves its spread unconfirmed entirely.",
-        "verdict": "Under our disclosed methodology, IG scores 4.13/5 overall against OANDA's 4.03/5 -- close enough that the two trade places depending on what you weight most. IG's advantage is concentrated in cost and track record: its on-file EUR/USD spread of 0.6 pips is confirmed and tight, driving a 4.76/5 cost score, and its 1974 founding gives it a perfect 5/5 track-record score, the strongest of any broker we've compared editorially so far. OANDA counters with the stronger regulation score (5.0/5 against IG's 3.4/5), reflecting a wider spread of individual jurisdictions -- the US's NFA/CFTC, Canada's CIRO, and Singapore's MAS alongside ASIC -- against IG's direct CySEC and FCA licences plus a broader but less specifically itemized \"+9 more Tier-1\" claim. Both brokers tie on platform breadth (3.4/5 each, reflecting three supported platforms apiece), and both carry an effectively negligible minimum deposit -- IG's documented \u00a31 against OANDA's no-minimum-deposit policy.",
-        "choose_a_heading": "Choose OANDA if...",
-        "choose_a_points": [
-            "You want the broader spread of individual Tier-1-style jurisdictions -- OANDA holds the US's NFA/CFTC, Canada's CIRO, Singapore's MAS, and ASIC, reflected in its 5.0/5 regulation score against IG's 3.4/5.",
-            "You specifically need US or Canadian regulatory coverage -- OANDA holds direct NFA/CFTC (US) and CIRO (Canada) registration; IG's disclosed footprint doesn't list either.",
-            "You want to open an account with no minimum deposit at all -- OANDA requires none, where IG's documented minimum is a still-low but non-zero \u00a31."
-        ],
-        "choose_b_heading": "Choose IG if...",
-        "choose_b_points": [
-            "A confirmed, tight headline spread matters to you -- IG's on-file EUR/USD spread of 0.6 pips is independently confirmed and drives a 4.76/5 cost score; OANDA's own on-file spread isn't confirmed at all, so a direct cost comparison isn't possible from our data.",
-            "Operating history is important to you -- IG has operated since 1974, 22 years longer than OANDA, earning a perfect 5/5 track-record score.",
-            "You want a confirmed CySEC licence specifically alongside FCA -- IG holds both directly (309/16 and 195355); OANDA holds FCA (542574) but not CySEC.",
-            "You want access to spread betting, not just CFDs -- IG offers UK/Ireland spread betting via a separate entity, a product OANDA doesn't offer."
-        ],
-        "worth_knowing_heading": "Worth knowing before you decide",
-        "worth_knowing": "OANDA was acquired by FTMO, the Czech \"funded trader\" prop-trading firm, from CVC Capital Partners effective 1 December 2025; FTMO says it will run OANDA as a standalone business, but this is a very recent ownership change worth confirming hasn't affected service before relying on it. OANDA's own on-file spread data is unconfirmed, which is why no direct cost score exists for it in our methodology -- treat any third-party \"OANDA spread\" claim with the same caution until OANDA discloses a specific figure. Sources also conflict on whether OANDA offers an Islamic/swap-free account at all: some comparison sites imply it does, while at least one UK-specific source states OANDA Europe Limited does not -- an unresolved contradiction we couldn't settle in our research. IG, by contrast, has a clearly documented account structure, though its CFD fee schedule reflects its UK/FCA entity specifically; its Cyprus/CySEC entity's fee schedule wasn't separately verified.",
-        "faqs": [
-            {
-                "q": "Is OANDA or IG better for beginners?",
-                "a": "Both have an effectively negligible barrier to entry -- IG's documented minimum deposit is \u00a31, and OANDA requires none at all. IG's confirmed, tight spread (0.6 pips) gives a beginner a clearer cost picture upfront; OANDA's spread isn't independently confirmed, so you'd need to check its current pricing directly before comparing costs."
-            },
-            {
-                "q": "Which has the longer track record, OANDA or IG?",
-                "a": "IG, by a wide margin: it has operated since 1974, 22 years longer than OANDA's 1996 founding, and holds a perfect 5/5 track-record score under our methodology against OANDA's 3.2/5."
-            }
-        ]
+  "pepperstone-ic-markets": {
+    "status": "publish",
+    "data": {
+      "a_slug": "pepperstone",
+      "b_slug": "ic-markets",
+      "meta_title": "Pepperstone vs IC Markets (2026): Which Broker Should You Choose?",
+      "meta_description": "Pepperstone vs IC Markets compared on regulation, cost, platforms, and track record -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
+      "intro": "Pepperstone and IC Markets are both built around the same pitch: tight ECN-style pricing aimed at active and algorithmic traders, not a mass-market retail product. That similarity is exactly why they get compared so often -- but the two brokers actually differ in ways that matter more than their shared \"built for serious traders\" positioning suggests.",
+      "verdict": "Pepperstone holds the wider Tier-1 regulatory footprint (CySEC, FCA, ASIC, and DFSA, against IC Markets' CySEC and ASIC), a far lower minimum deposit ($10 vs $200), and one more supported platform (TradingView, alongside MT4/MT5/cTrader). IC Markets edges ahead on our on-file headline EUR/USD spread (0.8 pips against Pepperstone's 1.1), and has a longer operating history (founded 2007 vs 2010) -- though both brokers also offer a separate raw-spread-plus-commission tier not captured by that single headline figure, so check each broker's current account terms for your specific setup. Under our disclosed methodology, Pepperstone scores 3.75/5 overall against IC Markets' 3.46/5, driven mainly by the regulation category (30% of the total score, and Pepperstone's biggest advantage).",
+      "choose_a_heading": "Choose Pepperstone if...",
+      "choose_a_points": [
+        "You want the broader regulatory footprint -- Pepperstone holds CySEC, FCA, ASIC, and DFSA authorisation, against IC Markets' CySEC and ASIC.",
+        "You're starting with a small account -- Pepperstone's $10 minimum deposit is a fraction of IC Markets' $200.",
+        "You trade on TradingView -- Pepperstone supports it directly; IC Markets does not.",
+        "An explicit no-inactivity-fee policy matters to you -- multiple independent sources confirm Pepperstone charges none, with no unresolved conflict in our research."
+      ],
+      "choose_b_heading": "Choose IC Markets if...",
+      "choose_b_points": [
+        "Raw headline spread is your priority and you can meet the $200 minimum -- IC Markets' 0.8-pip EUR/USD spread is tighter than Pepperstone's 1.1 pips on the comparable tier.",
+        "A longer operating history matters to you -- IC Markets has operated since 2007, three years longer than Pepperstone.",
+        "You don't need DFSA coverage or TradingView, and ASIC plus CySEC is enough regulatory footprint for your needs."
+      ],
+      "worth_knowing_heading": "Worth knowing before you decide",
+      "worth_knowing": "IC Markets' EU entity publishes a formal Inactivity Fees Policy (an account is defined as inactive after 6 continuous months with no executed trade), but multiple independent comparison sites report that no fee is actually charged in practice -- a genuine, unresolved conflict between the broker's own published policy and third-party reporting that we could not resolve in our research. If dormancy risk matters to you, confirm the current position directly with IC Markets before relying on either source. Pepperstone's no-inactivity-fee claim, by contrast, is consistently corroborated across the sources we checked.",
+      "faqs": [
+        {
+          "q": "Is Pepperstone or IC Markets better for beginners?",
+          "a": "Pepperstone's $10 minimum deposit makes it far more accessible to start with than IC Markets' $200, and its wider regulatory footprint (adding FCA and DFSA alongside CySEC and ASIC) gives a beginner more regulatory coverage to fall back on. Neither broker's account structure is explicitly designed for beginners over active traders, though."
+        },
+        {
+          "q": "Which has the lower trading cost, Pepperstone or IC Markets?",
+          "a": "On our on-file headline EUR/USD spread, IC Markets is tighter at 0.8 pips against Pepperstone's 1.1 pips. Both also offer a separate raw-spread-plus-commission tier (Pepperstone's Razor, IC Markets' Raw Spread) with broadly similar commission levels -- check each broker's own current fee schedule for your specific account type before relying on either headline figure."
+        }
+      ]
     }
+  },
+  "exness-xm": {
+    "status": "publish",
+    "data": {
+      "a_slug": "exness",
+      "b_slug": "xm",
+      "meta_title": "Exness vs XM (2026): Which Broker Should You Choose?",
+      "meta_description": "Exness vs XM compared on spreads, fees, platforms, and regulation -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
+      "intro": "Exness and XM are both Cyprus-headquartered, CySEC-licensed brokers with a large international retail client base and a long operating history -- which is exactly why they get compared so often. But the two differ sharply on cost and platform breadth, in ways a shared \"established, well-known broker\" reputation doesn't capture.",
+      "verdict": "Exness holds a clear overall edge under our disclosed methodology, scoring 3.97/5 against XM's 3.42/5 -- driven mainly by cost (Exness's 0.2-pip on-file EUR/USD spread against XM's 1.1 pips) and platform breadth (Exness supports MT4, MT5, and its own proprietary Exness Terminal; XM supports MT4 and MT5 only). Both hold the same regulation score (4.2/5) despite different specific footprints: XM adds ASIC and DFSA alongside CySEC, while Exness adds South Africa's FSCA and Kenya's CMA -- neither broker's FCA status is independently confirmed as serving retail clients, and Exness's own disclosures state its FCA entity specifically does not. XM's $5 minimum deposit is the lower, single clearly-confirmed figure; Exness's typical $10 minimum is reported to go as low as $1 via some payment methods, though that specific claim wasn't independently confirmed.",
+      "choose_a_heading": "Choose Exness if...",
+      "choose_a_points": [
+        "Trading cost is your priority -- Exness's on-file EUR/USD spread of 0.2 pips is dramatically tighter than XM's 1.1 pips, reflected in a much higher cost score (4.74/5 against 3.57/5).",
+        "You want an explicit no-inactivity-fee policy -- multiple independent sources confirm Exness charges none, while XM charges a $15 one-off fee after 90 days of inactivity plus an ongoing $5/month afterward.",
+        "Platform choice matters to you -- Exness supports MT4, MT5, and its own proprietary Exness Terminal; XM supports MT4 and MT5 only."
+      ],
+      "choose_b_heading": "Choose XM if...",
+      "choose_b_points": [
+        "You're starting with a very small, clearly-confirmed minimum -- XM's $5 minimum deposit is a single reliable figure, where Exness's reported minimums conflict across sources (commonly $10, but cited as low as $1 on some payment methods and as high as $200 for its Pro account elsewhere).",
+        "You want a wider menu of account types for different trading styles -- XM offers five (Micro, Standard, Ultra Low, Zero, and a direct Shares account), against Exness's four (Standard, Pro, Raw Spread, and Zero).",
+        "You want ASIC and DFSA alongside CySEC specifically -- XM's additional regulators are both established Tier-1-style jurisdictions, where Exness's additional coverage (FSCA, CMA) sits outside that set."
+      ],
+      "worth_knowing_heading": "Worth knowing before you decide",
+      "worth_knowing": "Both brokers' execution models carry some ambiguity in independent sourcing. More recent coverage of XM describes it as operating a market-maker/dealing-desk model on most accounts, despite older material positioning it as no-dealing-desk -- the two accounts appear to reflect a shift over time rather than a live disagreement. Exness is different: current independent sources actively disagree, with some describing a market-maker/dealing-desk default and Exness's own marketing describing STP/no-dealing-desk execution -- a genuine, unresolved conflict we could not settle in our research. If execution model matters to your strategy, checking each broker's own order-execution policy directly is the only way to get a current, authoritative answer.",
+      "faqs": [
+        {
+          "q": "Which is cheaper, Exness or XM?",
+          "a": "Exness, by a wide margin on our on-file figures: its EUR/USD spread of 0.2 pips is far tighter than XM's 1.1 pips, and its cost score under our methodology (4.74/5) is correspondingly far ahead of XM's (3.57/5)."
+        },
+        {
+          "q": "Does Exness or XM charge an inactivity fee?",
+          "a": "XM does: a $15 one-off fee after 90 days of inactivity, followed by an ongoing $5/month charge if the account stays dormant. Multiple independent sources confirm Exness charges no inactivity fee at all."
+        }
+      ]
+    }
+  },
+  "avatrade-pepperstone": {
+    "status": "publish",
+    "data": {
+      "a_slug": "avatrade",
+      "b_slug": "pepperstone",
+      "meta_title": "AvaTrade vs Pepperstone (2026): Which Broker Should You Choose?",
+      "meta_description": "AvaTrade vs Pepperstone compared on regulation, cost, platforms, and execution model -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
+      "intro": "AvaTrade and Pepperstone sit at opposite ends of a real design choice: AvaTrade is a market-maker aimed at a broad retail audience with social and copy-trading options built in, while Pepperstone markets itself specifically around no-dealing-desk execution for active and algorithmic traders. Both are well-established and multi-regulated, but that different starting point shapes almost everything else about how each broker actually operates.",
+      "verdict": "Under our disclosed methodology, AvaTrade scores 4.12/5 overall against Pepperstone's 3.64/5, driven mainly by regulation (4.2/5 against 3.4/5) and platform breadth (5/5 against 4.2/5). AvaTrade's on-file EUR/USD spread is also marginally tighter (0.93 pips against Pepperstone's 1.1), though both are close enough that neither broker is meaningfully \"the cheap one\" here. Pepperstone's real advantages sit outside the headline score: a $10 minimum deposit against AvaTrade's $100, a direct FCA licence AvaTrade doesn't currently hold, and a no-dealing-desk execution model (Standard runs STP-style, Razor runs ECN-style) against AvaTrade's market-maker setup. AvaTrade counters with a longer operating history (founded 2006 against Pepperstone's 2010) and regulatory reach across more individual jurisdictions -- ASIC, Japan's JFSA, Canada's CIRO, and Ireland's central bank, alongside EU coverage via MiFID passporting and a single-source Seychelles licence -- though more jurisdictions isn't the same as deeper Tier-1 coverage, since Pepperstone holds both a direct FCA licence and a direct CySEC licence that AvaTrade's MiFID-passporting setup doesn't.",
+      "choose_a_heading": "Choose AvaTrade if...",
+      "choose_a_points": [
+        "You want the slightly tighter headline spread -- AvaTrade's on-file EUR/USD spread of 0.93 pips is marginally lower than Pepperstone's 1.1 pips.",
+        "You want copy-trading built in -- AvaTrade supports DupliTrade and ZuluTrade directly, alongside its own proprietary AvaTradeGO app; Pepperstone offers neither.",
+        "A longer operating history matters to you -- AvaTrade has operated since 2006, four years longer than Pepperstone.",
+        "You want regulatory reach across more individual jurisdictions -- AvaTrade adds ASIC, Japan's JFSA, Canada's CIRO, and Ireland's central bank to its EU and Seychelles coverage."
+      ],
+      "choose_b_heading": "Choose Pepperstone if...",
+      "choose_b_points": [
+        "You're starting with a small account -- Pepperstone's $10 minimum deposit is a fraction of AvaTrade's $100.",
+        "You want no-dealing-desk execution -- Pepperstone markets Standard as STP-style and Razor as ECN-style, against AvaTrade's market-maker model.",
+        "Direct FCA regulation matters to you -- Pepperstone holds a direct FCA licence (684312) and a direct CySEC licence (388/20); AvaTrade's EU coverage runs via MiFID passporting rather than a direct CySEC CIF licence, and it doesn't currently hold an FCA licence at all.",
+        "You trade on cTrader or TradingView -- Pepperstone supports both directly; AvaTrade supports neither."
+      ],
+      "worth_knowing_heading": "Worth knowing before you decide",
+      "worth_knowing": "AvaTrade's Seychelles licence (SD033) is single-source in our research and worth an independent spot-check before relying on it. Its EU clients are typically served under Central Bank of Ireland / MiFID passporting rather than a direct CySEC CIF licence, so confirm which entity you'd actually be onboarded under. Pepperstone's own Seychelles coverage runs through a separate related entity (Pepperstone International Markets Limited) with no independently confirmed licence number, and multiple independent sources report it charges no inactivity fee -- though that wasn't independently verified against the EU entity's own client agreement. Both brokers' account structures differ enough -- AvaTrade's single retail tier against Pepperstone's Standard/Razor split -- that your actual cost depends more on which specific account you'd open than on the headline spread above.",
+      "faqs": [
+        {
+          "q": "Is AvaTrade or Pepperstone better for beginners?",
+          "a": "AvaTrade's broader platform lineup and built-in copy-trading (DupliTrade, ZuluTrade) suit a trader who wants guidance built in, while Pepperstone's $10 minimum deposit is far more accessible to start with than AvaTrade's $100. Neither broker's account structure is explicitly designed for beginners over active traders."
+        },
+        {
+          "q": "Which has the lower trading cost, AvaTrade or Pepperstone?",
+          "a": "On our on-file headline EUR/USD spread, AvaTrade is marginally tighter at 0.93 pips against Pepperstone's 1.1 pips, and scores slightly higher on cost under our methodology (4.61/5 against 4.56/5) -- close enough that account type and trading style matter more than this one figure."
+        }
+      ]
+    }
+  },
+  "fp-markets-ic-markets": {
+    "status": "publish",
+    "data": {
+      "a_slug": "fp-markets",
+      "b_slug": "ic-markets",
+      "meta_title": "FP Markets vs IC Markets (2026): Which Broker Should You Choose?",
+      "meta_description": "FP Markets vs IC Markets compared on regulation, cost, platforms, and execution model -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
+      "intro": "FP Markets and IC Markets are both Sydney-founded, ECN-style brokers built around the same pitch: raw spreads and direct market access for active and algorithmic traders, the same positioning that makes a broker like Pepperstone a frequent third comparison point. That shared \"built for serious traders\" framing is exactly why the two get compared so often -- but under our disclosed methodology, FP Markets actually comes out ahead on nearly every category except the one most traders check first.",
+      "verdict": "Under our disclosed methodology, FP Markets scores 3.49/5 overall against IC Markets' 3.07/5 -- driven mainly by regulation (2.6/5 against 1.8/5, since FP Markets adds South Africa's FSCA alongside CySEC and ASIC, where IC Markets holds only CySEC and ASIC) and platform breadth (4.2/5 against 3.4/5, since FP Markets supports TradingView alongside MT4, MT5, and cTrader, where IC Markets supports only the first three). IC Markets wins on the one figure most traders check first: its on-file EUR/USD spread of 0.8 pips is tighter than FP Markets' 1.0 pips, giving it a marginally higher cost score (4.64/5 against 4.58/5). FP Markets also has the lower minimum deposit ($100 against IC Markets' $200) and a slightly longer operating history (founded 2005 against 2007).",
+      "choose_a_heading": "Choose FP Markets if...",
+      "choose_a_points": [
+        "You want the broader regulatory footprint -- FP Markets adds South Africa's FSCA alongside CySEC and ASIC, where IC Markets holds only CySEC and ASIC.",
+        "You want platform choice -- FP Markets supports TradingView alongside MT4, MT5, and cTrader; IC Markets does not support TradingView.",
+        "You're starting with a smaller account -- FP Markets' $100 minimum deposit is half of IC Markets' $200.",
+        "An explicit no-inactivity-fee policy matters to you -- FP Markets charges none on standard accounts, where IC Markets' own published Inactivity Fees Policy conflicts with third-party reports that no fee is actually charged."
+      ],
+      "choose_b_heading": "Choose IC Markets if...",
+      "choose_b_points": [
+        "Raw headline spread is your priority -- IC Markets' on-file EUR/USD spread of 0.8 pips is tighter than FP Markets' 1.0 pips.",
+        "You don't need TradingView -- IC Markets supports MT4, MT5, and cTrader, and that's enough for your setup.",
+        "You're comfortable with the higher $200 minimum deposit, against FP Markets' $100."
+      ],
+      "worth_knowing_heading": "Worth knowing before you decide",
+      "worth_knowing": "IC Markets' EU entity publishes a formal Inactivity Fees Policy (an account is defined as inactive after 6 continuous months with no executed trade), but multiple independent comparison sites report that no fee is actually charged in practice -- a genuine, unresolved conflict between the broker's own published policy and third-party reporting that we could not resolve in our research, the same conflict already noted on our Pepperstone vs IC Markets comparison. FP Markets' execution model is described by independent comparison sites as ECN/STP (\"A-book\"); IC Markets markets itself as \"True ECN\" but one source notes it doesn't always offset every position directly with liquidity providers, implying a possible partial B-book element alongside its ECN model -- worth confirming directly if execution model matters to your strategy. Both brokers' mobile app ratings are inconsistent across sources (IC Markets' main app sits around 4.2 on Android against a notably lower 3.1 on iOS; FP Markets' single-digit App Store review count makes its 3.3/5 too small a sample to be meaningful), so check current ratings yourself rather than relying on either figure here.",
+      "faqs": [
+        {
+          "q": "Is FP Markets or IC Markets better for beginners?",
+          "a": "FP Markets' $100 minimum deposit is half of IC Markets' $200, and its broader regulatory footprint (adding South Africa's FSCA) gives a beginner more regulatory coverage to fall back on. Neither broker's account structure is explicitly designed for beginners over active traders, though -- both are positioned around ECN-style pricing for more experienced traders."
+        },
+        {
+          "q": "Which has the lower trading cost, FP Markets or IC Markets?",
+          "a": "On our on-file headline EUR/USD spread, IC Markets is tighter at 0.8 pips against FP Markets' 1.0 pips, and scores marginally higher on cost under our methodology (4.64/5 against 4.58/5). Both brokers also offer a separate raw-spread-plus-commission tier -- check each broker's current fee schedule for your specific account type before relying on either headline figure."
+        }
+      ]
+    }
+  },
+  "oanda-ig": {
+    "status": "publish",
+    "data": {
+      "a_slug": "oanda",
+      "b_slug": "ig",
+      "meta_title": "OANDA vs IG (2026): Which Broker Should You Choose?",
+      "meta_description": "OANDA vs IG compared on regulation, track record, cost, and platforms -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
+      "intro": "OANDA and IG are both long-established, multi-regulated brokers with a reputation built over decades rather than a recent entry into the market -- IG has operated since 1974, OANDA since 1996. That shared sense of institutional longevity is exactly why the two get compared so often, but they differ sharply in disclosure: IG publishes a confirmed headline spread and a documented near-zero minimum deposit, while OANDA's own on-file data leaves its spread unconfirmed entirely.",
+      "verdict": "Under our disclosed methodology, IG scores 4.13/5 overall against OANDA's 4.03/5 -- close enough that the two trade places depending on what you weight most. IG's advantage is concentrated in cost and track record: its on-file EUR/USD spread of 0.6 pips is confirmed and tight, driving a 4.76/5 cost score, and its 1974 founding gives it a perfect 5/5 track-record score, the strongest of any broker we've compared editorially so far. OANDA counters with the stronger regulation score (5.0/5 against IG's 3.4/5), reflecting a wider spread of individual jurisdictions -- the US's NFA/CFTC, Canada's CIRO, and Singapore's MAS alongside ASIC -- against IG's direct CySEC and FCA licences plus a broader but less specifically itemized \"+9 more Tier-1\" claim. Both brokers tie on platform breadth (3.4/5 each, reflecting three supported platforms apiece), and both carry an effectively negligible minimum deposit -- IG's documented £1 against OANDA's no-minimum-deposit policy.",
+      "choose_a_heading": "Choose OANDA if...",
+      "choose_a_points": [
+        "You want the broader spread of individual Tier-1-style jurisdictions -- OANDA holds the US's NFA/CFTC, Canada's CIRO, Singapore's MAS, and ASIC, reflected in its 5.0/5 regulation score against IG's 3.4/5.",
+        "You specifically need US or Canadian regulatory coverage -- OANDA holds direct NFA/CFTC (US) and CIRO (Canada) registration; IG's disclosed footprint doesn't list either.",
+        "You want to open an account with no minimum deposit at all -- OANDA requires none, where IG's documented minimum is a still-low but non-zero £1."
+      ],
+      "choose_b_heading": "Choose IG if...",
+      "choose_b_points": [
+        "A confirmed, tight headline spread matters to you -- IG's on-file EUR/USD spread of 0.6 pips is independently confirmed and drives a 4.76/5 cost score; OANDA's own on-file spread isn't confirmed at all, so a direct cost comparison isn't possible from our data.",
+        "Operating history is important to you -- IG has operated since 1974, 22 years longer than OANDA, earning a perfect 5/5 track-record score.",
+        "You want a confirmed CySEC licence specifically alongside FCA -- IG holds both directly (309/16 and 195355); OANDA holds FCA (542574) but not CySEC.",
+        "You want access to spread betting, not just CFDs -- IG offers UK/Ireland spread betting via a separate entity, a product OANDA doesn't offer."
+      ],
+      "worth_knowing_heading": "Worth knowing before you decide",
+      "worth_knowing": "OANDA was acquired by FTMO, the Czech \"funded trader\" prop-trading firm, from CVC Capital Partners effective 1 December 2025; FTMO says it will run OANDA as a standalone business, but this is a very recent ownership change worth confirming hasn't affected service before relying on it. OANDA's own on-file spread data is unconfirmed, which is why no direct cost score exists for it in our methodology -- treat any third-party \"OANDA spread\" claim with the same caution until OANDA discloses a specific figure. Sources also conflict on whether OANDA offers an Islamic/swap-free account at all: some comparison sites imply it does, while at least one UK-specific source states OANDA Europe Limited does not -- an unresolved contradiction we couldn't settle in our research. IG, by contrast, has a clearly documented account structure, though its CFD fee schedule reflects its UK/FCA entity specifically; its Cyprus/CySEC entity's fee schedule wasn't separately verified.",
+      "faqs": [
+        {
+          "q": "Is OANDA or IG better for beginners?",
+          "a": "Both have an effectively negligible barrier to entry -- IG's documented minimum deposit is £1, and OANDA requires none at all. IG's confirmed, tight spread (0.6 pips) gives a beginner a clearer cost picture upfront; OANDA's spread isn't independently confirmed, so you'd need to check its current pricing directly before comparing costs."
+        },
+        {
+          "q": "Which has the longer track record, OANDA or IG?",
+          "a": "IG, by a wide margin: it has operated since 1974, 22 years longer than OANDA's 1996 founding, and holds a perfect 5/5 track-record score under our methodology against OANDA's 3.2/5."
+        }
+      ]
+    }
+  },
+  "hf-markets-xm": {
+    "status": "draft",
+    "data": {
+      "a_slug": "hf-markets",
+      "b_slug": "xm",
+      "meta_title": "HF Markets vs XM (2026): Which Broker Should You Choose?",
+      "meta_description": "HF Markets vs XM compared on regulation, cost, platforms, and execution model -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
+      "intro": "HF Markets (formerly HotForex) and XM are both Cyprus-headquartered, CySEC-licensed brokers with a large global retail client base and a practically identical $5 minimum deposit -- which is exactly why they get compared so often. The two tie on our regulation score despite holding different specific regulators, and the real differences show up instead in platform choice, execution model, and how confirmable each broker's own disclosures actually are.",
+      "verdict": "Under our disclosed methodology, HF Markets scores 3.47/5 overall against XM's 3.34/5 -- both brokers tie exactly on regulation (3.4/5 each), despite different specific footprints: HF Markets adds Dubai's DFSA and South Africa's FSCA alongside CySEC and FCA, while XM adds ASIC and DFSA alongside CySEC and a claimed-but-unconfirmed FCA presence. HF Markets' advantage is concentrated in platform breadth (3.4/5 against XM's 2.6/5, since HF Markets supports its own proprietary HFM App alongside MT4 and MT5, where XM supports only the latter two) and in disclosure: HF Markets holds a confirmed, numbered FCA licence (801701, via HF Markets (UK) Ltd), while XM's FCA status could not be independently confirmed with a firm reference number in our research. XM edges ahead on cost (4.56/5 against 4.52/5, with a tighter 1.1-pip on-file EUR/USD spread against HF Markets' 1.2 pips) and track record (2.14/5 against 2.06/5, reflecting XM's one-year-earlier 2009 founding against HF Markets' 2010).",
+      "choose_a_heading": "Choose HF Markets if...",
+      "choose_a_points": [
+        "You want platform choice -- HF Markets supports its own proprietary HFM App alongside MT4 and MT5; XM supports only MT4 and MT5.",
+        "A confirmed, numbered FCA licence matters to you -- HF Markets holds FCA licence 801701 (via HF Markets (UK) Ltd); XM's FCA status could not be independently confirmed with a firm reference number in our research.",
+        "You want South Africa's FSCA alongside CySEC, FCA, and DFSA -- XM's additional regulator is ASIC instead."
+      ],
+      "choose_b_heading": "Choose XM if...",
+      "choose_b_points": [
+        "A confirmed, tighter headline spread matters to you -- XM's on-file EUR/USD spread of 1.1 pips is marginally tighter than HF Markets' 1.2 pips.",
+        "Operating history is important to you -- XM has operated since 2009, one year longer than HF Markets' 2010 founding.",
+        "You want ASIC specifically alongside CySEC and DFSA -- HF Markets' additional regulator is South Africa's FSCA instead."
+      ],
+      "worth_knowing_heading": "Worth knowing before you decide",
+      "worth_knowing": "More recent independent coverage describes XM as operating a market-maker/dealing-desk model on most account types, with commission built into the spread -- older material positioning it as no-dealing-desk appears to reflect outdated marketing rather than current practice. HF Markets' own execution model is described as no-dealing-desk, offering both STP and ECN-style execution depending on account, but this wasn't independently confirmed via a direct read of HF Markets' own disclosures -- a claim that stands unverified rather than actively contradicted, which is a different kind of uncertainty than XM's case. Sources also disagree on HF Markets' inactivity fee: the most detailed figure found is $5/month after 6-12 months rising to $10 then $20/month over time, while a separate source claims no inactivity fee at all; XM's own terms are clearer, a $15 one-off fee after 90 days plus an ongoing $5/month. Confirm both brokers' current account terms directly before relying on either figure.",
+      "faqs": [
+        {
+          "q": "Is HF Markets or XM better for beginners?",
+          "a": "Both have an identical $5 minimum deposit, so cost of entry isn't a differentiator here. HF Markets' wider platform choice (including its own HFM App) and confirmed FCA coverage may appeal to a beginner who values extra regulatory backing; XM is more widely known for its structured educational program aimed specifically at beginner-to-intermediate traders."
+        },
+        {
+          "q": "Which has the lower trading cost, HF Markets or XM?",
+          "a": "On our on-file headline EUR/USD spread, XM is marginally tighter at 1.1 pips against HF Markets' 1.2 pips, and scores slightly higher on cost under our methodology (4.56/5 against 4.52/5) -- close enough that account type matters more than this one figure."
+        }
+      ]
+    }
+  },
+  "plus500-cmc-markets": {
+    "status": "draft",
+    "data": {
+      "a_slug": "plus500",
+      "b_slug": "cmc-markets",
+      "meta_title": "Plus500 vs CMC Markets (2026): Which Broker Should You Choose?",
+      "meta_description": "Plus500 vs CMC Markets compared on regulation, track record, platforms, and cost -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
+      "intro": "Plus500 and CMC Markets are both publicly listed on the London Stock Exchange (LSE: PLUS and LSE: CMCX) and both run a pure market-maker model rather than STP/ECN execution -- a shared corporate profile that makes them a natural comparison. But they diverge sharply on platform choice and operating history, and CMC Markets' own on-file spread data, like OANDA's, is unconfirmed entirely.",
+      "verdict": "Under our disclosed methodology, Plus500 scores 3.65/5 overall against CMC Markets' 3.62/5 -- close enough that the two are practically tied. Plus500's advantage is concentrated in regulation: a perfect 5.0/5, reflecting CySEC, FCA, and Seychelles licences plus ASIC, South Africa's FSCA, Singapore's MAS, and New Zealand's FMA, against CMC Markets' 4.2/5 (FCA plus ASIC, MAS, and FMA, but no CySEC or Seychelles coverage). CMC Markets counters decisively on track record (3.77/5 against 2.22/5, reflecting its 1989 founding against Plus500's 2008 -- 19 years earlier) and platform breadth (2.6/5 against 1.8/5): CMC Markets supports its own Next Generation platform alongside MT4, while Plus500 offers only its own WebTrader with no MT4/MT5 support at all. CMC Markets' own on-file EUR/USD spread isn't confirmed, so no direct cost score exists for it in our methodology -- Plus500's confirmed 1.3-pip spread and 4.47/5 cost score stand without a counterpart to compare against.",
+      "choose_a_heading": "Choose Plus500 if...",
+      "choose_a_points": [
+        "You want the broadest regulatory footprint -- Plus500 holds CySEC, FCA, and Seychelles licences plus ASIC, FSCA, MAS, and FMA, earning a perfect 5.0/5 regulation score against CMC Markets' 4.2/5.",
+        "You want a confirmed, disclosed headline spread -- Plus500's on-file EUR/USD spread of 1.3 pips is confirmed; CMC Markets' own spread data isn't, so there's nothing to compare it against directly.",
+        "An explicit, published inactivity-fee policy matters to you -- Plus500 discloses up to $10/month after 3 months with no login, confirmed via its own Fees & Charges page."
+      ],
+      "choose_b_heading": "Choose CMC Markets if...",
+      "choose_b_points": [
+        "Operating history is important to you -- CMC Markets has operated since 1989, 19 years longer than Plus500's 2008 founding, reflected in a far stronger 3.77/5 track-record score against Plus500's 2.22/5.",
+        "You want MT4 support -- CMC Markets offers it alongside its own Next Generation platform; Plus500 offers only its own WebTrader, with no MT4 or MT5 support at all.",
+        "You want the lowest possible minimum deposit -- CMC Markets' own disclosures state a $0 minimum deposit and $1 minimum withdrawal; Plus500 requires around €50."
+      ],
+      "worth_knowing_heading": "Worth knowing before you decide",
+      "worth_knowing": "CMC Markets' own on-file spread data is unconfirmed, which is why no direct cost score exists for it in our methodology -- the same gap already noted on our OANDA vs IG comparison, not a one-off oversight. Both brokers run a pure market-maker model: Plus500 is commission-free with costs built entirely into the spread, and CMC Markets' own Order Execution Policy states that orders execute bilaterally against its platform rather than being routed to an external venue. Sources disagree on Plus500's withdrawal fees specifically -- one set cites a 1.75% processing fee, which conflicts with Plus500's own broader public positioning that it covers most processing fees -- so verify the current wording on Plus500's own Fees & Charges page before relying on either claim. Neither broker publishes a confirmed Trustpilot-independent rating free of mixed commentary: Plus500 sits around 4.0/5 with recurring withdrawal-speed concerns, and CMC Markets around 4.2-4.3/5 with recurring support-responsiveness complaints.",
+      "faqs": [
+        {
+          "q": "Is Plus500 or CMC Markets better for beginners?",
+          "a": "CMC Markets' $0 minimum deposit and MT4 support may suit a beginner who wants a familiar platform without upfront cost; Plus500's single proprietary WebTrader platform is simpler but offers no MetaTrader option at all. Plus500's perfect regulation score gives it the edge on regulatory backing specifically."
+        },
+        {
+          "q": "Which has the lower trading cost, Plus500 or CMC Markets?",
+          "a": "Plus500's EUR/USD spread of 1.3 pips is confirmed and drives a 4.47/5 cost score; CMC Markets' own on-file spread isn't confirmed at all, so a direct cost comparison isn't possible from our data -- check CMC Markets' current pricing directly before assuming either broker is cheaper."
+        }
+      ]
+    }
+  }
 }

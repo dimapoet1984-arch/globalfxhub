@@ -1,0 +1,76 @@
+{
+  "hf-markets-xm": {
+    "title": "HF Markets vs XM",
+    "status": "draft",
+    "date": "2026-12-16T09:00:00",
+    "data": {
+      "a_slug": "hf-markets",
+      "b_slug": "xm",
+      "meta_title": "HF Markets vs XM (2026): Which Broker Should You Choose?",
+      "meta_description": "HF Markets vs XM compared on regulation, cost, platforms, and execution model -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
+      "intro": "HF Markets (formerly HotForex) and XM are both Cyprus-headquartered, CySEC-licensed brokers with a large global retail client base and a practically identical $5 minimum deposit -- which is exactly why they get compared so often. The two tie on our regulation score despite holding different specific regulators, and the real differences show up instead in platform choice, execution model, and how confirmable each broker's own disclosures actually are.",
+      "verdict": "Under our disclosed methodology, HF Markets scores 3.47/5 overall against XM's 3.34/5 -- both brokers tie exactly on regulation (3.4/5 each), despite different specific footprints: HF Markets adds Dubai's DFSA and South Africa's FSCA alongside CySEC and FCA, while XM adds ASIC and DFSA alongside CySEC and a claimed-but-unconfirmed FCA presence. HF Markets' advantage is concentrated in platform breadth (3.4/5 against XM's 2.6/5, since HF Markets supports its own proprietary HFM App alongside MT4 and MT5, where XM supports only the latter two) and in disclosure: HF Markets holds a confirmed, numbered FCA licence (801701, via HF Markets (UK) Ltd), while XM's FCA status could not be independently confirmed with a firm reference number in our research. XM edges ahead on cost (4.56/5 against 4.52/5, with a tighter 1.1-pip on-file EUR/USD spread against HF Markets' 1.2 pips) and track record (2.14/5 against 2.06/5, reflecting XM's one-year-earlier 2009 founding against HF Markets' 2010).",
+      "choose_a_heading": "Choose HF Markets if...",
+      "choose_a_points": [
+        "You want platform choice -- HF Markets supports its own proprietary HFM App alongside MT4 and MT5; XM supports only MT4 and MT5.",
+        "A confirmed, numbered FCA licence matters to you -- HF Markets holds FCA licence 801701 (via HF Markets (UK) Ltd); XM's FCA status could not be independently confirmed with a firm reference number in our research.",
+        "You want South Africa's FSCA alongside CySEC, FCA, and DFSA -- XM's additional regulator is ASIC instead."
+      ],
+      "choose_b_heading": "Choose XM if...",
+      "choose_b_points": [
+        "A confirmed, tighter headline spread matters to you -- XM's on-file EUR/USD spread of 1.1 pips is marginally tighter than HF Markets' 1.2 pips.",
+        "Operating history is important to you -- XM has operated since 2009, one year longer than HF Markets' 2010 founding.",
+        "You want ASIC specifically alongside CySEC and DFSA -- HF Markets' additional regulator is South Africa's FSCA instead."
+      ],
+      "worth_knowing_heading": "Worth knowing before you decide",
+      "worth_knowing": "More recent independent coverage describes XM as operating a market-maker/dealing-desk model on most account types, with commission built into the spread -- older material positioning it as no-dealing-desk appears to reflect outdated marketing rather than current practice. HF Markets' own execution model is described as no-dealing-desk, offering both STP and ECN-style execution depending on account, but this wasn't independently confirmed via a direct read of HF Markets' own disclosures -- a claim that stands unverified rather than actively contradicted, which is a different kind of uncertainty than XM's case. Sources also disagree on HF Markets' inactivity fee: the most detailed figure found is $5/month after 6-12 months rising to $10 then $20/month over time, while a separate source claims no inactivity fee at all; XM's own terms are clearer, a $15 one-off fee after 90 days plus an ongoing $5/month. Confirm both brokers' current account terms directly before relying on either figure.",
+      "faqs": [
+        {
+          "q": "Is HF Markets or XM better for beginners?",
+          "a": "Both have an identical $5 minimum deposit, so cost of entry isn't a differentiator here. HF Markets' wider platform choice (including its own HFM App) and confirmed FCA coverage may appeal to a beginner who values extra regulatory backing; XM is more widely known for its structured educational program aimed specifically at beginner-to-intermediate traders."
+        },
+        {
+          "q": "Which has the lower trading cost, HF Markets or XM?",
+          "a": "On our on-file headline EUR/USD spread, XM is marginally tighter at 1.1 pips against HF Markets' 1.2 pips, and scores slightly higher on cost under our methodology (4.56/5 against 4.52/5) -- close enough that account type matters more than this one figure."
+        }
+      ]
+    }
+  },
+  "plus500-cmc-markets": {
+    "title": "Plus500 vs CMC Markets",
+    "status": "draft",
+    "date": "2026-12-22T09:00:00",
+    "data": {
+      "a_slug": "plus500",
+      "b_slug": "cmc-markets",
+      "meta_title": "Plus500 vs CMC Markets (2026): Which Broker Should You Choose?",
+      "meta_description": "Plus500 vs CMC Markets compared on regulation, track record, platforms, and cost -- using our disclosed methodology, not marketing claims. See which fits your trading style.",
+      "intro": "Plus500 and CMC Markets are both publicly listed on the London Stock Exchange (LSE: PLUS and LSE: CMCX) and both run a pure market-maker model rather than STP/ECN execution -- a shared corporate profile that makes them a natural comparison. But they diverge sharply on platform choice and operating history, and CMC Markets' own on-file spread data, like OANDA's, is unconfirmed entirely.",
+      "verdict": "Under our disclosed methodology, Plus500 scores 3.65/5 overall against CMC Markets' 3.62/5 -- close enough that the two are practically tied. Plus500's advantage is concentrated in regulation: a perfect 5.0/5, reflecting CySEC, FCA, and Seychelles licences plus ASIC, South Africa's FSCA, Singapore's MAS, and New Zealand's FMA, against CMC Markets' 4.2/5 (FCA plus ASIC, MAS, and FMA, but no CySEC or Seychelles coverage). CMC Markets counters decisively on track record (3.77/5 against 2.22/5, reflecting its 1989 founding against Plus500's 2008 -- 19 years earlier) and platform breadth (2.6/5 against 1.8/5): CMC Markets supports its own Next Generation platform alongside MT4, while Plus500 offers only its own WebTrader with no MT4/MT5 support at all. CMC Markets' own on-file EUR/USD spread isn't confirmed, so no direct cost score exists for it in our methodology -- Plus500's confirmed 1.3-pip spread and 4.47/5 cost score stand without a counterpart to compare against.",
+      "choose_a_heading": "Choose Plus500 if...",
+      "choose_a_points": [
+        "You want the broadest regulatory footprint -- Plus500 holds CySEC, FCA, and Seychelles licences plus ASIC, FSCA, MAS, and FMA, earning a perfect 5.0/5 regulation score against CMC Markets' 4.2/5.",
+        "You want a confirmed, disclosed headline spread -- Plus500's on-file EUR/USD spread of 1.3 pips is confirmed; CMC Markets' own spread data isn't, so there's nothing to compare it against directly.",
+        "An explicit, published inactivity-fee policy matters to you -- Plus500 discloses up to $10/month after 3 months with no login, confirmed via its own Fees & Charges page."
+      ],
+      "choose_b_heading": "Choose CMC Markets if...",
+      "choose_b_points": [
+        "Operating history is important to you -- CMC Markets has operated since 1989, 19 years longer than Plus500's 2008 founding, reflected in a far stronger 3.77/5 track-record score against Plus500's 2.22/5.",
+        "You want MT4 support -- CMC Markets offers it alongside its own Next Generation platform; Plus500 offers only its own WebTrader, with no MT4 or MT5 support at all.",
+        "You want the lowest possible minimum deposit -- CMC Markets' own disclosures state a $0 minimum deposit and $1 minimum withdrawal; Plus500 requires around €50."
+      ],
+      "worth_knowing_heading": "Worth knowing before you decide",
+      "worth_knowing": "CMC Markets' own on-file spread data is unconfirmed, which is why no direct cost score exists for it in our methodology -- the same gap already noted on our OANDA vs IG comparison, not a one-off oversight. Both brokers run a pure market-maker model: Plus500 is commission-free with costs built entirely into the spread, and CMC Markets' own Order Execution Policy states that orders execute bilaterally against its platform rather than being routed to an external venue. Sources disagree on Plus500's withdrawal fees specifically -- one set cites a 1.75% processing fee, which conflicts with Plus500's own broader public positioning that it covers most processing fees -- so verify the current wording on Plus500's own Fees & Charges page before relying on either claim. Neither broker publishes a confirmed Trustpilot-independent rating free of mixed commentary: Plus500 sits around 4.0/5 with recurring withdrawal-speed concerns, and CMC Markets around 4.2-4.3/5 with recurring support-responsiveness complaints.",
+      "faqs": [
+        {
+          "q": "Is Plus500 or CMC Markets better for beginners?",
+          "a": "CMC Markets' $0 minimum deposit and MT4 support may suit a beginner who wants a familiar platform without upfront cost; Plus500's single proprietary WebTrader platform is simpler but offers no MetaTrader option at all. Plus500's perfect regulation score gives it the edge on regulatory backing specifically."
+        },
+        {
+          "q": "Which has the lower trading cost, Plus500 or CMC Markets?",
+          "a": "Plus500's EUR/USD spread of 1.3 pips is confirmed and drives a 4.47/5 cost score; CMC Markets' own on-file spread isn't confirmed at all, so a direct cost comparison isn't possible from our data -- check CMC Markets' current pricing directly before assuming either broker is cheaper."
+        }
+      ]
+    }
+  }
+}
