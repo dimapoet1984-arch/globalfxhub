@@ -65,6 +65,28 @@ COMPARISONS = {
         "faq_3_q": "How many brokers hold both an FCA and a CySEC licence?",
         "faq_3_a": "23 of the 139 brokers in our research set hold both at once, typically through separate UK and EU entities under one brand -- see the full breakdown above.",
     },
+    "asic-vs-fca": {
+        "title": "ASIC vs FCA: What's the Difference for Forex Traders?",
+        "meta_title": "ASIC vs FCA (2026): Which Forex Regulator Protects Traders Better?",
+        "meta_description": "ASIC and FCA compared on investor compensation, leverage rules, and complaint handling -- using our regulation knowledge base, not marketing claims. See which actually matters more for your situation.",
+        "intro": "ASIC and FCA are two of the Tier-1 regulators that show up most often across the brokers we've researched -- 14 of the 139 brokers in our dataset hold both at once, typically through separate UK and Australian entities under the same brand. Both carry real regulatory weight, but they diverge sharply on one point that matters a lot if something actually goes wrong: what happens if the broker itself can't pay you back.",
+        "section_1_heading": "£85,000 vs an unclear backstop: investor compensation",
+        "section_1_body": "An FCA-authorised firm's eligible retail clients are covered by the Financial Services Compensation Scheme (FSCS) up to £85,000 per person if the firm fails -- a real, statutory, clearly-capped scheme. ASIC's equivalent is murkier: Australia's Compensation Scheme of Last Resort (CSLR) can pay unpaid determinations from the Australian Financial Complaints Authority (AFCA) up to AU$150,000, but its confirmed scope is personal financial advice, securities dealing for retail clients, and credit -- whether a forex/CFD broker dispute actually counts as \"securities dealing\" under the scheme isn't clearly confirmed from public guidance. This is the single biggest practical difference between the two: FCA gives you a clear number and clear scope, ASIC doesn't (yet) give you the same certainty for this specific industry.",
+        "section_2_heading": "Making a complaint: a clearer parallel",
+        "section_2_body": "Both regulators give you a genuine, independent complaints route, and here they're more alike than compensation makes them look. An FCA-authorised firm's unresolved complaint goes to the Financial Ombudsman Service after 8 weeks, with binding decisions. An ASIC-licensed firm's complaint goes to AFCA directly, whose determinations are also binding on the firm -- AFCA itself does handle forex/CFD complaints; it's specifically the CSLR backstop fund (what pays out if the firm can't pay an AFCA determination) whose scope for this industry is the uncertain part, not AFCA's willingness to hear the complaint in the first place.",
+        "section_3_heading": "Leverage and conduct rules",
+        "section_3_body": "Both regulators cap retail leverage in the same broad range, but ASIC's rule is more granular. ASIC's Product Intervention Order (in force since 29 March 2021, extended to 23 May 2027) sets 30:1 on major FX pairs, 20:1 on minor FX pairs/gold/major indices, 10:1 on other commodities/minor indices, 5:1 on shares, and 2:1 on crypto-assets, plus mandatory negative balance protection. FCA retained the same ESMA-style caps post-Brexit -- 30:1 on major FX pairs down to 2:1 on crypto CFDs -- a simpler set of tiers covering similar ground. Where FCA adds something ASIC doesn't explicitly match: its Consumer Duty rules require firms to actively deliver good outcomes for retail customers, not merely avoid harming them.",
+        "section_4_heading": "Market access: neither one passports elsewhere",
+        "section_4_body": "Unlike a CySEC licence, which lets a firm passport across the entire EU/EEA with one authorisation, neither an FCA nor an ASIC licence works that way. An FCA licence covers UK clients only since Brexit. An AFS Licence authorises a firm to provide financial services in Australia; whether it extends to clients elsewhere depends on the specific authorisations that licence covers, not a blanket right the way CySEC's MiFID passport works. That's why a broker serving both markets typically runs two separately-licensed, separately-capitalised entities.",
+        "section_5_heading": "How common is dual FCA/ASIC regulation?",
+        "section_5_body": "Of the 139 brokers in our research set, 43 hold an FCA licence, 29 hold an ASIC licence, and 14 hold both at once -- usually via separate UK and Australian entities rather than one licence covering both regions. 81 of the 139 hold neither as a primary Tier-1 credential, though many of those still hold another Tier-1 or offshore licence elsewhere in our dataset.",
+        "faq_1_q": "Does ASIC regulation include a compensation scheme like the UK's FSCS?",
+        "faq_1_a": "Not a clearly-confirmed equivalent. Australia's CSLR can pay unpaid AFCA determinations up to AU$150,000, but whether that covers a forex/CFD broker dispute specifically isn't confirmed from public guidance -- unlike FCA's clearly-capped £85,000 FSCS.",
+        "faq_2_q": "Can I complain about an ASIC-regulated broker the way I would with an FCA one?",
+        "faq_2_a": "Yes -- AFCA hears the complaint and its determinations are binding, broadly parallel to FCA's Financial Ombudsman Service. The uncertainty is specifically about the CSLR backstop fund if the firm itself can't pay, not about whether AFCA will hear a forex/CFD complaint.",
+        "faq_3_q": "How many brokers hold both FCA and ASIC licences?",
+        "faq_3_a": "14 of the 139 brokers in our research set hold both at once, typically through separate UK and Australian entities under one brand.",
+    },
 }
 
 BATCH_SCHEMA = {

@@ -47,7 +47,7 @@ function globalfxhub_learn_content_fees_and_costs() {
 
 <h2>Why the full picture matters</h2>
 <p>No single fee tells the whole story. A broker's total cost to you depends on how its spread, commission, swap and account-maintenance policies interact with your personal trading habits. Learning to ask about all of them -- not just the spread shown in the ad -- is what separates a quick guess from a real comparison.</p>
-<p>For a worked example of this whole fee breakdown applied to one specific broker, see <a href="https://globalfxhub.net/reviews/pepperstone/fees/">Pepperstone Fees Explained</a>.</p>
+<p>For a worked example of this whole fee breakdown applied to one specific broker, see <a href="https://globalfxhub.net/reviews/pepperstone/fees/">Pepperstone Fees Explained</a>. For a different cost structure entirely -- a single dealing-desk spread with no separate commission line at all -- see <a href="https://globalfxhub.net/reviews/avatrade/fees/">AvaTrade Fees Explained</a>.</p>
 HTML
             ,
         ),

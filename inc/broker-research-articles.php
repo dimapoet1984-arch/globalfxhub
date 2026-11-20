@@ -102,6 +102,50 @@ function globalfxhub_get_broker_research_articles() {
                 ),
             ),
         ),
+        'avatrade-fees' => array(
+            'broker_slug'      => 'avatrade',
+            'kind'             => 'fees',
+            'title'            => 'AvaTrade Fees Explained',
+            'meta_title'       => 'AvaTrade Fees Explained (2026): Spreads, Swap, and Hidden Costs',
+            'meta_description' => 'A full breakdown of every fee AvaTrade can charge -- spread, overnight financing, inactivity, and currency conversion -- grounded in our own researched broker dataset, not marketing claims.',
+            'intro'            => 'AvaTrade doesn\'t market itself on raw pricing the way a commission-based ECN broker does -- its cost structure is simpler but less transparent on paper, since everything is built into one dealing-desk spread rather than split into spread-plus-commission line items. This breaks down every fee AvaTrade can charge using the same researched data we score it against the other 138 brokers in our dataset. Every figure below is for Ava Trade EU Ltd, the entity reviewed on this site; a different AvaTrade entity elsewhere in the world may set different terms.',
+            'sections' => array(
+                array(
+                    'heading' => 'Spreads and the dealing-desk model',
+                    'body'    => 'AvaTrade runs a single pricing model across its account types rather than a Standard/Razor-style split: it operates as a dealing desk / market maker, meaning AvaTrade itself is the counterparty to your trade and sets its own spread, rather than passing through a raw interbank price plus a separate commission the way an ECN broker does. Our on-file headline EUR/USD spread is 0.93 pips. Because the spread is the whole cost -- there\'s no separate commission line to add or subtract -- what you see quoted is close to the full trading cost, unlike a Razor- or Raw-style account where the headline spread understates the true cost until commission is added back in.',
+                ),
+                array(
+                    'heading' => 'Overnight financing (swap) costs',
+                    'body'    => 'Standard accounts are charged normal overnight swap rates, calculated the way most brokers do it -- a benchmark rate differential plus AvaTrade\'s own markup, though the exact markup percentage wasn\'t confirmed in our research. The Islamic/swap-free account has an unusual structure worth flagging prominently: it\'s genuinely swap-free only for the first 5 days a position is held, after which an administration fee applies instead -- not the indefinite swap-free status some other brokers\' Islamic accounts offer. It also excludes certain currencies (RUB, MXN, TRY, ZAR) and crypto from swap-free treatment entirely, and AvaTrade reserves the right to revoke swap-free status altogether if it suspects abuse of the feature.',
+                ),
+                array(
+                    'heading' => 'Non-trading fees: inactivity and currency conversion',
+                    'body'    => 'Both of these are genuinely unconfirmed in our research, and we\'re not going to guess at numbers. We found no inactivity-fee figure for AvaTrade at all in this research pass -- if one exists, confirm it directly with AvaTrade before assuming your account is exempt. Currency conversion is the same: no specific percentage or fee schedule was found, so if your funding currency differs from your account\'s base currency, check AvaTrade\'s current terms directly rather than assuming either a specific cost or that it\'s free.',
+                ),
+                array(
+                    'heading' => 'Deposit and withdrawal fees',
+                    'body'    => 'No AvaTrade-side fee was confirmed on deposits or withdrawals, though third-party processor or bank fees may still apply depending on your method. The $100 minimum deposit applies across Retail and Islamic accounts alike. Processing time varies by method: deposits are near-instant by card, within 24 hours by e-wallet, and 7-10 business days by wire transfer; withdrawals process in 24-48 hours by card or e-wallet once verified, but can take up to 10 business days by wire.',
+                ),
+                array(
+                    'heading' => 'How AvaTrade\'s costs actually rank against the brokers we\'ve researched',
+                    'body'    => 'Running AvaTrade\'s 0.93-pip EUR/USD spread through our disclosed scoring formula gives it a trading-costs score of 3.79/5 -- 23rd of the 67 brokers in our researched set with a confirmed EUR/USD spread, meaning it\'s cheaper than roughly two-thirds of the dataset on this one measure. Minimum deposit tells a different story: AvaTrade\'s $100 only undercuts 24 of the 78 brokers (31%) we have a confirmed minimum deposit for -- on this measure it\'s pricier to get started than most of the dataset, not cheaper. Where AvaTrade is genuinely rare: it supports 5 trading platforms (its own AvaTradeGO, MT4, MT5, DupliTrade, and ZuluTrade) -- more than any other single broker in our full 139-broker dataset. No other broker we\'ve researched matches or exceeds that platform count.',
+                ),
+            ),
+            'faqs' => array(
+                array(
+                    'q' => 'Does AvaTrade charge an inactivity fee?',
+                    'a' => 'We found no confirmed inactivity-fee figure for AvaTrade in this research pass -- confirm directly with AvaTrade before assuming either way.',
+                ),
+                array(
+                    'q' => 'What execution model does AvaTrade use?',
+                    'a' => 'Dealing desk / market maker -- AvaTrade is the counterparty to your trade and sets its own spread, rather than operating as a true STP/ECN broker.',
+                ),
+                array(
+                    'q' => 'Does AvaTrade charge a fee to convert currency on deposit?',
+                    'a' => 'Not independently confirmed -- no specific percentage or fee schedule was found in our research, so check AvaTrade\'s current terms directly if your funding currency differs from your account\'s base currency.',
+                ),
+            ),
+        ),
     );
 }
 
