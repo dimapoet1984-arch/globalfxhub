@@ -23,14 +23,14 @@ function globalfxhub_get_best_lists() {
         ),
         'beginners' => array(
             'title'      => 'Best Forex Brokers for Beginners',
-            'intro'      => 'Filtered to brokers with a confirmed minimum deposit of $250 or less and a regulation score of at least 3.0 (meaning at least two independently-verifiable regulators, or one Tier-1 regulator), then ranked by overall score.',
+            'intro'      => 'Filtered to brokers with a confirmed minimum deposit of $250 or less and a regulation score of at least 3.0 (meaning at least two independently-verifiable regulators, or one Tier-1 regulator), then ranked by overall score. See our <a href="' . home_url( '/research/minimum-deposit-report/' ) . '">Minimum Deposit Report</a> for how this $250 cutoff compares across our full 139-broker dataset.',
             'sort_label' => 'Overall score',
             'filter'     => function( $b ) { return null !== $b['min_deposit_usd'] && $b['min_deposit_usd'] <= 250 && ( $b['scores']['regulation'] ?? 0 ) >= 3.0; },
             'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },
         ),
         'low-cost' => array(
             'title'      => 'Best Low-Cost Forex Brokers',
-            'intro'      => 'Filtered to brokers with a confirmed EUR/USD spread, ranked by our trading-costs score -- spread only, not minimum deposit (a low minimum makes a broker more accessible, not cheaper to actually trade with).',
+            'intro'      => 'Filtered to brokers with a confirmed EUR/USD spread, ranked by our trading-costs score -- spread only, not minimum deposit (a low minimum makes a broker more accessible, not cheaper to actually trade with). If it\'s the minimum deposit you\'re after, see our <a href="' . home_url( '/research/minimum-deposit-report/' ) . '">Minimum Deposit Report</a> instead.',
             'sort_label' => 'Trading costs score',
             'filter'     => function( $b ) { return null !== $b['scores']['cost']; },
             'sort_key'   => function( $b ) { return $b['scores']['cost']; },
