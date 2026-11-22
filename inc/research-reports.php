@@ -159,6 +159,60 @@ function globalfxhub_get_research_reports() {
                 ),
             ),
         ),
+        'eurusd-spread-report' => array(
+            'title'            => 'EUR/USD Spread Report',
+            'meta_title'       => 'EUR/USD Spread Report (2026): What Trading Costs Actually Look Like Across 139 Forex Brokers',
+            'meta_description' => "The real spread distribution across our full broker dataset -- median, tightest, widest, and which well-known brokers don't publish a confirmed figure at all -- computed from the same field behind every cost score on this site.",
+            'intro'            => "A broker's EUR/USD spread is the single number most cost comparisons reduce everything to, but side-by-side spread data across a real, broad set of brokers is rarer than it should be. We pulled the spread_eurusd field already used throughout this site's reviews, cost calculator, and scoring formula and counted it across the full 139-broker set. This report covers the real distribution: where the typical confirmed broker lands, how tight the tightest spreads actually get, and how much of the dataset has no confirmed figure at all.",
+            'sections' => array(
+                array(
+                    'heading' => 'A 1.1-pip median among confirmed brokers, with a third under 1.0 pip',
+                    'body'    => "67 of the 139 brokers in our research set (48%) have a confirmed EUR/USD spread; the median among them is 1.1 pips, and the mean is higher still (1.25 pips), pulled up by a handful of wide outliers. Underneath that median, 23 of the 67 (34%) confirm a spread under 1.0 pip, and 6 (9%) confirm under 0.5 pips.",
+                ),
+                array(
+                    'heading' => 'One broker confirmed at a flat 0.0-pip EUR/USD spread -- with a caveat worth stating plainly',
+                    'body'    => "FXView is the only broker in our dataset confirmed at a 0.0-pip headline EUR/USD spread. A 0.0-pip headline is common on ECN/raw-style accounts that charge a separate per-lot commission instead of building the cost into the spread -- it doesn't necessarily mean trading is free, just that the cost is structured differently. Confirm the full cost (spread plus any commission) directly before assuming the lowest headline number is automatically the cheapest account.",
+                ),
+                array(
+                    'heading' => 'A handful of brokers confirm spreads of 2 pips or more',
+                    'body'    => "LiteForex (2.0), TrioMarkets (2.4), Fortrade (2.5), Trading 212 (2.7), InstaForex (3.0), Trade360 (4.0), and OEXN (5.0) sit well above the rest of the confirmed set. A wider headline spread isn't automatically a red flag -- it can reflect a different account model or client base -- but it's a real, confirmed cost difference worth knowing before comparing these brokers to a tighter-spread one on anything else.",
+                ),
+                array(
+                    'heading' => 'Our better-ranked brokers confirm tighter spreads -- and here the correlation is partly by design',
+                    'body'    => "Brokers ranked in our top 40 (31 with a confirmed spread) show a 1.0-pip median, with 48% confirming under 1.0 pip; the remaining 99 (36 confirmed) show a 1.5-pip median, with only 22% under 1.0 pip. Unlike minimum deposit, which carries no weight in our formula, EUR/USD spread feeds directly into our cost score at a 20% weighting -- the second-heaviest single factor after regulation. So this pattern isn't just a correlation we're noting after the fact: a broker with a tighter confirmed spread mechanically scores better on this factor by construction, not merely tends to.",
+                ),
+                array(
+                    'heading' => '72 of 139 brokers have no confirmed EUR/USD spread -- including some well-known, well-regulated names',
+                    'body'    => "Interactive Brokers (rank 2), OANDA (rank 6), Vantage Markets, Ultima Markets, CMC Markets, and several others don't have a confirmed figure in our research, most often because of variable or market-maker-style pricing without one published headline number, rather than any gap in how well-regulated or well-known the broker is. Our cost score for these brokers is excluded from their overall average rather than guessed at or defaulted to the dataset's median.",
+                ),
+            ),
+            'methodology' => array(
+                'sample_size'       => "139 brokers -- the same full research set as every other report and comparison on this site.",
+                'data_as_of'        => "EUR/USD spread is reviewed on the same rolling cycle as the rest of each broker's review data, most recently refreshed 22 November 2026.",
+                'metric_definition' => "\"Confirmed\" means a single EUR/USD spread figure, in pips, was independently verifiable from the broker's own pricing page or published spread/account-types schedule -- never inferred from a \"from X pips\" marketing claim without corroboration, and never computed by us from raw tick data.",
+                'missing_data'      => "72 of the 139 brokers have no single confirmed EUR/USD spread figure in our research, most often because of variable or market-maker-style pricing without one published headline number. They stay in the full 139 denominator and are counted as unconfirmed rather than defaulted to the dataset's median or silently dropped.",
+                'source_hierarchy'  => "Primary: the broker's own pricing page or published spread/account-types schedule. Secondary (used only where primary confirmation wasn't available): a reputable third-party broker-comparison or review source, as already disclosed on that broker's own review page. A broker's \"from X pips\" marketing claim, unverified against either of these, was never treated as a confirmed figure.",
+                'compiled'          => '22 November 2026',
+            ),
+            'faqs' => array(
+                array(
+                    'q' => "What's the average EUR/USD spread among forex brokers?",
+                    'a' => "Across the 67 of 139 brokers in our research set with a confirmed figure, the median is 1.1 pips. The mean (1.25 pips) is pulled higher by a handful of wide outliers, so the median is the more representative number.",
+                ),
+                array(
+                    'q' => 'Which broker has the tightest confirmed EUR/USD spread?',
+                    'a' => "FXView, at a flat 0.0 pips -- though a 0.0-pip headline spread often means the cost moved to a separate commission instead, so it isn't automatically the cheapest account overall.",
+                ),
+                array(
+                    'q' => 'Does a lower EUR/USD spread mean a broker scores better?',
+                    'a' => 'Yes, directly -- unlike minimum deposit, EUR/USD spread is weighted 20% in our cost score, the second-heaviest single factor in our overall formula after regulation.',
+                ),
+                array(
+                    'q' => "Why don't all 139 brokers have a confirmed EUR/USD spread?",
+                    'a' => '72 don\'t, usually because of variable or market-maker-style pricing without one published headline figure -- including some well-known names like Interactive Brokers and OANDA.',
+                ),
+            ),
+        ),
     );
 }
 
