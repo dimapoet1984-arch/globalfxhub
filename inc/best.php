@@ -51,7 +51,7 @@ function globalfxhub_get_best_lists() {
         ),
         'fca-regulated' => array(
             'title'      => 'Best FCA-Regulated (UK) Brokers',
-            'intro'      => 'Filtered to brokers holding a direct UK Financial Conduct Authority licence, ranked by overall score. See our <a href="' . home_url( '/regulation/fca/' ) . '">FCA regulation page</a> for what FSCS protection actually covers, our <a href="' . home_url( '/regulators/fca/' ) . '">FCA licence register</a> for the FRN per broker, or our <a href="' . home_url( '/reviews/oanda/fees/' ) . '">OANDA Fees Explained</a> breakdown for one example of how a perfect regulation score and real gaps in fee visibility can sit on the same broker.',
+            'intro'      => 'Filtered to brokers holding a direct UK Financial Conduct Authority licence, ranked by overall score. See our <a href="' . home_url( '/regulation/fca/' ) . '">FCA regulation page</a> for what FSCS protection actually covers, our <a href="' . home_url( '/regulators/fca/' ) . '">FCA licence register</a> for the FRN per broker, our <a href="' . home_url( '/reviews/oanda/fees/' ) . '">OANDA Fees Explained</a> breakdown for one example of how a perfect regulation score and real gaps in fee visibility can sit on the same broker, or our <a href="' . home_url( '/regulation/dfsa-vs-fca/' ) . '">DFSA vs FCA comparison</a> if you\'re weighing an FCA entity against a Dubai-regulated one.',
             'sort_label' => 'Overall score',
             'filter'     => function( $b ) { return ! empty( $b['fca'] ) || ! empty( $b['fca_note'] ); },
             'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },
