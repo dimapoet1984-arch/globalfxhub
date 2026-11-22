@@ -30,14 +30,14 @@ function globalfxhub_get_best_lists() {
         ),
         'low-cost' => array(
             'title'      => 'Best Low-Cost Forex Brokers',
-            'intro'      => 'Filtered to brokers with a confirmed EUR/USD spread, ranked by our trading-costs score -- spread only, not minimum deposit (a low minimum makes a broker more accessible, not cheaper to actually trade with). If it\'s the minimum deposit you\'re after, see our <a href="' . home_url( '/research/minimum-deposit-report/' ) . '">Minimum Deposit Report</a> instead. Brokers with no confirmed spread, like OANDA, are excluded here rather than assumed mid-pack -- see our <a href="' . home_url( '/reviews/oanda/fees/' ) . '">OANDA Fees Explained</a> breakdown for why.',
+            'intro'      => 'Filtered to brokers with a confirmed EUR/USD spread, ranked by our trading-costs score -- spread only, not minimum deposit (a low minimum makes a broker more accessible, not cheaper to actually trade with). If it\'s the minimum deposit you\'re after, see our <a href="' . home_url( '/research/minimum-deposit-report/' ) . '">Minimum Deposit Report</a> instead. Brokers with no confirmed spread, like OANDA, are excluded here rather than assumed mid-pack -- see our <a href="' . home_url( '/reviews/oanda/fees/' ) . '">OANDA Fees Explained</a> breakdown for why, or our <a href="' . home_url( '/research/eurusd-spread-report/' ) . '">EUR/USD Spread Report</a> for the full distribution this list is ranked on.',
             'sort_label' => 'Trading costs score',
             'filter'     => function( $b ) { return null !== $b['scores']['cost']; },
             'sort_key'   => function( $b ) { return $b['scores']['cost']; },
         ),
         'ecn-brokers' => array(
             'title'      => 'Best ECN/STP Forex Brokers',
-            'intro'      => 'Filtered to brokers whose execution model is confirmed as ECN, STP, or no-dealing-desk somewhere on their review page, then ranked by our execution/trading-conditions score.',
+            'intro'      => 'Filtered to brokers whose execution model is confirmed as ECN, STP, or no-dealing-desk somewhere on their review page, then ranked by our execution/trading-conditions score. A near-zero headline spread on an ECN-style account usually comes with a separate per-lot commission -- see our <a href="' . home_url( '/research/eurusd-spread-report/' ) . '">EUR/USD Spread Report</a> for a concrete example of why the lowest headline number isn\'t automatically the cheapest account.',
             'sort_label' => 'Execution score',
             'filter'     => function( $b ) { return ! empty( $b['execution_model'] ) && preg_match( '/\b(ecn|stp|no[\s-]?dealing[\s-]?desk|dma)\b/i', $b['execution_model'] ); },
             'sort_key'   => function( $b ) { return $b['scores']['execution'] ?? 0; },
