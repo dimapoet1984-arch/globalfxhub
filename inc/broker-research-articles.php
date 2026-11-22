@@ -194,6 +194,50 @@ function globalfxhub_get_broker_research_articles() {
                 ),
             ),
         ),
+        'oanda-fees' => array(
+            'broker_slug'      => 'oanda',
+            'kind'             => 'fees',
+            'title'            => 'OANDA Fees Explained',
+            'meta_title'       => 'OANDA Fees Explained (2026): Spreads, Financing, and Account Minimums',
+            'meta_description' => "A full breakdown of every fee OANDA can charge -- overnight financing, inactivity, currency conversion, and deposits/withdrawals -- grounded in our own researched broker dataset, including where we don't have a confirmed figure.",
+            'intro'            => "OANDA runs a market-maker model rather than quoting a raw interbank spread plus commission, and unlike several brokers we've covered in this series, we don't have an independently confirmed headline EUR/USD spread for it at all. This breaks down every fee OANDA can charge using the same researched data we score it against the other 138 brokers in our dataset -- including being explicit about what we can't confirm, rather than filling that gap with a marketing figure.",
+            'sections' => array(
+                array(
+                    'heading' => "No confirmed headline EUR/USD spread -- here's why we're not guessing at one",
+                    'body'    => "OANDA is described by multiple sources as running a market-maker model, which can mean wider spreads than an STP/ECN peer but guarantees fills -- however, we don't have an independently sourced EUR/USD spread figure for it. That's not as unusual as it might sound: 72 of the 139 brokers in our dataset (52%) also lack a confirmed spread. The practical consequence is that we can't compute a trading-costs score for OANDA the way we can for a broker with a confirmed figure -- its cost score sits at null rather than some number, and its overall score is calculated from the remaining eight categories only.",
+                ),
+                array(
+                    'heading' => 'Overnight financing (swap) costs',
+                    'body'    => 'For most FX pairs and metals, financing is based on blended tom-next swap rates from liquidity providers plus an instrument-specific admin fee, annualized. For indices, OANDA applies a roughly 2.5% admin fee plus the relevant reference rate (SOFR, ESTR, or a SONIA-style rate depending on currency) -- it moved from interbank rates to these reference rates in November 2021.',
+                ),
+                array(
+                    'heading' => 'Non-trading fees: a $10/month inactivity fee, plus an unconfirmed currency-conversion fee',
+                    'body'    => 'OANDA charges $10/month if an account has no transactions for 12 consecutive months. A currency-conversion fee also applies when depositing or trading in a currency other than the account\'s base currency, though no specific percentage was independently confirmed in our research. Together, these two confirmed-but-unfavorable facts put OANDA at the floor of our non-trading-fees score (1.0 out of 5) -- not because either fee is unusually severe, but because neither qualifies as "confirmed free" under our scoring rubric. That floor score isn\'t rare: 35 of the 139 brokers in our dataset (25%) land at the same 1.0.',
+                ),
+                array(
+                    'heading' => 'Deposit and withdrawal fees',
+                    'body'    => "No OANDA-side fee applies to deposits, and OANDA confirms no minimum deposit is required to open an account at all. A card-network processor fee of 1-3% may still apply on deposit, but that's charged by the card network, not OANDA. Withdrawals are free via PayPal, debit, or credit card; bank wire and international transfers are costlier and slower, typically 1-3 business days and up to 5 for some methods.",
+                ),
+                array(
+                    'heading' => 'What is confirmed clearly: a maximum regulation score, offset by real gaps in cost visibility',
+                    'body'    => "OANDA's regulation score is a perfect 5.0 out of 5 -- one of only 5 brokers in our full 139-broker dataset to hit that cap (alongside AvaTrade, Interactive Brokers, ThinkMarkets, and Plus500), reflecting its FCA licence plus ASIC, NFA/CFTC, CIRO, and MAS. But its overall score is pulled down by the unconfirmed cost factor and the 1.0 non-trading-fees floor above -- a reminder that \"well-regulated\" and \"cheap to trade with\" are measuring two different things, and OANDA's confirmed strength is squarely the first one.",
+                ),
+            ),
+            'faqs' => array(
+                array(
+                    'q' => "What is OANDA's EUR/USD spread?",
+                    'a' => "Not independently confirmed in our research. OANDA runs a market-maker model, and we don't have a reliable sourced spread figure for it -- the same is true for 72 of the 139 brokers (52%) in our dataset.",
+                ),
+                array(
+                    'q' => 'Does OANDA charge an inactivity fee?',
+                    'a' => 'Yes -- $10/month if the account has no transactions for 12 consecutive months.',
+                ),
+                array(
+                    'q' => 'Is there a minimum deposit to open an OANDA account?',
+                    'a' => 'No -- OANDA confirms no minimum deposit is required to open an account.',
+                ),
+            ),
+        ),
     );
 }
 
