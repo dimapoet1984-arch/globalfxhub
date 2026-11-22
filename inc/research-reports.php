@@ -112,12 +112,12 @@ function globalfxhub_get_research_reports() {
             'intro'            => "How much money it actually takes to open an account rarely gets the same side-by-side treatment as spreads or regulation -- so we pulled the min_deposit_usd field already used throughout this site's reviews and best-broker lists and counted it across the full research set. This report covers every confirmed minimum deposit figure: where the typical broker lands, which brokers require nothing at all, which require four figures, and how much of the dataset doesn't have one single confirmed number at all. Nothing here is newly sourced -- it's the same field already disclosed on each broker's own review page.",
             'sections' => array(
                 array(
-                    'heading' => 'A \$100 median among confirmed brokers, but a quarter require \$10 or less',
-                    'body'    => "78 of the 139 brokers in our research set (56%) have a confirmed minimum-deposit figure; the median among them is \$100. Underneath that median, though, 25 of those 78 (32%) require under \$50, and 19 (24%) require \$10 or less. The mean is \$420 -- far higher than the median -- because a handful of four-figure outliers pull it up; the median is the more representative number for what a typical account actually costs to open.",
+                    'heading' => 'A $100 median among confirmed brokers, but a quarter require $10 or less',
+                    'body'    => "79 of the 139 brokers in our research set (57%) have a confirmed minimum-deposit figure; the median among them is \$100. Underneath that median, though, 26 of those 79 (33%) require under \$50, and 20 (25%) require \$10 or less. The mean is \$415 -- far higher than the median -- because a handful of four-figure outliers pull it up; the median is the more representative number for what a typical account actually costs to open.",
                 ),
                 array(
-                    'heading' => 'Nine brokers confirmed at a flat \$0 minimum deposit',
-                    'body'    => "ThinkMarkets, CFI, Fusion Markets, XS Markets, XTB, Afterprime, SquaredFinancial, TopFX, and FXCC all confirm no minimum deposit at all. They span our rank list from 3rd to 100th, so a \$0 minimum tracks with neither being a top performer nor a weak one on its own.",
+                    'heading' => 'Ten brokers confirmed at a flat $0 minimum deposit',
+                    'body'    => "ThinkMarkets, CFI, OANDA, Fusion Markets, XS Markets, XTB, Afterprime, SquaredFinancial, TopFX, and FXCC all confirm no minimum deposit at all. They span our rank list from 3rd to 100th, so a \$0 minimum tracks with neither being a top performer nor a weak one on its own.",
                 ),
                 array(
                     'heading' => "A small number of brokers require four-figure minimums -- and they're a different kind of broker",
@@ -125,29 +125,29 @@ function globalfxhub_get_research_reports() {
                 ),
                 array(
                     'heading' => 'Minimum deposit carries no weight in our ranking formula, but our better-ranked brokers skew lower anyway',
-                    'body'    => "min_deposit_usd isn't one of the nine weighted components in our scoring formula (regulation 30%, cost 20%, non-trading fees 10%, platforms 10%, execution 10%, product range 5%, deposits/withdrawals 5%, transparency 5%, track record 5%) -- a broker's minimum deposit has zero direct effect on its score. Even so, our top 40 ranked brokers (31 with a confirmed figure) show a \$50 median, against a \$100 median for the remaining 99 (47 confirmed) -- and 58% of the top 40's confirmed brokers sit under \$100, against 36% of the rest. That's a correlation, not a causal claim: the same brokers competing hardest on regulation and spread also tend to compete on accessibility, but a low minimum doesn't buy rank.",
+                    'body'    => "min_deposit_usd isn't one of the nine weighted components in our scoring formula (regulation 30%, cost 20%, non-trading fees 10%, platforms 10%, execution 10%, product range 5%, deposits/withdrawals 5%, transparency 5%, track record 5%) -- a broker's minimum deposit has zero direct effect on its score. Even so, our top 40 ranked brokers (32 with a confirmed figure) show a \$50 median, against a \$100 median for the remaining 99 (47 confirmed) -- and 59% of the top 40's confirmed brokers sit under \$100, against 36% of the rest. That's a correlation, not a causal claim: the same brokers competing hardest on regulation and spread also tend to compete on accessibility, but a low minimum doesn't buy rank.",
                 ),
                 array(
-                    'heading' => '61 of 139 brokers have no single confirmed minimum -- usually because there isn\'t one flat number to confirm',
-                    'body'    => "Brokers like Interactive Brokers, OANDA, Vantage Markets, Ultima Markets, CMC Markets, Saxo, and HYCM don't have a confirmed figure in our research, most often because their real minimum varies by legal entity, account currency, or account type rather than being one number the broker publishes once. We count that honestly as unconfirmed rather than guessing at a figure or defaulting it to \$0.",
+                    'heading' => '60 of 139 brokers have no single confirmed minimum -- usually because there isn\'t one flat number to confirm',
+                    'body'    => "Brokers like Interactive Brokers, Vantage Markets, Ultima Markets, CMC Markets, Saxo, and HYCM don't have a confirmed figure in our research, most often because their real minimum varies by legal entity, account currency, or account type rather than being one number the broker publishes once. We count that honestly as unconfirmed rather than guessing at a figure or defaulting it to \$0.",
                 ),
             ),
             'methodology' => array(
                 'sample_size'       => "139 brokers -- the same full research set as every other report and comparison on this site.",
-                'data_as_of'        => "Minimum deposit is reviewed on the same rolling cycle as the rest of each broker's review data, most recently refreshed 20 November 2026.",
+                'data_as_of'        => "Minimum deposit is reviewed on the same rolling cycle as the rest of each broker's review data, most recently refreshed 22 November 2026.",
                 'metric_definition' => "\"Confirmed\" means a single minimum-deposit figure was independently verifiable from the broker's own account-opening page or published fee/account-types schedule -- never inferred from marketing language like \"start with what you're comfortable with\" or a generic account-tier description.",
-                'missing_data'      => "61 of the 139 brokers have no single confirmed minimum-deposit figure in our research, most often because the real minimum varies by legal entity, account currency, or account type rather than being one flat number the broker discloses once. They stay in the full 139 denominator and are counted as unconfirmed rather than defaulted to \$0 or silently dropped.",
+                'missing_data'      => "60 of the 139 brokers have no single confirmed minimum-deposit figure in our research, most often because the real minimum varies by legal entity, account currency, or account type rather than being one flat number the broker discloses once. They stay in the full 139 denominator and are counted as unconfirmed rather than defaulted to \$0 or silently dropped.",
                 'source_hierarchy'  => "Primary: the broker's own account-opening page or published fee/account-types schedule. Secondary (used only where primary confirmation wasn't available): a reputable third-party broker-comparison or review source, as already disclosed on that broker's own review page. A broker's marketing language alone, unverified against either of these, was never treated as a confirmed figure.",
-                'compiled'          => '20 November 2026',
+                'compiled'          => '22 November 2026',
             ),
             'faqs' => array(
                 array(
                     'q' => "What's the average minimum deposit required by forex brokers?",
-                    'a' => "Across the 78 of 139 brokers in our research set with a confirmed figure, the median is \$100 and 32% require under \$50. The mean (\$420) is pulled much higher by a handful of four-figure outliers aimed at professional or private-banking clients, so the median is the more representative number.",
+                    'a' => "Across the 79 of 139 brokers in our research set with a confirmed figure, the median is \$100 and 33% require under \$50. The mean (\$415) is pulled much higher by a handful of four-figure outliers aimed at professional or private-banking clients, so the median is the more representative number.",
                 ),
                 array(
                     'q' => 'Which forex brokers have no minimum deposit?',
-                    'a' => 'Nine confirmed: ThinkMarkets, CFI, Fusion Markets, XS Markets, XTB, Afterprime, SquaredFinancial, TopFX, and FXCC.',
+                    'a' => 'Ten confirmed: ThinkMarkets, CFI, OANDA, Fusion Markets, XS Markets, XTB, Afterprime, SquaredFinancial, TopFX, and FXCC.',
                 ),
                 array(
                     'q' => 'Does a low minimum deposit mean a broker is better?',
@@ -155,7 +155,7 @@ function globalfxhub_get_research_reports() {
                 ),
                 array(
                     'q' => "Why don't all 139 brokers have a listed minimum deposit?",
-                    'a' => "61 don't have one confirmed figure, usually because the actual minimum varies by legal entity, account currency, or account type -- common at multi-jurisdiction brokers -- rather than there being one flat number the broker publishes.",
+                    'a' => "60 don't have one confirmed figure, usually because the actual minimum varies by legal entity, account currency, or account type -- common at multi-jurisdiction brokers -- rather than there being one flat number the broker publishes.",
                 ),
             ),
         ),
