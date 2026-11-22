@@ -146,6 +146,54 @@ function globalfxhub_get_broker_research_articles() {
                 ),
             ),
         ),
+        'exness-regulation' => array(
+            'broker_slug'      => 'exness',
+            'kind'             => 'regulation',
+            'title'            => 'Exness Regulation Explained',
+            'meta_title'       => 'Exness Regulation Explained (2026): CySEC, FCA, FSCA and What Each Licence Actually Covers',
+            'meta_description' => "What Exness's regulatory footprint actually covers, entity by entity -- CySEC, a non-retail FCA entity, FSCA, and several offshore licences that don't count toward our Tier-1-weighted score -- grounded in our own researched broker dataset.",
+            'intro'            => 'Exness\'s marketing and much of the comparison-site landscape describes it simply as "regulated by CySEC, the FCA, and FSCA" -- three respected names in one sentence. What that sentence doesn\'t make clear is that these licences sit on different legal entities with very different real-world coverage, and that one of them doesn\'t actually serve retail clients at all. This breaks down Exness\'s regulatory footprint entity by entity, using the same researched data we score it against the other 138 brokers in our dataset, not Exness\'s own marketing framing.',
+            'sections' => array(
+                array(
+                    'heading' => 'The entity that actually covers most clients: Exness (Cy) Ltd under CySEC licence 178/12',
+                    'body'    => "Exness (Cy) Ltd is the entity most retail clients outside a handful of restricted jurisdictions are actually onboarded to, holding Cyprus Securities and Exchange Commission licence number 178/12. CySEC is a full EU/MiFID II-passported regulator, carrying the EU's Investor Compensation Fund and the standard retail protections that come with that -- this is the entity and licence our CySEC-regulated broker lists and comparisons treat as Exness's primary regulatory relationship.",
+                ),
+                array(
+                    'heading' => "Exness does hold an FCA licence -- but per its own disclosures, that entity doesn't serve retail clients",
+                    'body'    => "Exness Group also operates Exness (UK) Ltd, which is FCA-licensed. On paper that puts \"FCA\" in Exness's regulatory story alongside CySEC. In practice, per Exness's own disclosures, this UK entity does not serve retail clients -- meaning a UK-based retail trader signing up with Exness is very unlikely to actually be onboarded under FCA protection, regardless of what the broker's regulatory footprint lists overall. Confirm current entity assignment and FCA status directly with Exness before assuming UK-level protection applies to your account.",
+                ),
+                array(
+                    'heading' => "Two more regulators count toward Exness's score: FSCA (South Africa) and CMA (Kenya)",
+                    'body'    => "Beyond CySEC and the FCA, our research confirms Exness holds licences from South Africa's Financial Sector Conduct Authority (FSCA) and Kenya's Capital Markets Authority (CMA) -- both counted in our methodology's regulator tally. Neither carries the same EU-style statutory investor-compensation scheme as CySEC or the FCA, but both represent genuine, independently-verifiable national securities regulators rather than an offshore-only registration.",
+                ),
+                array(
+                    'heading' => "Several more licences exist across other jurisdictions, but none of them move Exness's score",
+                    'body'    => "Exness Group's own disclosures list additional licences in Seychelles (FSA, licence SD025), Mauritius (FSC), the British Virgin Islands (FSC), Curacao (CBCS), Jordan, and the UAE. None are on our methodology's approved Tier-1 list, so none add to Exness's regulation score -- not because they're fake or unverifiable, but because offshore-only licensing regimes like these typically carry materially lighter oversight and no statutory investor-compensation scheme comparable to CySEC or the FCA. A broker genuinely holding six additional licences and a broker holding zero score identically on this factor under our rubric -- a deliberate methodology choice, not an oversight.",
+                ),
+                array(
+                    'heading' => 'Putting it together: a 4.2/5 regulation score, in the top 17% of our 139-broker set -- but short of the maximum',
+                    'body'    => 'Running Exness\'s confirmed regulatory footprint through our disclosed formula -- CySEC, the FCA entity (counted despite the retail caveat above, since the licence itself is independently verifiable), plus FSCA and CMA -- gives a regulation score of 4.2 out of 5. That places it among the 23 of 139 brokers (17%) scoring 4.2 or higher, tying it with 17 others including IG, Pepperstone, FXCM, and XM. Only 5 brokers in our full dataset reach the maximum 5.0: AvaTrade, Interactive Brokers, ThinkMarkets, OANDA, and Plus500. The gap between Exness\'s 4.2 and a hypothetical 5.0 isn\'t really about the FCA caveat above -- it reflects our formula\'s fixed scale, where each additional independently-verifiable Tier-1-weighted regulator adds a fixed amount up to the cap, regardless of how many offshore-only licences a broker also holds.',
+                ),
+            ),
+            'faqs' => array(
+                array(
+                    'q' => 'Is Exness regulated by the FCA?',
+                    'a' => "Exness Group does hold an FCA licence through Exness (UK) Ltd, but per the broker's own disclosures that entity does not serve retail clients -- so most retail traders signing up with Exness shouldn't assume FCA-level protection applies to their account. Confirm your specific entity and its regulatory status directly with Exness.",
+                ),
+                array(
+                    'q' => "What is Exness's main regulator for retail clients?",
+                    'a' => 'Cyprus\'s CySEC, under licence number 178/12, held by Exness (Cy) Ltd -- the entity most retail clients outside a handful of restricted jurisdictions are actually onboarded to.',
+                ),
+                array(
+                    'q' => "How does Exness's regulation score compare to other brokers we've researched?",
+                    'a' => '4.2 out of 5, tying it with 17 other brokers (including IG, Pepperstone, and XM) and placing it in the top 23 of 139 brokers (17%) by this measure. Only 5 brokers -- AvaTrade, Interactive Brokers, ThinkMarkets, OANDA, and Plus500 -- reach the maximum score of 5.0.',
+                ),
+                array(
+                    'q' => "Do Exness's Seychelles, Mauritius, and other offshore licences count toward its regulation score?",
+                    'a' => "No. Our methodology only credits regulators on a fixed Tier-1-weighted list; offshore-only licensing regimes like these don't add to the score, reflecting materially lighter oversight and the absence of a statutory investor-compensation scheme comparable to CySEC or the FCA -- though we still disclose every licence we can confirm.",
+                ),
+            ),
+        ),
     );
 }
 
