@@ -44,7 +44,7 @@ function globalfxhub_get_best_lists() {
         ),
         'cysec-regulated' => array(
             'title'      => 'Best CySEC-Regulated Brokers',
-            'intro'      => 'Filtered to brokers holding a direct CySEC licence or EU/MiFID-passported regulation, ranked by overall score. CySEC-regulated brokers carry EU investor-compensation-scheme protection -- see our <a href="' . home_url( '/regulation/cysec/' ) . '">CySEC regulation page</a> for what that actually covers, or our <a href="' . home_url( '/regulators/cysec/' ) . '">CySEC licence register</a> for legal entity and licence number per broker.',
+            'intro'      => 'Filtered to brokers holding a direct CySEC licence or EU/MiFID-passported regulation, ranked by overall score. CySEC-regulated brokers carry EU investor-compensation-scheme protection -- see our <a href="' . home_url( '/regulation/cysec/' ) . '">CySEC regulation page</a> for what that actually covers, our <a href="' . home_url( '/regulators/cysec/' ) . '">CySEC licence register</a> for legal entity and licence number per broker, or our <a href="' . home_url( '/research/regulatory-licence-concentration-report/' ) . '">Regulatory Licence Concentration Report</a> for how a CySEC licence typically fits into a broker\'s wider Tier-1 count.',
             'sort_label' => 'Overall score',
             'filter'     => function( $b ) { return null !== $b['cysec']; },
             'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },
@@ -58,7 +58,7 @@ function globalfxhub_get_best_lists() {
         ),
         'asic-regulated' => array(
             'title'      => 'Best ASIC-Regulated (Australian) Brokers',
-            'intro'      => 'Filtered to brokers that disclose an Australian Securities and Investments Commission (ASIC) licence alongside their primary regulator, ranked by overall score. See our <a href="' . home_url( '/learn/asic-forex-regulation-explained/' ) . '">ASIC regulation guide</a> for what ASIC\'s leverage caps and the Compensation Scheme of Last Resort actually cover, or our <a href="' . home_url( '/regulators/asic/' ) . '">ASIC licence register</a> for the full roster.',
+            'intro'      => 'Filtered to brokers that disclose an Australian Securities and Investments Commission (ASIC) licence alongside their primary regulator, ranked by overall score. See our <a href="' . home_url( '/learn/asic-forex-regulation-explained/' ) . '">ASIC regulation guide</a> for what ASIC\'s leverage caps and the Compensation Scheme of Last Resort actually cover, our <a href="' . home_url( '/regulators/asic/' ) . '">ASIC licence register</a> for the full roster, or our <a href="' . home_url( '/research/regulatory-licence-concentration-report/' ) . '">Regulatory Licence Concentration Report</a> for how many Tier-1 licences brokers like these actually hold on top of ASIC.',
             'sort_label' => 'Overall score',
             'filter'     => function( $b ) { return in_array( 'ASIC', $b['other_reg'] ?? array(), true ); },
             'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },
