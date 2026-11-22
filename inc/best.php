@@ -65,7 +65,7 @@ function globalfxhub_get_best_lists() {
         ),
         'fsca-regulated' => array(
             'title'      => 'Best FSCA-Regulated (South African) Brokers',
-            'intro'      => 'Filtered to brokers that disclose a South African Financial Sector Conduct Authority (FSCA) licence alongside their primary regulator, ranked by overall score. See our <a href="' . home_url( '/learn/fsca-forex-regulation-explained/' ) . '">FSCA regulation guide</a> for why it imposes no leverage cap comparable to CySEC/FCA/ASIC, or our <a href="' . home_url( '/regulators/fsca/' ) . '">FSCA licence register</a> for the full roster.',
+            'intro'      => 'Filtered to brokers that disclose a South African Financial Sector Conduct Authority (FSCA) licence alongside their primary regulator, ranked by overall score. See our <a href="' . home_url( '/learn/fsca-forex-regulation-explained/' ) . '">FSCA regulation guide</a> for why it imposes no leverage cap comparable to CySEC/FCA/ASIC, our <a href="' . home_url( '/regulators/fsca/' ) . '">FSCA licence register</a> for the full roster, or our <a href="' . home_url( '/regulation/fsca-vs-cysec/' ) . '">FSCA vs CySEC comparison</a> for how FSCA stacks up against the licence most of these brokers also hold.',
             'sort_label' => 'Overall score',
             'filter'     => function( $b ) { return in_array( 'FSCA', $b['other_reg'] ?? array(), true ); },
             'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },
