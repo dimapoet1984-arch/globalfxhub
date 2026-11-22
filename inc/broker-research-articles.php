@@ -238,6 +238,54 @@ function globalfxhub_get_broker_research_articles() {
                 ),
             ),
         ),
+        'ig-regulation' => array(
+            'broker_slug'      => 'ig',
+            'kind'             => 'regulation',
+            'title'            => 'IG Regulation Explained',
+            'meta_title'       => 'IG Regulation Explained (2026): CySEC, FCA, ASIC and What "Widest Regulatory Footprint" Actually Means',
+            'meta_description' => "What IG's regulatory footprint actually covers, entity by entity -- two confirmed Tier-1 licences, a third named regulator, and a broader \"9 more Tier-1\" claim we don't individually verify -- grounded in our own researched broker dataset.",
+            'intro'            => 'IG markets itself as having one of the widest regulatory footprints of any broker in its category -- and on the numbers we can individually confirm, that\'s a fair claim. But "widest regulatory footprint" is also the kind of phrase that invites taking a broker\'s word for more than what\'s actually been itemized. This breaks down IG\'s regulatory footprint entity by entity: what\'s specifically confirmed, what\'s a broader unverified claim, and what that distinction actually means for its score.',
+            'sections' => array(
+                array(
+                    'heading' => 'Two confirmed Tier-1 entities: CySEC licence 309/16 and FCA licence 195355',
+                    'body'    => "IG runs separately licensed entities in both Cyprus and the UK -- a CySEC-licensed entity under licence number 309/16, and IGM Forex Ltd, FCA-authorised under licence number 195355. Both are full, independently verifiable Tier-1 licences in our methodology, each carrying its own statutory investor-compensation scheme (the EU's ICF and the UK's FSCS respectively) rather than one licence covering both regions.",
+                ),
+                array(
+                    'heading' => 'ASIC is confirmed too -- but IG\'s claimed "9 more Tier-1" regulators aren\'t individually named in our research',
+                    'body'    => "Beyond CySEC and FCA, our research confirms an Australian ASIC authorisation. IG's own disclosures also reference holding roughly nine further Tier-1-level licences elsewhere, which is plausible for a broker IG's size but isn't something we've individually itemized or verified regulator-by-regulator. We count what we can specifically confirm; we don't credit an unverified \"and several more\" claim beyond that, even when it's likely true.",
+                ),
+                array(
+                    'heading' => "What that regulatory breadth doesn't tell you: fee terms are entity-specific, and IG says so itself",
+                    'body'    => "IG's own disclosures state that the fee and account figures in its research are drawn from its UK/FCA entity, and that its Cyprus/CySEC entity's fee schedule wasn't separately verified. That's the same pattern worth flagging every time a broker operates multiple regulated entities: holding a wide set of licences doesn't mean every client gets identical terms, and confirming your specific entity's terms directly remains worthwhile regardless of how many regulators the broader group reports.",
+                ),
+                array(
+                    'heading' => 'IG is also the oldest broker in our dataset by founding year -- a separate, real advantage from its regulatory footprint',
+                    'body'    => "Founded in 1974, IG is the earliest-founded broker in our full 139-broker research set, giving it the maximum track-record score (5.0 out of 5) under our fixed founding-year scale. That's a genuinely different strength from its regulatory count -- a long operating history and a wide regulatory footprint often travel together, but they're measuring two separate things in our methodology, weighted independently (30% for regulation, 5% for track record).",
+                ),
+                array(
+                    'heading' => 'Putting it together: a 4.2/5 regulation score, tied with 17 other brokers',
+                    'body'    => 'Running IG\'s confirmed regulatory footprint -- CySEC, FCA, plus ASIC and the one other named entry under our other-regulators count -- through our disclosed formula gives a regulation score of 4.2 out of 5. That places it among the 23 of 139 brokers (17%) scoring 4.2 or higher, tying it with 17 others including Exness and Pepperstone. Only 5 brokers in our full dataset reach the maximum 5.0: AvaTrade, Interactive Brokers, ThinkMarkets, OANDA, and Plus500.',
+                ),
+            ),
+            'faqs' => array(
+                array(
+                    'q' => 'What regulators license IG?',
+                    'a' => "CySEC (licence 309/16) and FCA (licence 195355) are both individually confirmed, along with an ASIC authorisation. IG's own disclosures also reference roughly nine further Tier-1-level licences that aren't individually itemized in our research.",
+                ),
+                array(
+                    'q' => 'Does IG\'s "9 more Tier-1" claim count toward its regulation score?',
+                    'a' => "It's already folded into the fixed count our methodology assigns to IG's other-regulators field -- we don't additionally verify or credit that broader claim regulator by regulator beyond what's specifically confirmed.",
+                ),
+                array(
+                    'q' => "How does IG's regulation score compare to other brokers we've researched?",
+                    'a' => '4.2 out of 5, tying it with 17 other brokers (including Exness and Pepperstone) and placing it in the top 23 of 139 brokers (17%) by this measure. Only 5 brokers -- AvaTrade, Interactive Brokers, ThinkMarkets, OANDA, and Plus500 -- reach the maximum score of 5.0.',
+                ),
+                array(
+                    'q' => 'Is IG regulated in multiple countries?',
+                    'a' => "Yes -- confirmed CySEC (Cyprus/EU), FCA (UK), and ASIC (Australia) entities, though fee schedules and account terms vary by entity, and IG's own disclosures note its Cyprus entity's fees weren't separately verified against its UK entity's.",
+                ),
+            ),
+        ),
     );
 }
 
