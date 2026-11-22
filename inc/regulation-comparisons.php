@@ -163,6 +163,52 @@ function globalfxhub_get_regulation_comparisons() {
                 ),
             ),
         ),
+        'dfsa-vs-fca' => array(
+            'title'            => "DFSA vs FCA: Dubai's Regulator Compared to the UK's",
+            'meta_title'       => "DFSA vs FCA (2026): Dubai's Regulator Compared to the UK's",
+            'meta_description' => "FCA backs client losses with a statutory £85,000 fund and a general-purpose ombudsman; DFSA has neither in the same form -- what the difference actually means for a retail trader choosing between them.",
+            'intro'            => "DFSA and FCA both show up in broker regulatory footprints serving Middle East and UK clients, but they're built on different foundations. FCA runs a general-purpose dispute-resolution body and a statutory compensation fund; DFSA's complaint process is real but narrower, and it has no confirmed compensation scheme at all. This breaks down what each actually covers, using the same researched data we score brokers against across our full 139-broker dataset.",
+            'sections' => array(
+                array(
+                    'heading' => 'The core gap: FCA runs a general-purpose ombudsman and a compensation fund; DFSA does neither in the same form',
+                    'body'    => "An FCA-authorised firm's eligible retail clients are covered by the Financial Services Compensation Scheme (FSCS) up to £85,000 per person if the firm fails, and an unresolved complaint goes to the Financial Ombudsman Service after 8 weeks, with binding decisions on virtually any dispute. DFSA has no confirmed investor-compensation scheme for retail CFD/forex client losses -- its framework centres on licensing, capital, and client-money segregation rather than a standing fund.",
+                ),
+                array(
+                    'heading' => "DFSA's complaint process is real, but much narrower than it might sound",
+                    'body'    => "DFSA-authorised firms must have their own adequate complaint-handling mechanism, and a client disputes the firm directly first -- so far, similar to FCA. The difference is what happens next: DFSA itself will consider a written complaint only about specific matters (integrity and fair dealing, corporate governance failures, or misuse of the DIFC/DFSA name), not as a general-purpose ombudsman for any type of client dispute the way FOS is for FCA-authorised firms.",
+                ),
+                array(
+                    'heading' => 'Leverage rules differ in structure -- and the data itself has a real disagreement worth disclosing',
+                    'body'    => "DFSA raised its minimum margin requirements for retail clients effective 6 December 2021: 3.33% margin (30:1 leverage) on major FX pairs, 5% (20:1) on gold, and 10% (10:1) on oil. FCA instead retained simpler ESMA-style tiered caps post-Brexit: 30:1 on major FX pairs down to 2:1 on crypto CFDs. Worth flagging plainly: a 2025 industry report instead cited a 50:1 DFSA retail cap on majors, which conflicts with the 2021 margin rule. We're treating the margin rule as the better-sourced figure since it's confirmed against this site's own UAE country-page research, but we're not papering over the disagreement.",
+                ),
+                array(
+                    'heading' => 'Market access: a DFSA licence covers the DIFC free zone, not the wider UAE',
+                    'body'    => "The Dubai Financial Services Authority only licenses firms operating within the Dubai International Financial Centre (DIFC) -- a defined financial free zone, distinct from the UAE's wider federal regulators. An FCA licence covers UK clients only since Brexit, with no automatic passporting elsewhere. Neither licence extends as broadly as a CySEC/MiFID passport does across the EU/EEA.",
+                ),
+                array(
+                    'heading' => 'How common is dual DFSA/FCA regulation?',
+                    'body'    => "Of the 139 brokers in our research set, 11 hold a DFSA licence, 53 hold an FCA licence, and 9 hold both at once -- usually through separate entities under one brand. 84 of the 139 hold neither as a primary credential, though many of those still hold another Tier-1 or offshore licence elsewhere in our dataset.",
+                ),
+            ),
+            'faqs' => array(
+                array(
+                    'q' => "Does DFSA have an investor compensation scheme like FCA's FSCS?",
+                    'a' => "No confirmed scheme. FCA's FSCS guarantees eligible retail clients up to £85,000 if an authorised firm fails; DFSA's framework has no equivalent standing fund for retail CFD/forex losses.",
+                ),
+                array(
+                    'q' => 'Can I complain about a DFSA-regulated broker the way I would with an FCA one?',
+                    'a' => "Only partly. DFSA-authorised firms must handle complaints directly, and DFSA itself will consider specific matters (integrity, governance failures, misuse of the DIFC/DFSA name) -- but it isn't a general-purpose ombudsman for any dispute the way FCA's Financial Ombudsman Service is.",
+                ),
+                array(
+                    'q' => 'What leverage does DFSA allow?',
+                    'a' => 'Minimum margin requirements effective December 2021 work out to 30:1 on major FX pairs, 20:1 on gold, and 10:1 on oil -- though one 2025 industry report cites a conflicting 50:1 major-pairs figure, which we flag as an unresolved discrepancy rather than picking a side.',
+                ),
+                array(
+                    'q' => 'How many brokers hold both DFSA and FCA licences?',
+                    'a' => '9 of the 139 brokers in our research set hold both at once, typically through separate entities under one brand.',
+                ),
+            ),
+        ),
     );
 }
 
