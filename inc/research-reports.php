@@ -213,6 +213,60 @@ function globalfxhub_get_research_reports() {
                 ),
             ),
         ),
+        'regulatory-licence-concentration-report' => array(
+            'title'            => 'Regulatory Licence Concentration Report',
+            'meta_title'       => 'Regulatory Licence Concentration Report (2026): How Many Tier-1 Licences Do Top Brokers Actually Hold?',
+            'meta_description' => 'How confirmed Tier-1 regulatory licences are actually distributed across 139 forex brokers -- a median of 1, a handful holding 6 or more, and how heavily that concentrates among top-ranked brokers.',
+            'intro'            => "Our regulation score caps out at 5.0 once a broker crosses a fixed threshold of confirmed Tier-1 regulators -- useful for ranking, but it flattens real differences above that threshold. This report looks at the raw, uncapped count instead: how many independently-verifiable Tier-1 licences (CySEC, FCA, and the other-regulators field used throughout this site) each of our 139 researched brokers actually holds, and how unevenly that's distributed.",
+            'sections' => array(
+                array(
+                    'heading' => 'A median of 1 Tier-1 licence, with half the dataset holding one or none',
+                    'body'    => 'Across all 139 brokers, the median confirmed Tier-1 licence count is 1, and the mean is 1.86 -- pulled up by a handful of brokers holding considerably more. 70 of the 139 brokers (50%) hold one Tier-1 licence or none at all, while 38 (27%) hold three or more.',
+                ),
+                array(
+                    'heading' => '20 brokers confirm zero Tier-1 licences at all',
+                    'body'    => "14% of our researched set holds no CySEC, FCA, or other-named Tier-1 regulator we could confirm. That doesn't necessarily mean entirely unregulated -- some of these brokers hold an offshore-only licence (Seychelles FSA and similar), which this site tracks and discloses separately but doesn't count toward the Tier-1 tally, consistent with how our regulation score treats offshore-only credentials.",
+                ),
+                array(
+                    'heading' => 'Tier-1 licences concentrate heavily among top-ranked brokers',
+                    'body'    => 'Across the full dataset, there are 259 total confirmed Tier-1 licence-holdings. Our top 15 ranked brokers (11% of the set) hold 65 of them -- 25% of the total, averaging 4.33 each. Our top 40 (29% of the set) hold 140 -- 54% of the total, averaging 3.5 each. The remaining 99 brokers (71% of the set) hold just 119 -- 46% of the total, averaging 1.2 each.',
+                ),
+                array(
+                    'heading' => 'Interactive Brokers holds more confirmed Tier-1 licences than any other broker we\'ve researched',
+                    'body'    => 'Interactive Brokers confirms 8 -- the highest in our dataset. ThinkMarkets and Plus500 follow at 6 each, with AvaTrade and OANDA at 5. No other broker we\'ve researched confirms more than 4.',
+                ),
+                array(
+                    'heading' => "Why this count isn't capped the way our regulation score is",
+                    'body'    => "Our regulation score caps at 5.0 out of 5 once a broker's confirmed Tier-1 count reaches 5 -- so Interactive Brokers' 8, ThinkMarkets' and Plus500's 6, and AvaTrade's and OANDA's 5 all score identically on regulation despite real differences in raw licence count above that threshold. That's a deliberate methodology choice (diminishing returns past a point, rather than rewarding licence-collecting indefinitely), but it means the score alone doesn't show what this report does.",
+                ),
+            ),
+            'methodology' => array(
+                'sample_size'       => "139 brokers -- the same full research set as every other report and comparison on this site.",
+                'data_as_of'        => "Regulatory licence counts are reviewed on the same rolling cycle as the rest of each broker's review data, most recently refreshed 22 November 2026.",
+                'metric_definition' => 'A Tier-1 licence count sums three fields already used in our disclosed scoring formula: a confirmed CySEC licence (1 if held), a confirmed FCA licence or disclosed FCA-linked entity (1 if held), and the broker\'s other-regulators count (named Tier-1 regulators such as ASIC, FSCA, DFSA, or CMA). Offshore-only licences (Seychelles FSA and similar) are tracked separately on this site and are not included in this count, matching how our regulation score treats them.',
+                'missing_data'      => "This count only includes what we could independently confirm; it never estimates or assumes a licence a broker hasn't disclosed or that we couldn't verify against a regulator's own register or the broker's own disclosures.",
+                'source_hierarchy'  => "Primary: the relevant regulator's own public register. Secondary (used only where primary confirmation wasn't available): the broker's own disclosures, as already reflected in that broker's review page. A broker's own marketing claim about its regulatory footprint, unverified against either of these, was never treated as a confirmed licence.",
+                'compiled'          => '22 November 2026',
+            ),
+            'faqs' => array(
+                array(
+                    'q' => "What's the average number of Tier-1 regulatory licences a forex broker holds?",
+                    'a' => 'Across our full 139-broker research set, the median is 1 and the mean is 1.86 -- the mean is higher because a handful of brokers hold considerably more than the typical one.',
+                ),
+                array(
+                    'q' => 'Which broker holds the most confirmed Tier-1 licences?',
+                    'a' => 'Interactive Brokers, with 8 confirmed -- the highest in our dataset. ThinkMarkets and Plus500 follow at 6 each.',
+                ),
+                array(
+                    'q' => 'Do top-ranked brokers hold more Tier-1 licences?',
+                    'a' => 'Yes, clearly. Our top 15 ranked brokers hold 25% of all 259 confirmed Tier-1 licence-holdings in our dataset; our top 40 hold 54%. The remaining 99 brokers hold the other 46%.',
+                ),
+                array(
+                    'q' => "Does holding more than 5 Tier-1 licences improve a broker's regulation score further?",
+                    'a' => "No -- our regulation score caps at 5.0 once a broker's confirmed count reaches 5, so a broker with 8 scores the same on regulation as one with exactly 5. This report tracks the raw count beyond that cap, which the score itself doesn't show.",
+                ),
+            ),
+        ),
     );
 }
 
