@@ -30,7 +30,7 @@ function globalfxhub_get_best_lists() {
         ),
         'low-cost' => array(
             'title'      => 'Best Low-Cost Forex Brokers',
-            'intro'      => 'Filtered to brokers with a confirmed EUR/USD spread, ranked by our trading-costs score -- spread only, not minimum deposit (a low minimum makes a broker more accessible, not cheaper to actually trade with). If it\'s the minimum deposit you\'re after, see our <a href="' . home_url( '/research/minimum-deposit-report/' ) . '">Minimum Deposit Report</a> instead.',
+            'intro'      => 'Filtered to brokers with a confirmed EUR/USD spread, ranked by our trading-costs score -- spread only, not minimum deposit (a low minimum makes a broker more accessible, not cheaper to actually trade with). If it\'s the minimum deposit you\'re after, see our <a href="' . home_url( '/research/minimum-deposit-report/' ) . '">Minimum Deposit Report</a> instead. Brokers with no confirmed spread, like OANDA, are excluded here rather than assumed mid-pack -- see our <a href="' . home_url( '/reviews/oanda/fees/' ) . '">OANDA Fees Explained</a> breakdown for why.',
             'sort_label' => 'Trading costs score',
             'filter'     => function( $b ) { return null !== $b['scores']['cost']; },
             'sort_key'   => function( $b ) { return $b['scores']['cost']; },
@@ -51,7 +51,7 @@ function globalfxhub_get_best_lists() {
         ),
         'fca-regulated' => array(
             'title'      => 'Best FCA-Regulated (UK) Brokers',
-            'intro'      => 'Filtered to brokers holding a direct UK Financial Conduct Authority licence, ranked by overall score. See our <a href="' . home_url( '/regulation/fca/' ) . '">FCA regulation page</a> for what FSCS protection actually covers, or our <a href="' . home_url( '/regulators/fca/' ) . '">FCA licence register</a> for the FRN per broker.',
+            'intro'      => 'Filtered to brokers holding a direct UK Financial Conduct Authority licence, ranked by overall score. See our <a href="' . home_url( '/regulation/fca/' ) . '">FCA regulation page</a> for what FSCS protection actually covers, our <a href="' . home_url( '/regulators/fca/' ) . '">FCA licence register</a> for the FRN per broker, or our <a href="' . home_url( '/reviews/oanda/fees/' ) . '">OANDA Fees Explained</a> breakdown for one example of how a perfect regulation score and real gaps in fee visibility can sit on the same broker.',
             'sort_label' => 'Overall score',
             'filter'     => function( $b ) { return ! empty( $b['fca'] ) || ! empty( $b['fca_note'] ); },
             'sort_key'   => function( $b ) { return $b['scores']['overall'] ?? 0; },
