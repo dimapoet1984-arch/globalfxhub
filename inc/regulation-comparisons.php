@@ -121,6 +121,48 @@ function globalfxhub_get_regulation_comparisons() {
                 ),
             ),
         ),
+        'fsca-vs-cysec' => array(
+            'title'            => 'FSCA vs CySEC: Comparing Two Very Different Regulatory Regimes',
+            'meta_title'       => 'FSCA vs CySEC (2026): Comparing Two Very Different Regulatory Regimes',
+            'meta_description' => "CySEC caps retail leverage and runs a statutory €20,000 compensation fund; South Africa's FSCA does neither, but has its own real (if different) complaint mechanism -- what the difference actually means for a retail trader.",
+            'intro'            => "CySEC and FSCA both show up constantly in broker regulatory footprints, but they're not two flavors of the same thing. One caps retail leverage under EU rules and backs client losses with a statutory compensation fund; the other doesn't cap leverage at all and has no equivalent fund, but does run a real, independent complaint process with meaningful awards. This breaks down what each actually covers, using the same researched data we score brokers against across our full 139-broker dataset.",
+            'sections' => array(
+                array(
+                    'heading' => 'The core difference: CySEC caps leverage and runs a statutory compensation fund; FSCA does neither',
+                    'body'    => "CySEC is a full EU/MiFID II-passported regulator: retail leverage is capped under ESMA-aligned rules (up to 30:1 on major FX pairs, down to 2:1 on crypto CFDs), and if a CySEC-licensed firm fails, the Investor Compensation Fund covers eligible retail clients up to €20,000 per person -- a real, statutory, guaranteed-cap scheme. FSCA, South Africa's regulator, has no confirmed leverage cap in its public guidance (its Joint Standard 2 of 2020 covers margin for non-centrally-cleared OTC derivatives, a different mechanism from a retail leverage ceiling) -- FSCA-regulated brokers commonly advertise leverage of 1:500 or higher. FSCA also runs no statutory investor-compensation scheme at all.",
+                ),
+                array(
+                    'heading' => 'FSCA does have a real complaint mechanism -- just not a guaranteed fund',
+                    'body'    => "\"No compensation scheme\" doesn't mean \"no recourse.\" A client disputes an FSCA-licensed firm directly first; if unresolved, the FAIS Ombud -- an independent, free dispute-resolution body -- can investigate and issue a binding determination, escalatable to the Financial Services Tribunal. For complaints received on or after 1 July 2024, the Ombud can award up to R3.5 million (roughly \$190,000), up from an R800,000 cap that applied to older complaints. That's a real, case-by-case remedy -- but it depends on the Ombud ruling in your favor and the firm actually being able to pay, unlike CySEC's ICF, which is a guaranteed fund that pays out automatically up to its cap once a firm fails.",
+                ),
+                array(
+                    'heading' => 'In practice, FSCA is almost always a second licence, not a substitute for CySEC',
+                    'body'    => "Of the 33 brokers in our 139-broker dataset that hold an FSCA licence, 27 (82%) also hold CySEC. Only 6 -- TioMarkets, FXTM, PU Prime, ICM Capital, Eurotrade, and Vantage Markets -- hold FSCA without also holding CySEC. For the large majority of FSCA-regulated brokers we've researched, FSCA functions as an additional, South-Africa-facing licence sitting alongside a primary EU/CySEC relationship, not as an alternative regulatory home.",
+                ),
+                array(
+                    'heading' => 'Our dataset: 93 hold CySEC, 33 hold FSCA, 40 hold neither',
+                    'body'    => "Across the full 139-broker set: 93 brokers (67%) hold a CySEC licence, 33 (24%) hold an FSCA licence, 27 hold both, and 40 (29%) hold neither. CySEC is by far the more common licence in our research set -- unsurprising given how many brokers serving EU retail clients need MiFID passporting, while FSCA is more often picked up by brokers specifically building out a South African or broader-Africa client base.",
+                ),
+                array(
+                    'heading' => "What this means if you're choosing between a broker's CySEC entity and its FSCA entity",
+                    'body'    => "Some broker groups operate both a CySEC-licensed EU entity and a separate FSCA-licensed entity under the same brand. Which one you're actually onboarded to can depend on your country of residence, not your own choice -- and the protections genuinely differ: EU/CySEC leverage caps and a guaranteed €20,000 fund on one side, uncapped leverage and a case-by-case ombud process with no guaranteed payout on the other. Always confirm, in writing, which specific legal entity your account sits under and what that entity's actual licence covers, rather than assuming your broker's regulatory reputation transfers evenly across every entity it operates.",
+                ),
+            ),
+            'faqs' => array(
+                array(
+                    'q' => "Does FSCA have an investor compensation scheme like CySEC's ICF?",
+                    'a' => "No. CySEC's Investor Compensation Fund guarantees eligible retail clients up to €20,000 if a licensed firm fails. FSCA has no equivalent statutory scheme -- its FAIS Ombud can award compensation case by case (up to R3.5 million since 1 July 2024), but that depends on a ruling in the client's favor and the firm's ability to pay, not a guaranteed fund.",
+                ),
+                array(
+                    'q' => 'Is FSCA a weaker regulator than CySEC?',
+                    'a' => "Not simply \"weaker\" -- it's a different model. FSCA has no confirmed retail leverage cap and no compensation fund, both real gaps compared to CySEC's ESMA-aligned caps and ICF. But it does run a genuine, independent, free complaint mechanism (the FAIS Ombud) with binding, sometimes substantial awards -- something not every offshore-only regulator offers.",
+                ),
+                array(
+                    'q' => 'Do most FSCA-regulated brokers also hold a CySEC licence?',
+                    'a' => "Yes -- 27 of the 33 FSCA-regulated brokers in our 139-broker dataset (82%) also hold CySEC. Only 6 hold FSCA without CySEC: TioMarkets, FXTM, PU Prime, ICM Capital, Eurotrade, and Vantage Markets.",
+                ),
+            ),
+        ),
     );
 }
 
